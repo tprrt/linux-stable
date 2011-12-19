@@ -1359,7 +1359,7 @@ static void __ftrace_hash_rec_update(struct ftrace_ops *ops,
 		 * If the notrace hash has no items,
 		 * then there's nothing to do.
 		 */
-		if (hash && !hash->count)
+		if (!hash || !hash->count)
 			return;
 	}
 
