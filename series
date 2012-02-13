@@ -57,6 +57,7 @@ patches.android/staging-android-add-the-code-back-to-the-build.patch
 # Patches came from short-lived experiment when they were added to the staging
 # tree for a week or so.
 #
+patches.lttng/0000-lttng-lib-lttng-priority-heap.patch
 patches.lttng/0001-lttng-lib-ring-buffer.patch
 patches.lttng/0002-lttng-lib-portable-bitfield-read-write-header.patch
 patches.lttng/0003-lttng-BUILD_RUNTIME_BUG_ON.patch
