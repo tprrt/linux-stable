@@ -1,0 +1,7 @@
+LTSI kernel tree
+
+Based on the 3.0.y stable kernel tree, this is a set of patches to apply
+to it.
+
+Any questions, please contact
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
