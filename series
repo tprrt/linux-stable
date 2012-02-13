@@ -50,6 +50,7 @@ patches.android/android-0038-Staging-android-binder-Fix-crashes-when-sharing-a-b
 patches.android/android-0039-staging-android-lowmemorykiller-Don-t-wait-more-than-one-sec.patch
 patches.android/android-0040-staging-android-ram_console-Don-t-build-on-arches-w-o-iorema.patch
 
+patches.android/staging-android-add-the-code-back-to-the-build.patch
 
 #
 # LTTNG
