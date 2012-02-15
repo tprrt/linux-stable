@@ -2,12 +2,16 @@
 # LTSI patch queue series
 #
 
-
-ltsi-makefile-addition.patch
-
 #
+# LTSI project specific patches
+#
+
+patches.ltsi/ltsi-makefile-addition.patch
+
+#############################################################################
 # Android patches.
 #
+# Upstream patches
 # 3.2.0 through 3.3-rc3
 patches.android/android-0001-Revert-Staging-android-delete-android-drivers.patch
 patches.android/android-0002-staging-android-fix-build-issues.patch
@@ -52,7 +56,11 @@ patches.android/android-0040-staging-android-ram_console-Don-t-build-on-arches-w
 
 patches.android/staging-android-add-the-code-back-to-the-build.patch
 
-#
+# non-upstream patches
+
+
+
+#############################################################################
 # LTTNG
 # Patches came from short-lived experiment when they were added to the staging
 # tree for a week or so.
