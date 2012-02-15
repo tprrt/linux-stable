@@ -23,9 +23,9 @@ For questions about the LTSI project, and how it operates, please see
 the documentation at http://somewhere.linuxfoundation.org
 
 For discussions about these patches, or anything else related to the
-LTSI project, please contact the partipitants at the
-ltsi@something.linuxfoundation.org mailing list.  Instructions on how to
-post to it can be found at http://SOMEWHERE.linuxfoundation.org
+LTSI project, please contact the partipitants at the ltsi-dev mailing
+list.  Instructions on how to post to it can be found at:
+	https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
 
 
 Building the Tree
