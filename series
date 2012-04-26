@@ -62,35 +62,3 @@ patches.android/staging-android-add-the-code-back-to-the-build.patch
 
 #############################################################################
 # LTTNG
-# Patches came from short-lived experiment when they were added to the staging
-# tree for a week or so.
-#
-patches.lttng/0000-lttng-lib-lttng-priority-heap.patch
-patches.lttng/0001-lttng-lib-ring-buffer.patch
-patches.lttng/0002-lttng-lib-portable-bitfield-read-write-header.patch
-patches.lttng/0003-lttng-BUILD_RUNTIME_BUG_ON.patch
-patches.lttng/0004-lttng-offset-alignment-header.patch
-patches.lttng/0005-lttng-libs-add-Makefile.patch
-patches.lttng/0006-lttng-wrappers.patch
-patches.lttng/0007-lttng-instrumentation-tracepoint-events.patch
-patches.lttng/0008-lttng-syscall-instrumentation.patch
-patches.lttng/0009-lttng-lib-ring-buffer-clients.patch
-patches.lttng/0010-lttng-tracer-control-and-core-structures.patch
-patches.lttng/0011-lttng-dynamically-selectable-context-information.patch
-patches.lttng/0012-lttng-timing-calibration-feature.patch
-patches.lttng/0013-lttng-debugfs-and-procfs-ABI.patch
-patches.lttng/0014-lttng-Add-documentation-and-TODO-files.patch
-patches.lttng/0015-lttng-add-system-call-instrumentation-probe.patch
-patches.lttng/0016-lttng-probe-callbacks.patch
-patches.lttng/0017-lttng-toplevel-Makefile-and-Kconfig.patch
-patches.lttng/0018-staging-add-LTTng-to-build.patch
-patches.lttng/0019-staging-Add-LTTng-entry-to-MAINTAINERS-file.patch
-patches.lttng/0069-lttng-lib-ring-buffer-remove-stale-null-pointer.patch
-patches.lttng/0070-lttng-lib-ring-buffer-remove-duplicate-null-pointer.patch
-patches.lttng/0071-lttng-lib-ring-buffer-move-null-pointer-check-to-ope.patch
-patches.lttng/0072-lttng-wrapper-add-missing-include-to-kallsyms-wrappe.patch
-patches.lttng/0073-staging-lttng-cleanup-one-bit-signed-bitfields.patch
-patches.lttng/0172-staging-lttng-Fix-recent-modifications-to-string_fro.patch
-patches.lttng/0173-staging-lttng-TODO-update-lttng-reported-to-work-fin.patch
-patches.lttng/0174-staging-lttng-Update-max-symbol-length-to-256.patch
-
