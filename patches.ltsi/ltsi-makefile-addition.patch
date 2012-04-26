@@ -18,7 +18,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 @@ -1,7 +1,7 @@
  VERSION = 3
  PATCHLEVEL = 0
- SUBLEVEL = 20
+ SUBLEVEL = 29
 -EXTRAVERSION =
 +EXTRAVERSION = -ltsi
  NAME = Sneaky Weasel
