@@ -1,0 +1,58 @@
+From bbe0b11d8e7e4bae235e6e4297f6c7338937e919 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Fri, 6 Apr 2012 01:30:42 -0700
+Subject: ARM: mach-shmobile: armadillo800eva: add support ST1232
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+(cherry picked from commit 5f0c97e98875539868fd11a0432cb9460bf75b6d)
+
+N.B: This patch is not present in mainline yet
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-armadillo800eva.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm/mach-shmobile/board-armadillo800eva.c b/arch/arm/mach-shmobile/board-armadillo800eva.c
+index 5cc17a8..74213e3 100644
+--- a/arch/arm/mach-shmobile/board-armadillo800eva.c
++++ b/arch/arm/mach-shmobile/board-armadillo800eva.c
+@@ -149,6 +149,14 @@ static struct platform_device lcdc0_device = {
+ 	},
+ };
+ 
++/* I2C */
++static struct i2c_board_info i2c0_devices[] = {
++	{
++		I2C_BOARD_INFO("st1232-ts", 0x55),
++		.irq = evt2irq(0x0340),
++	},
++};
++
+ /*
+  * board devices
+  */
+@@ -205,6 +213,11 @@ static void __init eva_init(void)
+ 	gpio_request(GPIO_PORT202, NULL); /* LCD0_LED_CONT */
+ 	gpio_direction_output(GPIO_PORT202, 0);
+ 
++	/* Touchscreen */
++	gpio_request(GPIO_FN_IRQ10,	NULL); /* TP_INT */
++	gpio_request(GPIO_PORT166,	NULL); /* TP_RST_B */
++	gpio_direction_output(GPIO_PORT166, 1);
++
+ 	/*
+ 	 * CAUTION
+ 	 *
+@@ -219,6 +232,8 @@ static void __init eva_init(void)
+ 	l2x0_init(__io(0xf0002000), 0x40440000, 0x82000fff);
+ #endif
+ 
++	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
++
+ 	r8a7740_add_standard_devices();
+ 
+ 	platform_add_devices(eva_devices,
+-- 
+1.7.10
+

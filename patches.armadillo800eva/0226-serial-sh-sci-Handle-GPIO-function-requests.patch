@@ -1,0 +1,177 @@
+From 0baeaee9d22ae143cc48456dfc1131fcb4acad2f Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Fri, 2 Dec 2011 20:09:48 +0900
+Subject: serial: sh-sci: Handle GPIO function requests.
+
+This adds initial support for requesting the various GPIO functions
+necessary for certain ports. This just plugs in dumb request/free logic,
+but serves as a building block for migrating off of the ->init_pins mess
+to a wholly gpiolib backed solution (primarily parts with external
+RTS/CTS pins, but will also allow us to clean up RXD pin testing).
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 50f0959ad4f9ac1c5ee208bb820de299a1b3730b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   71 +++++++++++++++++++++++++++++++++++++++++--
+ include/linux/serial_sci.h  |   12 ++++++++
+ 2 files changed, 81 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 5d9ae22..c8014d1 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -50,6 +50,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
++#include <linux/gpio.h>
+ 
+ #ifdef CONFIG_SUPERH
+ #include <asm/sh_bios.h>
+@@ -73,6 +74,7 @@ struct sci_port {
+ 	struct clk		*fclk;
+ 
+ 	char			*irqstr[SCIx_NR_IRQS];
++	char			*gpiostr[SCIx_NR_FNS];
+ 
+ 	struct dma_chan			*chan_tx;
+ 	struct dma_chan			*chan_rx;
+@@ -1105,6 +1107,67 @@ static void sci_free_irq(struct sci_port *port)
+ 	}
+ }
+ 
++static const char *sci_gpio_names[SCIx_NR_FNS] = {
++	"sck", "rxd", "txd", "cts", "rts",
++};
++
++static const char *sci_gpio_str(unsigned int index)
++{
++	return sci_gpio_names[index];
++}
++
++static void __devinit sci_init_gpios(struct sci_port *port)
++{
++	struct uart_port *up = &port->port;
++	int i;
++
++	if (!port->cfg)
++		return;
++
++	for (i = 0; i < SCIx_NR_FNS; i++) {
++		const char *desc;
++		int ret;
++
++		if (!port->cfg->gpios[i])
++			continue;
++
++		desc = sci_gpio_str(i);
++
++		port->gpiostr[i] = kasprintf(GFP_KERNEL, "%s:%s",
++					     dev_name(up->dev), desc);
++
++		/*
++		 * If we've failed the allocation, we can still continue
++		 * on with a NULL string.
++		 */
++		if (!port->gpiostr[i])
++			dev_notice(up->dev, "%s string allocation failure\n",
++				   desc);
++
++		ret = gpio_request(port->cfg->gpios[i], port->gpiostr[i]);
++		if (unlikely(ret != 0)) {
++			dev_notice(up->dev, "failed %s gpio request\n", desc);
++
++			/*
++			 * If we can't get the GPIO for whatever reason,
++			 * no point in keeping the verbose string around.
++			 */
++			kfree(port->gpiostr[i]);
++		}
++	}
++}
++
++static void sci_free_gpios(struct sci_port *port)
++{
++	int i;
++
++	for (i = 0; i < SCIx_NR_FNS; i++)
++		if (port->cfg->gpios[i]) {
++			gpio_free(port->cfg->gpios[i]);
++			kfree(port->gpiostr[i]);
++		}
++}
++
+ static unsigned int sci_tx_empty(struct uart_port *port)
+ {
+ 	unsigned short status = sci_in(port, SCxSR);
+@@ -1967,6 +2030,8 @@ static int __devinit sci_init_single(struct platform_device *dev,
+ 	struct uart_port *port = &sci_port->port;
+ 	int ret;
+ 
++	sci_port->cfg	= p;
++
+ 	port->ops	= &sci_uart_ops;
+ 	port->iotype	= UPIO_MEM;
+ 	port->line	= index;
+@@ -2012,6 +2077,8 @@ static int __devinit sci_init_single(struct platform_device *dev,
+ 
+ 		port->dev = &dev->dev;
+ 
++		sci_init_gpios(sci_port);
++
+ 		pm_runtime_irq_safe(&dev->dev);
+ 		pm_runtime_enable(&dev->dev);
+ 	}
+@@ -2046,8 +2113,6 @@ static int __devinit sci_init_single(struct platform_device *dev,
+ 		p->error_mask |= (1 << p->overrun_bit);
+ 	}
+ 
+-	sci_port->cfg		= p;
+-
+ 	port->mapbase		= p->mapbase;
+ 	port->type		= p->type;
+ 	port->flags		= p->flags;
+@@ -2254,6 +2319,8 @@ static int sci_remove(struct platform_device *dev)
+ 	cpufreq_unregister_notifier(&port->freq_transition,
+ 				    CPUFREQ_TRANSITION_NOTIFIER);
+ 
++	sci_free_gpios(port);
++
+ 	uart_remove_one_port(&sci_uart_driver, &port->port);
+ 
+ 	clk_put(port->iclk);
+diff --git a/include/linux/serial_sci.h b/include/linux/serial_sci.h
+index 15b1bdc..7877907 100644
+--- a/include/linux/serial_sci.h
++++ b/include/linux/serial_sci.h
+@@ -64,6 +64,17 @@ enum {
+ 	SCIx_MUX_IRQ = SCIx_NR_IRQS,	/* special case */
+ };
+ 
++/* Offsets into the sci_port->gpios array */
++enum {
++	SCIx_SCK,
++	SCIx_RXD,
++	SCIx_TXD,
++	SCIx_CTS,
++	SCIx_RTS,
++
++	SCIx_NR_FNS,
++};
++
+ enum {
+ 	SCIx_PROBE_REGTYPE,
+ 
+@@ -123,6 +134,7 @@ struct plat_sci_port_ops {
+ struct plat_sci_port {
+ 	unsigned long	mapbase;		/* resource base */
+ 	unsigned int	irqs[SCIx_NR_IRQS];	/* ERI, RXI, TXI, BRI */
++	unsigned int	gpios[SCIx_NR_FNS];	/* SCK, RXD, TXD, CTS, RTS */
+ 	unsigned int	type;			/* SCI / SCIF / IRDA */
+ 	upf_t		flags;			/* UPF_* flags */
+ 	unsigned long	capabilities;		/* Port features/capabilities */
+-- 
+1.7.10
+

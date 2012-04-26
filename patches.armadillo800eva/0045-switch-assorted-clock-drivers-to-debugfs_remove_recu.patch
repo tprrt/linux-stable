@@ -1,0 +1,193 @@
+From 8ecbe6b16788ab61bc6fccd8eac8985ccc3cee11 Mon Sep 17 00:00:00 2001
+From: Al Viro <viro@zeniv.linux.org.uk>
+Date: Sat, 16 Jul 2011 12:37:57 -0400
+Subject: switch assorted clock drivers to debugfs_remove_recursive()
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+(cherry picked from commit 12520c438f48113593130d210eba821a532c893b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-tegra/clock.c   |    7 ++-----
+ arch/arm/mach-ux500/clock.c   |   20 +++-----------------
+ arch/arm/plat-omap/clock.c    |    6 ++----
+ arch/arm/plat-samsung/clock.c |    7 ++-----
+ arch/arm/plat-spear/clock.c   |    7 ++-----
+ drivers/sh/clk/core.c         |    7 ++-----
+ 6 files changed, 13 insertions(+), 41 deletions(-)
+
+diff --git a/arch/arm/mach-tegra/clock.c b/arch/arm/mach-tegra/clock.c
+index e028320..f8d41ff 100644
+--- a/arch/arm/mach-tegra/clock.c
++++ b/arch/arm/mach-tegra/clock.c
+@@ -585,7 +585,7 @@ static const struct file_operations possible_parents_fops = {
+ 
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+-	struct dentry *d, *child, *child_tmp;
++	struct dentry *d;
+ 
+ 	d = debugfs_create_dir(c->name, clk_debugfs_root);
+ 	if (!d)
+@@ -614,10 +614,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 	return 0;
+ 
+ err_out:
+-	d = c->dent;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(c->dent);
++	debugfs_remove_recursive(c->dent);
+ 	return -ENOMEM;
+ }
+ 
+diff --git a/arch/arm/mach-ux500/clock.c b/arch/arm/mach-ux500/clock.c
+index 32ce908..1d8509d 100644
+--- a/arch/arm/mach-ux500/clock.c
++++ b/arch/arm/mach-ux500/clock.c
+@@ -635,7 +635,7 @@ static const struct file_operations set_rate_fops = {
+ static struct dentry *clk_debugfs_register_dir(struct clk *c,
+ 						struct dentry *p_dentry)
+ {
+-	struct dentry *d, *clk_d, *child, *child_tmp;
++	struct dentry *d, *clk_d;
+ 	char s[255];
+ 	char *p = s;
+ 
+@@ -666,24 +666,10 @@ static struct dentry *clk_debugfs_register_dir(struct clk *c,
+ 	return clk_d;
+ 
+ err_out:
+-	d = clk_d;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(clk_d);
++	debugfs_remove_recursive(clk_d);
+ 	return NULL;
+ }
+ 
+-static void clk_debugfs_remove_dir(struct dentry *cdentry)
+-{
+-	struct dentry *d, *child, *child_tmp;
+-
+-	d = cdentry;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(cdentry);
+-	return ;
+-}
+-
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+ 	struct clk *pa = c->parent_periph;
+@@ -700,7 +686,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 		c->dent_bus = clk_debugfs_register_dir(c,
+ 				bpa->dent_bus ? bpa->dent_bus : bpa->dent);
+ 		if ((!c->dent_bus) &&  (c->dent)) {
+-			clk_debugfs_remove_dir(c->dent);
++			debugfs_remove_recursive(c->dent);
+ 			c->dent = NULL;
+ 			return -ENOMEM;
+ 		}
+diff --git a/arch/arm/plat-omap/clock.c b/arch/arm/plat-omap/clock.c
+index 4910bc0..b85f628 100644
+--- a/arch/arm/plat-omap/clock.c
++++ b/arch/arm/plat-omap/clock.c
+@@ -481,7 +481,7 @@ static struct dentry *clk_debugfs_root;
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+ 	int err;
+-	struct dentry *d, *child, *child_tmp;
++	struct dentry *d;
+ 	struct clk *pa = c->parent;
+ 	char s[255];
+ 	char *p = s;
+@@ -511,9 +511,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 
+ err_out:
+ 	d = c->dent;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(c->dent);
++	debugfs_remove_recursive(c->dent);
+ 	return err;
+ }
+ 
+diff --git a/arch/arm/plat-samsung/clock.c b/arch/arm/plat-samsung/clock.c
+index 7728928..0c9f95d 100644
+--- a/arch/arm/plat-samsung/clock.c
++++ b/arch/arm/plat-samsung/clock.c
+@@ -458,7 +458,7 @@ static struct dentry *clk_debugfs_root;
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+ 	int err;
+-	struct dentry *d, *child, *child_tmp;
++	struct dentry *d;
+ 	struct clk *pa = c->parent;
+ 	char s[255];
+ 	char *p = s;
+@@ -488,10 +488,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 	return 0;
+ 
+ err_out:
+-	d = c->dent;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(c->dent);
++	debugfs_remove_recursive(c->dent);
+ 	return err;
+ }
+ 
+diff --git a/arch/arm/plat-spear/clock.c b/arch/arm/plat-spear/clock.c
+index 6fa474c..67dd003 100644
+--- a/arch/arm/plat-spear/clock.c
++++ b/arch/arm/plat-spear/clock.c
+@@ -916,7 +916,7 @@ static struct dentry *clk_debugfs_root;
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+ 	int err;
+-	struct dentry *d, *child;
++	struct dentry *d;
+ 	struct clk *pa = c->pclk;
+ 	char s[255];
+ 	char *p = s;
+@@ -951,10 +951,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 	return 0;
+ 
+ err_out:
+-	d = c->dent;
+-	list_for_each_entry(child, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(c->dent);
++	debugfs_remove_recursive(c->dent);
+ 	return err;
+ }
+ 
+diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+index 229ad09..dc8d022 100644
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -673,7 +673,7 @@ static struct dentry *clk_debugfs_root;
+ static int clk_debugfs_register_one(struct clk *c)
+ {
+ 	int err;
+-	struct dentry *d, *child, *child_tmp;
++	struct dentry *d;
+ 	struct clk *pa = c->parent;
+ 	char s[255];
+ 	char *p = s;
+@@ -702,10 +702,7 @@ static int clk_debugfs_register_one(struct clk *c)
+ 	return 0;
+ 
+ err_out:
+-	d = c->dentry;
+-	list_for_each_entry_safe(child, child_tmp, &d->d_subdirs, d_u.d_child)
+-		debugfs_remove(child);
+-	debugfs_remove(c->dentry);
++	debugfs_remove_recursive(c->dentry);
+ 	return err;
+ }
+ 
+-- 
+1.7.10
+

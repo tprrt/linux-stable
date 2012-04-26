@@ -1,0 +1,30 @@
+From fa3c3b98a1c54fff047c6fc0110a5309623cc051 Mon Sep 17 00:00:00 2001
+From: Tobias Klauser <tklauser@distanz.ch>
+Date: Tue, 2 Aug 2011 15:40:22 -0700
+Subject: Input: gpio_keys - fix two typos in devicetree documentation
+
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit 0a7a8fff7b8a3bc2d3528af07c9c88083250303d)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ Documentation/devicetree/bindings/gpio/gpio_keys.txt |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/gpio/gpio_keys.txt b/Documentation/devicetree/bindings/gpio/gpio_keys.txt
+index 7190c99..5c2c021 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio_keys.txt
++++ b/Documentation/devicetree/bindings/gpio/gpio_keys.txt
+@@ -10,7 +10,7 @@ Optional properties:
+ Each button (key) is represented as a sub-node of "gpio-keys":
+ Subnode properties:
+ 
+-	- gpios: OF devcie-tree gpio specificatin.
++	- gpios: OF device-tree gpio specification.
+ 	- label: Descriptive name of the key.
+ 	- linux,code: Keycode to emit.
+ 
+-- 
+1.7.10
+

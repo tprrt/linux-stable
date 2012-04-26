@@ -1,0 +1,70 @@
+From 4e6b2a45eda3e4eb6f569d0dd46589b62f29ff5b Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Thu, 8 Dec 2011 22:58:54 +0900
+Subject: sh: extend clock struct with mapped_reg member
+
+Add a "mapped_reg" member to struct clk and use that
+to keep the ioremapped register based on enable_reg.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit eda2030a5b60bb818f062adacbcfb6fd2d366fb9)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/core.c  |    9 +++++++--
+ include/linux/sh_clk.h |    1 +
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+index db257a3..7715de2 100644
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -355,7 +355,7 @@ static int clk_establish_mapping(struct clk *clk)
+ 		 */
+ 		if (!clk->parent) {
+ 			clk->mapping = &dummy_mapping;
+-			return 0;
++			goto out;
+ 		}
+ 
+ 		/*
+@@ -384,6 +384,9 @@ static int clk_establish_mapping(struct clk *clk)
+ 	}
+ 
+ 	clk->mapping = mapping;
++out:
++	clk->mapped_reg = clk->mapping->base;
++	clk->mapped_reg += (phys_addr_t)clk->enable_reg - clk->mapping->phys;
+ 	return 0;
+ }
+ 
+@@ -402,10 +405,12 @@ static void clk_teardown_mapping(struct clk *clk)
+ 
+ 	/* Nothing to do */
+ 	if (mapping == &dummy_mapping)
+-		return;
++		goto out;
+ 
+ 	kref_put(&mapping->ref, clk_destroy_mapping);
+ 	clk->mapping = NULL;
++out:
++	clk->mapped_reg = NULL;
+ }
+ 
+ int clk_register(struct clk *clk)
+diff --git a/include/linux/sh_clk.h b/include/linux/sh_clk.h
+index e834304..54341d8 100644
+--- a/include/linux/sh_clk.h
++++ b/include/linux/sh_clk.h
+@@ -49,6 +49,7 @@ struct clk {
+ 
+ 	void __iomem		*enable_reg;
+ 	unsigned int		enable_bit;
++	void __iomem		*mapped_reg;
+ 
+ 	unsigned long		arch_flags;
+ 	void			*priv;
+-- 
+1.7.10
+

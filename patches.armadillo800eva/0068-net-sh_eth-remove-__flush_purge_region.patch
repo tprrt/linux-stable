@@ -1,0 +1,58 @@
+From a7514fd245d399bbd56a4465f0c651ce78c6f19e Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Thu, 30 Jun 2011 22:52:13 +0000
+Subject: net: sh_eth: remove __flush_purge_region
+
+It is a function of SuperH architecture. There is no good to use
+the function on a driver generally. So, the driver uses
+dma_map_single() instead of __flush_purge_region.
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 31fcb99d9958bdf04e84224e202f69e6cdac893b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/sh_eth.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/sh_eth.c b/drivers/net/sh_eth.c
+index 3a7a6a5..ad35c21 100644
+--- a/drivers/net/sh_eth.c
++++ b/drivers/net/sh_eth.c
+@@ -33,7 +33,6 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
+-#include <asm/cacheflush.h>
+ 
+ #include "sh_eth.h"
+ 
+@@ -866,6 +865,8 @@ static int sh_eth_txfree(struct net_device *ndev)
+ 			break;
+ 		/* Free the original skb. */
+ 		if (mdp->tx_skbuff[entry]) {
++			dma_unmap_single(&ndev->dev, txdesc->addr,
++					 txdesc->buffer_length, DMA_TO_DEVICE);
+ 			dev_kfree_skb_irq(mdp->tx_skbuff[entry]);
+ 			mdp->tx_skbuff[entry] = NULL;
+ 			freeNum++;
+@@ -1489,13 +1490,12 @@ static int sh_eth_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	entry = mdp->cur_tx % TX_RING_SIZE;
+ 	mdp->tx_skbuff[entry] = skb;
+ 	txdesc = &mdp->tx_ring[entry];
+-	txdesc->addr = virt_to_phys(skb->data);
+ 	/* soft swap. */
+ 	if (!mdp->cd->hw_swap)
+ 		sh_eth_soft_swap(phys_to_virt(ALIGN(txdesc->addr, 4)),
+ 				 skb->len + 2);
+-	/* write back */
+-	__flush_purge_region(skb->data, skb->len);
++	txdesc->addr = dma_map_single(&ndev->dev, skb->data, skb->len,
++				      DMA_TO_DEVICE);
+ 	if (skb->len < ETHERSMALL)
+ 		txdesc->buffer_length = ETHERSMALL;
+ 	else
+-- 
+1.7.10
+

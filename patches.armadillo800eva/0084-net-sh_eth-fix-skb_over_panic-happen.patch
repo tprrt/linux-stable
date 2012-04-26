@@ -1,0 +1,64 @@
+From e65e32c14f4b953af76267facf47249d1648338a Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Mon, 6 Feb 2012 23:55:15 +0000
+Subject: net: sh_eth: fix skb_over_panic happen
+
+When this GETHER controller received a large frame (about 1800 bytes
+or more), skb_over_panic() happened. This is because the previous
+driver set the RFLR to 0x1000 (4096 bytes) and the skb allocate size
+is smaller than 4096 bytes. So, the controller accepted such a frame.
+
+The controller can discard a large frame by the RFLR setting.
+So, the patch modifies the value of RFLR to mtu + ETH_HLEN +
+VLAN_HLEN + ETH_FCS_LEN.
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Eric Dumazet <eric.dumazet@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit fdb37a7f84a58ccad24abffd54ad46d23b763e13)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    4 +++-
+ drivers/net/ethernet/renesas/sh_eth.h |    3 ---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 1cb5a34..557736d 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -38,6 +38,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
++#include <linux/if_vlan.h>
+ #include <linux/sh_eth.h>
+ 
+ #include "sh_eth.h"
+@@ -817,7 +818,8 @@ static int sh_eth_dev_init(struct net_device *ndev)
+ 		sh_eth_write(ndev, 0, TRIMD);
+ 
+ 	/* Recv frame limit set register */
+-	sh_eth_write(ndev, RFLR_VALUE, RFLR);
++	sh_eth_write(ndev, ndev->mtu + ETH_HLEN + VLAN_HLEN + ETH_FCS_LEN,
++		     RFLR);
+ 
+ 	sh_eth_write(ndev, sh_eth_read(ndev, EESR), EESR);
+ 	sh_eth_write(ndev, mdp->cd->eesipr_value, EESIPR);
+diff --git a/drivers/net/ethernet/renesas/sh_eth.h b/drivers/net/ethernet/renesas/sh_eth.h
+index 47877b1..cdbd844 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.h
++++ b/drivers/net/ethernet/renesas/sh_eth.h
+@@ -575,9 +575,6 @@ enum RPADIR_BIT {
+ 	RPADIR_PADR = 0x0003f,
+ };
+ 
+-/* RFLR */
+-#define RFLR_VALUE 0x1000
+-
+ /* FDR */
+ #define DEFAULT_FDR_INIT	0x00000707
+ 
+-- 
+1.7.10
+

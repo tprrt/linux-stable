@@ -1,0 +1,39 @@
+From 5e231164bb186fd4b9630626ebeaed78da2e2f4a Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Sun, 11 Dec 2011 19:02:09 -0800
+Subject: sh: clkfwk: sh_clk_init_parent() should be called after
+ clk_register()
+
+sh_clk_init_parent() are using clk->mapped_reg
+which is mapped in clk_register()
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 7784f4da1a1b8b2519e008551fc4f69713451f89)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/cpg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+index a0d8faa..45fee36 100644
+--- a/drivers/sh/clk/cpg.c
++++ b/drivers/sh/clk/cpg.c
+@@ -222,11 +222,11 @@ static int __init sh_clk_div6_register_ops(struct clk *clks, int nr,
+ 		clkp->ops = ops;
+ 		clkp->freq_table = freq_table + (k * freq_table_size);
+ 		clkp->freq_table[nr_divs].frequency = CPUFREQ_TABLE_END;
+-		ret = sh_clk_init_parent(clkp);
++		ret = clk_register(clkp);
+ 		if (ret < 0)
+ 			break;
+ 
+-		ret = clk_register(clkp);
++		ret = sh_clk_init_parent(clkp);
+ 	}
+ 
+ 	return ret;
+-- 
+1.7.10
+

@@ -1,0 +1,56 @@
+From 992ee1e9d43621e7b239937606d65cf8abb38d11 Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Fri, 2 Dec 2011 19:02:06 +0900
+Subject: serial: sh-sci: Avoid FIFO clear for MCE toggle.
+
+When toggling the MCE support we don't want to concern ourselves with the
+FIFO state, so ensure that the clearing bits are masked out when updating
+the MCE state.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 73c3d53f38e0a8e6c67b0d12d77a8e77c082cd03)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index b2891bb..5d9ae22 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1776,18 +1776,25 @@ static void sci_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	sci_init_pins(port, termios->c_cflag);
+ 
+-	if (s->cfg->capabilities & SCIx_HAVE_RTSCTS) {
+-		reg = sci_getreg(port, SCFCR);
+-		if (reg->size) {
+-			unsigned short ctrl;
++	reg = sci_getreg(port, SCFCR);
++	if (reg->size) {
++		unsigned short ctrl = sci_in(port, SCFCR);
+ 
+-			ctrl = sci_in(port, SCFCR);
++		if (s->cfg->capabilities & SCIx_HAVE_RTSCTS) {
+ 			if (termios->c_cflag & CRTSCTS)
+ 				ctrl |= SCFCR_MCE;
+ 			else
+ 				ctrl &= ~SCFCR_MCE;
+-			sci_out(port, SCFCR, ctrl);
+ 		}
++
++		/*
++		 * As we've done a sci_reset() above, ensure we don't
++		 * interfere with the FIFOs while toggling MCE. As the
++		 * reset values could still be set, simply mask them out.
++		 */
++		ctrl &= ~(SCFCR_RFRST | SCFCR_TFRST);
++
++		sci_out(port, SCFCR, ctrl);
+ 	}
+ 
+ 	sci_out(port, SCSCR, s->cfg->scscr);
+-- 
+1.7.10
+

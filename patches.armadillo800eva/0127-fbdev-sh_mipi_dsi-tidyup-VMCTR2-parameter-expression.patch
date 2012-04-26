@@ -1,0 +1,37 @@
+From 58f65adecdc4b62a84325391c9adee322336c713 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 8 Nov 2011 20:34:12 -0800
+Subject: fbdev: sh_mipi_dsi: tidyup VMCTR2 parameter expression
+
+VMCTR2 parameter will be supported more in the future.
+1 << xx style is easy to understand.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Acked-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit 3c2a659936ba1e3bbd7e5eca89255c134fafb506)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mipi_dsi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index 94bb1bb..20ccc23 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -317,9 +317,9 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	 * HSA period allowed, no commands in LP
+ 	 */
+ 	if (pdata->flags & SH_MIPI_DSI_HSABM)
+-		vmctr2 |= 0x20;
++		vmctr2 |= 1 << 5;
+ 	if (pdata->flags & SH_MIPI_DSI_HBPBM)
+-		vmctr2 |= 0x10;
++		vmctr2 |= 1 << 4;
+ 	iowrite32(vmctr2, mipi->linkbase + VMCTR2);
+ 
+ 	/*
+-- 
+1.7.10
+

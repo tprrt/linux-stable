@@ -1,0 +1,108 @@
+From f310bca4c5b0a4dbaf6bf4c4f17068cab7a74d9c Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Wed, 8 Jun 2011 18:51:32 +0900
+Subject: serial: sh-sci: Consolidate RXD pin handling.
+
+Non-SCI parts do not have the special port reg necessary for cases where
+the RX and SCI pins are muxed and need to be manually polled, so these
+like always fall back on the normal FIFO processing paths. SH7760 is in a
+class in and of itself with regards to mapping its SIM card interface via
+the SCI port class despite not having any of the RXD lines wired up and
+so implicitly behaving more like a SCIF in this regard. Out of the other
+CPUs, some support the port check via the same block while others do it
+through an external SuperI/O, so it's not even possible to perform the
+check relative to the ioremapped cookie offset, so the separate read
+semantics are preserved here, too.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 514820eb982eb85677ed2ecef9710e90e24fbdab)
+
+Conflicts:
+
+	arch/sh/kernel/cpu/sh3/setup-sh770x.c
+	arch/sh/kernel/cpu/sh4/setup-sh7750.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   13 +++++++++++++
+ drivers/tty/serial/sh-sci.h |   29 -----------------------------
+ include/linux/serial_sci.h  |    2 ++
+ 3 files changed, 15 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index b2c424b..92ad023 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -363,6 +363,19 @@ static int sci_rxfill(struct uart_port *port)
+ 	return (sci_in(port, SCxSR) & SCxSR_RDxF(port)) != 0;
+ }
+ 
++/*
++ * SCI helper for checking the state of the muxed port/RXD pins.
++ */
++static inline int sci_rxd_in(struct uart_port *port)
++{
++	struct sci_port *s = to_sci_port(port);
++
++	if (s->cfg->port_reg <= 0)
++		return 1;
++
++	return !!__raw_readb(s->cfg->port_reg);
++}
++
+ /* ********************************************************************** *
+  *                   the interrupt related routines                       *
+  * ********************************************************************** */
+diff --git a/drivers/tty/serial/sh-sci.h b/drivers/tty/serial/sh-sci.h
+index a2f69f8..4c67c9a 100644
+--- a/drivers/tty/serial/sh-sci.h
++++ b/drivers/tty/serial/sh-sci.h
+@@ -289,32 +289,3 @@ SCIF_FNS(SCLSR,                         0,  0, 0x24, 16)
+ #endif
+ #define sci_in(port, reg) sci_##reg##_in(port)
+ #define sci_out(port, reg, value) sci_##reg##_out(port, value)
+-
+-#if defined(CONFIG_CPU_SUBTYPE_SH7706) || \
+-    defined(CONFIG_CPU_SUBTYPE_SH7707) || \
+-    defined(CONFIG_CPU_SUBTYPE_SH7708) || \
+-    defined(CONFIG_CPU_SUBTYPE_SH7709)
+-static inline int sci_rxd_in(struct uart_port *port)
+-{
+-	if (port->mapbase == 0xfffffe80)
+-		return __raw_readb(SCPDR)&0x01 ? 1 : 0; /* SCI */
+-	return 1;
+-}
+-#elif defined(CONFIG_CPU_SUBTYPE_SH7750)  || \
+-      defined(CONFIG_CPU_SUBTYPE_SH7751)  || \
+-      defined(CONFIG_CPU_SUBTYPE_SH7751R) || \
+-      defined(CONFIG_CPU_SUBTYPE_SH7750R) || \
+-      defined(CONFIG_CPU_SUBTYPE_SH7750S) || \
+-      defined(CONFIG_CPU_SUBTYPE_SH7091)
+-static inline int sci_rxd_in(struct uart_port *port)
+-{
+-	if (port->mapbase == 0xffe00000)
+-		return __raw_readb(SCSPTR1)&0x01 ? 1 : 0; /* SCI */
+-	return 1;
+-}
+-#else /* default case for non-SCI processors */
+-static inline int sci_rxd_in(struct uart_port *port)
+-{
+-	return 1;
+-}
+-#endif
+diff --git a/include/linux/serial_sci.h b/include/linux/serial_sci.h
+index 5fac3bc..ecefec7 100644
+--- a/include/linux/serial_sci.h
++++ b/include/linux/serial_sci.h
+@@ -86,6 +86,8 @@ struct plat_sci_port {
+ 	int		overrun_bit;
+ 	unsigned int	error_mask;
+ 
++	int		port_reg;
++
+ 	struct device	*dma_dev;
+ 
+ 	unsigned int	dma_slave_tx;
+-- 
+1.7.10
+

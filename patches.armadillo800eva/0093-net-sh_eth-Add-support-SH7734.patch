@@ -1,0 +1,163 @@
+From 3b43f34993772ee505d5cf82d6f67f8ab8630e55 Mon Sep 17 00:00:00 2001
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Date: Sun, 25 Mar 2012 18:59:51 +0000
+Subject: net: sh_eth: Add support SH7734
+
+Add define of SH7734 register and sh_eth_reset_hw_crc function.
+
+V3: Rebase net/HEAD.
+V2: Do not split line of #if defined.
+
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit f0e81fecd4f83de7854262c8a6b3af19dfa99bf9)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/Kconfig  |    5 +++--
+ drivers/net/ethernet/renesas/sh_eth.c |   20 +++++++++++++++++---
+ drivers/net/ethernet/renesas/sh_eth.h |   11 ++++++++---
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/Kconfig b/drivers/net/ethernet/renesas/Kconfig
+index f57ae23..20cbf26 100644
+--- a/drivers/net/ethernet/renesas/Kconfig
++++ b/drivers/net/ethernet/renesas/Kconfig
+@@ -7,7 +7,8 @@ config SH_ETH
+ 	depends on SUPERH && \
+ 		(CPU_SUBTYPE_SH7710 || CPU_SUBTYPE_SH7712 || \
+ 		 CPU_SUBTYPE_SH7763 || CPU_SUBTYPE_SH7619 || \
+-		 CPU_SUBTYPE_SH7724 || CPU_SUBTYPE_SH7757)
++		 CPU_SUBTYPE_SH7724 || CPU_SUBTYPE_SH7734 || \
++		 CPU_SUBTYPE_SH7757)
+ 	select CRC32
+ 	select MII
+ 	select MDIO_BITBANG
+@@ -15,4 +16,4 @@ config SH_ETH
+ 	---help---
+ 	  Renesas SuperH Ethernet device driver.
+ 	  This driver supporting CPUs are:
+-		- SH7710, SH7712, SH7763, SH7619, SH7724, and SH7757.
++		- SH7619, SH7710, SH7712, SH7724, SH7734, SH7763 and SH7757.
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 8615961..8bdf070 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -1,8 +1,8 @@
+ /*
+  *  SuperH Ethernet device driver
+  *
+- *  Copyright (C) 2006-2008 Nobuhiro Iwamatsu
+- *  Copyright (C) 2008-2009 Renesas Solutions Corp.
++ *  Copyright (C) 2006-2012 Nobuhiro Iwamatsu
++ *  Copyright (C) 2008-2012 Renesas Solutions Corp.
+  *
+  *  This program is free software; you can redistribute it and/or modify it
+  *  under the terms and conditions of the GNU General Public License,
+@@ -38,6 +38,7 @@
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
+ #include <linux/if_vlan.h>
++#include <linux/clk.h>
+ #include <linux/sh_eth.h>
+ 
+ #include "sh_eth.h"
+@@ -279,8 +280,9 @@ static struct sh_eth_cpu_data *sh_eth_get_cpu_data(struct sh_eth_private *mdp)
+ 		return &sh_eth_my_cpu_data;
+ }
+ 
+-#elif defined(CONFIG_CPU_SUBTYPE_SH7763)
++#elif defined(CONFIG_CPU_SUBTYPE_SH7734) || defined(CONFIG_CPU_SUBTYPE_SH7763)
+ #define SH_ETH_HAS_TSU	1
++static void sh_eth_reset_hw_crc(struct net_device *ndev);
+ static void sh_eth_chip_reset(struct net_device *ndev)
+ {
+ 	struct sh_eth_private *mdp = netdev_priv(ndev);
+@@ -314,6 +316,9 @@ static void sh_eth_reset(struct net_device *ndev)
+ 	sh_eth_write(ndev, 0x0, RDFAR);
+ 	sh_eth_write(ndev, 0x0, RDFXR);
+ 	sh_eth_write(ndev, 0x0, RDFFR);
++
++	/* Reset HW CRC register */
++	sh_eth_reset_hw_crc(ndev);
+ }
+ 
+ static void sh_eth_set_duplex(struct net_device *ndev)
+@@ -370,8 +375,17 @@ static struct sh_eth_cpu_data sh_eth_my_cpu_data = {
+ 	.no_trimd	= 1,
+ 	.no_ade		= 1,
+ 	.tsu		= 1,
++#if defined(CONFIG_CPU_SUBTYPE_SH7734)
++	.hw_crc     = 1,
++#endif
+ };
+ 
++static void sh_eth_reset_hw_crc(struct net_device *ndev)
++{
++	if (sh_eth_my_cpu_data.hw_crc)
++		sh_eth_write(ndev, 0x0, CSMR);
++}
++
+ #elif defined(CONFIG_CPU_SUBTYPE_SH7619)
+ #define SH_ETH_RESET_DEFAULT	1
+ static struct sh_eth_cpu_data sh_eth_my_cpu_data = {
+diff --git a/drivers/net/ethernet/renesas/sh_eth.h b/drivers/net/ethernet/renesas/sh_eth.h
+index 57dc262..e66de18 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.h
++++ b/drivers/net/ethernet/renesas/sh_eth.h
+@@ -1,8 +1,8 @@
+ /*
+  *  SuperH Ethernet device driver
+  *
+- *  Copyright (C) 2006-2008 Nobuhiro Iwamatsu
+- *  Copyright (C) 2008-2011 Renesas Solutions Corp.
++ *  Copyright (C) 2006-2012 Nobuhiro Iwamatsu
++ *  Copyright (C) 2008-2012 Renesas Solutions Corp.
+  *
+  *  This program is free software; you can redistribute it and/or modify it
+  *  under the terms and conditions of the GNU General Public License,
+@@ -98,6 +98,8 @@ enum {
+ 	CEECR,
+ 	MAFCR,
+ 	RTRATE,
++	CSMR,
++	RMII_MII,
+ 
+ 	/* TSU Absolute address */
+ 	ARSTR,
+@@ -172,6 +174,7 @@ static const u16 sh_eth_offset_gigabit[SH_ETH_MAX_REGISTER_OFFSET] = {
+ 	[RMCR]	= 0x0458,
+ 	[RPADIR]	= 0x0460,
+ 	[FCFTR]	= 0x0468,
++	[CSMR] = 0x04E4,
+ 
+ 	[ECMR]	= 0x0500,
+ 	[ECSR]	= 0x0510,
+@@ -200,6 +203,7 @@ static const u16 sh_eth_offset_gigabit[SH_ETH_MAX_REGISTER_OFFSET] = {
+ 	[CERCR]	= 0x0768,
+ 	[CEECR]	= 0x0770,
+ 	[MAFCR]	= 0x0778,
++	[RMII_MII] =  0x0790,
+ 
+ 	[ARSTR]	= 0x0000,
+ 	[TSU_CTRST]	= 0x0004,
+@@ -377,7 +381,7 @@ static const u16 sh_eth_offset_fast_sh3_sh2[SH_ETH_MAX_REGISTER_OFFSET] = {
+ /*
+  * Register's bits
+  */
+-#ifdef CONFIG_CPU_SUBTYPE_SH7763
++#if defined(CONFIG_CPU_SUBTYPE_SH7734) || defined(CONFIG_CPU_SUBTYPE_SH7763)
+ /* EDSR */
+ enum EDSR_BIT {
+ 	EDSR_ENT = 0x01, EDSR_ENR = 0x02,
+@@ -751,6 +755,7 @@ struct sh_eth_cpu_data {
+ 	unsigned rpadir:1;		/* E-DMAC have RPADIR */
+ 	unsigned no_trimd:1;		/* E-DMAC DO NOT have TRIMD */
+ 	unsigned no_ade:1;	/* E-DMAC DO NOT have ADE bit in EESR */
++	unsigned hw_crc:1;	/* E-DMAC have CSMR */
+ };
+ 
+ struct sh_eth_private {
+-- 
+1.7.10
+

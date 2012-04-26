@@ -1,0 +1,67 @@
+From 7464212984b7f9d2c2d3d08a0fa78b07cf2d2295 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Mon, 19 Sep 2011 18:51:13 -0700
+Subject: sh: clkfwk: add clk_rate_mult_range_round()
+
+This provides a clk_rate_mult_range_round() helper for use by some of the
+CPG PLL ranged multipliers, following the same approach as used by the
+div ranges.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit dd2c0ca1b153b555c09fd8e08f6842e12cf8e87b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/core.c  |   20 ++++++++++++++++++++
+ include/linux/sh_clk.h |    3 +++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+index dc8d022..352036b 100644
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -173,6 +173,26 @@ long clk_rate_div_range_round(struct clk *clk, unsigned int div_min,
+ 	return clk_rate_round_helper(&div_range_round);
+ }
+ 
++static long clk_rate_mult_range_iter(unsigned int pos,
++				      struct clk_rate_round_data *rounder)
++{
++	return clk_get_rate(rounder->arg) * pos;
++}
++
++long clk_rate_mult_range_round(struct clk *clk, unsigned int mult_min,
++			       unsigned int mult_max, unsigned long rate)
++{
++	struct clk_rate_round_data mult_range_round = {
++		.min	= mult_min,
++		.max	= mult_max,
++		.func	= clk_rate_mult_range_iter,
++		.arg	= clk_get_parent(clk),
++		.rate	= rate,
++	};
++
++	return clk_rate_round_helper(&mult_range_round);
++}
++
+ int clk_rate_table_find(struct clk *clk,
+ 			struct cpufreq_frequency_table *freq_table,
+ 			unsigned long rate)
+diff --git a/include/linux/sh_clk.h b/include/linux/sh_clk.h
+index 3ccf186..9237c29 100644
+--- a/include/linux/sh_clk.h
++++ b/include/linux/sh_clk.h
+@@ -94,6 +94,9 @@ int clk_rate_table_find(struct clk *clk,
+ long clk_rate_div_range_round(struct clk *clk, unsigned int div_min,
+ 			      unsigned int div_max, unsigned long rate);
+ 
++long clk_rate_mult_range_round(struct clk *clk, unsigned int mult_min,
++			       unsigned int mult_max, unsigned long rate);
++
+ long clk_round_parent(struct clk *clk, unsigned long target,
+ 		      unsigned long *best_freq, unsigned long *parent_freq,
+ 		      unsigned int div_min, unsigned int div_max);
+-- 
+1.7.10
+

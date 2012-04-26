@@ -1,0 +1,74 @@
+From 6749dc26121059478d004099fd6e17334cfe4523 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 14 Dec 2011 01:01:14 +0900
+Subject: sh: pfc: Unlock register support
+
+Add PFC support for a 32-bit unlock register. Needed to
+drive the r8a7779 PFC that comes with a funky PMMR register.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit e499ada829cf769ac6f16627cd9f09b855a7fd6d)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/pfc.c       |   22 ++++++++++------------
+ include/linux/sh_pfc.h |    2 ++
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/sh/pfc.c b/drivers/sh/pfc.c
+index f975f4a..522c6c4 100644
+--- a/drivers/sh/pfc.c
++++ b/drivers/sh/pfc.c
+@@ -210,7 +210,7 @@ static void write_config_reg(struct pinmux_info *gpioc,
+ 			     unsigned long field, unsigned long value)
+ {
+ 	void __iomem *mapped_reg;
+-	unsigned long mask, pos;
++	unsigned long mask, pos, data;
+ 
+ 	config_reg_helper(gpioc, crp, field, &mapped_reg, &mask, &pos);
+ 
+@@ -221,17 +221,15 @@ static void write_config_reg(struct pinmux_info *gpioc,
+ 	mask = ~(mask << pos);
+ 	value = value << pos;
+ 
+-	switch (crp->reg_width) {
+-	case 8:
+-		iowrite8((ioread8(mapped_reg) & mask) | value, mapped_reg);
+-		break;
+-	case 16:
+-		iowrite16((ioread16(mapped_reg) & mask) | value, mapped_reg);
+-		break;
+-	case 32:
+-		iowrite32((ioread32(mapped_reg) & mask) | value, mapped_reg);
+-		break;
+-	}
++	data = gpio_read_raw_reg(mapped_reg, crp->reg_width);
++	data &= mask;
++	data |= value;
++
++	if (gpioc->unlock_reg)
++		gpio_write_raw_reg(pfc_phys_to_virt(gpioc, gpioc->unlock_reg),
++				   32, ~data);
++
++	gpio_write_raw_reg(mapped_reg, crp->reg_width, data);
+ }
+ 
+ static int setup_data_reg(struct pinmux_info *gpioc, unsigned gpio)
+diff --git a/include/linux/sh_pfc.h b/include/linux/sh_pfc.h
+index 84538c4..5c15aed 100644
+--- a/include/linux/sh_pfc.h
++++ b/include/linux/sh_pfc.h
+@@ -116,6 +116,8 @@ struct pinmux_info {
+ 	unsigned int num_resources;
+ 	struct pfc_window *window;
+ 
++	unsigned long unlock_reg;
++
+ 	struct gpio_chip chip;
+ };
+ 
+-- 
+1.7.10
+

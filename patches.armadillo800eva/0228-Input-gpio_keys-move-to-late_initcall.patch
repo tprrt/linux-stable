@@ -1,0 +1,38 @@
+From dbcdd14547f3abb2e5ae97806c7624896ab84e88 Mon Sep 17 00:00:00 2001
+From: David Jander <david@protonic.nl>
+Date: Thu, 23 Jun 2011 01:30:09 -0700
+Subject: Input: gpio_keys - move to late_initcall
+
+Initialize gpio_keys driver at late_initcall level, to give it a chance to
+work with GPIO expanders that might not be ready yet if we initialize the
+driver at module_init time.
+
+This is strictly a band-aid until there is a better way to specify
+inter-device dependencies.
+
+Signed-off-by: David Jander <david@protonic.nl>
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit b23302052d96a3945e4c72aca77b5fd28884c353)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 6d0e2f6..320b59a 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -644,7 +644,7 @@ static void __exit gpio_keys_exit(void)
+ 	platform_driver_unregister(&gpio_keys_device_driver);
+ }
+ 
+-module_init(gpio_keys_init);
++late_initcall(gpio_keys_init);
+ module_exit(gpio_keys_exit);
+ 
+ MODULE_LICENSE("GPL");
+-- 
+1.7.10
+

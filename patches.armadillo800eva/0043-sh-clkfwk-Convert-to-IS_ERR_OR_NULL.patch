@@ -1,0 +1,31 @@
+From d6aec47736b767c45be4c88daa8312fe8be7223b Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Fri, 24 Jun 2011 17:35:40 +0900
+Subject: sh: clkfwk: Convert to IS_ERR_OR_NULL.
+
+Trivial cleanup.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 225ca45c3c64964163ea1fa85e2081af85956eed)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/sh/clk/core.c b/drivers/sh/clk/core.c
+index ebeaa9e..229ad09 100644
+--- a/drivers/sh/clk/core.c
++++ b/drivers/sh/clk/core.c
+@@ -396,7 +396,7 @@ int clk_register(struct clk *clk)
+ {
+ 	int ret;
+ 
+-	if (clk == NULL || IS_ERR(clk))
++	if (IS_ERR_OR_NULL(clk))
+ 		return -EINVAL;
+ 
+ 	/*
+-- 
+1.7.10
+

@@ -1,0 +1,90 @@
+From 9bdfe76b0554ab2c6e657ec2c294ab8c43d34a28 Mon Sep 17 00:00:00 2001
+From: "Jon Medhurst (Tixy)" <tixy@yxit.co.uk>
+Date: Tue, 6 Dec 2011 09:59:38 +0100
+Subject: ARM: 7193/1: Fix machine_is_xxx() naming for eSata SheevaPlug and
+ QNAP TS-209
+
+The eSata SheevaPlug and QNAP TS-209 devices were removed from
+mach-types due to naming mismatches between machine_is_xxx(), CONFIG_XXX
+and MACH_TYPE_XXX.
+
+This patch fixes those mismatches and adds the devices back into
+mach-types.
+
+Acked-by: Nicolas Pitre <nico@linaro.org>
+Signed-off-by: Jon Medhurst <tixy@yxit.co.uk>
+Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+(cherry picked from commit d22759ed5680055fdecbdcf6644dbc8a467ab801)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-kirkwood/sheevaplug-setup.c |    6 +++---
+ arch/arm/mach-orion5x/ts209-setup.c       |    2 +-
+ arch/arm/tools/mach-types                 |    4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/mach-kirkwood/sheevaplug-setup.c b/arch/arm/mach-kirkwood/sheevaplug-setup.c
+index 17de0bf..d989c0d 100644
+--- a/arch/arm/mach-kirkwood/sheevaplug-setup.c
++++ b/arch/arm/mach-kirkwood/sheevaplug-setup.c
+@@ -107,7 +107,7 @@ static void __init sheevaplug_init(void)
+ 	kirkwood_init();
+ 
+ 	/* setup gpio pin select */
+-	if (machine_is_sheeva_esata())
++	if (machine_is_esata_sheevaplug())
+ 		kirkwood_mpp_conf(sheeva_esata_mpp_config);
+ 	else
+ 		kirkwood_mpp_conf(sheevaplug_mpp_config);
+@@ -123,11 +123,11 @@ static void __init sheevaplug_init(void)
+ 	kirkwood_ge00_init(&sheevaplug_ge00_data);
+ 
+ 	/* honor lower power consumption for plugs with out eSATA */
+-	if (machine_is_sheeva_esata())
++	if (machine_is_esata_sheevaplug())
+ 		kirkwood_sata_init(&sheeva_esata_sata_data);
+ 
+ 	/* enable sd wp and sd cd on plugs with esata */
+-	if (machine_is_sheeva_esata())
++	if (machine_is_esata_sheevaplug())
+ 		kirkwood_sdio_init(&sheeva_esata_mvsdio_data);
+ 	else
+ 		kirkwood_sdio_init(&sheevaplug_mvsdio_data);
+diff --git a/arch/arm/mach-orion5x/ts209-setup.c b/arch/arm/mach-orion5x/ts209-setup.c
+index 47162fd..6749c2c 100644
+--- a/arch/arm/mach-orion5x/ts209-setup.c
++++ b/arch/arm/mach-orion5x/ts209-setup.c
+@@ -178,7 +178,7 @@ static struct hw_pci qnap_ts209_pci __initdata = {
+ 
+ static int __init qnap_ts209_pci_init(void)
+ {
+-	if (machine_is_ts_x09())
++	if (machine_is_ts209())
+ 		pci_common_init(&qnap_ts209_pci);
+ 
+ 	return 0;
+diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
+index ccbe16f..9e66ebc 100644
+--- a/arch/arm/tools/mach-types
++++ b/arch/arm/tools/mach-types
+@@ -269,7 +269,7 @@ dns323			MACH_DNS323		DNS323			1542
+ omap3_beagle		MACH_OMAP3_BEAGLE	OMAP3_BEAGLE		1546
+ nokia_n810		MACH_NOKIA_N810		NOKIA_N810		1548
+ pcm038			MACH_PCM038		PCM038			1551
+-ts_x09			MACH_TS209		TS209			1565
++ts209			MACH_TS209		TS209			1565
+ at91cap9adk		MACH_AT91CAP9ADK	AT91CAP9ADK		1566
+ mx31moboard		MACH_MX31MOBOARD	MX31MOBOARD		1574
+ vision_ep9307		MACH_VISION_EP9307	VISION_EP9307		1578
+@@ -459,7 +459,7 @@ guruplug		MACH_GURUPLUG		GURUPLUG		2659
+ spear310		MACH_SPEAR310		SPEAR310		2660
+ spear320		MACH_SPEAR320		SPEAR320		2661
+ aquila			MACH_AQUILA		AQUILA			2676
+-sheeva_esata		MACH_ESATA_SHEEVAPLUG	ESATA_SHEEVAPLUG	2678
++esata_sheevaplug	MACH_ESATA_SHEEVAPLUG	ESATA_SHEEVAPLUG	2678
+ msm7x30_surf		MACH_MSM7X30_SURF	MSM7X30_SURF		2679
+ ea2478devkit		MACH_EA2478DEVKIT	EA2478DEVKIT		2683
+ terastation_wxl		MACH_TERASTATION_WXL	TERASTATION_WXL		2697
+-- 
+1.7.10
+

@@ -1,0 +1,32 @@
+From 44eccf7d2cf65f09b4412927d0105cb6777eba4a Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Wed, 15 Feb 2012 17:54:51 +0000
+Subject: net: sh_eth: add the value of tsu to the SH7757's GETHER
+
+The SH7757's GETHER has TSU registers. So, this patch adds the value
+of ".tsu = 1" in the sh_eth_cpu_data.
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 3acbc9715a5ac8a2534a69eb3488b63b7c9fb1e2)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 98062bf..8f53b5a 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -268,6 +268,7 @@ static struct sh_eth_cpu_data sh_eth_my_cpu_data_giga = {
+ 	.rpadir_value   = 2 << 16,
+ 	.no_trimd	= 1,
+ 	.no_ade		= 1,
++	.tsu		= 1,
+ };
+ 
+ static struct sh_eth_cpu_data *sh_eth_get_cpu_data(struct sh_eth_private *mdp)
+-- 
+1.7.10
+

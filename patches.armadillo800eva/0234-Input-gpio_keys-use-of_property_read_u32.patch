@@ -1,0 +1,78 @@
+From c66be10095b0ce9d065cd49b3344e884c0b5fd22 Mon Sep 17 00:00:00 2001
+From: Tobias Klauser <tklauser@distanz.ch>
+Date: Fri, 9 Sep 2011 11:09:50 -0700
+Subject: Input: gpio_keys - use of_property_read_u32()
+
+Use the of_property_read_u32() helper function to retrieve u32 values
+from the device tree. Also do not pass the len parameter to
+of_get_property if it isn't checked afterwards.
+
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit cca84699a079a91b0a0cb4f2da8548e56859376a)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 67df91a..ed1ed46 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -461,8 +461,7 @@ static int gpio_keys_get_devtree_pdata(struct device *dev,
+ 	struct device_node *node, *pp;
+ 	int i;
+ 	struct gpio_keys_button *buttons;
+-	const u32 *reg;
+-	int len;
++	u32 reg;
+ 
+ 	node = dev->of_node;
+ 	if (node == NULL)
+@@ -470,7 +469,7 @@ static int gpio_keys_get_devtree_pdata(struct device *dev,
+ 
+ 	memset(pdata, 0, sizeof *pdata);
+ 
+-	pdata->rep = !!of_get_property(node, "autorepeat", &len);
++	pdata->rep = !!of_get_property(node, "autorepeat", NULL);
+ 
+ 	/* First count the subnodes */
+ 	pdata->nbuttons = 0;
+@@ -498,22 +497,25 @@ static int gpio_keys_get_devtree_pdata(struct device *dev,
+ 		buttons[i].gpio = of_get_gpio_flags(pp, 0, &flags);
+ 		buttons[i].active_low = flags & OF_GPIO_ACTIVE_LOW;
+ 
+-		reg = of_get_property(pp, "linux,code", &len);
+-		if (!reg) {
++		if (of_property_read_u32(pp, "linux,code", &reg)) {
+ 			dev_err(dev, "Button without keycode: 0x%x\n", buttons[i].gpio);
+ 			goto out_fail;
+ 		}
+-		buttons[i].code = be32_to_cpup(reg);
++		buttons[i].code = reg;
+ 
+-		buttons[i].desc = of_get_property(pp, "label", &len);
++		buttons[i].desc = of_get_property(pp, "label", NULL);
+ 
+-		reg = of_get_property(pp, "linux,input-type", &len);
+-		buttons[i].type = reg ? be32_to_cpup(reg) : EV_KEY;
++		if (of_property_read_u32(pp, "linux,input-type", &reg) == 0)
++			buttons[i].type = reg;
++		else
++			buttons[i].type = EV_KEY;
+ 
+ 		buttons[i].wakeup = !!of_get_property(pp, "gpio-key,wakeup", NULL);
+ 
+-		reg = of_get_property(pp, "debounce-interval", &len);
+-		buttons[i].debounce_interval = reg ? be32_to_cpup(reg) : 5;
++		if (of_property_read_u32(pp, "debounce-interval", &reg) == 0)
++			buttons[i].debounce_interval = reg;
++		else
++			buttons[i].debounce_interval = 5;
+ 
+ 		i++;
+ 	}
+-- 
+1.7.10
+

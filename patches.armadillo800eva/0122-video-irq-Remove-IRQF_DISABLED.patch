@@ -1,0 +1,59 @@
+From a74921402cead64d227baab172fb9d52a552f89d Mon Sep 17 00:00:00 2001
+From: Yong Zhang <yong.zhang0@gmail.com>
+Date: Thu, 22 Sep 2011 16:59:16 +0800
+Subject: video: irq: Remove IRQF_DISABLED
+
+Since commit [e58aa3d2: genirq: Run irq handlers with interrupts disabled],
+We run all interrupt handlers with interrupts disabled
+and we even check and yell when an interrupt handler
+returns with interrupts enabled (see commit [b738a50a:
+genirq: Warn when handler enables interrupts]).
+
+So now this flag is a NOOP and can be removed.
+
+Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
+Acked-by: David Brown <davidb@codeaurora.org>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit f8798ccbefc0e4ef7438c080b7ba0410738c8cfa)
+
+Conflicts:
+
+	drivers/video/au1200fb.c
+	drivers/video/bf54x-lq043fb.c
+	drivers/video/bfin-lq035q1-fb.c
+	drivers/video/bfin-t350mcqb-fb.c
+	drivers/video/bfin_adv7393fb.c
+	drivers/video/mb862xx/mb862xxfbdrv.c
+	drivers/video/msm/mddi.c
+	drivers/video/msm/mdp.c
+	drivers/video/nuc900fb.c
+	drivers/video/omap2/displays/panel-taal.c
+	drivers/video/ps3fb.c
+	drivers/video/pxa3xx-gcu.c
+	drivers/video/pxafb.c
+	drivers/video/s3c2410fb.c
+	drivers/video/sa1100fb.c
+	drivers/video/tmiofb.c
+	drivers/video/vt8500lcdfb.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 97ab8ba..3a41c01 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -1576,7 +1576,7 @@ static int __devinit sh_mobile_lcdc_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
+-	error = request_irq(i, sh_mobile_lcdc_irq, IRQF_DISABLED,
++	error = request_irq(i, sh_mobile_lcdc_irq, 0,
+ 			    dev_name(&pdev->dev), priv);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "unable to request irq\n");
+-- 
+1.7.10
+

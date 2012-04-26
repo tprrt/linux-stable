@@ -1,0 +1,103 @@
+From 7e0208976896549c601b52ee1125ab1e5c036841 Mon Sep 17 00:00:00 2001
+From: "Rafael J. Wysocki" <rjw@sisk.pl>
+Date: Fri, 23 Dec 2011 01:23:30 +0100
+Subject: PM / shmobile: Don't include SH7372's INTCS in syscore
+ suspend/resume
+
+Since the SH7372's INTCS in included into syscore suspend/resume,
+which causes the chip to be accessed when PM domains have been
+turned off during system suspend, the A4R domain containing the
+INTCS has to stay on during system sleep, which is suboptimal
+from the power consumption point of view.
+
+For this reason, add a new INTC flag, skip_syscore_suspend, to mark
+the INTCS for intc_suspend() and intc_resume(), so that they don't
+touch it.  This allows the A4R domain to be turned off during
+system suspend and the INTCS state is resrored during system
+resume by the A4R's "power on" code.
+
+Suggested-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+Acked-by: Magnus Damm <damm@opensource.se>
+(cherry picked from commit 0f966d74cf77a9140a025464a287e1d2fee8a1fc)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/intc-sh7372.c |    1 +
+ drivers/sh/intc/core.c               |    8 ++++++++
+ drivers/sh/intc/internals.h          |    1 +
+ include/linux/sh_intc.h              |    1 +
+ 4 files changed, 11 insertions(+)
+
+diff --git a/arch/arm/mach-shmobile/intc-sh7372.c b/arch/arm/mach-shmobile/intc-sh7372.c
+index 3b28743..1d4c332 100644
+--- a/arch/arm/mach-shmobile/intc-sh7372.c
++++ b/arch/arm/mach-shmobile/intc-sh7372.c
+@@ -593,6 +593,7 @@ static struct resource intcs_resources[] __initdata = {
+ static struct intc_desc intcs_desc __initdata = {
+ 	.name = "sh7372-intcs",
+ 	.force_enable = ENABLED_INTCS,
++	.skip_syscore_suspend = true,
+ 	.resource = intcs_resources,
+ 	.num_resources = ARRAY_SIZE(intcs_resources),
+ 	.hw = INTC_HW_DESC(intcs_vectors, intcs_groups, intcs_mask_registers,
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+index e85512d..e53e449 100644
+--- a/drivers/sh/intc/core.c
++++ b/drivers/sh/intc/core.c
+@@ -354,6 +354,8 @@ int __init register_intc_controller(struct intc_desc *desc)
+ 	if (desc->force_enable)
+ 		intc_enable_disable_enum(desc, d, desc->force_enable, 1);
+ 
++	d->skip_suspend = desc->skip_syscore_suspend;
++
+ 	nr_intc_controllers++;
+ 
+ 	return 0;
+@@ -386,6 +388,9 @@ static int intc_suspend(void)
+ 	list_for_each_entry(d, &intc_list, list) {
+ 		int irq;
+ 
++		if (d->skip_suspend)
++			continue;
++
+ 		/* enable wakeup irqs belonging to this intc controller */
+ 		for_each_active_irq(irq) {
+ 			struct irq_data *data;
+@@ -409,6 +414,9 @@ static void intc_resume(void)
+ 	list_for_each_entry(d, &intc_list, list) {
+ 		int irq;
+ 
++		if (d->skip_suspend)
++			continue;
++
+ 		for_each_active_irq(irq) {
+ 			struct irq_data *data;
+ 			struct irq_chip *chip;
+diff --git a/drivers/sh/intc/internals.h b/drivers/sh/intc/internals.h
+index 1c2722e..b0e9155 100644
+--- a/drivers/sh/intc/internals.h
++++ b/drivers/sh/intc/internals.h
+@@ -67,6 +67,7 @@ struct intc_desc_int {
+ 	struct intc_window *window;
+ 	unsigned int nr_windows;
+ 	struct irq_chip chip;
++	bool skip_suspend;
+ };
+ 
+ 
+diff --git a/include/linux/sh_intc.h b/include/linux/sh_intc.h
+index 5812fef..b160645 100644
+--- a/include/linux/sh_intc.h
++++ b/include/linux/sh_intc.h
+@@ -95,6 +95,7 @@ struct intc_desc {
+ 	unsigned int num_resources;
+ 	intc_enum force_enable;
+ 	intc_enum force_disable;
++	bool skip_syscore_suspend;
+ 	struct intc_hw_desc hw;
+ };
+ 
+-- 
+1.7.10
+

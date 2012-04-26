@@ -1,0 +1,36 @@
+From 27c816af3d05cf011b9aeb03dca0023cc918b896 Mon Sep 17 00:00:00 2001
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date: Mon, 4 Jul 2011 06:34:48 -0700
+Subject: Input: sh_keysc - fix compile warning
+
+The "#if" above should really be an "#ifdef" to avoid this warning:
+
+  CC      drivers/input/keyboard/sh_keysc.o
+drivers/input/keyboard/sh_keysc.c:294:5: warning: "CONFIG_PM_SLEEP" is
+not defined
+
+Reported-by: Magnus Damm <magnus.damm@gmail.com>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit cca8edfd2ec2a34d9f50f593bc753bb11e1bc1f5)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/sh_keysc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/input/keyboard/sh_keysc.c b/drivers/input/keyboard/sh_keysc.c
+index 6876700..934aeb583 100644
+--- a/drivers/input/keyboard/sh_keysc.c
++++ b/drivers/input/keyboard/sh_keysc.c
+@@ -291,7 +291,7 @@ static int __devexit sh_keysc_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-#if CONFIG_PM_SLEEP
++#ifdef CONFIG_PM_SLEEP
+ static int sh_keysc_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-- 
+1.7.10
+

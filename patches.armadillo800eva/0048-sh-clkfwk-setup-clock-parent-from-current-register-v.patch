@@ -1,0 +1,143 @@
+From 98e40d27dae7c4cff546a17ce221677fcf629f77 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Mon, 21 Nov 2011 21:33:18 -0800
+Subject: sh: clkfwk: setup clock parent from current register value
+
+Some clocks can select its parent clock by CPG register.
+But it might have been modified by boot-loader or something.
+This patch removed fixed initial parent clock,
+and setup it from their current register settings.
+It works on div6 reparent clocks for now.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 56242a1fc595d158eddefbb4d6d76e82c2535f55)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/clock-sh7372.c  |    6 +++---
+ arch/sh/kernel/cpu/sh4a/clock-sh7724.c |    4 ++--
+ drivers/sh/clk/cpg.c                   |   35 ++++++++++++++++++++++++++++++++
+ include/linux/sh_clk.h                 |    9 +++++---
+ 4 files changed, 46 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/clock-sh7372.c b/arch/arm/mach-shmobile/clock-sh7372.c
+index 84ba36f..e116a95 100644
+--- a/arch/arm/mach-shmobile/clock-sh7372.c
++++ b/arch/arm/mach-shmobile/clock-sh7372.c
+@@ -411,11 +411,11 @@ static struct clk *fsibckcr_parent[] = {
+ };
+ 
+ static struct clk div6_reparent_clks[DIV6_REPARENT_NR] = {
+-	[DIV6_HDMI] = SH_CLK_DIV6_EXT(&pllc1_div2_clk, HDMICKCR, 0,
++	[DIV6_HDMI] = SH_CLK_DIV6_EXT(HDMICKCR, 0,
+ 				      hdmi_parent, ARRAY_SIZE(hdmi_parent), 6, 2),
+-	[DIV6_FSIA] = SH_CLK_DIV6_EXT(&pllc1_div2_clk, FSIACKCR, 0,
++	[DIV6_FSIA] = SH_CLK_DIV6_EXT(FSIACKCR, 0,
+ 				      fsiackcr_parent, ARRAY_SIZE(fsiackcr_parent), 6, 2),
+-	[DIV6_FSIB] = SH_CLK_DIV6_EXT(&pllc1_div2_clk, FSIBCKCR, 0,
++	[DIV6_FSIB] = SH_CLK_DIV6_EXT(FSIBCKCR, 0,
+ 				      fsibckcr_parent, ARRAY_SIZE(fsibckcr_parent), 6, 2),
+ };
+ 
+diff --git a/arch/sh/kernel/cpu/sh4a/clock-sh7724.c b/arch/sh/kernel/cpu/sh4a/clock-sh7724.c
+index d08fa95..3a4b76c 100644
+--- a/arch/sh/kernel/cpu/sh4a/clock-sh7724.c
++++ b/arch/sh/kernel/cpu/sh4a/clock-sh7724.c
+@@ -189,9 +189,9 @@ static struct clk *fclkbcr_parent[] = {
+ };
+ 
+ static struct clk div6_reparent_clks[DIV6_REPARENT_NR] = {
+-	[DIV6_FA] = SH_CLK_DIV6_EXT(&div3_clk, FCLKACR, 0,
++	[DIV6_FA] = SH_CLK_DIV6_EXT(FCLKACR, 0,
+ 				      fclkacr_parent, ARRAY_SIZE(fclkacr_parent), 6, 2),
+-	[DIV6_FB] = SH_CLK_DIV6_EXT(&div3_clk, FCLKBCR, 0,
++	[DIV6_FB] = SH_CLK_DIV6_EXT(FCLKBCR, 0,
+ 				      fclkbcr_parent, ARRAY_SIZE(fclkbcr_parent), 6, 2),
+ };
+ 
+diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+index 82dd6fb..5e4301b 100644
+--- a/drivers/sh/clk/cpg.c
++++ b/drivers/sh/clk/cpg.c
+@@ -167,6 +167,38 @@ static struct clk_ops sh_clk_div6_reparent_clk_ops = {
+ 	.set_parent	= sh_clk_div6_set_parent,
+ };
+ 
++static int __init sh_clk_init_parent(struct clk *clk)
++{
++	u32 val;
++
++	if (clk->parent)
++		return 0;
++
++	if (!clk->parent_table || !clk->parent_num)
++		return 0;
++
++	if (!clk->src_width) {
++		pr_err("sh_clk_init_parent: cannot select parent clock\n");
++		return -EINVAL;
++	}
++
++	val  = (__raw_readl(clk->enable_reg) >> clk->src_shift);
++	val &= (1 << clk->src_width) - 1;
++
++	if (val >= clk->parent_num) {
++		pr_err("sh_clk_init_parent: parent table size failed\n");
++		return -EINVAL;
++	}
++
++	clk->parent = clk->parent_table[val];
++	if (!clk->parent) {
++		pr_err("sh_clk_init_parent: unable to set parent");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int __init sh_clk_div6_register_ops(struct clk *clks, int nr,
+ 					   struct clk_ops *ops)
+ {
+@@ -190,6 +222,9 @@ static int __init sh_clk_div6_register_ops(struct clk *clks, int nr,
+ 		clkp->ops = ops;
+ 		clkp->freq_table = freq_table + (k * freq_table_size);
+ 		clkp->freq_table[nr_divs].frequency = CPUFREQ_TABLE_END;
++		ret = sh_clk_init_parent(clkp);
++		if (ret < 0)
++			break;
+ 
+ 		ret = clk_register(clkp);
+ 	}
+diff --git a/include/linux/sh_clk.h b/include/linux/sh_clk.h
+index a20831c..e834304 100644
+--- a/include/linux/sh_clk.h
++++ b/include/linux/sh_clk.h
+@@ -131,10 +131,9 @@ int sh_clk_div4_enable_register(struct clk *clks, int nr,
+ int sh_clk_div4_reparent_register(struct clk *clks, int nr,
+ 			 struct clk_div4_table *table);
+ 
+-#define SH_CLK_DIV6_EXT(_parent, _reg, _flags, _parents,	\
++#define SH_CLK_DIV6_EXT(_reg, _flags, _parents,			\
+ 			_num_parents, _src_shift, _src_width)	\
+ {								\
+-	.parent = _parent,					\
+ 	.enable_reg = (void __iomem *)_reg,			\
+ 	.flags = _flags,					\
+ 	.parent_table = _parents,				\
+@@ -144,7 +143,11 @@ int sh_clk_div4_reparent_register(struct clk *clks, int nr,
+ }
+ 
+ #define SH_CLK_DIV6(_parent, _reg, _flags)			\
+-	SH_CLK_DIV6_EXT(_parent, _reg, _flags, NULL, 0, 0, 0)
++{								\
++	.parent		= _parent,				\
++	.enable_reg	= (void __iomem *)_reg,			\
++	.flags		= _flags,				\
++}
+ 
+ int sh_clk_div6_register(struct clk *clks, int nr);
+ int sh_clk_div6_reparent_register(struct clk *clks, int nr);
+-- 
+1.7.10
+

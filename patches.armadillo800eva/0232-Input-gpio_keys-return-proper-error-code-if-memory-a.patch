@@ -1,0 +1,33 @@
+From 66b7ed0e60fecd1c328be3c0de453e18d9dc3993 Mon Sep 17 00:00:00 2001
+From: Tobias Klauser <tklauser@distanz.ch>
+Date: Sat, 30 Jul 2011 12:08:10 -0700
+Subject: Input: gpio_keys - return proper error code if memory allocation
+ fails
+
+Return -ENOMEM if kzalloc fails in gpio_keys_get_devtree_pdata().
+
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit 1f4bb066433322f6f189b084ceebdfb4add77292)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index ce281d1..67df91a 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -483,7 +483,7 @@ static int gpio_keys_get_devtree_pdata(struct device *dev,
+ 
+ 	buttons = kzalloc(pdata->nbuttons * (sizeof *buttons), GFP_KERNEL);
+ 	if (!buttons)
+-		return -ENODEV;
++		return -ENOMEM;
+ 
+ 	pp = NULL;
+ 	i = 0;
+-- 
+1.7.10
+

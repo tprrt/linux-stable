@@ -1,0 +1,290 @@
+From aac0e941122849b587798822e4dd5a62facfcd9a Mon Sep 17 00:00:00 2001
+From: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+Date: Sat, 25 Jun 2011 03:53:13 -0700
+Subject: sh_eth: Move the Renesas SuperH driver
+
+Move the Renesas driver into drivers/net/ethernet/renesas/ and make
+the necessary Kconfig and Makefile changes.
+
+CC: Yoshihiro Shimoda <yoshihiro.shirmoda.uh@renesas.com>
+Signed-off-by: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+(cherry picked from commit 37b937575b5a93a8fcbd4e1d553415f99381f650)
+
+Conflicts:
+
+	drivers/net/Kconfig
+	drivers/net/Makefile
+	drivers/net/ethernet/Kconfig
+	drivers/net/ethernet/Makefile
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/Kconfig                         |   15 +--
+ drivers/net/Makefile                        |    2 +-
+ drivers/net/ethernet/Kconfig                |  164 +++++++++++++++++++++++++++
+ drivers/net/ethernet/renesas/Kconfig        |   18 +++
+ drivers/net/ethernet/renesas/Makefile       |    5 +
+ drivers/net/{ => ethernet/renesas}/sh_eth.c |    0
+ drivers/net/{ => ethernet/renesas}/sh_eth.h |    0
+ 7 files changed, 189 insertions(+), 15 deletions(-)
+ create mode 100644 drivers/net/ethernet/Kconfig
+ create mode 100644 drivers/net/ethernet/renesas/Kconfig
+ create mode 100644 drivers/net/ethernet/renesas/Makefile
+ rename drivers/net/{ => ethernet/renesas}/sh_eth.c (100%)
+ rename drivers/net/{ => ethernet/renesas}/sh_eth.h (100%)
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 93359fa..bc75f35 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -528,20 +528,7 @@ config STNIC
+ 
+ 	  If unsure, say N.
+ 
+-config SH_ETH
+-	tristate "Renesas SuperH Ethernet support"
+-	depends on SUPERH && \
+-		(CPU_SUBTYPE_SH7710 || CPU_SUBTYPE_SH7712 || \
+-		 CPU_SUBTYPE_SH7763 || CPU_SUBTYPE_SH7619 || \
+-		 CPU_SUBTYPE_SH7724 || CPU_SUBTYPE_SH7757)
+-	select CRC32
+-	select MII
+-	select MDIO_BITBANG
+-	select PHYLIB
+-	help
+-	  Renesas SuperH Ethernet device driver.
+-	  This driver supporting CPUs are:
+-		- SH7710, SH7712, SH7763, SH7619, SH7724, and SH7757.
++source "drivers/net/ethernet/renesas/Kconfig"
+ 
+ config SUNLANCE
+ 	tristate "Sun LANCE support"
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index d5ce011..45ae508 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -106,7 +106,7 @@ obj-$(CONFIG_VIA_RHINE) += via-rhine.o
+ obj-$(CONFIG_VIA_VELOCITY) += via-velocity.o
+ obj-$(CONFIG_ADAPTEC_STARFIRE) += starfire.o
+ obj-$(CONFIG_RIONET) += rionet.o
+-obj-$(CONFIG_SH_ETH) += sh_eth.o
++obj-$(CONFIG_SH_ETH) += ethernet/renesas/
+ obj-$(CONFIG_STMMAC_ETH) += stmmac/
+ 
+ #
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+new file mode 100644
+index 0000000..df8940d
+--- /dev/null
++++ b/drivers/net/ethernet/Kconfig
+@@ -0,0 +1,164 @@
++#
++# Ethernet LAN device configuration
++#
++
++menuconfig ETHERNET
++	bool "Ethernet driver support"
++	depends on NET
++	default y
++	---help---
++	  This section contains all the Ethernet device drivers.
++
++if ETHERNET
++
++source "drivers/net/ethernet/3com/Kconfig"
++source "drivers/net/ethernet/adaptec/Kconfig"
++source "drivers/net/ethernet/aeroflex/Kconfig"
++source "drivers/net/ethernet/amd/Kconfig"
++source "drivers/net/ethernet/apple/Kconfig"
++source "drivers/net/ethernet/atheros/Kconfig"
++source "drivers/net/ethernet/cadence/Kconfig"
++source "drivers/net/ethernet/adi/Kconfig"
++source "drivers/net/ethernet/broadcom/Kconfig"
++source "drivers/net/ethernet/brocade/Kconfig"
++source "drivers/net/ethernet/chelsio/Kconfig"
++source "drivers/net/ethernet/cirrus/Kconfig"
++source "drivers/net/ethernet/cisco/Kconfig"
++source "drivers/net/ethernet/davicom/Kconfig"
++
++config DNET
++	tristate "Dave ethernet support (DNET)"
++	depends on HAS_IOMEM
++	select PHYLIB
++	---help---
++	  The Dave ethernet interface (DNET) is found on Qong Board FPGA.
++	  Say Y to include support for the DNET chip.
++
++	  To compile this driver as a module, choose M here: the module
++	  will be called dnet.
++
++source "drivers/net/ethernet/dec/Kconfig"
++source "drivers/net/ethernet/dlink/Kconfig"
++source "drivers/net/ethernet/emulex/Kconfig"
++source "drivers/net/ethernet/neterion/Kconfig"
++source "drivers/net/ethernet/faraday/Kconfig"
++source "drivers/net/ethernet/freescale/Kconfig"
++source "drivers/net/ethernet/fujitsu/Kconfig"
++source "drivers/net/ethernet/hp/Kconfig"
++source "drivers/net/ethernet/ibm/Kconfig"
++source "drivers/net/ethernet/intel/Kconfig"
++source "drivers/net/ethernet/i825xx/Kconfig"
++source "drivers/net/ethernet/xscale/Kconfig"
++source "drivers/net/ethernet/icplus/Kconfig"
++
++config JME
++	tristate "JMicron(R) PCI-Express Gigabit Ethernet support"
++	depends on PCI
++	select CRC32
++	select MII
++	---help---
++	  This driver supports the PCI-Express gigabit ethernet adapters
++	  based on JMicron JMC250 chipset.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called jme.
++
++config KORINA
++	tristate "Korina (IDT RC32434) Ethernet support"
++	depends on MIKROTIK_RB532
++	---help---
++	  If you have a Mikrotik RouterBoard 500 or IDT RC32434
++	  based system say Y. Otherwise say N.
++
++config LANTIQ_ETOP
++	tristate "Lantiq SoC ETOP driver"
++	depends on SOC_TYPE_XWAY
++	---help---
++	  Support for the MII0 inside the Lantiq SoC
++
++source "drivers/net/ethernet/marvell/Kconfig"
++source "drivers/net/ethernet/mellanox/Kconfig"
++source "drivers/net/ethernet/micrel/Kconfig"
++source "drivers/net/ethernet/microchip/Kconfig"
++
++config MIPS_SIM_NET
++	tristate "MIPS simulator Network device"
++	depends on MIPS_SIM
++	---help---
++	  The MIPSNET device is a simple Ethernet network device which is
++	  emulated by the MIPS Simulator.
++	  If you are not using a MIPSsim or are unsure, say N.
++
++source "drivers/net/ethernet/myricom/Kconfig"
++
++config FEALNX
++	tristate "Myson MTD-8xx PCI Ethernet support"
++	depends on PCI
++	select CRC32
++	select MII
++	---help---
++	  Say Y here to support the Myson MTD-800 family of PCI-based Ethernet
++	  cards. <http://www.myson.com.tw/>
++
++source "drivers/net/ethernet/natsemi/Kconfig"
++source "drivers/net/ethernet/8390/Kconfig"
++
++config NET_NETX
++	tristate "NetX Ethernet support"
++	select MII
++	depends on ARCH_NETX
++	---help---
++	  This is support for the Hilscher netX builtin Ethernet ports
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called netx-eth.
++
++source "drivers/net/ethernet/nuvoton/Kconfig"
++source "drivers/net/ethernet/nvidia/Kconfig"
++source "drivers/net/ethernet/octeon/Kconfig"
++source "drivers/net/ethernet/oki-semi/Kconfig"
++
++config ETHOC
++	tristate "OpenCores 10/100 Mbps Ethernet MAC support"
++	depends on HAS_IOMEM && HAS_DMA
++	select MII
++	select PHYLIB
++	select CRC32
++	select BITREVERSE
++	---help---
++	  Say Y here if you want to use the OpenCores 10/100 Mbps Ethernet MAC.
++
++source "drivers/net/ethernet/packetengines/Kconfig"
++source "drivers/net/ethernet/pasemi/Kconfig"
++source "drivers/net/ethernet/qlogic/Kconfig"
++source "drivers/net/ethernet/racal/Kconfig"
++source "drivers/net/ethernet/realtek/Kconfig"
++source "drivers/net/ethernet/renesas/Kconfig"
++source "drivers/net/ethernet/rdc/Kconfig"
++
++config S6GMAC
++	tristate "S6105 GMAC ethernet support"
++	depends on XTENSA_VARIANT_S6000
++	select PHYLIB
++	---help---
++	  This driver supports the on chip ethernet device on the
++	  S6105 xtensa processor.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called s6gmac.
++
++source "drivers/net/ethernet/seeq/Kconfig"
++source "drivers/net/ethernet/sis/Kconfig"
++source "drivers/net/ethernet/sfc/Kconfig"
++source "drivers/net/ethernet/sgi/Kconfig"
++source "drivers/net/ethernet/smsc/Kconfig"
++source "drivers/net/ethernet/stmicro/Kconfig"
++source "drivers/net/ethernet/sun/Kconfig"
++source "drivers/net/ethernet/tehuti/Kconfig"
++source "drivers/net/ethernet/ti/Kconfig"
++source "drivers/net/ethernet/toshiba/Kconfig"
++source "drivers/net/ethernet/tundra/Kconfig"
++source "drivers/net/ethernet/via/Kconfig"
++source "drivers/net/ethernet/xilinx/Kconfig"
++
++endif # ETHERNET
+diff --git a/drivers/net/ethernet/renesas/Kconfig b/drivers/net/ethernet/renesas/Kconfig
+new file mode 100644
+index 0000000..f57ae23
+--- /dev/null
++++ b/drivers/net/ethernet/renesas/Kconfig
+@@ -0,0 +1,18 @@
++#
++# Renesas device configuration
++#
++
++config SH_ETH
++	tristate "Renesas SuperH Ethernet support"
++	depends on SUPERH && \
++		(CPU_SUBTYPE_SH7710 || CPU_SUBTYPE_SH7712 || \
++		 CPU_SUBTYPE_SH7763 || CPU_SUBTYPE_SH7619 || \
++		 CPU_SUBTYPE_SH7724 || CPU_SUBTYPE_SH7757)
++	select CRC32
++	select MII
++	select MDIO_BITBANG
++	select PHYLIB
++	---help---
++	  Renesas SuperH Ethernet device driver.
++	  This driver supporting CPUs are:
++		- SH7710, SH7712, SH7763, SH7619, SH7724, and SH7757.
+diff --git a/drivers/net/ethernet/renesas/Makefile b/drivers/net/ethernet/renesas/Makefile
+new file mode 100644
+index 0000000..1c278a8
+--- /dev/null
++++ b/drivers/net/ethernet/renesas/Makefile
+@@ -0,0 +1,5 @@
++#
++# Makefile for the Renesas device drivers.
++#
++
++obj-$(CONFIG_SH_ETH) += sh_eth.o
+diff --git a/drivers/net/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+similarity index 100%
+rename from drivers/net/sh_eth.c
+rename to drivers/net/ethernet/renesas/sh_eth.c
+diff --git a/drivers/net/sh_eth.h b/drivers/net/ethernet/renesas/sh_eth.h
+similarity index 100%
+rename from drivers/net/sh_eth.h
+rename to drivers/net/ethernet/renesas/sh_eth.h
+-- 
+1.7.10
+

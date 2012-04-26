@@ -1,0 +1,49 @@
+From 039e8360c642702e9e06b707d15dacc1027ce559 Mon Sep 17 00:00:00 2001
+From: stephen hemminger <shemminger@vyatta.com>
+Date: Wed, 4 Jan 2012 12:59:49 +0000
+Subject: net: make ethtool_ops const
+
+Auditing all usage of ethtool_ops found several drivers that
+are not declaring the struct const when it should be.
+
+Signed-off-by: Stephen Hemminger <shemminger@vyatta.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 9b07be4b2a78166bc54c8eedf18da8a8aafacfab)
+
+Conflicts:
+
+	drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+	drivers/net/ethernet/chelsio/cxgb4vf/cxgb4vf_main.c
+	drivers/net/ethernet/freescale/fec.c
+	drivers/net/ethernet/micrel/ksz884x.c
+	drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+
+Signed-off-by: Simon Horman <horms@verge.ent.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index ebfb682..fc9bda9 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -1369,13 +1369,13 @@ static void sh_eth_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
+ 	}
+ }
+ 
+-static struct ethtool_ops sh_eth_ethtool_ops = {
++static const struct ethtool_ops sh_eth_ethtool_ops = {
+ 	.get_settings	= sh_eth_get_settings,
+ 	.set_settings	= sh_eth_set_settings,
+-	.nway_reset		= sh_eth_nway_reset,
++	.nway_reset	= sh_eth_nway_reset,
+ 	.get_msglevel	= sh_eth_get_msglevel,
+ 	.set_msglevel	= sh_eth_set_msglevel,
+-	.get_link		= ethtool_op_get_link,
++	.get_link	= ethtool_op_get_link,
+ 	.get_strings	= sh_eth_get_strings,
+ 	.get_ethtool_stats  = sh_eth_get_ethtool_stats,
+ 	.get_sset_count     = sh_eth_get_sset_count,
+-- 
+1.7.10
+

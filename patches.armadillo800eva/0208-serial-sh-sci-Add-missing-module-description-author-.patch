@@ -1,0 +1,26 @@
+From a8d9b329c7a7913a35fcbbe28c177a2daffa4609 Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 28 Jun 2011 13:47:40 +0900
+Subject: serial: sh-sci: Add missing module description/author bits.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 7f405f9c3117acfa8a9775c467ab433b23abc5a7)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 2b3d82c..eca1821 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -2216,3 +2216,5 @@ module_exit(sci_exit);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_ALIAS("platform:sh-sci");
++MODULE_AUTHOR("Paul Mundt");
++MODULE_DESCRIPTION("SuperH SCI(F) serial driver");
+-- 
+1.7.10
+

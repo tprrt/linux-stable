@@ -1,0 +1,31 @@
+From 82b348082b3bca174a3e7c53a64214f06cb36f2e Mon Sep 17 00:00:00 2001
+From: Danny Kukawka <danny.kukawka@bisect.de>
+Date: Wed, 15 Feb 2012 07:54:43 +0000
+Subject: renesas/sh_eth.c: fix linux/interrupt.h included twice
+
+Remove double include of linux/interrupt.h.
+
+Signed-off-by: Danny Kukawka <danny.kukawka@bisect.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 16387605a503a5462c79b740f9696ad4f5a960e5)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index cfad091..98062bf 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -34,7 +34,6 @@
+ #include <linux/phy.h>
+ #include <linux/cache.h>
+ #include <linux/io.h>
+-#include <linux/interrupt.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
+-- 
+1.7.10
+

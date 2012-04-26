@@ -1,0 +1,36 @@
+From 52b2cc635112808cfcc06713b5c9423858bc40a9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>
+Date: Wed, 1 Feb 2012 09:12:24 -0800
+Subject: Input: gpio_keys - fix struct device declared inside parameter list
+
+A struct device parameter is used in the enable and disable callbacks to
+distinguish between different gpio_keys devices.
+
+Platforms that don't use these callbacks may not include struct device
+at all, as seen on arch/arm/mach-s3c2410/mach-n30.c
+
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit b18db3d91234c03ad080d317878c7c77672ba326)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/linux/gpio_keys.h |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/linux/gpio_keys.h b/include/linux/gpio_keys.h
+index b5ca4b2..004ff33 100644
+--- a/include/linux/gpio_keys.h
++++ b/include/linux/gpio_keys.h
+@@ -1,6 +1,8 @@
+ #ifndef _GPIO_KEYS_H
+ #define _GPIO_KEYS_H
+ 
++struct device;
++
+ struct gpio_keys_button {
+ 	/* Configuration parameters */
+ 	unsigned int code;	/* input event code (KEY_*, SW_*) */
+-- 
+1.7.10
+

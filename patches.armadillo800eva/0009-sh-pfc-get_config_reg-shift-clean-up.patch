@@ -1,0 +1,33 @@
+From 811361798c18763f34b352aebd167eaf01a30b86 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Mon, 17 Oct 2011 18:01:19 +0900
+Subject: sh: pfc: get_config_reg() shift clean up
+
+Clean up the f_width shift code in get_config_reg().
+
+Reported-by: Ryusuke Sakato <ryusuke.sakato.bx@renesas.com>
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit c63bcc6ff135397b38cdb510c173e4a6629cede5)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/pfc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/sh/pfc.c b/drivers/sh/pfc.c
+index 75934e3..de5e3d6 100644
+--- a/drivers/sh/pfc.c
++++ b/drivers/sh/pfc.c
+@@ -217,7 +217,7 @@ static int get_config_reg(struct pinmux_info *gpioc, pinmux_enum_t enum_id,
+ 
+ 		if (!r_width)
+ 			break;
+-		for (n = 0; n < (r_width / f_width) * 1 << f_width; n++) {
++		for (n = 0; n < (r_width / f_width) * (1 << f_width); n++) {
+ 			if (config_reg->enum_ids[n] == enum_id) {
+ 				*crp = config_reg;
+ 				*indexp = n;
+-- 
+1.7.10
+

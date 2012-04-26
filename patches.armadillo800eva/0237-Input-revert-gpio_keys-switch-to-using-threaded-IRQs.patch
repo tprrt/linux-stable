@@ -1,0 +1,33 @@
+From 6683b1b58dc6d1d688f870aafd83546174604a35 Mon Sep 17 00:00:00 2001
+From: David Jander <david@protonic.nl>
+Date: Sun, 18 Mar 2012 23:36:29 -0700
+Subject: Input: revert "gpio_keys - switch to using threaded IRQs"
+
+request_any_context_irq() should handle the case when using GPIO expanders
+that themselves use threaded IRQs, and so the premise of change
+7e2ecdf438bb479e2b4667fc16b1a84d6348da04 is incorrect.
+
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit 6709c9a5d8c53092cbe89128df4e0a549e93133b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 19887fc..6f06758 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -421,7 +421,7 @@ static int __devinit gpio_keys_setup_key(struct platform_device *pdev,
+ 	if (!button->can_disable)
+ 		irqflags |= IRQF_SHARED;
+ 
+-	error = request_threaded_irq(irq, NULL, gpio_keys_isr, irqflags, desc, bdata);
++	error = request_any_context_irq(irq, gpio_keys_isr, irqflags, desc, bdata);
+ 	if (error < 0) {
+ 		dev_err(dev, "Unable to claim irq %d; error %d\n",
+ 			irq, error);
+-- 
+1.7.10
+

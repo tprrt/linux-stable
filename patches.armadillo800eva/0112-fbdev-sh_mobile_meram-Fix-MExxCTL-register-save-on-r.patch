@@ -1,0 +1,36 @@
+From 09bd9eb3222ee896966878de283d90ebfc686ab5 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 13 Jul 2011 12:13:47 +0200
+Subject: fbdev: sh_mobile_meram: Fix MExxCTL register save on runtime PM
+ suspend
+
+To reset the ICB on resume the MExxCTL register needs to be OR'ed with
+MExxCTL_WBF | MExxCTL_WF | MExxCTL_RF, no set to that value. Fix this.
+
+This fixes corruption at the bottom of the display when resuming from
+runtime PM.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit d86d29df57adf9258f56939e59cdd70932845885)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_meram.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/sh_mobile_meram.c b/drivers/video/sh_mobile_meram.c
+index 25a7118..7ba6dce 100644
+--- a/drivers/video/sh_mobile_meram.c
++++ b/drivers/video/sh_mobile_meram.c
+@@ -549,7 +549,7 @@ static int sh_mobile_meram_runtime_suspend(struct device *dev)
+ 				meram_read_icb(priv->base, j, icb_regs[k]);
+ 			/* Reset ICB on resume */
+ 			if (icb_regs[k] == MExxCTL)
+-				priv->icb_saved_regs[j * ICB_REGS_SIZE + k] =
++				priv->icb_saved_regs[j * ICB_REGS_SIZE + k] |=
+ 					MExxCTL_WBF | MExxCTL_WF | MExxCTL_RF;
+ 		}
+ 	}
+-- 
+1.7.10
+

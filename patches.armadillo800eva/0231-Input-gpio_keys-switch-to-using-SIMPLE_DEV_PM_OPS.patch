@@ -1,0 +1,56 @@
+From a66ecd7dbf6e5f44d65e7dbaef8362621fa61084 Mon Sep 17 00:00:00 2001
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date: Sat, 9 Jul 2011 12:41:46 -0700
+Subject: Input: gpio_keys - switch to using SIMPLE_DEV_PM_OPS
+
+This reduces amount #ifdeds in the code.
+
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit bdda82162837a20e591ac01b306dc8f052270510)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index ad11e86..ce281d1 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -693,7 +693,7 @@ static int __devexit gpio_keys_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_PM
++#ifdef CONFIG_PM_SLEEP
+ static int gpio_keys_suspend(struct device *dev)
+ {
+ 	struct gpio_keys_drvdata *ddata = dev_get_drvdata(dev);
+@@ -731,22 +731,17 @@ static int gpio_keys_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-
+-static const struct dev_pm_ops gpio_keys_pm_ops = {
+-	.suspend	= gpio_keys_suspend,
+-	.resume		= gpio_keys_resume,
+-};
+ #endif
+ 
++static SIMPLE_DEV_PM_OPS(gpio_keys_pm_ops, gpio_keys_suspend, gpio_keys_resume);
++
+ static struct platform_driver gpio_keys_device_driver = {
+ 	.probe		= gpio_keys_probe,
+ 	.remove		= __devexit_p(gpio_keys_remove),
+ 	.driver		= {
+ 		.name	= "gpio-keys",
+ 		.owner	= THIS_MODULE,
+-#ifdef CONFIG_PM
+ 		.pm	= &gpio_keys_pm_ops,
+-#endif
+ 		.of_match_table = gpio_keys_of_match,
+ 	}
+ };
+-- 
+1.7.10
+

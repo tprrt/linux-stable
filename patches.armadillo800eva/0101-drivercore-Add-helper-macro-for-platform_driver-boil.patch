@@ -1,0 +1,83 @@
+From 497218122305ec6f9c2db85774b6f3bd2c24fee2 Mon Sep 17 00:00:00 2001
+From: Grant Likely <grant.likely@secretlab.ca>
+Date: Wed, 5 Oct 2011 11:29:49 -0600
+Subject: drivercore: Add helper macro for platform_driver boilerplate
+
+For simple modules that contain a single platform_driver without any
+additional setup code then ends up being a block of duplicated
+boilerplate.  This patch adds a new macro, module_platform_driver(),
+which replaces the module_init()/module_exit() registrations with
+template functions.
+
+Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
+Reviewed-by: Magnus Damm <magnus.damm@gmail.com>
+Reviewed-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+(cherry picked from commit 940ab88962bc1aff3273a8356d64577a6e386736)
+
+Conflicts:
+
+	drivers/spi/spi-altera.c
+	drivers/spi/spi-ath79.c
+	drivers/spi/spi-atmel.c
+	drivers/spi/spi-bfin-sport.c
+	drivers/spi/spi-coldfire-qspi.c
+	drivers/spi/spi-davinci.c
+	drivers/spi/spi-dw-mmio.c
+	drivers/spi/spi-ep93xx.c
+	drivers/spi/spi-fsl-espi.c
+	drivers/spi/spi-gpio.c
+	drivers/spi/spi-imx.c
+	drivers/spi/spi-mpc512x-psc.c
+	drivers/spi/spi-mpc52xx-psc.c
+	drivers/spi/spi-mpc52xx.c
+	drivers/spi/spi-nuc900.c
+	drivers/spi/spi-oc-tiny.c
+	drivers/spi/spi-ppc4xx.c
+	drivers/spi/spi-s3c24xx.c
+	drivers/spi/spi-sh-msiof.c
+	drivers/spi/spi-sh-sci.c
+	drivers/spi/spi-sh.c
+	drivers/spi/spi-stmp.c
+	drivers/spi/spi-tegra.c
+	drivers/spi/spi-ti-ssp.c
+	drivers/spi/spi-xilinx.c
+	drivers/tty/serial/of_serial.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/linux/platform_device.h |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index ede1a80..279f87d 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -145,6 +145,23 @@ static inline void platform_set_drvdata(struct platform_device *pdev, void *data
+ 	dev_set_drvdata(&pdev->dev, data);
+ }
+ 
++/* module_platform_driver() - Helper macro for drivers that don't do
++ * anything special in module init/exit.  This eliminates a lot of
++ * boilerplate.  Each module may only use this macro once, and
++ * calling it replaces module_init() and module_exit()
++ */
++#define module_platform_driver(__platform_driver) \
++static int __init __platform_driver##_init(void) \
++{ \
++	return platform_driver_register(&(__platform_driver)); \
++} \
++module_init(__platform_driver##_init); \
++static void __exit __platform_driver##_exit(void) \
++{ \
++	platform_driver_unregister(&(__platform_driver)); \
++} \
++module_exit(__platform_driver##_exit);
++
+ extern struct platform_device *platform_create_bundle(struct platform_driver *driver,
+ 					int (*probe)(struct platform_device *),
+ 					struct resource *res, unsigned int n_res,
+-- 
+1.7.10
+

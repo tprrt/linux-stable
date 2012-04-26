@@ -1,0 +1,30 @@
+From 2b12bb0269cb912d1a28d026e64d9f3d217529b3 Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 24 Jan 2012 15:38:57 +0900
+Subject: sh: intc: Kill off superfluous irq_shutdown hooking.
+
+This already gets handled via disable, as per the notes in linux/irq.h.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 29775df10f02f614db870ff4acaf0b07dbed1547)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/chip.c |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+index 3679645..d90cb7e 100644
+--- a/drivers/sh/intc/chip.c
++++ b/drivers/sh/intc/chip.c
+@@ -218,7 +218,6 @@ struct irq_chip intc_irq_chip	= {
+ 	.irq_mask_ack		= intc_mask_ack,
+ 	.irq_enable		= intc_enable,
+ 	.irq_disable		= intc_disable,
+-	.irq_shutdown		= intc_disable,
+ 	.irq_set_type		= intc_set_type,
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity	= intc_set_affinity,
+-- 
+1.7.10
+

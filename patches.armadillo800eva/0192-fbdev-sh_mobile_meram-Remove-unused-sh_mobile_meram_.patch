@@ -1,0 +1,31 @@
+From baf08efb7772e44a9227b0ddfdbd7a3c1c3f6ce0 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Mon, 12 Dec 2011 16:36:13 +0100
+Subject: fbdev: sh_mobile_meram: Remove unused sh_mobile_meram_icb_cfg fields
+
+The marker_icb and cache_icb fields are not used anymore, remove them.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit d81d5fa8adfb0ba19f44bb6c4c04a2a23effac3f)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/video/sh_mobile_meram.h |    2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/include/video/sh_mobile_meram.h b/include/video/sh_mobile_meram.h
+index e0f650c..8979607 100644
+--- a/include/video/sh_mobile_meram.h
++++ b/include/video/sh_mobile_meram.h
+@@ -31,8 +31,6 @@ struct sh_mobile_meram_info {
+ 
+ /* icb config */
+ struct sh_mobile_meram_icb_cfg {
+-	unsigned int marker_icb;	/* ICB # for Marker ICB */
+-	unsigned int cache_icb;		/* ICB # for Cache ICB */
+ 	unsigned int meram_size;	/* MERAM Buffer Size to use */
+ };
+ 
+-- 
+1.7.10
+

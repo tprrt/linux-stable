@@ -1,0 +1,81 @@
+From a6c833e8b5ddaab4228fe180e6ef9903b58b1868 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Thu, 8 Dec 2011 22:59:13 +0900
+Subject: sh: use ioread32/iowrite32 and mapped_reg for div4
+
+Convert the CPG DIV4 helper code to use the new mapped_reg
+together with ioread32() and iowrite32().
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 0e027376f896e5dda293ffc8e6e7332d26d2ffc4)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/cpg.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+index ed8bc70..e4a2edf 100644
+--- a/drivers/sh/clk/cpg.c
++++ b/drivers/sh/clk/cpg.c
+@@ -252,7 +252,7 @@ static unsigned long sh_clk_div4_recalc(struct clk *clk)
+ 	clk_rate_table_build(clk, clk->freq_table, table->nr_divisors,
+ 			     table, &clk->arch_flags);
+ 
+-	idx = (__raw_readl(clk->enable_reg) >> clk->enable_bit) & 0x000f;
++	idx = (ioread32(clk->mapped_reg) >> clk->enable_bit) & 0x000f;
+ 
+ 	return clk->freq_table[idx].frequency;
+ }
+@@ -270,15 +270,15 @@ static int sh_clk_div4_set_parent(struct clk *clk, struct clk *parent)
+ 	 */
+ 
+ 	if (parent->flags & CLK_ENABLE_ON_INIT)
+-		value = __raw_readl(clk->enable_reg) & ~(1 << 7);
++		value = ioread32(clk->mapped_reg) & ~(1 << 7);
+ 	else
+-		value = __raw_readl(clk->enable_reg) | (1 << 7);
++		value = ioread32(clk->mapped_reg) | (1 << 7);
+ 
+ 	ret = clk_reparent(clk, parent);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	__raw_writel(value, clk->enable_reg);
++	iowrite32(value, clk->mapped_reg);
+ 
+ 	/* Rebiuld the frequency table */
+ 	clk_rate_table_build(clk, clk->freq_table, table->nr_divisors,
+@@ -295,10 +295,10 @@ static int sh_clk_div4_set_rate(struct clk *clk, unsigned long rate)
+ 	if (idx < 0)
+ 		return idx;
+ 
+-	value = __raw_readl(clk->enable_reg);
++	value = ioread32(clk->mapped_reg);
+ 	value &= ~(0xf << clk->enable_bit);
+ 	value |= (idx << clk->enable_bit);
+-	__raw_writel(value, clk->enable_reg);
++	iowrite32(value, clk->mapped_reg);
+ 
+ 	if (d4t->kick)
+ 		d4t->kick(clk);
+@@ -308,13 +308,13 @@ static int sh_clk_div4_set_rate(struct clk *clk, unsigned long rate)
+ 
+ static int sh_clk_div4_enable(struct clk *clk)
+ {
+-	__raw_writel(__raw_readl(clk->enable_reg) & ~(1 << 8), clk->enable_reg);
++	iowrite32(ioread32(clk->mapped_reg) & ~(1 << 8), clk->mapped_reg);
+ 	return 0;
+ }
+ 
+ static void sh_clk_div4_disable(struct clk *clk)
+ {
+-	__raw_writel(__raw_readl(clk->enable_reg) | (1 << 8), clk->enable_reg);
++	iowrite32(ioread32(clk->mapped_reg) | (1 << 8), clk->mapped_reg);
+ }
+ 
+ static struct clk_ops sh_clk_div4_clk_ops = {
+-- 
+1.7.10
+

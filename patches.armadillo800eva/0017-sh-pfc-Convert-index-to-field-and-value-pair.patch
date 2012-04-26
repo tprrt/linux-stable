@@ -1,0 +1,133 @@
+From 07bd1464d6c99fc50ed64a6f29bbd23ad868528f Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 14 Dec 2011 01:00:46 +0900
+Subject: sh: pfc: Convert index to field and value pair
+
+Update the way the PFC code is passing bitfield
+selection between configure register functions.
+
+Convert the code from using index only to bitfield
+number and selected value. First step towards future
+variable bitfield width support.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit ad4a07ff8da7147b391f1ff0034f313a8b9da9e5)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/pfc.c |   45 ++++++++++++++++++---------------------------
+ 1 file changed, 18 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/sh/pfc.c b/drivers/sh/pfc.c
+index cfca0aa..41e7c8f 100644
+--- a/drivers/sh/pfc.c
++++ b/drivers/sh/pfc.c
+@@ -287,7 +287,8 @@ static int get_data_reg(struct pinmux_info *gpioc, unsigned gpio,
+ }
+ 
+ static int get_config_reg(struct pinmux_info *gpioc, pinmux_enum_t enum_id,
+-			  struct pinmux_cfg_reg **crp, int *indexp,
++			  struct pinmux_cfg_reg **crp,
++			  int *fieldp, int *valuep,
+ 			  unsigned long **cntp)
+ {
+ 	struct pinmux_cfg_reg *config_reg;
+@@ -306,7 +307,8 @@ static int get_config_reg(struct pinmux_info *gpioc, pinmux_enum_t enum_id,
+ 		for (n = 0; n < (r_width / f_width) * (1 << f_width); n++) {
+ 			if (config_reg->enum_ids[n] == enum_id) {
+ 				*crp = config_reg;
+-				*indexp = n;
++				*fieldp = n / (1 << f_width);
++				*valuep = n % (1 << f_width);
+ 				*cntp = &config_reg->cnt[n / (1 << f_width)];
+ 				return 0;
+ 			}
+@@ -349,36 +351,22 @@ static int get_gpio_enum_id(struct pinmux_info *gpioc, unsigned gpio,
+ 
+ static void write_config_reg(struct pinmux_info *gpioc,
+ 			     struct pinmux_cfg_reg *crp,
+-			     int index)
++			     int field, int value)
+ {
+-	unsigned long ncomb, pos, value;
+-	void __iomem *mapped_reg;
+-
+-	ncomb = 1 << crp->field_width;
+-	pos = index / ncomb;
+-	value = index % ncomb;
+-
+-	mapped_reg = pfc_phys_to_virt(gpioc, crp->reg);
++	void __iomem *mapped_reg = pfc_phys_to_virt(gpioc, crp->reg);
+ 
+ 	gpio_write_reg(mapped_reg, crp->reg_width, crp->field_width,
+-		       pos, value, crp->reg);
++		       field, value, crp->reg);
+ }
+ 
+ static int check_config_reg(struct pinmux_info *gpioc,
+ 			    struct pinmux_cfg_reg *crp,
+-			    int index)
++			    int field, int value)
+ {
+-	unsigned long ncomb, pos, value;
+-	void __iomem *mapped_reg;
+-
+-	ncomb = 1 << crp->field_width;
+-	pos = index / ncomb;
+-	value = index % ncomb;
+-
+-	mapped_reg = pfc_phys_to_virt(gpioc, crp->reg);
++	void __iomem *mapped_reg = pfc_phys_to_virt(gpioc, crp->reg);
+ 
+ 	if (gpio_read_reg(mapped_reg, crp->reg_width,
+-			  crp->field_width, pos, crp->reg) == value)
++			  crp->field_width, field, crp->reg) == value)
+ 		return 0;
+ 
+ 	return -1;
+@@ -392,7 +380,7 @@ static int pinmux_config_gpio(struct pinmux_info *gpioc, unsigned gpio,
+ 	struct pinmux_cfg_reg *cr = NULL;
+ 	pinmux_enum_t enum_id;
+ 	struct pinmux_range *range;
+-	int in_range, pos, index;
++	int in_range, pos, field, value;
+ 	unsigned long *cntp;
+ 
+ 	switch (pinmux_type) {
+@@ -423,7 +411,8 @@ static int pinmux_config_gpio(struct pinmux_info *gpioc, unsigned gpio,
+ 
+ 	pos = 0;
+ 	enum_id = 0;
+-	index = 0;
++	field = 0;
++	value = 0;
+ 	while (1) {
+ 		pos = get_gpio_enum_id(gpioc, gpio, pos, &enum_id);
+ 		if (pos <= 0)
+@@ -470,17 +459,19 @@ static int pinmux_config_gpio(struct pinmux_info *gpioc, unsigned gpio,
+ 		if (!in_range)
+ 			continue;
+ 
+-		if (get_config_reg(gpioc, enum_id, &cr, &index, &cntp) != 0)
++		if (get_config_reg(gpioc, enum_id, &cr,
++				   &field, &value, &cntp) != 0)
+ 			goto out_err;
+ 
+ 		switch (cfg_mode) {
+ 		case GPIO_CFG_DRYRUN:
+-			if (!*cntp || !check_config_reg(gpioc, cr, index))
++			if (!*cntp || !check_config_reg(gpioc, cr,
++							field, value))
+ 				continue;
+ 			break;
+ 
+ 		case GPIO_CFG_REQ:
+-			write_config_reg(gpioc, cr, index);
++			write_config_reg(gpioc, cr, field, value);
+ 			*cntp = *cntp + 1;
+ 			break;
+ 
+-- 
+1.7.10
+

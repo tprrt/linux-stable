@@ -1,0 +1,44 @@
+From b25362ad1844d24c75f3550d5184f890362f987b Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 14 Jun 2011 17:53:34 +0900
+Subject: serial: sh-sci: Support generic SCLSR overrun detection.
+
+For all ports with a valid SCLSR register we can use the generic FIFO
+overrun detection logic. Test the validity of the SCLSR register rather
+than depending explicitly on port type, which can be ambiguous for the
+SCIFA/B types.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 4b8c59a3d83e9cf2b65b16999a0c704fc72de056)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index f47c534..78efe80 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -734,15 +734,11 @@ static int sci_handle_fifo_overrun(struct uart_port *port)
+ {
+ 	struct tty_struct *tty = port->state->port.tty;
+ 	struct sci_port *s = to_sci_port(port);
++	struct plat_sci_reg *reg;
+ 	int copied = 0;
+ 
+-	/*
+-	 * XXX: Technically not limited to non-SCIFs, it's simply the
+-	 * SCLSR check that is for the moment SCIF-specific. This
+-	 * probably wants to be revisited for SCIFA/B as well as for
+-	 * factoring in SCI overrun detection.
+-	 */
+-	if (port->type != PORT_SCIF)
++	reg = sci_getreg(port, SCLSR);
++	if (!reg->size)
+ 		return 0;
+ 
+ 	if ((sci_in(port, SCLSR) & (1 << s->cfg->overrun_bit))) {
+-- 
+1.7.10
+

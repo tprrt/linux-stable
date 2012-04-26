@@ -1,0 +1,55 @@
+From cedc32557ee5304a1364df9e21e69848ac880861 Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Thu, 29 Sep 2011 17:16:57 +0000
+Subject: net: sh_eth: fix build failure
+
+The following commit removed some including headers:
+ "net: sh_eth: move the asm/sh_eth.h to include/linux/"
+ (commit id: d4fa0e35fdbd54acf791fa3793d6d17f7795f7ae)
+
+Then, the build failure happened on the linux-next:
+
+drivers/net/ethernet/renesas/sh_eth.c:601: error: 'THIS_MODULE' undeclared here (not in a function)
+drivers/net/ethernet/renesas/sh_eth.c:1970: error: expected declaration specifiers or '...' before string constant
+drivers/net/ethernet/renesas/sh_eth.c:1970: warning: data definition has no type or storage class
+drivers/net/ethernet/renesas/sh_eth.c:1970: warning: type defaults to 'int' in declaration of 'MODULE_AUTHOR'
+drivers/net/ethernet/renesas/sh_eth.c:1970: warning: function declaration isn't a prototype
+drivers/net/ethernet/renesas/sh_eth.c:1971: error: expected declaration specifiers or '...' before string constant
+drivers/net/ethernet/renesas/sh_eth.c:1971: warning: data definition has no type or storage class
+drivers/net/ethernet/renesas/sh_eth.c:1971: warning: type defaults to 'int' in declaration of 'MODULE_DESCRIPTION'
+drivers/net/ethernet/renesas/sh_eth.c:1971: warning: function declaration isn't a prototype
+drivers/net/ethernet/renesas/sh_eth.c:1972: error: expected declaration specifiers or '...' before string constant
+drivers/net/ethernet/renesas/sh_eth.c:1972: warning: data definition has no type or storage class
+drivers/net/ethernet/renesas/sh_eth.c:1972: warning: type defaults to 'int' in declaration of 'MODULE_LICENSE'
+drivers/net/ethernet/renesas/sh_eth.c:1972: warning: function declaration isn't a prototype
+
+This patch fixes the issue. This patch also get back include/kernel.h
+and linux/spinlock.h.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 0654011d900670884197d9a06ad17b378dfde831)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 6aa0704..9b23074 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -21,6 +21,9 @@
+  */
+ 
+ #include <linux/init.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/spinlock.h>
+ #include <linux/interrupt.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/etherdevice.h>
+-- 
+1.7.10
+

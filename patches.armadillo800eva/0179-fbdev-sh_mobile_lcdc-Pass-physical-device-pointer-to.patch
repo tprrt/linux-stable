@@ -1,0 +1,38 @@
+From 856a88bd9aaccdbce8d98adf7b85bd58422cc86d Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Tue, 29 Nov 2011 14:37:35 +0100
+Subject: fbdev: sh_mobile_lcdc: Pass physical device pointer to DMA functions
+
+The dma_map_sg() and dma_unmap_sg() functions need a pointer to the
+physical device.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit e8363140c02c92c122210e03103aef72dd836664)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 1f8dd83..fc12e37 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -313,11 +313,12 @@ static void sh_mobile_lcdc_deferred_io(struct fb_info *info,
+ 		unsigned int nr_pages = sh_mobile_lcdc_sginit(info, pagelist);
+ 
+ 		/* trigger panel update */
+-		dma_map_sg(info->dev, ch->sglist, nr_pages, DMA_TO_DEVICE);
++		dma_map_sg(ch->lcdc->dev, ch->sglist, nr_pages, DMA_TO_DEVICE);
+ 		if (panel->start_transfer)
+ 			panel->start_transfer(ch, &sh_mobile_lcdc_sys_bus_ops);
+ 		lcdc_write_chan(ch, LDSM2R, LDSM2R_OSTRG);
+-		dma_unmap_sg(info->dev, ch->sglist, nr_pages, DMA_TO_DEVICE);
++		dma_unmap_sg(ch->lcdc->dev, ch->sglist, nr_pages,
++			     DMA_TO_DEVICE);
+ 	} else {
+ 		if (panel->start_transfer)
+ 			panel->start_transfer(ch, &sh_mobile_lcdc_sys_bus_ops);
+-- 
+1.7.10
+

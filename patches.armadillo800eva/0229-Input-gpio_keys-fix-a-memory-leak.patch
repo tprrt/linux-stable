@@ -1,0 +1,29 @@
+From 9c9df13f1a600712533169e0f5b0d7ee82822f08 Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin@gmail.com>
+Date: Tue, 28 Jun 2011 14:23:30 -0700
+Subject: Input: gpio_keys - fix a memory leak
+
+Signed-off-by: Axel Lin <axel.lin@gmail.com>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit 1638207910019368253fc4c4a930c49ce2e98432)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/gpio_keys.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 320b59a..97bada4 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -569,6 +569,7 @@ static int __devexit gpio_keys_remove(struct platform_device *pdev)
+ 	}
+ 
+ 	input_unregister_device(input);
++	kfree(ddata);
+ 
+ 	return 0;
+ }
+-- 
+1.7.10
+

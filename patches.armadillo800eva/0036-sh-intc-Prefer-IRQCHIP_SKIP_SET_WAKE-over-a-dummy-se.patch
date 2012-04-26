@@ -1,0 +1,47 @@
+From 75ffa33fd0ae04b4c8a3c7684934993ae1c9a4af Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 24 Jan 2012 14:54:10 +0900
+Subject: sh: intc: Prefer IRQCHIP_SKIP_SET_WAKE over a dummy set_wake
+ callback.
+
+It's possible to use IRQCHIP_SKIP_SET_WAKE to get the behaviour that
+we're after, without having to bother with a dummy ->set_wake() callback
+for the IRQ chip.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 5bbda4e4aca4591c85ee53dea157ca5fc9a23306)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/chip.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+index 7b246ef..3679645 100644
+--- a/drivers/sh/intc/chip.c
++++ b/drivers/sh/intc/chip.c
+@@ -58,11 +58,6 @@ static void intc_disable(struct irq_data *data)
+ 	}
+ }
+ 
+-static int intc_set_wake(struct irq_data *data, unsigned int on)
+-{
+-	return 0; /* allow wakeup, but setup hardware in intc_suspend() */
+-}
+-
+ #ifdef CONFIG_SMP
+ /*
+  * This is held with the irq desc lock held, so we don't require any
+@@ -225,8 +220,8 @@ struct irq_chip intc_irq_chip	= {
+ 	.irq_disable		= intc_disable,
+ 	.irq_shutdown		= intc_disable,
+ 	.irq_set_type		= intc_set_type,
+-	.irq_set_wake		= intc_set_wake,
+ #ifdef CONFIG_SMP
+ 	.irq_set_affinity	= intc_set_affinity,
+ #endif
++	.flags			= IRQCHIP_SKIP_SET_WAKE,
+ };
+-- 
+1.7.10
+

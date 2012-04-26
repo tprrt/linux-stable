@@ -1,0 +1,38 @@
+From 055087947c54ebcc250135502ffcc149f2a910b0 Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Wed, 8 Jun 2011 17:13:20 +0900
+Subject: serial: sh-sci: Kill off some more unused definitions.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit b03034016184b7e9fd19f2a24ffb131953fdcc41)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.h |    4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.h b/drivers/tty/serial/sh-sci.h
+index 2d667ab..a64beaf 100644
+--- a/drivers/tty/serial/sh-sci.h
++++ b/drivers/tty/serial/sh-sci.h
+@@ -9,8 +9,6 @@
+ # define SCPCR  0xA4000116 /* 16 bit SCI and SCIF */
+ # define SCPDR  0xA4000136 /* 8  bit SCI and SCIF */
+ #elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+-# define SCIF0		0xA4400000
+-# define SCIF2		0xA4410000
+ # define SCPCR 0xA4000116
+ # define SCPDR 0xA4000136
+ #elif defined(CONFIG_CPU_SUBTYPE_SH7720) || \
+@@ -48,8 +46,6 @@
+ #elif defined(CONFIG_CPU_SUBTYPE_SH7343)
+ # define SCSPTR0 0xffe00010	/* 16 bit SCIF */
+ #elif defined(CONFIG_CPU_SUBTYPE_SH7722)
+-# define PADR			0xA4050120
+-# define PSDR			0xA405013e
+ # define PWDR			0xA4050166
+ # define PSCR			0xA405011E
+ # define SCIF_ORER		0x0001	/* overrun error bit */
+-- 
+1.7.10
+

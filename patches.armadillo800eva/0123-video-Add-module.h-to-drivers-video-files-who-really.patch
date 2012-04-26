@@ -1,0 +1,72 @@
+From c1078a8a456c56536478ee66109fbbbca07ef90e Mon Sep 17 00:00:00 2001
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+Date: Sun, 3 Jul 2011 16:17:28 -0400
+Subject: video: Add module.h to drivers/video files who really use it.
+
+They were getting this implicitly by an include of module.h
+from device.h -- but we are going to clean that up and break
+that include chain, so include module.h explicitly now.
+
+[ with contributions from Axel Lin <axel.lin@gmail.com> ]
+
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+(cherry picked from commit 355b200bacdb6017669cdc5bc9e7b1037aac42a2)
+
+Conflicts:
+
+	drivers/video/atmel_lcdfb.c
+	drivers/video/backlight/88pm860x_bl.c
+	drivers/video/backlight/adp5520_bl.c
+	drivers/video/backlight/ams369fg06.c
+	drivers/video/backlight/da903x_bl.c
+	drivers/video/backlight/ep93xx_bl.c
+	drivers/video/backlight/l4f00242t03.c
+	drivers/video/backlight/ld9040.c
+	drivers/video/backlight/lms283gf05.c
+	drivers/video/backlight/max8925_bl.c
+	drivers/video/backlight/s6e63m0.c
+	drivers/video/backlight/wm831x_bl.c
+	drivers/video/carminefb.c
+	drivers/video/cobalt_lcdfb.c
+	drivers/video/ep93xx-fb.c
+	drivers/video/fb_ddc.c
+	drivers/video/mb862xx/mb862xxfbdrv.c
+	drivers/video/omap/lcd_mipid.c
+	drivers/video/omap/omapfb_main.c
+	drivers/video/omap2/dss/dsi.c
+	drivers/video/savage/savagefb_accel.c
+	drivers/video/w100fb.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mipi_dsi.c      |    1 +
+ drivers/video/sh_mobile_lcdcfb.c |    1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index 24640c8..72ee96b 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -17,6 +17,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/types.h>
++#include <linux/module.h>
+ 
+ #include <video/mipi_display.h>
+ #include <video/sh_mipi_dsi.h>
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 3a41c01..facffc2 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -23,6 +23,7 @@
+ #include <linux/console.h>
+ #include <linux/backlight.h>
+ #include <linux/gpio.h>
++#include <linux/module.h>
+ #include <video/sh_mobile_lcdc.h>
+ #include <video/sh_mobile_meram.h>
+ #include <linux/atomic.h>
+-- 
+1.7.10
+

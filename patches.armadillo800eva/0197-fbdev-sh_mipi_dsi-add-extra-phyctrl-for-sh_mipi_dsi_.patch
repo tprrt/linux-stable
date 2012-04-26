@@ -1,0 +1,64 @@
+From 40b02e1ce5b088dbee79db5cc99f7482caf4ffb9 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 20 Mar 2012 18:34:10 -0700
+Subject: fbdev: sh_mipi_dsi: add extra phyctrl for sh_mipi_dsi_info
+
+sh_mipi uses some clocks, but the method of setup depends on CPU.
+
+Current SuperH (like sh73a0) can control all of these clocks
+by CPG (Clock Pulse Generator).
+It means we can control it by clock framework only.
+But on sh7372, it needs CPG settings AND sh_mipi PHYCTRL::PLLDS,
+and only sh7372 has PHYCTRL::PLLDS.
+
+But on current sh_mipi driver, PHYCTRL::PLLDS of sh7372 was
+overwrote since the callback timing of clock setting was changed
+by c2658b70f06108361aa5024798f9c1bf47c73374
+(fbdev: sh_mipi_dsi: fixup setup timing of sh_mipi_setup()).
+To solve this issue, this patch adds extra .phyctrl.
+
+This patch adds detail explanation for unclear mipi settings
+and fixup wrong PHYCTRL::PLLDS value for ap4evb (0xb -> 0x6).
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit 8f9c60f2e29717155227f225b557d3f1fda442bd)
+
+Conflicts:
+
+	arch/arm/mach-shmobile/board-ap4evb.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mipi_dsi.c |    2 +-
+ include/video/sh_mipi_dsi.h |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index 42ad0f7..4c6b844 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -273,7 +273,7 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	iowrite32(0x00000001, base + PHYCTRL);
+ 	udelay(200);
+ 	/* Deassert resets, power on */
+-	iowrite32(0x03070001, base + PHYCTRL);
++	iowrite32(0x03070001 | pdata->phyctrl, base + PHYCTRL);
+ 
+ 	/*
+ 	 * Default = ULPS enable |
+diff --git a/include/video/sh_mipi_dsi.h b/include/video/sh_mipi_dsi.h
+index 434d56b..06c67fb 100644
+--- a/include/video/sh_mipi_dsi.h
++++ b/include/video/sh_mipi_dsi.h
+@@ -51,6 +51,7 @@ struct sh_mipi_dsi_info {
+ 	int				lane;
+ 	unsigned long			flags;
+ 	u32				clksrc;
++	u32				phyctrl; /* for extra setting */
+ 	unsigned int			vsynw_offset;
+ 	int	(*set_dot_clock)(struct platform_device *pdev,
+ 				 void __iomem *base,
+-- 
+1.7.10
+

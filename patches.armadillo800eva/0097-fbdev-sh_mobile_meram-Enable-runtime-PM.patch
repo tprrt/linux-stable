@@ -1,0 +1,46 @@
+From 2e680868e989715d2893a5a256c0a8339dd55d67 Mon Sep 17 00:00:00 2001
+From: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Date: Mon, 4 Jul 2011 08:06:11 +0200
+Subject: fbdev: sh_mobile_meram: Enable runtime PM
+
+Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+(cherry picked from commit 176737782e8360f1e577264c7aaeb691a7cbbfdd)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_meram.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/video/sh_mobile_meram.c b/drivers/video/sh_mobile_meram.c
+index cc7d732..34efd8a 100644
+--- a/drivers/video/sh_mobile_meram.c
++++ b/drivers/video/sh_mobile_meram.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+ #include <linux/platform_device.h>
+@@ -515,6 +516,8 @@ static int __devinit sh_mobile_meram_probe(struct platform_device *pdev)
+ 	if (pdata->addr_mode == SH_MOBILE_MERAM_MODE1)
+ 		meram_write_reg(priv->base, MEVCR1, 1 << 29);
+ 
++	pm_runtime_enable(&pdev->dev);
++
+ 	dev_info(&pdev->dev, "sh_mobile_meram initialized.");
+ 
+ 	return 0;
+@@ -530,6 +533,8 @@ static int sh_mobile_meram_remove(struct platform_device *pdev)
+ {
+ 	struct sh_mobile_meram_priv *priv = platform_get_drvdata(pdev);
+ 
++	pm_runtime_disable(&pdev->dev);
++
+ 	if (priv->base)
+ 		iounmap(priv->base);
+ 
+-- 
+1.7.10
+

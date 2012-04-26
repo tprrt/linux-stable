@@ -1,0 +1,41 @@
+From 51199f058ed4376aeea7ab3340b67d49d71d2a56 Mon Sep 17 00:00:00 2001
+From: Shawn Guo <shawn.guo@linaro.org>
+Date: Wed, 16 Nov 2011 21:44:33 +0800
+Subject: ARM: Update mach-types to fix mxs build breakage
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add entry m28evk to fix the following mxs build breakage.
+
+  CHK     include/generated/compile.h
+  CC      arch/arm/mach-mxs/clock-mx28.o
+arch/arm/mach-mxs/clock-mx28.c: In function 'clk_misc_init':
+arch/arm/mach-mxs/clock-mx28.c:748: error: implicit declaration of
+function 'machine_is_m28evk'
+make[1]: *** [arch/arm/mach-mxs/clock-mx28.o] Error 1
+make: *** [arch/arm/mach-mxs] Error 2
+
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+(cherry picked from commit 9b7c547f7747991fe62f622698ea1bf470f256f4)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/tools/mach-types |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
+index 5bdeef9..ccbe16f 100644
+--- a/arch/arm/tools/mach-types
++++ b/arch/arm/tools/mach-types
+@@ -1123,5 +1123,6 @@ blissc			MACH_BLISSC		BLISSC			3491
+ thales_adc		MACH_THALES_ADC		THALES_ADC		3492
+ ubisys_p9d_evp		MACH_UBISYS_P9D_EVP	UBISYS_P9D_EVP		3493
+ atdgp318		MACH_ATDGP318		ATDGP318		3494
++m28evk			MACH_M28EVK		M28EVK			3613
+ smdk4212		MACH_SMDK4212		SMDK4212		3638
+ smdk4412		MACH_SMDK4412		SMDK4412		3765
+-- 
+1.7.10
+

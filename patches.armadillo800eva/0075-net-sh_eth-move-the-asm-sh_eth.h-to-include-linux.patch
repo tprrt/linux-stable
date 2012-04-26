@@ -1,0 +1,55 @@
+From f4685e7e984fd49d5d4b5099aa0d02452f39cda3 Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Tue, 27 Sep 2011 21:49:12 +0000
+Subject: net: sh_eth: move the asm/sh_eth.h to include/linux/
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit d4fa0e35fdbd54acf791fa3793d6d17f7795f7ae)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c           |    1 +
+ drivers/net/ethernet/renesas/sh_eth.h           |    8 --------
+ {arch/sh/include/asm => include/linux}/sh_eth.h |    0
+ 3 files changed, 1 insertion(+), 8 deletions(-)
+ rename {arch/sh/include/asm => include/linux}/sh_eth.h (100%)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 38ccda5..6aa0704 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -35,6 +35,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
++#include <linux/sh_eth.h>
+ 
+ #include "sh_eth.h"
+ 
+diff --git a/drivers/net/ethernet/renesas/sh_eth.h b/drivers/net/ethernet/renesas/sh_eth.h
+index 78e586e..47877b1 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.h
++++ b/drivers/net/ethernet/renesas/sh_eth.h
+@@ -23,14 +23,6 @@
+ #ifndef __SH_ETH_H__
+ #define __SH_ETH_H__
+ 
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/spinlock.h>
+-#include <linux/netdevice.h>
+-#include <linux/phy.h>
+-
+-#include <asm/sh_eth.h>
+-
+ #define CARDNAME	"sh-eth"
+ #define TX_TIMEOUT	(5*HZ)
+ #define TX_RING_SIZE	64	/* Tx ring size */
+diff --git a/arch/sh/include/asm/sh_eth.h b/include/linux/sh_eth.h
+similarity index 100%
+rename from arch/sh/include/asm/sh_eth.h
+rename to include/linux/sh_eth.h
+-- 
+1.7.10
+

@@ -1,0 +1,47 @@
+From 9e74e33fa2c40dc0db376afc44e3c865418fc4d5 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Sun, 11 Sep 2011 23:30:45 +0200
+Subject: arm: mach-shmobile: Don't initialize the hdmi_info lcd_chan field
+
+The field is unused and will be removed. Don't initialize it.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit e2543c5ab299c67ddfb73a36eca4da6574259ab9)
+
+Conflicts:
+	arch/arm/mach-shmobile/board-ap4evb.c
+	arch/arm/mach-shmobile/board-mackerel.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-ap4evb.c   |    1 -
+ arch/arm/mach-shmobile/board-mackerel.c |    1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/board-ap4evb.c b/arch/arm/mach-shmobile/board-ap4evb.c
+index 5330b68..488bd13 100644
+--- a/arch/arm/mach-shmobile/board-ap4evb.c
++++ b/arch/arm/mach-shmobile/board-ap4evb.c
+@@ -822,7 +822,6 @@ static long ap4evb_clk_optimize(unsigned long target, unsigned long *best_freq,
+ 
+ 
+ static struct sh_mobile_hdmi_info hdmi_info = {
+-	.lcd_chan = &sh_mobile_lcdc1_info.ch[0],
+ 	.flags = HDMI_SND_SRC_SPDIF,
+ 	.clk_optimize_parent = ap4evb_clk_optimize,
+ };
+diff --git a/arch/arm/mach-shmobile/board-mackerel.c b/arch/arm/mach-shmobile/board-mackerel.c
+index 45a608b..42ad34e 100644
+--- a/arch/arm/mach-shmobile/board-mackerel.c
++++ b/arch/arm/mach-shmobile/board-mackerel.c
+@@ -483,7 +483,6 @@ static struct platform_device hdmi_lcdc_device = {
+ };
+ 
+ static struct sh_mobile_hdmi_info hdmi_info = {
+-	.lcd_chan	= &hdmi_lcdc_info.ch[0],
+ 	.flags		= HDMI_SND_SRC_SPDIF,
+ };
+ 
+-- 
+1.7.10
+

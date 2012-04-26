@@ -1,0 +1,33 @@
+From ec6cb263d29985e3a9750d14a8ffd1e9d096419c Mon Sep 17 00:00:00 2001
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+Date: Sun, 22 Jan 2012 14:57:25 -0500
+Subject: arm: fix compile failure in mach-shmobile/board-ag5evm.c
+
+Add videodev2 header which provides V4L2_PIX_FMT_RGB565 to fix:
+
+arch/arm/mach-shmobile/board-ag5evm.c:274: error: 'V4L2_PIX_FMT_RGB565' undeclared here (not in a function)
+
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 04f47a03c51c9f02fa27b0ecf4207e25c0741804)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-ag5evm.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-shmobile/board-ag5evm.c b/arch/arm/mach-shmobile/board-ag5evm.c
+index 87e9091..5f5a8bb 100644
+--- a/arch/arm/mach-shmobile/board-ag5evm.c
++++ b/arch/arm/mach-shmobile/board-ag5evm.c
+@@ -30,6 +30,7 @@
+ #include <linux/serial_sci.h>
+ #include <linux/smsc911x.h>
+ #include <linux/gpio.h>
++#include <linux/videodev2.h>
+ #include <linux/input.h>
+ #include <linux/input/sh_keysc.h>
+ #include <linux/mmc/host.h>
+-- 
+1.7.10
+

@@ -1,0 +1,56 @@
+From d378246a650f3297ce7639fcc56ba76a510d0b6d Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 14 Dec 2011 01:00:37 +0900
+Subject: sh: pfc: Add gpio_read_bit() for data register access
+
+Introduce gpio_read_bit() for data register read access
+and modify sh_gpio_get_value() to make use of the new
+function instead of gpio_read_reg(). The purpose of
+this change is to update the code to only use the
+gpio_read_reg() function for config register access.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 92554d97c6dcc448afd56f96bbe933998868be74)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/pfc.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/sh/pfc.c b/drivers/sh/pfc.c
+index e7d127a..cfca0aa 100644
+--- a/drivers/sh/pfc.c
++++ b/drivers/sh/pfc.c
+@@ -135,6 +135,19 @@ static void gpio_write_raw_reg(void __iomem *mapped_reg,
+ 	BUG();
+ }
+ 
++static int gpio_read_bit(struct pinmux_data_reg *dr,
++			 unsigned long in_pos)
++{
++	unsigned long pos;
++
++	pos = dr->reg_width - (in_pos + 1);
++
++	pr_debug("read_bit: addr = %lx, pos = %ld, "
++		 "r_width = %ld\n", dr->reg, pos, dr->reg_width);
++
++	return (gpio_read_raw_reg(dr->mapped_reg, dr->reg_width) >> pos) & 1;
++}
++
+ static void gpio_write_bit(struct pinmux_data_reg *dr,
+ 			   unsigned long in_pos, unsigned long value)
+ {
+@@ -644,7 +657,7 @@ static int sh_gpio_get_value(struct pinmux_info *gpioc, unsigned gpio)
+ 	if (!gpioc || get_data_reg(gpioc, gpio, &dr, &bit) != 0)
+ 		return -EINVAL;
+ 
+-	return gpio_read_reg(dr->mapped_reg, dr->reg_width, 1, bit, dr->reg);
++	return gpio_read_bit(dr, bit);
+ }
+ 
+ static int sh_gpio_get(struct gpio_chip *chip, unsigned offset)
+-- 
+1.7.10
+

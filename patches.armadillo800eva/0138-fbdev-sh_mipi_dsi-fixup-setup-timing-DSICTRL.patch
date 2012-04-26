@@ -1,0 +1,43 @@
+From 228f32c1dd653d1624fdb1e7ad2a5ae15c3a3313 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 8 Nov 2011 20:36:07 -0800
+Subject: fbdev: sh_mipi_dsi: fixup setup timing DSICTRL
+
+DSICTRL should be called after all mipi settings
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Acked-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit 97cab45583f75428773547f3bbe59fece05420d3)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mipi_dsi.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index 187e127..05151b8 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -265,8 +265,6 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	iowrite32(0x0fffffff, base + TATOVSET);
+ 	/* Peripheral reset timeout, default 0xffffffff */
+ 	iowrite32(0x0fffffff, base + PRTOVSET);
+-	/* Enable timeout counters */
+-	iowrite32(0x00000f00, base + DSICTRL);
+ 	/* Interrupts not used, disable all */
+ 	iowrite32(0, base + DSIINTE);
+ 	/* DSI-Tx bias on */
+@@ -388,6 +386,9 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 			  pixfmt << 4);
+ 	sh_mipi_dcs(ch->chan, MIPI_DCS_SET_DISPLAY_ON);
+ 
++	/* Enable timeout counters */
++	iowrite32(0x00000f00, base + DSICTRL);
++
+ 	return 0;
+ }
+ 
+-- 
+1.7.10
+

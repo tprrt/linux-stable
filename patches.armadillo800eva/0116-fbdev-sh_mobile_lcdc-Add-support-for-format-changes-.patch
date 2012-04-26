@@ -1,0 +1,51 @@
+From e2d64963daac294aedfa4d8a08ad5761e5fbf846 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 31 Aug 2011 13:00:54 +0200
+Subject: fbdev: sh_mobile_lcdc: Add support for format changes at runtime
+
+Implement .fb_set_par to support frame buffer format changes at runtime.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit ed5bebf29e82beab3456901e26a495ae0a49ebad)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 33b0ff8..f9f420d 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -1154,6 +1154,19 @@ static int sh_mobile_check_var(struct fb_var_screeninfo *var, struct fb_info *in
+ 	return 0;
+ }
+ 
++static int sh_mobile_set_par(struct fb_info *info)
++{
++	struct sh_mobile_lcdc_chan *ch = info->par;
++	int ret;
++
++	sh_mobile_lcdc_stop(ch->lcdc);
++	ret = sh_mobile_lcdc_start(ch->lcdc);
++	if (ret < 0)
++		dev_err(info->dev, "%s: unable to restart LCDC\n", __func__);
++
++	return ret;
++}
++
+ /*
+  * Screen blanking. Behavior is as follows:
+  * FB_BLANK_UNBLANK: screen unblanked, clocks enabled
+@@ -1211,6 +1224,7 @@ static struct fb_ops sh_mobile_lcdc_ops = {
+ 	.fb_open	= sh_mobile_open,
+ 	.fb_release	= sh_mobile_release,
+ 	.fb_check_var	= sh_mobile_check_var,
++	.fb_set_par	= sh_mobile_set_par,
+ };
+ 
+ static int sh_mobile_lcdc_update_bl(struct backlight_device *bdev)
+-- 
+1.7.10
+

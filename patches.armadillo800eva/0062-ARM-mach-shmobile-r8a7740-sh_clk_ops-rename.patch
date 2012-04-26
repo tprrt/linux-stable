@@ -1,0 +1,50 @@
+From 9ea780bd6745d2432f607d442035256ed93fc0e7 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 29 Feb 2012 22:17:00 +0900
+Subject: ARM: mach-shmobile: r8a7740 sh_clk_ops rename
+
+Convert r8a7740 to use sh_clk_ops.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+(cherry picked from commit d9f8670df8c6eb4c0726ea3fa8ff8bc712702500)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/clock-r8a7740.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/clock-r8a7740.c b/arch/arm/mach-shmobile/clock-r8a7740.c
+index 3b35b9a..6a40684 100644
+--- a/arch/arm/mach-shmobile/clock-r8a7740.c
++++ b/arch/arm/mach-shmobile/clock-r8a7740.c
+@@ -93,7 +93,7 @@ static unsigned long div_recalc(struct clk *clk)
+ 	return clk->parent->rate / (int)(clk->priv);
+ }
+ 
+-static struct clk_ops div_clk_ops = {
++static struct sh_clk_ops div_clk_ops = {
+ 	.recalc	= div_recalc,
+ };
+ 
+@@ -125,7 +125,7 @@ static struct clk extal2_div2_clk = {
+ 	.parent	= &extal2_clk,
+ };
+ 
+-static struct clk_ops followparent_clk_ops = {
++static struct sh_clk_ops followparent_clk_ops = {
+ 	.recalc	= followparent_recalc,
+ };
+ 
+@@ -156,7 +156,7 @@ static unsigned long pllc01_recalc(struct clk *clk)
+ 	return clk->parent->rate * mult;
+ }
+ 
+-static struct clk_ops pllc01_clk_ops = {
++static struct sh_clk_ops pllc01_clk_ops = {
+ 	.recalc		= pllc01_recalc,
+ };
+ 
+-- 
+1.7.10
+

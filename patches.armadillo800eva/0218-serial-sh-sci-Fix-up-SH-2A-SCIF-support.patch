@@ -1,0 +1,71 @@
+From e7e97512e6f8a4744aa7113d61f4503dca244abf Mon Sep 17 00:00:00 2001
+From: Phil Edworthy <phil.edworthy@renesas.com>
+Date: Mon, 3 Oct 2011 15:16:47 +0100
+Subject: serial: sh-sci: Fix up SH-2A SCIF support.
+
+This fixes up support for SH-2(A) SCIFs by introducing a new regtype. As
+expected, it's close to the SH-4A SCIF with fifodata, but still different
+enough to warrant its own type.
+
+Fixes up a number of FIFO overflows and similar for both SH7203/SH7264.
+
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+Tested-by: Federico Fuga <fuga@studiofuga.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 3af1f8a41feab47b232b0c3d3b2322426672480d)
+
+Conflicts:
+
+	arch/sh/kernel/cpu/sh2a/setup-sh7203.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   19 +++++++++++++++++++
+ include/linux/serial_sci.h  |    1 +
+ 2 files changed, 20 insertions(+)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index a385564f..a1d1666 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -207,6 +207,25 @@ static struct plat_sci_reg sci_regmap[SCIx_NR_REGTYPES][SCIx_NR_REGS] = {
+ 	},
+ 
+ 	/*
++	 * Common SH-2(A) SCIF definitions for ports with FIFO data
++	 * count registers.
++	 */
++	[SCIx_SH2_SCIF_FIFODATA_REGTYPE] = {
++		[SCSMR]		= { 0x00, 16 },
++		[SCBRR]		= { 0x04,  8 },
++		[SCSCR]		= { 0x08, 16 },
++		[SCxTDR]	= { 0x0c,  8 },
++		[SCxSR]		= { 0x10, 16 },
++		[SCxRDR]	= { 0x14,  8 },
++		[SCFCR]		= { 0x18, 16 },
++		[SCFDR]		= { 0x1c, 16 },
++		[SCTFDR]	= sci_reg_invalid,
++		[SCRFDR]	= sci_reg_invalid,
++		[SCSPTR]	= { 0x20, 16 },
++		[SCLSR]		= { 0x24, 16 },
++	},
++
++	/*
+ 	 * Common SH-3 SCIF definitions.
+ 	 */
+ 	[SCIx_SH3_SCIF_REGTYPE] = {
+diff --git a/include/linux/serial_sci.h b/include/linux/serial_sci.h
+index 0efa1f1..369273a 100644
+--- a/include/linux/serial_sci.h
++++ b/include/linux/serial_sci.h
+@@ -67,6 +67,7 @@ enum {
+ 	SCIx_IRDA_REGTYPE,
+ 	SCIx_SCIFA_REGTYPE,
+ 	SCIx_SCIFB_REGTYPE,
++	SCIx_SH2_SCIF_FIFODATA_REGTYPE,
+ 	SCIx_SH3_SCIF_REGTYPE,
+ 	SCIx_SH4_SCIF_REGTYPE,
+ 	SCIx_SH4_SCIF_NO_SCSPTR_REGTYPE,
+-- 
+1.7.10
+

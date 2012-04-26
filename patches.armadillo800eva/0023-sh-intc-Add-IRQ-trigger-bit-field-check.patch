@@ -1,0 +1,45 @@
+From 3187b8ff897a3181b941621878f72fb6ee219b34 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Mon, 17 Oct 2011 17:59:54 +0900
+Subject: sh: intc: Add IRQ trigger bit field check
+
+R-Mobile SoCs such as sh73a0 include PINT blocks in INTC
+that come with 2-bit IRQ trigger support. Add code to make
+sure the bit width is checked so 4-bit only modes like for
+instance EDGE_BOTH will fail for PINT.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 52e3124f248e9ada990cd2aeafe250a53713c6f0)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/chip.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+index 33b2ed4..e0ada37 100644
+--- a/drivers/sh/intc/chip.c
++++ b/drivers/sh/intc/chip.c
+@@ -202,11 +202,16 @@ static int intc_set_type(struct irq_data *data, unsigned int type)
+ 	if (!value)
+ 		return -EINVAL;
+ 
++	value &= ~SENSE_VALID_FLAG;
++
+ 	ihp = intc_find_irq(d->sense, d->nr_sense, irq);
+ 	if (ihp) {
++		/* PINT has 2-bit sense registers, should fail on EDGE_BOTH */
++		if (value >= (1 << _INTC_WIDTH(ihp->handle)))
++			return -EINVAL;
++
+ 		addr = INTC_REG(d, _INTC_ADDR_E(ihp->handle), 0);
+-		intc_reg_fns[_INTC_FN(ihp->handle)](addr, ihp->handle,
+-						    value & ~SENSE_VALID_FLAG);
++		intc_reg_fns[_INTC_FN(ihp->handle)](addr, ihp->handle, value);
+ 	}
+ 
+ 	return 0;
+-- 
+1.7.10
+

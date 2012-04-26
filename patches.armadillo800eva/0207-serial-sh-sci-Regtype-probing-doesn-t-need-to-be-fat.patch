@@ -1,0 +1,45 @@
+From 936cfe796afcee603bab904a7a71942b4edcaded Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 28 Jun 2011 13:44:37 +0900
+Subject: serial: sh-sci: Regtype probing doesn't need to be fatal.
+
+This was using a BUG_ON(), but it's not strictly necessary, so relax the
+constraints a bit.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 3127c6b225c6893bdfcd4db64d4316ce317fc10f)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 78efe80..2b3d82c 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -1830,6 +1830,7 @@ static int __devinit sci_init_single(struct platform_device *dev,
+ 				     struct plat_sci_port *p)
+ {
+ 	struct uart_port *port = &sci_port->port;
++	int ret;
+ 
+ 	port->ops	= &sci_uart_ops;
+ 	port->iotype	= UPIO_MEM;
+@@ -1850,8 +1851,11 @@ static int __devinit sci_init_single(struct platform_device *dev,
+ 		break;
+ 	}
+ 
+-	if (p->regtype == SCIx_PROBE_REGTYPE)
+-		BUG_ON(sci_probe_regmap(p) != 0);
++	if (p->regtype == SCIx_PROBE_REGTYPE) {
++		ret = sci_probe_regmap(p);
++		if (unlikely(!ret))
++			return ret;
++	}
+ 
+ 	if (dev) {
+ 		sci_port->iclk = clk_get(&dev->dev, "sci_ick");
+-- 
+1.7.10
+

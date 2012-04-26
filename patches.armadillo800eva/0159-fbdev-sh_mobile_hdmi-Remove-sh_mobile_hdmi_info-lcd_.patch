@@ -1,0 +1,30 @@
+From 38b973cfee458255242f5d7ae5c6bd79033d3ed3 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Sun, 11 Sep 2011 18:27:50 +0200
+Subject: fbdev: sh_mobile_hdmi: Remove sh_mobile_hdmi_info lcd_chan field
+
+The field is unused, remove it.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit ca0a0cd7986e1704d5c60be9ae096ba51b2084f7)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/video/sh_mobile_hdmi.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/video/sh_mobile_hdmi.h b/include/video/sh_mobile_hdmi.h
+index 0b8d2cf..728f9de 100644
+--- a/include/video/sh_mobile_hdmi.h
++++ b/include/video/sh_mobile_hdmi.h
+@@ -31,7 +31,6 @@ struct clk;
+ #define HDMI_SND_SRC_HBR	(3 << 0)
+ 
+ struct sh_mobile_hdmi_info {
+-	struct sh_mobile_lcdc_chan_cfg	*lcd_chan;
+ 	unsigned int			 flags;
+ 	long (*clk_optimize_parent)(unsigned long target, unsigned long *best_freq,
+ 				    unsigned long *parent_freq);
+-- 
+1.7.10
+

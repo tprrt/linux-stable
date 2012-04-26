@@ -1,0 +1,44 @@
+From ac1c87d981dc955e1fc47efb6e1ef9e721478c6d Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Thu, 8 Dec 2011 22:59:03 +0900
+Subject: sh: use ioread32/iowrite32 and mapped_reg for mstp32
+
+Convert the CPG MSTP32 helper code to use the new mapped_reg
+together with ioread32() and iowrite32().
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit b3ab82b3eb191ad2cd8110cb5de0afb790337000)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/clk/cpg.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/sh/clk/cpg.c b/drivers/sh/clk/cpg.c
+index 5e4301b..ed8bc70 100644
+--- a/drivers/sh/clk/cpg.c
++++ b/drivers/sh/clk/cpg.c
+@@ -15,15 +15,15 @@
+ 
+ static int sh_clk_mstp32_enable(struct clk *clk)
+ {
+-	__raw_writel(__raw_readl(clk->enable_reg) & ~(1 << clk->enable_bit),
+-		     clk->enable_reg);
++	iowrite32(ioread32(clk->mapped_reg) & ~(1 << clk->enable_bit),
++		  clk->mapped_reg);
+ 	return 0;
+ }
+ 
+ static void sh_clk_mstp32_disable(struct clk *clk)
+ {
+-	__raw_writel(__raw_readl(clk->enable_reg) | (1 << clk->enable_bit),
+-		     clk->enable_reg);
++	iowrite32(ioread32(clk->mapped_reg) | (1 << clk->enable_bit),
++		  clk->mapped_reg);
+ }
+ 
+ static struct clk_ops sh_clk_mstp32_clk_ops = {
+-- 
+1.7.10
+

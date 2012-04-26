@@ -1,0 +1,110 @@
+From b9eae3d68de564c46de49a1347bffa6f03103705 Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Fri, 2 Dec 2011 17:44:50 +0900
+Subject: serial: sh-sci: per-port modem control.
+
+The bulk of the ports do not support any sort of modem control, so
+blindly twiddling the MCE bit doesn't accomplish much. We now require
+ports to manually specify which line supports modem control signals.
+
+While at it, tidy up the RTS/CTSIO handling in SCSPTR parts so it's a bit
+more obvious what's going on (and without clobbering other configurations
+in the process).
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit faf02f8fee5563ea7f950b3f5f08c654aa6c4525)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/tty/serial/sh-sci.c |   31 ++++++++++++++++++++-----------
+ include/linux/serial_sci.h  |   10 ++++++++++
+ 2 files changed, 30 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index b519332..b2891bb 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -474,8 +474,15 @@ static void sci_init_pins(struct uart_port *port, unsigned int cflag)
+ 	if (!reg->size)
+ 		return;
+ 
+-	if (!(cflag & CRTSCTS))
+-		sci_out(port, SCSPTR, 0x0080); /* Set RTS = 1 */
++	if ((s->cfg->capabilities & SCIx_HAVE_RTSCTS) &&
++	    ((!(cflag & CRTSCTS)))) {
++		unsigned short status;
++
++		status = sci_in(port, SCSPTR);
++		status &= ~SCSPTR_CTSIO;
++		status |= SCSPTR_RTSIO;
++		sci_out(port, SCSPTR, status); /* Set RTS = 1 */
++	}
+ }
+ 
+ static int sci_txfill(struct uart_port *port)
+@@ -1769,16 +1776,18 @@ static void sci_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	sci_init_pins(port, termios->c_cflag);
+ 
+-	reg = sci_getreg(port, SCFCR);
+-	if (reg->size) {
+-		unsigned short ctrl;
++	if (s->cfg->capabilities & SCIx_HAVE_RTSCTS) {
++		reg = sci_getreg(port, SCFCR);
++		if (reg->size) {
++			unsigned short ctrl;
+ 
+-		ctrl = sci_in(port, SCFCR);
+-		if (termios->c_cflag & CRTSCTS)
+-			ctrl |= SCFCR_MCE;
+-		else
+-			ctrl &= ~SCFCR_MCE;
+-		sci_out(port, SCFCR, ctrl);
++			ctrl = sci_in(port, SCFCR);
++			if (termios->c_cflag & CRTSCTS)
++				ctrl |= SCFCR_MCE;
++			else
++				ctrl &= ~SCFCR_MCE;
++			sci_out(port, SCFCR, ctrl);
++		}
+ 	}
+ 
+ 	sci_out(port, SCSCR, s->cfg->scscr);
+diff --git a/include/linux/serial_sci.h b/include/linux/serial_sci.h
+index 369273a..15b1bdc 100644
+--- a/include/linux/serial_sci.h
++++ b/include/linux/serial_sci.h
+@@ -49,6 +49,10 @@ enum {
+ 
+ #define SCIF_DEFAULT_ERROR_MASK (SCIF_PER | SCIF_FER | SCIF_ER | SCIF_BRK)
+ 
++/* SCSPTR, optional */
++#define SCSPTR_RTSIO	(1 << 7)
++#define SCSPTR_CTSIO	(1 << 5)
++
+ /* Offsets into the sci_port->irqs array */
+ enum {
+ 	SCIx_ERI_IRQ,
+@@ -109,6 +113,11 @@ struct plat_sci_port_ops {
+ };
+ 
+ /*
++ * Port-specific capabilities
++ */
++#define SCIx_HAVE_RTSCTS	(1 << 0)
++
++/*
+  * Platform device specific platform_data struct
+  */
+ struct plat_sci_port {
+@@ -116,6 +125,7 @@ struct plat_sci_port {
+ 	unsigned int	irqs[SCIx_NR_IRQS];	/* ERI, RXI, TXI, BRI */
+ 	unsigned int	type;			/* SCI / SCIF / IRDA */
+ 	upf_t		flags;			/* UPF_* flags */
++	unsigned long	capabilities;		/* Port features/capabilities */
+ 
+ 	unsigned int	scbrr_algo_id;		/* SCBRR calculation algo */
+ 	unsigned int	scscr;			/* SCSCR initialization */
+-- 
+1.7.10
+

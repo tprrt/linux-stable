@@ -1,0 +1,71 @@
+From 08eb10f68bdd1e24a58aee50502b81a861a14308 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 31 Aug 2011 13:00:55 +0200
+Subject: fbdev: sh_mobile_lcdc: use display information in info for panning
+
+We must not use any information in the passed var besides xoffset,
+yoffset and vmode as otherwise applications might abuse it.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit dc1d5adab5cc57eb732407d80c9e7ae48891ffca)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index f9f420d..1ff215c 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -877,12 +877,12 @@ static int sh_mobile_fb_pan_display(struct fb_var_screeninfo *var,
+ 	unsigned long base_addr_y, base_addr_c;
+ 	unsigned long c_offset;
+ 
+-	if (!var->nonstd)
+-		new_pan_offset = (var->yoffset * info->fix.line_length) +
+-			(var->xoffset * (info->var.bits_per_pixel / 8));
++	if (!info->var.nonstd)
++		new_pan_offset = var->yoffset * info->fix.line_length
++			       + var->xoffset * (info->var.bits_per_pixel / 8);
+ 	else
+-		new_pan_offset = (var->yoffset * info->fix.line_length) +
+-			(var->xoffset);
++		new_pan_offset = var->yoffset * info->fix.line_length
++			       + var->xoffset;
+ 
+ 	if (new_pan_offset == ch->pan_offset)
+ 		return 0;	/* No change, do nothing */
+@@ -891,13 +891,13 @@ static int sh_mobile_fb_pan_display(struct fb_var_screeninfo *var,
+ 
+ 	/* Set the source address for the next refresh */
+ 	base_addr_y = ch->dma_handle + new_pan_offset;
+-	if (var->nonstd) {
++	if (info->var.nonstd) {
+ 		/* Set y offset */
+-		c_offset = (var->yoffset *
+-			info->fix.line_length *
+-			(info->var.bits_per_pixel - 8)) / 8;
+-		base_addr_c = ch->dma_handle + var->xres * var->yres_virtual +
+-			c_offset;
++		c_offset = var->yoffset * info->fix.line_length
++			 * (info->var.bits_per_pixel - 8) / 8;
++		base_addr_c = ch->dma_handle
++			    + info->var.xres * info->var.yres_virtual
++			    + c_offset;
+ 		/* Set x offset */
+ 		if (info->var.bits_per_pixel == 24)
+ 			base_addr_c += 2 * var->xoffset;
+@@ -923,7 +923,7 @@ static int sh_mobile_fb_pan_display(struct fb_var_screeninfo *var,
+ 	ch->base_addr_c = base_addr_c;
+ 
+ 	lcdc_write_chan_mirror(ch, LDSA1R, base_addr_y);
+-	if (var->nonstd)
++	if (info->var.nonstd)
+ 		lcdc_write_chan_mirror(ch, LDSA2R, base_addr_c);
+ 
+ 	if (lcdc_chan_is_sublcd(ch))
+-- 
+1.7.10
+

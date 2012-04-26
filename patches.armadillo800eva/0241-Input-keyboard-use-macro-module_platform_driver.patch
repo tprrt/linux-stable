@@ -1,0 +1,73 @@
+From 132c9aae9ea700652f3542eb322a3df52d720df9 Mon Sep 17 00:00:00 2001
+From: JJ Ding <dgdunix@gmail.com>
+Date: Tue, 29 Nov 2011 11:08:39 -0800
+Subject: Input: keyboard - use macro module_platform_driver()
+
+Commit 940ab88962bc1aff3273a8356d64577a6e386736 introduced a new macro to
+save some platform_driver boilerplate code. Use it.
+
+Signed-off-by: JJ Ding <dgdunix@gmail.com>
+Signed-off-by: Dmitry Torokhov <dtor@mail.ru>
+(cherry picked from commit 5146c84f87c8aa3d115cea0d77ed3553df426752)
+
+Conflicts:
+
+	drivers/input/keyboard/adp5520-keys.c
+	drivers/input/keyboard/amikbd.c
+	drivers/input/keyboard/bf54x-keys.c
+	drivers/input/keyboard/davinci_keyscan.c
+	drivers/input/keyboard/ep93xx_keypad.c
+	drivers/input/keyboard/gpio_keys_polled.c
+	drivers/input/keyboard/imx_keypad.c
+	drivers/input/keyboard/jornada680_kbd.c
+	drivers/input/keyboard/jornada720_kbd.c
+	drivers/input/keyboard/matrix_keypad.c
+	drivers/input/keyboard/nomadik-ske-keypad.c
+	drivers/input/keyboard/omap-keypad.c
+	drivers/input/keyboard/omap4-keypad.c
+	drivers/input/keyboard/opencores-kbd.c
+	drivers/input/keyboard/pmic8xxx-keypad.c
+	drivers/input/keyboard/pxa27x_keypad.c
+	drivers/input/keyboard/pxa930_rotary.c
+	drivers/input/keyboard/samsung-keypad.c
+	drivers/input/keyboard/spear-keyboard.c
+	drivers/input/keyboard/stmpe-keypad.c
+	drivers/input/keyboard/tc3589x-keypad.c
+	drivers/input/keyboard/tegra-kbc.c
+	drivers/input/keyboard/tnetv107x-keypad.c
+	drivers/input/keyboard/twl4030_keypad.c
+	drivers/input/keyboard/w90p910_keypad.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/input/keyboard/sh_keysc.c |   14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
+
+diff --git a/drivers/input/keyboard/sh_keysc.c b/drivers/input/keyboard/sh_keysc.c
+index 934aeb583..da54ad5 100644
+--- a/drivers/input/keyboard/sh_keysc.c
++++ b/drivers/input/keyboard/sh_keysc.c
+@@ -337,19 +337,7 @@ static struct platform_driver sh_keysc_device_driver = {
+ 		.pm	= &sh_keysc_dev_pm_ops,
+ 	}
+ };
+-
+-static int __init sh_keysc_init(void)
+-{
+-	return platform_driver_register(&sh_keysc_device_driver);
+-}
+-
+-static void __exit sh_keysc_exit(void)
+-{
+-	platform_driver_unregister(&sh_keysc_device_driver);
+-}
+-
+-module_init(sh_keysc_init);
+-module_exit(sh_keysc_exit);
++module_platform_driver(sh_keysc_device_driver);
+ 
+ MODULE_AUTHOR("Magnus Damm");
+ MODULE_DESCRIPTION("SuperH KEYSC Keypad Driver");
+-- 
+1.7.10
+

@@ -1,0 +1,49 @@
+From b9adc06ac68d46790bb530b0f5b2fb606b2915fa Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Sun, 11 Sep 2011 18:15:36 +0200
+Subject: fbdev: sh_mobile_lcdc: Add sh_mobile_lcdc_entity definition
+
+The sh_mobile_lcdc_entity structure will be used to abstract operations
+performed by transceivers (such as MIPI/DSI and HDMI).
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit d2ccdc807baa38a6487a25099c939a82f4698953)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.h |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.h b/drivers/video/sh_mobile_lcdcfb.h
+index a58a0f3..d79e5aa 100644
+--- a/drivers/video/sh_mobile_lcdcfb.h
++++ b/drivers/video/sh_mobile_lcdcfb.h
+@@ -14,9 +14,23 @@ enum { LDDCKPAT1R, LDDCKPAT2R, LDMT1R, LDMT2R, LDMT3R, LDDFR, LDSM1R,
+ 
+ #define PALETTE_NR 16
+ 
+-struct sh_mobile_lcdc_priv;
+-struct fb_info;
+ struct backlight_device;
++struct fb_info;
++struct module;
++struct sh_mobile_lcdc_entity;
++struct sh_mobile_lcdc_priv;
++
++struct sh_mobile_lcdc_entity_ops {
++	/* Display */
++	int (*display_on)(struct sh_mobile_lcdc_entity *entity,
++			  struct fb_info *info);
++	void (*display_off)(struct sh_mobile_lcdc_entity *entity);
++};
++
++struct sh_mobile_lcdc_entity {
++	struct module *owner;
++	const struct sh_mobile_lcdc_entity_ops *ops;
++};
+ 
+ /*
+  * struct sh_mobile_lcdc_chan - LCDC display channel
+-- 
+1.7.10
+

@@ -1,0 +1,88 @@
+From b98cf20fdb3a2c39ed58add64ec9524c04cd005e Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Sun, 11 Sep 2011 23:30:45 +0200
+Subject: arm: mach-shmobile: Don't set MERAM ICB numbers in platform data
+
+The marker and cache ICBs are now allocated automatically, there's no
+need to specify them manually anymore.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit b0a49d98fa4315c17a098cb60ccc626645ed9756)
+
+Conflicts:
+
+	arch/arm/mach-shmobile/board-ap4evb.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-ap4evb.c   |    8 --------
+ arch/arm/mach-shmobile/board-mackerel.c |    8 --------
+ 2 files changed, 16 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/board-ap4evb.c b/arch/arm/mach-shmobile/board-ap4evb.c
+index 5f2735b..629b0f4 100644
+--- a/arch/arm/mach-shmobile/board-ap4evb.c
++++ b/arch/arm/mach-shmobile/board-ap4evb.c
+@@ -472,13 +472,9 @@ const static struct fb_videomode ap4evb_lcdc_modes[] = {
+ };
+ static struct sh_mobile_meram_cfg lcd_meram_cfg = {
+ 	.icb[0] = {
+-		.marker_icb     = 28,
+-		.cache_icb      = 24,
+ 		.meram_size     = 0x40,
+ 	},
+ 	.icb[1] = {
+-		.marker_icb     = 29,
+-		.cache_icb      = 25,
+ 		.meram_size     = 0x40,
+ 	},
+ };
+@@ -765,13 +761,9 @@ static struct platform_device fsi_ak4643_device = {
+ };
+ static struct sh_mobile_meram_cfg hdmi_meram_cfg = {
+ 	.icb[0] = {
+-		.marker_icb     = 30,
+-		.cache_icb      = 26,
+ 		.meram_size     = 0x100,
+ 	},
+ 	.icb[1] = {
+-		.marker_icb     = 31,
+-		.cache_icb      = 27,
+ 		.meram_size     = 0x100,
+ 	},
+ };
+diff --git a/arch/arm/mach-shmobile/board-mackerel.c b/arch/arm/mach-shmobile/board-mackerel.c
+index 1fd4423..6d4bc29 100644
+--- a/arch/arm/mach-shmobile/board-mackerel.c
++++ b/arch/arm/mach-shmobile/board-mackerel.c
+@@ -369,13 +369,9 @@ static int mackerel_get_brightness(void)
+ 
+ static struct sh_mobile_meram_cfg lcd_meram_cfg = {
+ 	.icb[0] = {
+-		.marker_icb     = 28,
+-		.cache_icb      = 24,
+ 		.meram_size     = 0x40,
+ 	},
+ 	.icb[1] = {
+-		.marker_icb     = 29,
+-		.cache_icb      = 25,
+ 		.meram_size     = 0x40,
+ 	},
+ };
+@@ -430,13 +426,9 @@ static struct platform_device lcdc_device = {
+ 
+ static struct sh_mobile_meram_cfg hdmi_meram_cfg = {
+ 	.icb[0] = {
+-		.marker_icb     = 30,
+-		.cache_icb      = 26,
+ 		.meram_size     = 0x100,
+ 	},
+ 	.icb[1] = {
+-		.marker_icb     = 31,
+-		.cache_icb      = 27,
+ 		.meram_size     = 0x100,
+ 	},
+ };
+-- 
+1.7.10
+

@@ -1,0 +1,44 @@
+From 201a9816caf85e7306d0482d230e496ceb45adbc Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 8 Nov 2011 20:34:24 -0800
+Subject: fbdev: sh_mipi_dsi: add SH_MIPI_DSI_HFPBM flag
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Acked-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit f7b0af68bc9f5eb5291996706951661d57909137)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mipi_dsi.c |    2 ++
+ include/video/sh_mipi_dsi.h |    1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index 20ccc23..c9fac13 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -320,6 +320,8 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 		vmctr2 |= 1 << 5;
+ 	if (pdata->flags & SH_MIPI_DSI_HBPBM)
+ 		vmctr2 |= 1 << 4;
++	if (pdata->flags & SH_MIPI_DSI_HFPBM)
++		vmctr2 |= 1 << 3;
+ 	iowrite32(vmctr2, mipi->linkbase + VMCTR2);
+ 
+ 	/*
+diff --git a/include/video/sh_mipi_dsi.h b/include/video/sh_mipi_dsi.h
+index 4e2bcb5..86a72c0 100644
+--- a/include/video/sh_mipi_dsi.h
++++ b/include/video/sh_mipi_dsi.h
+@@ -29,6 +29,7 @@ struct sh_mobile_lcdc_chan_cfg;
+ 
+ #define SH_MIPI_DSI_HSABM	(1 << 0)
+ #define SH_MIPI_DSI_HBPBM	(1 << 1)
++#define SH_MIPI_DSI_HFPBM	(1 << 2)
+ 
+ struct sh_mipi_dsi_info {
+ 	enum sh_mipi_dsi_data_fmt	data_format;
+-- 
+1.7.10
+

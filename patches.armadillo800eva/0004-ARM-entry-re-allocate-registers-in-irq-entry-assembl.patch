@@ -1,0 +1,92 @@
+From 0f8d4eb817d031882d348f61acdab92be7863533 Mon Sep 17 00:00:00 2001
+From: Russell King <rmk+kernel@arm.linux.org.uk>
+Date: Sun, 26 Jun 2011 10:34:02 +0100
+Subject: ARM: entry: re-allocate registers in irq entry assembly macros
+
+This avoids the irq entry assembly corrupting r5, thereby allowing it
+to be preserved through to the svc exit code.
+
+Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+(cherry picked from commit d9600c99c549732a501cb727157800623a06175d)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/include/asm/entry-macro-multi.S |   14 +++++++-------
+ arch/arm/kernel/entry-armv.S             |   10 +++++-----
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm/include/asm/entry-macro-multi.S b/arch/arm/include/asm/entry-macro-multi.S
+index 2da8547..2f1e209 100644
+--- a/arch/arm/include/asm/entry-macro-multi.S
++++ b/arch/arm/include/asm/entry-macro-multi.S
+@@ -4,8 +4,8 @@
+  * Interrupt handling.  Preserves r7, r8, r9
+  */
+ 	.macro	arch_irq_handler_default
+-	get_irqnr_preamble r5, lr
+-1:	get_irqnr_and_base r0, r6, r5, lr
++	get_irqnr_preamble r6, lr
++1:	get_irqnr_and_base r0, r2, r6, lr
+ 	movne	r1, sp
+ 	@
+ 	@ routine called with r0 = irq number, r1 = struct pt_regs *
+@@ -17,17 +17,17 @@
+ 	/*
+ 	 * XXX
+ 	 *
+-	 * this macro assumes that irqstat (r6) and base (r5) are
++	 * this macro assumes that irqstat (r2) and base (r6) are
+ 	 * preserved from get_irqnr_and_base above
+ 	 */
+-	ALT_SMP(test_for_ipi r0, r6, r5, lr)
++	ALT_SMP(test_for_ipi r0, r2, r6, lr)
+ 	ALT_UP_B(9997f)
+ 	movne	r1, sp
+ 	adrne	lr, BSYM(1b)
+ 	bne	do_IPI
+ 
+ #ifdef CONFIG_LOCAL_TIMERS
+-	test_for_ltirq r0, r6, r5, lr
++	test_for_ltirq r0, r2, r6, lr
+ 	movne	r0, sp
+ 	adrne	lr, BSYM(1b)
+ 	bne	do_local_timer
+@@ -40,7 +40,7 @@
+ 	.align	5
+ 	.global \symbol_name
+ \symbol_name:
+-	mov	r4, lr
++	mov	r8, lr
+ 	arch_irq_handler_default
+-	mov     pc, r4
++	mov     pc, r8
+ 	.endm
+diff --git a/arch/arm/kernel/entry-armv.S b/arch/arm/kernel/entry-armv.S
+index 90c62cd..f901c4a 100644
+--- a/arch/arm/kernel/entry-armv.S
++++ b/arch/arm/kernel/entry-armv.S
+@@ -29,16 +29,16 @@
+ #include <asm/entry-macro-multi.S>
+ 
+ /*
+- * Interrupt handling.  Preserves r7, r8, r9
++ * Interrupt handling.
+  */
+ 	.macro	irq_handler
+ #ifdef CONFIG_MULTI_IRQ_HANDLER
+-	ldr	r5, =handle_arch_irq
++	ldr	r1, =handle_arch_irq
+ 	mov	r0, sp
+-	ldr	r5, [r5]
++	ldr	r1, [r1]
+ 	adr	lr, BSYM(9997f)
+-	teq	r5, #0
+-	movne	pc, r5
++	teq	r1, #0
++	movne	pc, r1
+ #endif
+ 	arch_irq_handler_default
+ 9997:
+-- 
+1.7.10
+

@@ -1,0 +1,31 @@
+From 918b4fb00c28358daa5ff5263d552e591088cf0e Mon Sep 17 00:00:00 2001
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Date: Tue, 1 Nov 2011 14:54:38 +0900
+Subject: sh: modify the asm/sh_eth.h to linux/sh_eth.h in sh7757lcr
+
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 389cc10cbdde1a9225eac51318fb30e2039135ad)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/sh/boards/board-sh7757lcr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/sh/boards/board-sh7757lcr.c b/arch/sh/boards/board-sh7757lcr.c
+index fa2a208..ec8c84c 100644
+--- a/arch/sh/boards/board-sh7757lcr.c
++++ b/arch/sh/boards/board-sh7757lcr.c
+@@ -18,8 +18,8 @@
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/sh_mmcif.h>
+ #include <linux/mmc/sh_mobile_sdhi.h>
++#include <linux/sh_eth.h>
+ #include <cpu/sh7757.h>
+-#include <asm/sh_eth.h>
+ #include <asm/heartbeat.h>
+ 
+ static struct resource heartbeat_resource = {
+-- 
+1.7.10
+

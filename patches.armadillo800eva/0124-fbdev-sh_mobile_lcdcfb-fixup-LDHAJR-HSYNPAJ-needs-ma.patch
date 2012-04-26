@@ -1,0 +1,33 @@
+From 99dfaab457ce1a4ccb35e74a5142aae11f5912df Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 8 Nov 2011 20:33:29 -0800
+Subject: fbdev: sh_mobile_lcdcfb: fixup LDHAJR :: HSYNPAJ needs mask
+
+LDHAJR register will be broken by hsync_pos without this patch
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Acked-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit 41e583c22c3f907e46e329764b4606117040a1ae)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index facffc2..1f49ab4 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -420,7 +420,7 @@ static void sh_mobile_lcdc_geometry(struct sh_mobile_lcdc_chan *ch)
+ 	tmp = ((display_var->xres & 7) << 24) |
+ 		((display_h_total & 7) << 16) |
+ 		((display_var->hsync_len & 7) << 8) |
+-		hsync_pos;
++		(hsync_pos & 7);
+ 	lcdc_write_chan(ch, LDHAJR, tmp);
+ }
+ 
+-- 
+1.7.10
+

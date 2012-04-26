@@ -1,0 +1,34 @@
+From 5550b1a3a4608fddc90dcb515bf6d37d2b583444 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 12 Oct 2011 16:21:08 +0900
+Subject: sh: intc: Allow triggering on both edges for ARM SoCs
+
+Enable IRQ_TYPE_EDGE_BOTH on all R/SH-Mobile ARM SoCs.
+This hardware feature is supported by sh7367, sh7377,
+sh7372 and sh73a0.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 7d377b170ae0d4df7692f50c9609bea385fe87cc)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/chip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+index e0ada37..7b246ef 100644
+--- a/drivers/sh/intc/chip.c
++++ b/drivers/sh/intc/chip.c
+@@ -186,7 +186,7 @@ static unsigned char intc_irq_sense_table[IRQ_TYPE_SENSE_MASK + 1] = {
+     !defined(CONFIG_CPU_SUBTYPE_SH7709)
+ 	[IRQ_TYPE_LEVEL_HIGH] = VALID(3),
+ #endif
+-#if defined(CONFIG_ARCH_SH7372)
++#if defined(CONFIG_ARM) /* all recent SH-Mobile / R-Mobile ARM support this */
+ 	[IRQ_TYPE_EDGE_BOTH] = VALID(4),
+ #endif
+ };
+-- 
+1.7.10
+

@@ -1,0 +1,50 @@
+From 6bb3f4d8de6da233738c058f3fb0016fffd5d81b Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 13 Jul 2011 12:13:47 +0200
+Subject: fbdev: sh_mobile_lcdc: Compute clock pattern using divider
+ denominator
+
+The clock divider pattern is computed based on the dot clock register
+value which stores the divider denumerator. However, when using a 1:1
+divider ratio, the register is programmed with a value that must not be
+interpreted as a denominator. This results in a shift left operation
+with a value of 32, which produces undefined behaviour.
+
+Compute the clock pattern using the divider denominator, not the dot
+clock register value.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit 505c7de51fe5ebb81fac096cb8cebd7cb45b7955)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 99656f5..2d935db 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -481,13 +481,15 @@ static int sh_mobile_lcdc_start(struct sh_mobile_lcdc_priv *priv)
+ 		if (!m)
+ 			continue;
+ 
++		/* FIXME: sh7724 can only use 42, 48, 54 and 60 for the divider
++		 * denominator.
++		 */
++		lcdc_write_chan(ch, LDDCKPAT1R, 0);
++		lcdc_write_chan(ch, LDDCKPAT2R, (1 << (m/2)) - 1);
++
+ 		if (m == 1)
+ 			m = LDDCKR_MOSEL;
+ 		tmp |= m << (lcdc_chan_is_sublcd(ch) ? 8 : 0);
+-
+-		/* FIXME: sh7724 can only use 42, 48, 54 and 60 for the divider denominator */
+-		lcdc_write_chan(ch, LDDCKPAT1R, 0);
+-		lcdc_write_chan(ch, LDDCKPAT2R, (1 << (m/2)) - 1);
+ 	}
+ 
+ 	lcdc_write(priv, _LDDCKR, tmp);
+-- 
+1.7.10
+

@@ -1,0 +1,45 @@
+From a9e3730dc28fd56cdb9f0b898bd05c099020efb4 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Thu, 23 Jun 2011 16:02:38 +0000
+Subject: net: sh_eth: tidyup compile warning
+
+This patch tidyup below warning
+
+${LINUX}/drivers/net/sh_eth.c:1773: warning:
+'mdp' may be used uninitialized in this function
+
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Kuninori Morimoto <morimoto.kuninori@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit ec0d75518cb06261f1823fa2713fe52b9b26455e)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/sh_eth.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/sh_eth.c b/drivers/net/sh_eth.c
+index 1f3f7b4..3a7a6a5 100644
+--- a/drivers/net/sh_eth.c
++++ b/drivers/net/sh_eth.c
+@@ -1772,7 +1772,7 @@ static int sh_eth_drv_probe(struct platform_device *pdev)
+ 	int ret, devno = 0;
+ 	struct resource *res;
+ 	struct net_device *ndev = NULL;
+-	struct sh_eth_private *mdp;
++	struct sh_eth_private *mdp = NULL;
+ 	struct sh_eth_plat_data *pd;
+ 
+ 	/* get base addr */
+@@ -1890,7 +1890,7 @@ out_unregister:
+ 
+ out_release:
+ 	/* net_dev free */
+-	if (mdp->tsu_addr)
++	if (mdp && mdp->tsu_addr)
+ 		iounmap(mdp->tsu_addr);
+ 	if (ndev)
+ 		free_netdev(ndev);
+-- 
+1.7.10
+

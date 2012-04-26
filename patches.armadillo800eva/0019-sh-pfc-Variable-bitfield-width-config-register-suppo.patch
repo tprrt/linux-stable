@@ -1,0 +1,121 @@
+From 0326f83e93ea7731f457acdbc3280bb69e3c0e78 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 14 Dec 2011 01:01:05 +0900
+Subject: sh: pfc: Variable bitfield width config register support
+
+Add support for variable config reg hardware by adding
+the macro PINMUX_CFG_REG_VAR(). The width of each bitfield
+needs to be passed to the macro, and the correct space must
+be consumed by each bitfield in the enum table following the
+macro. Data registers still need to have fixed bitfields.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit f78a26f55b2438c439609fc90b473f7f08f5b697)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/pfc.c       |   44 +++++++++++++++++++++++++++++++++-----------
+ include/linux/sh_pfc.h |    9 ++++++++-
+ 2 files changed, 41 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/sh/pfc.c b/drivers/sh/pfc.c
+index 5481d19..f975f4a 100644
+--- a/drivers/sh/pfc.c
++++ b/drivers/sh/pfc.c
+@@ -174,10 +174,19 @@ static void config_reg_helper(struct pinmux_info *gpioc,
+ 			      unsigned long *maskp,
+ 			      unsigned long *posp)
+ {
++	int k;
++
+ 	*mapped_regp = pfc_phys_to_virt(gpioc, crp->reg);
+ 
+-	*maskp = (1 << crp->field_width) - 1;
+-	*posp = crp->reg_width - ((in_pos + 1) * crp->field_width);
++	if (crp->field_width) {
++		*maskp = (1 << crp->field_width) - 1;
++		*posp = crp->reg_width - ((in_pos + 1) * crp->field_width);
++	} else {
++		*maskp = (1 << crp->var_field_width[in_pos]) - 1;
++		*posp = crp->reg_width;
++		for (k = 0; k <= in_pos; k++)
++			*posp -= crp->var_field_width[k];
++	}
+ }
+ 
+ static int read_config_reg(struct pinmux_info *gpioc,
+@@ -303,8 +312,8 @@ static int get_config_reg(struct pinmux_info *gpioc, pinmux_enum_t enum_id,
+ 			  unsigned long **cntp)
+ {
+ 	struct pinmux_cfg_reg *config_reg;
+-	unsigned long r_width, f_width;
+-	int k, n;
++	unsigned long r_width, f_width, curr_width, ncomb;
++	int k, m, n, pos, bit_pos;
+ 
+ 	k = 0;
+ 	while (1) {
+@@ -315,14 +324,27 @@ static int get_config_reg(struct pinmux_info *gpioc, pinmux_enum_t enum_id,
+ 
+ 		if (!r_width)
+ 			break;
+-		for (n = 0; n < (r_width / f_width) * (1 << f_width); n++) {
+-			if (config_reg->enum_ids[n] == enum_id) {
+-				*crp = config_reg;
+-				*fieldp = n / (1 << f_width);
+-				*valuep = n % (1 << f_width);
+-				*cntp = &config_reg->cnt[n / (1 << f_width)];
+-				return 0;
++
++		pos = 0;
++		m = 0;
++		for (bit_pos = 0; bit_pos < r_width; bit_pos += curr_width) {
++			if (f_width)
++				curr_width = f_width;
++			else
++				curr_width = config_reg->var_field_width[m];
++
++			ncomb = 1 << curr_width;
++			for (n = 0; n < ncomb; n++) {
++				if (config_reg->enum_ids[pos + n] == enum_id) {
++					*crp = config_reg;
++					*fieldp = m;
++					*valuep = n;
++					*cntp = &config_reg->cnt[m];
++					return 0;
++				}
+ 			}
++			pos += ncomb;
++			m++;
+ 		}
+ 		k++;
+ 	}
+diff --git a/include/linux/sh_pfc.h b/include/linux/sh_pfc.h
+index 91666a5..84538c4 100644
+--- a/include/linux/sh_pfc.h
++++ b/include/linux/sh_pfc.h
+@@ -45,12 +45,19 @@ struct pinmux_cfg_reg {
+ 	unsigned long reg, reg_width, field_width;
+ 	unsigned long *cnt;
+ 	pinmux_enum_t *enum_ids;
++	unsigned long *var_field_width;
+ };
+ 
+ #define PINMUX_CFG_REG(name, r, r_width, f_width) \
+ 	.reg = r, .reg_width = r_width, .field_width = f_width,		\
+ 	.cnt = (unsigned long [r_width / f_width]) {}, \
+-	.enum_ids = (pinmux_enum_t [(r_width / f_width) * (1 << f_width)]) \
++	.enum_ids = (pinmux_enum_t [(r_width / f_width) * (1 << f_width)])
++
++#define PINMUX_CFG_REG_VAR(name, r, r_width, var_fw0, var_fwn...) \
++	.reg = r, .reg_width = r_width,	\
++	.cnt = (unsigned long [r_width]) {}, \
++	.var_field_width = (unsigned long [r_width]) { var_fw0, var_fwn, 0 }, \
++	.enum_ids = (pinmux_enum_t [])
+ 
+ struct pinmux_data_reg {
+ 	unsigned long reg, reg_width, reg_shadow;
+-- 
+1.7.10
+

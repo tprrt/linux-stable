@@ -1,0 +1,55 @@
+From 6b04d564a5743c0c719fb3f78e1c41332a23f911 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Tue, 6 Mar 2012 17:36:14 +0900
+Subject: ARM: mach-shmobile: add shmobile_earlytimer_init()
+
+Add shmobile_earlytimer_init() that can be used to
+enable the earlytimer probing from the SoC code.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+(cherry picked from commit 08ad42fb7702ee2968b5b837e245ca8fd2175223)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/include/mach/common.h |    1 +
+ arch/arm/mach-shmobile/timer.c               |    7 ++++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-shmobile/include/mach/common.h b/arch/arm/mach-shmobile/include/mach/common.h
+index df9c771..0e37fd5 100644
+--- a/arch/arm/mach-shmobile/include/mach/common.h
++++ b/arch/arm/mach-shmobile/include/mach/common.h
+@@ -1,6 +1,7 @@
+ #ifndef __ARCH_MACH_COMMON_H
+ #define __ARCH_MACH_COMMON_H
+ 
++extern void shmobile_earlytimer_init(void);
+ extern struct sys_timer shmobile_timer;
+ extern void shmobile_setup_console(void);
+ extern void shmobile_secondary_vector(void);
+diff --git a/arch/arm/mach-shmobile/timer.c b/arch/arm/mach-shmobile/timer.c
+index 895794b..e510643 100644
+--- a/arch/arm/mach-shmobile/timer.c
++++ b/arch/arm/mach-shmobile/timer.c
+@@ -36,11 +36,16 @@ static void __init shmobile_late_time_init(void)
+ 	early_platform_driver_probe("earlytimer", 2, 0);
+ }
+ 
+-static void __init shmobile_timer_init(void)
++void __init shmobile_earlytimer_init(void)
+ {
+ 	late_time_init = shmobile_late_time_init;
+ }
+ 
++static void __init shmobile_timer_init(void)
++{
++	shmobile_earlytimer_init();
++}
++
+ struct sys_timer shmobile_timer = {
+ 	.init		= shmobile_timer_init,
+ };
+-- 
+1.7.10
+

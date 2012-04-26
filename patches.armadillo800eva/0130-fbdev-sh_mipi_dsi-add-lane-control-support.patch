@@ -1,0 +1,101 @@
+From 4c15c6a3e5916682a8545836816f52ac4dc8be57 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 8 Nov 2011 20:34:43 -0800
+Subject: fbdev: sh_mipi_dsi: add lane control support
+
+SH MIPI DSI can use 0-4 lane
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Acked-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+(cherry picked from commit 26c3d7ac219e74ab3939048a32d6bd3b4a16798a)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-ag5evm.c |    1 +
+ arch/arm/mach-shmobile/board-ap4evb.c |    1 +
+ drivers/video/sh_mipi_dsi.c           |   10 +++++++++-
+ include/video/sh_mipi_dsi.h           |    1 +
+ 4 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-shmobile/board-ag5evm.c b/arch/arm/mach-shmobile/board-ag5evm.c
+index ce5c251..70beba2 100644
+--- a/arch/arm/mach-shmobile/board-ag5evm.c
++++ b/arch/arm/mach-shmobile/board-ag5evm.c
+@@ -323,6 +323,7 @@ static struct resource mipidsi0_resources[] = {
+ static struct sh_mipi_dsi_info mipidsi0_info = {
+ 	.data_format	= MIPI_RGB888,
+ 	.lcd_chan	= &lcdc0_info.ch[0],
++	.lane		= 2,
+ 	.vsynw_offset	= 20,
+ 	.clksrc		= 1,
+ 	.flags		= SH_MIPI_DSI_HSABM,
+diff --git a/arch/arm/mach-shmobile/board-ap4evb.c b/arch/arm/mach-shmobile/board-ap4evb.c
+index 803bc6e..1cf6040 100644
+--- a/arch/arm/mach-shmobile/board-ap4evb.c
++++ b/arch/arm/mach-shmobile/board-ap4evb.c
+@@ -578,6 +578,7 @@ static struct resource mipidsi0_resources[] = {
+ static struct sh_mipi_dsi_info mipidsi0_info = {
+ 	.data_format	= MIPI_RGB888,
+ 	.lcd_chan	= &lcdc_info.ch[0],
++	.lane		= 2,
+ 	.vsynw_offset	= 17,
+ };
+ 
+diff --git a/drivers/video/sh_mipi_dsi.c b/drivers/video/sh_mipi_dsi.c
+index dfd5154..af6bec2 100644
+--- a/drivers/video/sh_mipi_dsi.c
++++ b/drivers/video/sh_mipi_dsi.c
+@@ -8,6 +8,7 @@
+  * published by the Free Software Foundation.
+  */
+ 
++#include <linux/bitmap.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/init.h>
+@@ -153,6 +154,7 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	struct sh_mobile_lcdc_chan_cfg *ch = pdata->lcd_chan;
+ 	u32 pctype, datatype, pixfmt, linelength, vmctr2 = 0x00e00000;
+ 	bool yuv;
++	u32 tmp;
+ 
+ 	/*
+ 	 * Select data format. MIPI DSI is not hot-pluggable, so, we just use
+@@ -253,6 +255,9 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	    (!yuv && ch->interface_type != RGB24))
+ 		return -EINVAL;
+ 
++	if (!pdata->lane)
++		return -EINVAL;
++
+ 	/* reset DSI link */
+ 	iowrite32(0x00000001, base + SYSCTRL);
+ 	/* Hold reset for 100 cycles of the slowest of bus, HS byte and LP clock */
+@@ -269,7 +274,10 @@ static int __init sh_mipi_setup(struct sh_mipi *mipi,
+ 	 *	ECC check enable
+ 	 * additionally enable first two lanes
+ 	 */
+-	iowrite32(0x00003703, base + SYSCONF);
++	bitmap_fill((unsigned long *)&tmp, pdata->lane);
++	tmp |= 0x00003700;
++	iowrite32(tmp, base + SYSCONF);
++
+ 	/*
+ 	 * T_wakeup = 0x7000
+ 	 * T_hs-trail = 3
+diff --git a/include/video/sh_mipi_dsi.h b/include/video/sh_mipi_dsi.h
+index 58b78f8..3d0ec50 100644
+--- a/include/video/sh_mipi_dsi.h
++++ b/include/video/sh_mipi_dsi.h
+@@ -35,6 +35,7 @@ struct sh_mobile_lcdc_chan_cfg;
+ struct sh_mipi_dsi_info {
+ 	enum sh_mipi_dsi_data_fmt	data_format;
+ 	struct sh_mobile_lcdc_chan_cfg	*lcd_chan;
++	int				lane;
+ 	unsigned long			flags;
+ 	u32				clksrc;
+ 	unsigned int			vsynw_offset;
+-- 
+1.7.10
+

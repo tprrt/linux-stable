@@ -1,0 +1,32 @@
+From 195e6b5d4719d699278545f9127975f41b7ce8e9 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 29 Feb 2012 22:16:13 +0900
+Subject: sh: introduce sh_clk_ops in parallel with clk_ops
+
+Introduce sh_clk_ops in parallel with clk_ops.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+(cherry picked from commit e34828298ec542294f4b798606ee73e462d322f5)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/linux/sh_clk.h |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/linux/sh_clk.h b/include/linux/sh_clk.h
+index 54341d8..706c005 100644
+--- a/include/linux/sh_clk.h
++++ b/include/linux/sh_clk.h
+@@ -18,6 +18,8 @@ struct clk_mapping {
+ 	struct kref		ref;
+ };
+ 
++#define sh_clk_ops clk_ops
++
+ struct clk_ops {
+ #ifdef CONFIG_SH_CLK_CPG_LEGACY
+ 	void (*init)(struct clk *clk);
+-- 
+1.7.10
+

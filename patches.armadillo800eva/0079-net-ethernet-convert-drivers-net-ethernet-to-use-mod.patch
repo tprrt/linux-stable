@@ -1,0 +1,101 @@
+From 1f6d3ca609bee2bd730ec3654e088d28f324af07 Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin@gmail.com>
+Date: Sun, 27 Nov 2011 16:44:17 +0000
+Subject: net/ethernet: convert drivers/net/ethernet/* to use
+ module_platform_driver()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch converts the drivers in drivers/net/ethernet/* to use the
+module_platform_driver() macro which makes the code smaller and a bit
+simpler.
+
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>
+Cc: Vitaly Bordug <vbordug@ru.mvista.com>
+Cc: Wan ZongShun <mcuos.com@gmail.com>
+Cc: Nicolas Pitre <nico@fluxnic.net>
+Cc: Giuseppe Cavallaro <peppe.cavallaro@st.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Jeff Kirsher <jeffrey.t.kirsher@intel.com>
+Cc: Jiri Pirko <jpirko@redhat.com>
+Cc: Daniel Hellstrom <daniel@gaisler.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Tobias Klauser <tklauser@distanz.ch>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Jiri Kosina <jkosina@suse.cz>
+Cc: Richard Cochran <richard.cochran@omicron.at>
+Cc: Jonas Bonn <jonas@southpole.se>
+Cc: Sebastian Poehn <sebastian.poehn@belden.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda@gmail.com>
+Cc: "Michał Mirosław" <mirq-linux@rere.qmqm.pl>
+Signed-off-by: Axel Lin <axel.lin@gmail.com>
+Acked-by: Wan ZongShun <mcuos.com@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit db62f684deeb291ab2533b99843d5df9a36b1f19)
+
+	drivers/net/ethernet/8390/ax88796.c
+	drivers/net/ethernet/aeroflex/greth.c
+	drivers/net/ethernet/amd/au1000_eth.c
+	drivers/net/ethernet/amd/sunlance.c
+	drivers/net/ethernet/broadcom/sb1250-mac.c
+	drivers/net/ethernet/dnet.c
+	drivers/net/ethernet/ethoc.c
+	drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+	drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+	drivers/net/ethernet/freescale/fs_enet/mii-fec.c
+	drivers/net/ethernet/freescale/fsl_pq_mdio.c
+	drivers/net/ethernet/freescale/gianfar.c
+	drivers/net/ethernet/freescale/gianfar_ptp.c
+	drivers/net/ethernet/korina.c
+	drivers/net/ethernet/marvell/pxa168_eth.c
+	drivers/net/ethernet/micrel/ks8842.c
+	drivers/net/ethernet/micrel/ks8851_mll.c
+	drivers/net/ethernet/natsemi/jazzsonic.c
+	drivers/net/ethernet/natsemi/macsonic.c
+	drivers/net/ethernet/natsemi/xtsonic.c
+	drivers/net/ethernet/nuvoton/w90p910_ether.c
+	drivers/net/ethernet/seeq/sgiseeq.c
+	drivers/net/ethernet/sgi/meth.c
+	drivers/net/ethernet/smsc/smc911x.c
+	drivers/net/ethernet/smsc/smc91x.c
+	drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+	drivers/net/ethernet/sun/sunbmac.c
+	drivers/net/ethernet/tundra/tsi108_eth.c
+	drivers/net/ethernet/xilinx/ll_temac_main.c
+	drivers/net/ethernet/xilinx/xilinx_emaclite.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |   13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 9b23074..ebfb682 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -1957,18 +1957,7 @@ static struct platform_driver sh_eth_driver = {
+ 	},
+ };
+ 
+-static int __init sh_eth_init(void)
+-{
+-	return platform_driver_register(&sh_eth_driver);
+-}
+-
+-static void __exit sh_eth_cleanup(void)
+-{
+-	platform_driver_unregister(&sh_eth_driver);
+-}
+-
+-module_init(sh_eth_init);
+-module_exit(sh_eth_cleanup);
++module_platform_driver(sh_eth_driver);
+ 
+ MODULE_AUTHOR("Nobuhiro Iwamatsu, Yoshihiro Shimoda");
+ MODULE_DESCRIPTION("Renesas SuperH Ethernet driver");
+-- 
+1.7.10
+

@@ -1,0 +1,34 @@
+From 5c0e066e0529e0045b01c48fbcb12599fc0d2290 Mon Sep 17 00:00:00 2001
+From: Oleg Drokin <green@linuxhacker.ru>
+Date: Tue, 9 Aug 2011 03:10:22 -0700
+Subject: Update Nook Color machine 3284 to common Encore name
+
+Machine database already updated:
+http://www.arm.linux.org.uk/developer/machines/list.php?id=3284
+
+Signed-off-by: Oleg Drokin <green@linuxhacker.ru>
+Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+(cherry picked from commit 1d08fd9f6a7f2541a7b28a21fc638c4640d9cabb)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/tools/mach-types |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/tools/mach-types b/arch/arm/tools/mach-types
+index 3b3776d..fff68d0 100644
+--- a/arch/arm/tools/mach-types
++++ b/arch/arm/tools/mach-types
+@@ -910,7 +910,7 @@ omapl138_case_a3	MACH_OMAPL138_CASE_A3	OMAPL138_CASE_A3	3280
+ uemd			MACH_UEMD		UEMD			3281
+ ccwmx51mut		MACH_CCWMX51MUT		CCWMX51MUT		3282
+ rockhopper		MACH_ROCKHOPPER		ROCKHOPPER		3283
+-nookcolor		MACH_NOOKCOLOR		NOOKCOLOR		3284
++encore			MACH_ENCORE		ENCORE			3284
+ hkdkc100		MACH_HKDKC100		HKDKC100		3285
+ ts42xx			MACH_TS42XX		TS42XX			3286
+ aebl			MACH_AEBL		AEBL			3287
+-- 
+1.7.10
+

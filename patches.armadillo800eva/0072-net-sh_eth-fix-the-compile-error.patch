@@ -1,0 +1,45 @@
+From 28e67372504cee9f9ed9356081c9408df9492325 Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Mon, 22 Aug 2011 23:26:33 +0000
+Subject: net: sh_eth: fix the compile error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix the following build error:
+
+  CC      drivers/net/sh_eth.o
+drivers/net/sh_eth.c:1115: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘sh_eth_interrupt’
+drivers/net/sh_eth.c: In function ‘sh_eth_open’:
+drivers/net/sh_eth.c:1387: error: implicit declaration of function ‘request_irq’
+drivers/net/sh_eth.c:1387: error: ‘sh_eth_interrupt’ undeclared (first use in this function)
+drivers/net/sh_eth.c:1387: error: (Each undeclared identifier is reported only once
+drivers/net/sh_eth.c:1387: error: for each function it appears in.)
+drivers/net/sh_eth.c:1391: error: ‘IRQF_SHARED’ undeclared (first use in this function)
+drivers/net/sh_eth.c:1424: error: implicit declaration of function ‘free_irq’
+make[2]: *** [drivers/net/sh_eth.o] Error 1
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 69558eeeaba7d79364bb9ac4743dc1ad209508b7)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index bf2404a..4479a45 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -31,6 +31,7 @@
+ #include <linux/phy.h>
+ #include <linux/cache.h>
+ #include <linux/io.h>
++#include <linux/interrupt.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
+-- 
+1.7.10
+

@@ -1,0 +1,32 @@
+From a0cf2545f99677aff9d787a55ed16cd6aca479ba Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Tue, 24 Jan 2012 16:55:57 +0900
+Subject: sh: intc: Use IRQ_SET_MASK_OK_NOCOPY for intc_set_affinity.
+
+intc_set_affinity() updates the cpumask in place, so there's no need for
+the upper layer to do this itself.
+
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 30377642138aadeef35a31c2f90dba0b6fa7b91a)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/chip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/sh/intc/chip.c b/drivers/sh/intc/chip.c
+index d90cb7e..db10adf 100644
+--- a/drivers/sh/intc/chip.c
++++ b/drivers/sh/intc/chip.c
+@@ -73,7 +73,7 @@ static int intc_set_affinity(struct irq_data *data,
+ 
+ 	cpumask_copy(data->affinity, cpumask);
+ 
+-	return 0;
++	return IRQ_SET_MASK_OK_NOCOPY;
+ }
+ #endif
+ 
+-- 
+1.7.10
+

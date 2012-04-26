@@ -1,0 +1,41 @@
+From 08c7a79e11d3a62dc42e836d9c167c1645f0b14e Mon Sep 17 00:00:00 2001
+From: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Date: Mon, 4 Jul 2011 08:06:47 +0200
+Subject: fbdev: sh_mobile_meram: Enable/disable MERAM along with LCDC
+
+The MERAM reference counts should be tied to the two LCDC devices (LCD/HDMI)
+so that when they are enable/disabled, the MERAM is as well.
+
+Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+(cherry picked from commit ec19b9e0fa808d82ad996d73358a5b06a565b78b)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index b048417..2f921ad 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -259,6 +259,8 @@ static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
+ 		pm_runtime_get_sync(priv->dev);
+ 		if (priv->dot_clk)
+ 			clk_enable(priv->dot_clk);
++		if (priv->meram_dev && priv->meram_dev->pdev)
++			pm_runtime_get_sync(&priv->meram_dev->pdev->dev);
+ 	}
+ }
+ 
+@@ -267,6 +269,8 @@ static void sh_mobile_lcdc_clk_off(struct sh_mobile_lcdc_priv *priv)
+ 	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
+ 		if (priv->dot_clk)
+ 			clk_disable(priv->dot_clk);
++		if (priv->meram_dev && priv->meram_dev->pdev)
++			pm_runtime_put_sync(&priv->meram_dev->pdev->dev);
+ 		pm_runtime_put(priv->dev);
+ 	}
+ }
+-- 
+1.7.10
+

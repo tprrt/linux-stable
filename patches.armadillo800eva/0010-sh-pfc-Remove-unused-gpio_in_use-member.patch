@@ -1,0 +1,31 @@
+From 3d57900896786b299b6a2e7a3c0514f8b74063dc Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 28 Sep 2011 16:47:06 +0900
+Subject: sh: pfc: Remove unused gpio_in_use member
+
+Remove unused member gpio_in_use from struct pinmux_info.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit 2854aedd05255f3142167f4ac715ab67ee569004)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ include/linux/sh_pfc.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/linux/sh_pfc.h b/include/linux/sh_pfc.h
+index 30cae70..12f3519 100644
+--- a/include/linux/sh_pfc.h
++++ b/include/linux/sh_pfc.h
+@@ -87,7 +87,6 @@ struct pinmux_info {
+ 	pinmux_enum_t *gpio_data;
+ 	unsigned int gpio_data_size;
+ 
+-	unsigned long *gpio_in_use;
+ 	struct gpio_chip chip;
+ };
+ 
+-- 
+1.7.10
+

@@ -1,0 +1,53 @@
+From 08b64fd8ad32aabbe1d838d156b7353518a91f31 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Mon, 11 Jul 2011 11:05:49 +0200
+Subject: fbdev: sh_mobile_lcdc: Turn dot clock on before resuming from
+ runtime PM
+
+Resuming from runtime PM restores all LCDC registers. If the dot clock
+is off at that time display panning information will be corrupted.
+
+Turn the dot clock on before resuming from runtime PM. Similarly,
+turn the clock off after suspending the LCDC.
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+(cherry picked from commit f1ad90da5c0fcb8841cc5e6d66c56f4005d8c960)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 2f921ad..9135159 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -256,9 +256,9 @@ struct sh_mobile_lcdc_sys_bus_ops sh_mobile_lcdc_sys_bus_ops = {
+ static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
+ {
+ 	if (atomic_inc_and_test(&priv->hw_usecnt)) {
+-		pm_runtime_get_sync(priv->dev);
+ 		if (priv->dot_clk)
+ 			clk_enable(priv->dot_clk);
++		pm_runtime_get_sync(priv->dev);
+ 		if (priv->meram_dev && priv->meram_dev->pdev)
+ 			pm_runtime_get_sync(&priv->meram_dev->pdev->dev);
+ 	}
+@@ -267,11 +267,11 @@ static void sh_mobile_lcdc_clk_on(struct sh_mobile_lcdc_priv *priv)
+ static void sh_mobile_lcdc_clk_off(struct sh_mobile_lcdc_priv *priv)
+ {
+ 	if (atomic_sub_return(1, &priv->hw_usecnt) == -1) {
+-		if (priv->dot_clk)
+-			clk_disable(priv->dot_clk);
+ 		if (priv->meram_dev && priv->meram_dev->pdev)
+ 			pm_runtime_put_sync(&priv->meram_dev->pdev->dev);
+ 		pm_runtime_put(priv->dev);
++		if (priv->dot_clk)
++			clk_disable(priv->dot_clk);
+ 	}
+ }
+ 
+-- 
+1.7.10
+

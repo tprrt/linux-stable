@@ -1,0 +1,67 @@
+From c751b099194544ec0ff1e0e12a8a0b5afd14c8a9 Mon Sep 17 00:00:00 2001
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 13 Jul 2011 12:13:47 +0200
+Subject: fbdev: sh_mobile_lcdc: Store the frame buffer base address when
+ panning
+
+When the frame buffer base address is changed by a panning operation,
+store it in the channel structure. It will be reused when runtime PM
+code will use __sh_mobile_lcdc_start().
+
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+(cherry picked from commit 49d79ba2e39b5d3346e9e3ddf894eda72c743c85)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_lcdcfb.c |   22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
+index 292cfc0..69c267a 100644
+--- a/drivers/video/sh_mobile_lcdcfb.c
++++ b/drivers/video/sh_mobile_lcdcfb.c
+@@ -915,32 +915,28 @@ static int sh_mobile_fb_pan_display(struct fb_var_screeninfo *var,
+ 			base_addr_c += 2 * var->xoffset;
+ 		else
+ 			base_addr_c += var->xoffset;
+-	} else
+-		base_addr_c = 0;
++	}
+ 
+-	if (!ch->meram_enabled) {
+-		lcdc_write_chan_mirror(ch, LDSA1R, base_addr_y);
+-		if (base_addr_c)
+-			lcdc_write_chan_mirror(ch, LDSA2R, base_addr_c);
+-	} else {
++	if (ch->meram_enabled) {
+ 		struct sh_mobile_meram_cfg *cfg;
+ 		struct sh_mobile_meram_info *mdev;
+-		unsigned long icb_addr_y, icb_addr_c;
+ 		int ret;
+ 
+ 		cfg = ch->cfg.meram_cfg;
+ 		mdev = priv->meram_dev;
+ 		ret = mdev->ops->meram_update(mdev, cfg,
+ 					base_addr_y, base_addr_c,
+-					&icb_addr_y, &icb_addr_c);
++					&base_addr_y, &base_addr_c);
+ 		if (ret)
+ 			return ret;
++	}
+ 
+-		lcdc_write_chan_mirror(ch, LDSA1R, icb_addr_y);
+-		if (icb_addr_c)
+-			lcdc_write_chan_mirror(ch, LDSA2R, icb_addr_c);
++	ch->base_addr_y = base_addr_y;
++	ch->base_addr_c = base_addr_c;
+ 
+-	}
++	lcdc_write_chan_mirror(ch, LDSA1R, base_addr_y);
++	if (var->nonstd)
++		lcdc_write_chan_mirror(ch, LDSA2R, base_addr_c);
+ 
+ 	if (lcdc_chan_is_sublcd(ch))
+ 		lcdc_write(ch->lcdc, _LDRCNTR, ldrcntr ^ LDRCNTR_SRS);
+-- 
+1.7.10
+

@@ -1,0 +1,283 @@
+From 69db4921cc9c0997a22f4815c552235a0de0bd2a Mon Sep 17 00:00:00 2001
+From: Jiri Pirko <jpirko@redhat.com>
+Date: Tue, 16 Aug 2011 06:29:01 +0000
+Subject: net: remove use of ndo_set_multicast_list in drivers
+
+replace it by ndo_set_rx_mode
+
+Signed-off-by: Jiri Pirko <jpirko@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from afc4b13df143122f99a0eb10bfefb216c2806de0)
+
+	arch/ia64/hp/sim/simeth.c
+	arch/um/drivers/net_kern.c
+	arch/xtensa/platforms/iss/network.c
+	drivers/infiniband/hw/nes/nes_nic.c
+	drivers/infiniband/ulp/ipoib/ipoib_main.c
+	drivers/media/dvb/dvb-core/dvb_net.c
+	drivers/net/appletalk/cops.c
+	drivers/net/appletalk/ltpc.c
+	drivers/net/arcnet/com20020.c
+	drivers/net/bonding/bond_main.c
+	drivers/net/cris/eth_v10.c
+	drivers/net/defxx.c
+	drivers/net/dummy.c
+	drivers/net/ethernet/3com/3c501.c
+	drivers/net/ethernet/3com/3c509.c
+	drivers/net/ethernet/3com/3c515.c
+	drivers/net/ethernet/3com/3c574_cs.c
+	drivers/net/ethernet/3com/3c589_cs.c
+	drivers/net/ethernet/3com/3c59x.c
+	drivers/net/ethernet/3com/typhoon.c
+	drivers/net/ethernet/8390/3c503.c
+	drivers/net/ethernet/8390/8390.c
+	drivers/net/ethernet/8390/8390p.c
+	drivers/net/ethernet/8390/ac3200.c
+	drivers/net/ethernet/8390/ax88796.c
+	drivers/net/ethernet/8390/axnet_cs.c
+	drivers/net/ethernet/8390/e2100.c
+	drivers/net/ethernet/8390/etherh.c
+	drivers/net/ethernet/8390/hp-plus.c
+	drivers/net/ethernet/8390/hydra.c
+	drivers/net/ethernet/8390/mac8390.c
+	drivers/net/ethernet/8390/ne-h8300.c
+	drivers/net/ethernet/8390/ne2k-pci.c
+	drivers/net/ethernet/8390/pcnet_cs.c
+	drivers/net/ethernet/8390/smc-mca.c
+	drivers/net/ethernet/8390/smc-ultra.c
+	drivers/net/ethernet/8390/smc-ultra32.c
+	drivers/net/ethernet/8390/wd.c
+	drivers/net/ethernet/8390/zorro8390.c
+	drivers/net/ethernet/adaptec/starfire.c
+	drivers/net/ethernet/adi/bfin_mac.c
+	drivers/net/ethernet/aeroflex/greth.c
+	drivers/net/ethernet/alteon/acenic.c
+	drivers/net/ethernet/amd/a2065.c
+	drivers/net/ethernet/amd/am79c961a.c
+	drivers/net/ethernet/amd/amd8111e.c
+	drivers/net/ethernet/amd/ariadne.c
+	drivers/net/ethernet/amd/atarilance.c
+	drivers/net/ethernet/amd/au1000_eth.c
+	drivers/net/ethernet/amd/declance.c
+	drivers/net/ethernet/amd/depca.c
+	drivers/net/ethernet/amd/hplance.c
+	drivers/net/ethernet/amd/lance.c
+	drivers/net/ethernet/amd/mvme147.c
+	drivers/net/ethernet/amd/ni65.c
+	drivers/net/ethernet/amd/nmclan_cs.c
+	drivers/net/ethernet/amd/pcnet32.c
+	drivers/net/ethernet/amd/sun3lance.c
+	drivers/net/ethernet/amd/sunlance.c
+	drivers/net/ethernet/apple/bmac.c
+	drivers/net/ethernet/apple/cs89x0.c
+	drivers/net/ethernet/apple/mac89x0.c
+	drivers/net/ethernet/apple/mace.c
+	drivers/net/ethernet/apple/macmace.c
+	drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+	drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+	drivers/net/ethernet/atheros/atlx/atl1.c
+	drivers/net/ethernet/atheros/atlx/atl2.c
+	drivers/net/ethernet/broadcom/b44.c
+	drivers/net/ethernet/broadcom/bcm63xx_enet.c
+	drivers/net/ethernet/broadcom/sb1250-mac.c
+	drivers/net/ethernet/broadcom/tg3.c
+	drivers/net/ethernet/brocade/bna/bnad.c
+	drivers/net/ethernet/cadence/at91_ether.c
+	drivers/net/ethernet/cadence/macb.c
+	drivers/net/ethernet/chelsio/cxgb/cxgb2.c
+	drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+	drivers/net/ethernet/cisco/enic/enic_main.c
+	drivers/net/ethernet/davicom/dm9000.c
+	drivers/net/ethernet/dec/ewrk3.c
+	drivers/net/ethernet/dec/tulip/de2104x.c
+	drivers/net/ethernet/dec/tulip/de4x5.c
+	drivers/net/ethernet/dec/tulip/dmfe.c
+	drivers/net/ethernet/dec/tulip/tulip_core.c
+	drivers/net/ethernet/dec/tulip/uli526x.c
+	drivers/net/ethernet/dec/tulip/winbond-840.c
+	drivers/net/ethernet/dlink/de620.c
+	drivers/net/ethernet/dlink/dl2k.c
+	drivers/net/ethernet/dlink/sundance.c
+	drivers/net/ethernet/ethoc.c
+	drivers/net/ethernet/fealnx.c
+	drivers/net/ethernet/freescale/fec.c
+	drivers/net/ethernet/freescale/fec_mpc52xx.c
+	.../net/ethernet/freescale/fs_enet/fs_enet-main.c
+	drivers/net/ethernet/freescale/gianfar.c
+	drivers/net/ethernet/freescale/ucc_geth.c
+	drivers/net/ethernet/fujitsu/at1700.c
+	drivers/net/ethernet/fujitsu/eth16i.c
+	drivers/net/ethernet/fujitsu/fmvj18x_cs.c
+	drivers/net/ethernet/hp/hp100.c
+	drivers/net/ethernet/i825xx/3c505.c
+	drivers/net/ethernet/i825xx/3c523.c
+	drivers/net/ethernet/i825xx/3c527.c
+	drivers/net/ethernet/i825xx/82596.c
+	drivers/net/ethernet/i825xx/eepro.c
+	drivers/net/ethernet/i825xx/eexpress.c
+	drivers/net/ethernet/i825xx/ether1.c
+	drivers/net/ethernet/i825xx/lib82596.c
+	drivers/net/ethernet/i825xx/lp486e.c
+	drivers/net/ethernet/i825xx/ni52.c
+	drivers/net/ethernet/i825xx/sun3_82586.c
+	drivers/net/ethernet/i825xx/znet.c
+	drivers/net/ethernet/ibm/ehea/ehea_main.c
+	drivers/net/ethernet/ibm/emac/core.c
+	drivers/net/ethernet/ibm/ibmveth.c
+	drivers/net/ethernet/ibm/iseries_veth.c
+	drivers/net/ethernet/icplus/ipg.c
+	drivers/net/ethernet/intel/e100.c
+	drivers/net/ethernet/intel/e1000e/netdev.c
+	drivers/net/ethernet/intel/igb/igb_main.c
+	drivers/net/ethernet/intel/igbvf/netdev.c
+	drivers/net/ethernet/intel/ixgb/ixgb_main.c
+	drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+	drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+	drivers/net/ethernet/jme.c
+	drivers/net/ethernet/korina.c
+	drivers/net/ethernet/lantiq_etop.c
+	drivers/net/ethernet/marvell/skge.c
+	drivers/net/ethernet/marvell/sky2.c
+	drivers/net/ethernet/mellanox/mlx4/en_netdev.c
+	drivers/net/ethernet/micrel/ks8695net.c
+	drivers/net/ethernet/microchip/enc28j60.c
+	drivers/net/ethernet/mipsnet.c
+	drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+	drivers/net/ethernet/natsemi/ibmlana.c
+	drivers/net/ethernet/natsemi/jazzsonic.c
+	drivers/net/ethernet/natsemi/macsonic.c
+	drivers/net/ethernet/natsemi/natsemi.c
+	drivers/net/ethernet/natsemi/ns83820.c
+	drivers/net/ethernet/natsemi/xtsonic.c
+	drivers/net/ethernet/neterion/s2io.c
+	drivers/net/ethernet/neterion/vxge/vxge-main.c
+	drivers/net/ethernet/netx-eth.c
+	drivers/net/ethernet/nuvoton/w90p910_ether.c
+	drivers/net/ethernet/nvidia/forcedeth.c
+	drivers/net/ethernet/octeon/octeon_mgmt.c
+	drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
+	drivers/net/ethernet/packetengines/hamachi.c
+	drivers/net/ethernet/packetengines/yellowfin.c
+	drivers/net/ethernet/pasemi/pasemi_mac.c
+	drivers/net/ethernet/qlogic/netxen/netxen_nic_main.c
+	drivers/net/ethernet/qlogic/qla3xxx.c
+	drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+	drivers/net/ethernet/qlogic/qlge/qlge_main.c
+	drivers/net/ethernet/racal/ni5010.c
+	drivers/net/ethernet/rdc/r6040.c
+	drivers/net/ethernet/realtek/8139cp.c
+	drivers/net/ethernet/realtek/8139too.c
+	drivers/net/ethernet/realtek/atp.c
+	drivers/net/ethernet/realtek/r8169.c
+	drivers/net/ethernet/realtek/sc92031.c
+	drivers/net/ethernet/seeq/ether3.c
+	drivers/net/ethernet/seeq/seeq8005.c
+	drivers/net/ethernet/seeq/sgiseeq.c
+	drivers/net/ethernet/sfc/efx.c
+	drivers/net/ethernet/sgi/ioc3-eth.c
+	drivers/net/ethernet/sis/sis190.c
+	drivers/net/ethernet/sis/sis900.c
+	drivers/net/ethernet/smsc/epic100.c
+	drivers/net/ethernet/smsc/smc911x.c
+	drivers/net/ethernet/smsc/smc9194.c
+	drivers/net/ethernet/smsc/smc91c92_cs.c
+	drivers/net/ethernet/smsc/smc91x.c
+	drivers/net/ethernet/smsc/smsc911x.c
+	drivers/net/ethernet/smsc/smsc9420.c
+	drivers/net/ethernet/sun/cassini.c
+	drivers/net/ethernet/sun/sunbmac.c
+	drivers/net/ethernet/sun/sungem.c
+	drivers/net/ethernet/sun/sunhme.c
+	drivers/net/ethernet/sun/sunqe.c
+	drivers/net/ethernet/sun/sunvnet.c
+	drivers/net/ethernet/tehuti/tehuti.c
+	drivers/net/ethernet/ti/cpmac.c
+	drivers/net/ethernet/ti/davinci_emac.c
+	drivers/net/ethernet/ti/tlan.c
+	drivers/net/ethernet/toshiba/ps3_gelic_net.c
+	drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+	drivers/net/ethernet/toshiba/spider_net.c
+	drivers/net/ethernet/toshiba/tc35815.c
+	drivers/net/ethernet/tundra/tsi108_eth.c
+	drivers/net/ethernet/via/via-rhine.c
+	drivers/net/ethernet/via/via-velocity.c
+	drivers/net/ethernet/xilinx/ll_temac_main.c
+	drivers/net/ethernet/xircom/xirc2ps_cs.c
+	drivers/net/ethernet/xscale/ixp4xx_eth.c
+	drivers/net/macvlan.c
+	drivers/net/skfp/skfddi.c
+	drivers/net/tokenring/3c359.c
+	drivers/net/tokenring/ibmtr.c
+	drivers/net/tokenring/lanstreamer.c
+	drivers/net/tokenring/olympic.c
+	drivers/net/tokenring/smctr.c
+	drivers/net/tokenring/tms380tr.c
+	drivers/net/tun.c
+	drivers/net/usb/asix.c
+	drivers/net/usb/catc.c
+	drivers/net/usb/dm9601.c
+	drivers/net/usb/int51x1.c
+	drivers/net/usb/kaweth.c
+	drivers/net/usb/mcs7830.c
+	drivers/net/usb/pegasus.c
+	drivers/net/usb/rtl8150.c
+	drivers/net/usb/smsc75xx.c
+	drivers/net/usb/smsc95xx.c
+	drivers/net/vmxnet3/vmxnet3_drv.c
+	drivers/net/wan/sbni.c
+	drivers/net/wireless/airo.c
+	drivers/net/wireless/hostap/hostap_main.c
+	drivers/net/wireless/ipw2x00/ipw2200.c
+	drivers/net/wireless/libertas/main.c
+	drivers/net/wireless/libertas/mesh.c
+	drivers/net/wireless/mwifiex/main.c
+	drivers/net/wireless/orinoco/main.c
+	drivers/net/wireless/orinoco/orinoco_usb.c
+	drivers/net/wireless/ray_cs.c
+	drivers/net/wireless/rndis_wlan.c
+	drivers/net/wireless/zd1201.c
+	drivers/s390/net/lcs.c
+	drivers/s390/net/qeth_l2_main.c
+	drivers/s390/net/qeth_l3_main.c
+	drivers/staging/ath6kl/os/linux/ar6000_drv.c
+	drivers/staging/brcm80211/brcmfmac/dhd_linux.c
+	drivers/staging/et131x/et131x_netdev.c
+	drivers/staging/hv/netvsc_drv.c
+	drivers/staging/octeon/ethernet.c
+	drivers/staging/rtl8187se/r8180_core.c
+	drivers/staging/rtl8192e/r8192E_core.c
+	drivers/staging/rtl8192u/r8192U_core.c
+	drivers/staging/slicoss/slicoss.c
+	drivers/staging/vt6655/device_main.c
+	drivers/staging/vt6656/main_usb.c
+	drivers/staging/wlags49_h2/wl_netdev.c
+	drivers/staging/wlan-ng/p80211netdev.c
+	net/8021q/vlan_dev.c
+	net/atm/lec.c
+	net/bluetooth/bnep/netdev.c
+	net/bridge/br_device.c
+	net/dsa/slave.c
+	net/irda/irlan/irlan_eth.c
+	net/mac80211/iface.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 190f619..bf2404a 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -1759,7 +1759,7 @@ static const struct net_device_ops sh_eth_netdev_ops = {
+ 	.ndo_start_xmit		= sh_eth_start_xmit,
+ 	.ndo_get_stats		= sh_eth_get_stats,
+ #if defined(SH_ETH_HAS_TSU)
+-	.ndo_set_multicast_list	= sh_eth_set_multicast_list,
++	.ndo_set_rx_mode	= sh_eth_set_multicast_list,
+ #endif
+ 	.ndo_tx_timeout		= sh_eth_tx_timeout,
+ 	.ndo_do_ioctl		= sh_eth_do_ioctl,
+-- 
+1.7.10
+

@@ -1,0 +1,58 @@
+From 7468303594359b92b0beaa4fd090cb7875ba156e Mon Sep 17 00:00:00 2001
+From: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Date: Wed, 22 Jun 2011 07:49:50 +0200
+Subject: fbdev: sh_mobile_meram: Move private data from .h to .c
+
+There is no reason for sh_mobile_meram_priv to be in the .h file
+since it should be private to sh_mobile_meram.c
+
+Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+(cherry picked from commit 0aa492be88b10b7b7621101df5fbf79f9236aecb)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/video/sh_mobile_meram.c |    8 ++++++++
+ drivers/video/sh_mobile_meram.h |    8 --------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/video/sh_mobile_meram.c b/drivers/video/sh_mobile_meram.c
+index 34efd8a..cfa1a78 100644
+--- a/drivers/video/sh_mobile_meram.c
++++ b/drivers/video/sh_mobile_meram.c
+@@ -37,6 +37,14 @@
+ #define MEQSEL1 0x40
+ #define MEQSEL2 0x44
+ 
++struct sh_mobile_meram_priv {
++	void __iomem	*base;
++	struct mutex	lock;
++	unsigned long	used_icb;
++	int		used_meram_cache_regions;
++	unsigned long	used_meram_cache[SH_MOBILE_MERAM_ICB_NUM];
++};
++
+ /* settings */
+ #define MERAM_SEC_LINE 15
+ #define MERAM_LINE_WIDTH 2048
+diff --git a/drivers/video/sh_mobile_meram.h b/drivers/video/sh_mobile_meram.h
+index 82c54fb..1615204b 100644
+--- a/drivers/video/sh_mobile_meram.h
++++ b/drivers/video/sh_mobile_meram.h
+@@ -17,14 +17,6 @@
+ #define SH_MOBILE_MERAM_CACHE_OFFSET(p)	((p) >> 16)
+ #define SH_MOBILE_MERAM_CACHE_SIZE(p)	((p) & 0xffff)
+ 
+-struct sh_mobile_meram_priv {
+-	void __iomem	*base;
+-	struct mutex	lock;
+-	unsigned long	used_icb;
+-	int		used_meram_cache_regions;
+-	unsigned long	used_meram_cache[SH_MOBILE_MERAM_ICB_NUM];
+-};
+-
+ int sh_mobile_meram_alloc_icb(const struct sh_mobile_meram_cfg *cfg,
+ 		   int xres,
+ 		   int yres,
+-- 
+1.7.10
+

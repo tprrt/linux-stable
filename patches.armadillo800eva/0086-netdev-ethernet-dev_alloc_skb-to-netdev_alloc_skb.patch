@@ -1,0 +1,89 @@
+From c45262499db9ff6ad6f32765b6fe0c9433443f91 Mon Sep 17 00:00:00 2001
+From: "Pradeep A. Dalvi" <netdev@pradeepdalvi.com>
+Date: Mon, 6 Feb 2012 11:16:13 +0000
+Subject: netdev: ethernet dev_alloc_skb to netdev_alloc_skb
+
+Replaced deprecating dev_alloc_skb with netdev_alloc_skb in drivers/net/ethernet
+  - Removed extra skb->dev = dev after netdev_alloc_skb
+
+Signed-off-by: Pradeep A Dalvi <netdev@pradeepdalvi.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit dae2e9f430c46c29e3f771110094bd3da3625aa4)
+
+Conflicts:
+
+	drivers/net/ethernet/netx-eth.c
+	drivers/net/ethernet/nuvoton/w90p910_ether.c
+	drivers/net/ethernet/nvidia/forcedeth.c
+	drivers/net/ethernet/packetengines/hamachi.c
+	drivers/net/ethernet/packetengines/yellowfin.c
+	drivers/net/ethernet/pasemi/pasemi_mac.c
+	drivers/net/ethernet/qlogic/netxen/netxen_nic_init.c
+	drivers/net/ethernet/qlogic/qlcnic/qlcnic_ethtool.c
+	drivers/net/ethernet/qlogic/qlcnic/qlcnic_init.c
+	drivers/net/ethernet/racal/ni5010.c
+	drivers/net/ethernet/realtek/atp.c
+	drivers/net/ethernet/seeq/ether3.c
+	drivers/net/ethernet/seeq/seeq8005.c
+	drivers/net/ethernet/sis/sis900.c
+	drivers/net/ethernet/smsc/epic100.c
+	drivers/net/ethernet/smsc/smc911x.c
+	drivers/net/ethernet/smsc/smc9194.c
+	drivers/net/ethernet/smsc/smc91c92_cs.c
+	drivers/net/ethernet/smsc/smc91x.c
+	drivers/net/ethernet/smsc/smsc9420.c
+	drivers/net/ethernet/sun/cassini.c
+	drivers/net/ethernet/sun/sunbmac.c
+	drivers/net/ethernet/sun/sunhme.c
+	drivers/net/ethernet/sun/sunqe.c
+	drivers/net/ethernet/tehuti/tehuti.c
+	drivers/net/ethernet/ti/davinci_emac.c
+	drivers/net/ethernet/tile/tilepro.c
+	drivers/net/ethernet/toshiba/tc35815.c
+	drivers/net/ethernet/via/via-rhine.c
+	drivers/net/ethernet/via/via-velocity.c
+	drivers/net/ethernet/xilinx/xilinx_emaclite.c
+	drivers/net/ethernet/xircom/xirc2ps_cs.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 1fe9541..cfad091 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -654,13 +654,12 @@ static void sh_eth_ring_format(struct net_device *ndev)
+ 	for (i = 0; i < RX_RING_SIZE; i++) {
+ 		/* skb */
+ 		mdp->rx_skbuff[i] = NULL;
+-		skb = dev_alloc_skb(mdp->rx_buf_sz);
++		skb = netdev_alloc_skb(ndev, mdp->rx_buf_sz);
+ 		mdp->rx_skbuff[i] = skb;
+ 		if (skb == NULL)
+ 			break;
+ 		dma_map_single(&ndev->dev, skb->data, mdp->rx_buf_sz,
+ 				DMA_FROM_DEVICE);
+-		skb->dev = ndev; /* Mark as being used by this device. */
+ 		sh_eth_set_receive_align(skb);
+ 
+ 		/* RX descriptor */
+@@ -955,13 +954,12 @@ static int sh_eth_rx(struct net_device *ndev)
+ 		rxdesc->buffer_length = ALIGN(mdp->rx_buf_sz, 16);
+ 
+ 		if (mdp->rx_skbuff[entry] == NULL) {
+-			skb = dev_alloc_skb(mdp->rx_buf_sz);
++			skb = netdev_alloc_skb(ndev, mdp->rx_buf_sz);
+ 			mdp->rx_skbuff[entry] = skb;
+ 			if (skb == NULL)
+ 				break;	/* Better luck next round. */
+ 			dma_map_single(&ndev->dev, skb->data, mdp->rx_buf_sz,
+ 					DMA_FROM_DEVICE);
+-			skb->dev = ndev;
+ 			sh_eth_set_receive_align(skb);
+ 
+ 			skb_checksum_none_assert(skb);
+-- 
+1.7.10
+

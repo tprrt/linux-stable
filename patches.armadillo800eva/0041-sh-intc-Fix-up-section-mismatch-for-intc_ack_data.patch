@@ -1,0 +1,44 @@
+From c71a753d25dfdfde9288975e60f6390570bcdd2d Mon Sep 17 00:00:00 2001
+From: Paul Mundt <lethal@linux-sh.org>
+Date: Thu, 29 Mar 2012 00:28:19 +0900
+Subject: sh: intc: Fix up section mismatch for intc_ack_data
+
+intc_ack_data is flagged as __init when it shouldn't be, causing section
+mismatches in non-init paths like intc_set_ack_handle():
+
+WARNING: drivers/built-in.o(.text+0x5d760):
+Section mismatch in reference from the function
+intc_set_ack_handle() to the function .init.text:intc_ack_data()
+The function intc_set_ack_handle()
+references the function __init intc_ack_data().
+This is often because intc_set_ack_handle lacks a __init
+annotation or the annotation of intc_ack_data is wrong.
+
+Reported-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+(cherry picked from commit b448d6adf733cc130339685531940f28902f2b75)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ drivers/sh/intc/handle.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/sh/intc/handle.c b/drivers/sh/intc/handle.c
+index f461d53..7863a44 100644
+--- a/drivers/sh/intc/handle.c
++++ b/drivers/sh/intc/handle.c
+@@ -172,9 +172,8 @@ intc_get_prio_handle(struct intc_desc *desc, struct intc_desc_int *d,
+ 	return 0;
+ }
+ 
+-static unsigned int __init intc_ack_data(struct intc_desc *desc,
+-					  struct intc_desc_int *d,
+-					  intc_enum enum_id)
++static unsigned int intc_ack_data(struct intc_desc *desc,
++				  struct intc_desc_int *d, intc_enum enum_id)
+ {
+ 	struct intc_mask_reg *mr = desc->hw.ack_regs;
+ 	unsigned int i, j, fn, mode;
+-- 
+1.7.10
+

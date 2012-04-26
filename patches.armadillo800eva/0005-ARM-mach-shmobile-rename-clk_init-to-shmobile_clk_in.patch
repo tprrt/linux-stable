@@ -1,0 +1,108 @@
+From 3411576376a113c3a7616495508d3219b18f90d4 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm@opensource.se>
+Date: Wed, 29 Feb 2012 21:41:30 +0900
+Subject: ARM: mach-shmobile: rename clk_init() to shmobile_clk_init()
+
+Rename clk_init() to shmobile_clk_init() to avoid a potential
+future name space collision with the common clock framework.
+
+Signed-off-by: Magnus Damm <damm@opensource.se>
+Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
+(cherry picked from commit 6b6a4c067cefe04eb0a0e7d1cace16ae727c6295)
+
+Conflicts:
+
+	arch/arm/mach-shmobile/clock-r8a7740.c
+	arch/arm/mach-shmobile/clock-r8a7779.c
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/clock-sh7367.c        |    2 +-
+ arch/arm/mach-shmobile/clock-sh7372.c        |    2 +-
+ arch/arm/mach-shmobile/clock-sh7377.c        |    2 +-
+ arch/arm/mach-shmobile/clock-sh73a0.c        |    2 +-
+ arch/arm/mach-shmobile/clock.c               |    2 +-
+ arch/arm/mach-shmobile/include/mach/common.h |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/clock-sh7367.c b/arch/arm/mach-shmobile/clock-sh7367.c
+index 6b186ae..414a3e7 100644
+--- a/arch/arm/mach-shmobile/clock-sh7367.c
++++ b/arch/arm/mach-shmobile/clock-sh7367.c
+@@ -352,7 +352,7 @@ void __init sh7367_clock_init(void)
+ 	clkdev_add_table(lookups, ARRAY_SIZE(lookups));
+ 
+ 	if (!ret)
+-		clk_init();
++		shmobile_clk_init();
+ 	else
+ 		panic("failed to setup sh7367 clocks\n");
+ }
+diff --git a/arch/arm/mach-shmobile/clock-sh7372.c b/arch/arm/mach-shmobile/clock-sh7372.c
+index c0800d8..24e0cac 100644
+--- a/arch/arm/mach-shmobile/clock-sh7372.c
++++ b/arch/arm/mach-shmobile/clock-sh7372.c
+@@ -696,7 +696,7 @@ void __init sh7372_clock_init(void)
+ 	clkdev_add_table(lookups, ARRAY_SIZE(lookups));
+ 
+ 	if (!ret)
+-		clk_init();
++		shmobile_clk_init();
+ 	else
+ 		panic("failed to setup sh7372 clocks\n");
+ 
+diff --git a/arch/arm/mach-shmobile/clock-sh7377.c b/arch/arm/mach-shmobile/clock-sh7377.c
+index 9594246..b88ebd8 100644
+--- a/arch/arm/mach-shmobile/clock-sh7377.c
++++ b/arch/arm/mach-shmobile/clock-sh7377.c
+@@ -363,7 +363,7 @@ void __init sh7377_clock_init(void)
+ 	clkdev_add_table(lookups, ARRAY_SIZE(lookups));
+ 
+ 	if (!ret)
+-		clk_init();
++		shmobile_clk_init();
+ 	else
+ 		panic("failed to setup sh7377 clocks\n");
+ }
+diff --git a/arch/arm/mach-shmobile/clock-sh73a0.c b/arch/arm/mach-shmobile/clock-sh73a0.c
+index bcacb1e..8d4b5db 100644
+--- a/arch/arm/mach-shmobile/clock-sh73a0.c
++++ b/arch/arm/mach-shmobile/clock-sh73a0.c
+@@ -399,7 +399,7 @@ void __init sh73a0_clock_init(void)
+ 	clkdev_add_table(lookups, ARRAY_SIZE(lookups));
+ 
+ 	if (!ret)
+-		clk_init();
++		shmobile_clk_init();
+ 	else
+ 		panic("failed to setup sh73a0 clocks\n");
+ }
+diff --git a/arch/arm/mach-shmobile/clock.c b/arch/arm/mach-shmobile/clock.c
+index 31654d7..e816ca9 100644
+--- a/arch/arm/mach-shmobile/clock.c
++++ b/arch/arm/mach-shmobile/clock.c
+@@ -24,7 +24,7 @@
+ #include <linux/sh_clk.h>
+ #include <linux/export.h>
+ 
+-int __init clk_init(void)
++int __init shmobile_clk_init(void)
+ {
+ 	/* Kick the child clocks.. */
+ 	recalculate_root_clocks();
+diff --git a/arch/arm/mach-shmobile/include/mach/common.h b/arch/arm/mach-shmobile/include/mach/common.h
+index 37c05ac..df9c771 100644
+--- a/arch/arm/mach-shmobile/include/mach/common.h
++++ b/arch/arm/mach-shmobile/include/mach/common.h
+@@ -5,7 +5,7 @@ extern struct sys_timer shmobile_timer;
+ extern void shmobile_setup_console(void);
+ extern void shmobile_secondary_vector(void);
+ struct clk;
+-extern int clk_init(void);
++extern int shmobile_clk_init(void);
+ extern void shmobile_handle_irq_intc(struct pt_regs *);
+ extern void shmobile_handle_irq_gic(struct pt_regs *);
+ extern struct platform_suspend_ops shmobile_suspend_ops;
+-- 
+1.7.10
+
