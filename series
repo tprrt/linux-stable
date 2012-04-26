@@ -93,4 +93,4 @@ patches.lttng/0073-staging-lttng-cleanup-one-bit-signed-bitfields.patch
 patches.lttng/0172-staging-lttng-Fix-recent-modifications-to-string_fro.patch
 patches.lttng/0173-staging-lttng-TODO-update-lttng-reported-to-work-fin.patch
 patches.lttng/0174-staging-lttng-Update-max-symbol-length-to-256.patch
-
+patches.lttng/lttng-update-to-v2.0.1.patch
