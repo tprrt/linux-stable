@@ -1,9 +1,10 @@
-From ltsi-dev-bounces@lists.linuxfoundation.org Sat May 12 10:18:23 2012
+From marco.stornelli@gmail.com Wed May 16 08:53:27 2012
 From: Marco Stornelli <marco.stornelli@gmail.com>
-Date: Sat, 12 May 2012 19:11:46 +0200
+Date: Wed, 16 May 2012 17:46:49 +0200
 Subject: pramfs: extended attributes support
-To: LTSI <ltsi-dev@lists.linuxfoundation.org>
-Message-ID: <4FAE99D2.9050103@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: LTSI <ltsi-dev@lists.linuxfoundation.org>
+Message-ID: <4FB3CBE9.9060404@gmail.com>
 
 
 From: Marco Stornelli <marco.stornelli@gmail.com>
@@ -11,11 +12,14 @@ From: Marco Stornelli <marco.stornelli@gmail.com>
 Extended attributes operations.
 
 Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
-
 ---
- fs/pramfs/xattr.c | 1118 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/pramfs/xattr.h |  134 ++++++
- 2 files changed, 1252 insertions(+)
+---
+ fs/pramfs/xattr.c          | 1118 +++++++++++++++++++++++++++++++++++++++++++++
+ fs/pramfs/xattr.h          |  134 +++++
+ fs/pramfs/xattr_security.c |   79 +++
+ fs/pramfs/xattr_trusted.c  |   65 ++
+ fs/pramfs/xattr_user.c     |   69 ++
+ 5 files changed, 1465 insertions(+)
 
 --- /dev/null
 +++ b/fs/pramfs/xattr.c
@@ -1275,3 +1279,225 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
 +	return 0;
 +}
 +#endif
+--- /dev/null
++++ b/fs/pramfs/xattr_security.c
+@@ -0,0 +1,79 @@
++/*
++ * BRIEF DESCRIPTION
++ *
++ * Handler for storing security labels as extended attributes.
++ *
++ * Copyright 2010-2011 Marco Stornelli <marco.stornelli@gmail.com>
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#include <linux/module.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/fs.h>
++#include <linux/pram_fs.h>
++#include <linux/security.h>
++#include "xattr.h"
++
++static size_t pram_xattr_security_list(struct dentry *dentry, char *list,
++				       size_t list_size, const char *name,
++				       size_t name_len, int type)
++{
++	const int prefix_len = XATTR_SECURITY_PREFIX_LEN;
++	const size_t total_len = prefix_len + name_len + 1;
++
++	if (list && total_len <= list_size) {
++		memcpy(list, XATTR_SECURITY_PREFIX, prefix_len);
++		memcpy(list+prefix_len, name, name_len);
++		list[prefix_len + name_len] = '\0';
++	}
++	return total_len;
++}
++
++static int pram_xattr_security_get(struct dentry *dentry, const char *name,
++		       void *buffer, size_t size, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	return pram_xattr_get(dentry->d_inode, PRAM_XATTR_INDEX_SECURITY, name,
++			      buffer, size);
++}
++
++static int pram_xattr_security_set(struct dentry *dentry, const char *name,
++		const void *value, size_t size, int flags, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	return pram_xattr_set(dentry->d_inode, PRAM_XATTR_INDEX_SECURITY, name,
++			      value, size, flags);
++}
++
++int pram_init_security(struct inode *inode, struct inode *dir,
++			const struct qstr *qstr)
++{
++	int err;
++	size_t len;
++	void *value;
++	char *name;
++
++	err = security_inode_init_security(inode, dir, qstr, &name, &value, &len);
++	if (err) {
++		if (err == -EOPNOTSUPP)
++			return 0;
++		return err;
++	}
++	err = pram_xattr_set(inode, PRAM_XATTR_INDEX_SECURITY,
++			     name, value, len, 0);
++	kfree(name);
++	kfree(value);
++	return err;
++}
++
++const struct xattr_handler pram_xattr_security_handler = {
++	.prefix	= XATTR_SECURITY_PREFIX,
++	.list	= pram_xattr_security_list,
++	.get	= pram_xattr_security_get,
++	.set	= pram_xattr_security_set,
++};
+--- /dev/null
++++ b/fs/pramfs/xattr_trusted.c
+@@ -0,0 +1,65 @@
++/*
++ * BRIEF DESCRIPTION
++ *
++ * Handler for trusted extended attributes.
++ *
++ * Copyright 2010-2011 Marco Stornelli <marco.stornelli@gmail.com>
++ *
++ * based on fs/ext2/xattr_trusted.c with the following copyright:
++ *
++ * Copyright (C) 2003 by Andreas Gruenbacher, <a.gruenbacher@computer.org>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#include <linux/module.h>
++#include <linux/string.h>
++#include <linux/capability.h>
++#include <linux/fs.h>
++#include <linux/pram_fs.h>
++#include "xattr.h"
++
++static size_t pram_xattr_trusted_list(struct dentry *dentry, char *list,
++				size_t list_size, const char *name,
++				size_t name_len, int type)
++{
++	const int prefix_len = XATTR_TRUSTED_PREFIX_LEN;
++	const size_t total_len = prefix_len + name_len + 1;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return 0;
++
++	if (list && total_len <= list_size) {
++		memcpy(list, XATTR_TRUSTED_PREFIX, prefix_len);
++		memcpy(list+prefix_len, name, name_len);
++		list[prefix_len + name_len] = '\0';
++	}
++	return total_len;
++}
++
++static int pram_xattr_trusted_get(struct dentry *dentry, const char *name,
++				void *buffer, size_t size, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	return pram_xattr_get(dentry->d_inode, PRAM_XATTR_INDEX_TRUSTED, name,
++			      buffer, size);
++}
++
++static int pram_xattr_trusted_set(struct dentry *dentry, const char *name,
++		const void *value, size_t size, int flags, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	return pram_xattr_set(dentry->d_inode, PRAM_XATTR_INDEX_TRUSTED, name,
++			      value, size, flags);
++}
++
++const struct xattr_handler pram_xattr_trusted_handler = {
++	.prefix	= XATTR_TRUSTED_PREFIX,
++	.list	= pram_xattr_trusted_list,
++	.get	= pram_xattr_trusted_get,
++	.set	= pram_xattr_trusted_set,
++};
+--- /dev/null
++++ b/fs/pramfs/xattr_user.c
+@@ -0,0 +1,69 @@
++/*
++ * BRIEF DESCRIPTION
++ *
++ * Handler for extended user attributes.
++ *
++ * Copyright 2010-2011 Marco Stornelli <marco.stornelli@gmail.com>
++ *
++ * based on fs/ext2/xattr_user.c with the following copyright:
++ *
++ * Copyright (C) 2001 by Andreas Gruenbacher, <a.gruenbacher@computer.org>
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/string.h>
++#include "pram.h"
++#include "xattr.h"
++
++static size_t pram_xattr_user_list(struct dentry *dentry, char *list,
++				   size_t list_size, const char *name,
++				   size_t name_len, int type)
++{
++	const size_t prefix_len = XATTR_USER_PREFIX_LEN;
++	const size_t total_len = prefix_len + name_len + 1;
++
++	if (!test_opt(dentry->d_sb, XATTR_USER))
++		return 0;
++
++	if (list && total_len <= list_size) {
++		memcpy(list, XATTR_USER_PREFIX, prefix_len);
++		memcpy(list+prefix_len, name, name_len);
++		list[prefix_len + name_len] = '\0';
++	}
++	return total_len;
++}
++
++static int pram_xattr_user_get(struct dentry *dentry, const char *name,
++		void *buffer, size_t size, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	if (!test_opt(dentry->d_sb, XATTR_USER))
++		return -EOPNOTSUPP;
++	return pram_xattr_get(dentry->d_inode, PRAM_XATTR_INDEX_USER,
++			      name, buffer, size);
++}
++
++static int pram_xattr_user_set(struct dentry *dentry, const char *name,
++		const void *value, size_t size, int flags, int type)
++{
++	if (strcmp(name, "") == 0)
++		return -EINVAL;
++	if (!test_opt(dentry->d_sb, XATTR_USER))
++		return -EOPNOTSUPP;
++
++	return pram_xattr_set(dentry->d_inode, PRAM_XATTR_INDEX_USER,
++			      name, value, size, flags);
++}
++
++const struct xattr_handler pram_xattr_user_handler = {
++	.prefix	= XATTR_USER_PREFIX,
++	.list	= pram_xattr_user_list,
++	.get	= pram_xattr_user_get,
++	.set	= pram_xattr_user_set,
++};
