@@ -19,18 +19,16 @@ Signed-off-by: Ingo Molnar <mingo@elte.hu>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- include/linux/plist.h   |   55 +++--------------------------------------------
- include/linux/rtmutex.h |    4 ++--
- kernel/fork.c           |    2 +-
- kernel/futex.c          |    2 +-
- kernel/power/qos.c      |    6 +++---
- kernel/rtmutex.c        |    2 +-
- kernel/sched.c          |    4 ++--
- lib/plist.c             |    7 +-----
+ include/linux/plist.h   |   55 ++----------------------------------------------
+ include/linux/rtmutex.h |    4 +--
+ kernel/fork.c           |    2 -
+ kernel/futex.c          |    2 -
+ kernel/power/qos.c      |    6 ++---
+ kernel/rtmutex.c        |    2 -
+ kernel/sched.c          |    4 +--
+ lib/plist.c             |    7 ------
  8 files changed, 14 insertions(+), 68 deletions(-)
 
-diff --git a/include/linux/plist.h b/include/linux/plist.h
-index c9b9f32..aa0fb39 100644
 --- a/include/linux/plist.h
 +++ b/include/linux/plist.h
 @@ -77,14 +77,9 @@
@@ -93,12 +91,11 @@ index c9b9f32..aa0fb39 100644
   * plist_head_init - dynamic struct plist_head initializer
   * @head:	&struct plist_head pointer
 - * @lock:	spinlock protecting the list (debugging)
-  */
- static inline void
+- */
+-static inline void
 -plist_head_init(struct plist_head *head, spinlock_t *lock)
-+plist_head_init(struct plist_head *head)
- {
- 	INIT_LIST_HEAD(&head->node_list);
+-{
+-	INIT_LIST_HEAD(&head->node_list);
 -#ifdef CONFIG_DEBUG_PI_LIST
 -	head->spinlock = lock;
 -	head->rawlock = NULL;
@@ -109,11 +106,12 @@ index c9b9f32..aa0fb39 100644
 - * plist_head_init_raw - dynamic struct plist_head initializer
 - * @head:	&struct plist_head pointer
 - * @lock:	raw_spinlock protecting the list (debugging)
-- */
--static inline void
+  */
+ static inline void
 -plist_head_init_raw(struct plist_head *head, raw_spinlock_t *lock)
--{
--	INIT_LIST_HEAD(&head->node_list);
++plist_head_init(struct plist_head *head)
+ {
+ 	INIT_LIST_HEAD(&head->node_list);
 -#ifdef CONFIG_DEBUG_PI_LIST
 -	head->rawlock = lock;
 -	head->spinlock = NULL;
@@ -121,8 +119,6 @@ index c9b9f32..aa0fb39 100644
  }
  
  /**
-diff --git a/include/linux/rtmutex.h b/include/linux/rtmutex.h
-index 8d522ff..de17134 100644
 --- a/include/linux/rtmutex.h
 +++ b/include/linux/rtmutex.h
 @@ -66,7 +66,7 @@ struct hrtimer_sleeper;
@@ -134,7 +130,7 @@ index 8d522ff..de17134 100644
  	, .owner = NULL \
  	__DEBUG_RT_MUTEX_INITIALIZER(mutexname)}
  
-@@ -100,7 +100,7 @@ extern void rt_mutex_unlock(struct rt_mutex *lock);
+@@ -100,7 +100,7 @@ extern void rt_mutex_unlock(struct rt_mu
  
  #ifdef CONFIG_RT_MUTEXES
  # define INIT_RT_MUTEXES(tsk)						\
@@ -143,11 +139,9 @@ index 8d522ff..de17134 100644
  	INIT_RT_MUTEX_DEBUG(tsk)
  #else
  # define INIT_RT_MUTEXES(tsk)
-diff --git a/kernel/fork.c b/kernel/fork.c
-index a4e453b..c66f27f 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1016,7 +1016,7 @@ static void rt_mutex_init_task(struct task_struct *p)
+@@ -1017,7 +1017,7 @@ static void rt_mutex_init_task(struct ta
  {
  	raw_spin_lock_init(&p->pi_lock);
  #ifdef CONFIG_RT_MUTEXES
@@ -156,11 +150,9 @@ index a4e453b..c66f27f 100644
  	p->pi_blocked_on = NULL;
  #endif
  }
-diff --git a/kernel/futex.c b/kernel/futex.c
-index a2a01ef..6e57b21 100644
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2746,7 +2746,7 @@ static int __init futex_init(void)
+@@ -2736,7 +2736,7 @@ static int __init futex_init(void)
  		futex_cmpxchg_enabled = 1;
  
  	for (i = 0; i < ARRAY_SIZE(futex_queues); i++) {
@@ -169,8 +161,6 @@ index a2a01ef..6e57b21 100644
  		spin_lock_init(&futex_queues[i].lock);
  	}
  
-diff --git a/kernel/power/qos.c b/kernel/power/qos.c
-index 3bf69f1..61b4738 100644
 --- a/kernel/power/qos.c
 +++ b/kernel/power/qos.c
 @@ -74,7 +74,7 @@ static DEFINE_SPINLOCK(pm_qos_lock);
@@ -182,7 +172,7 @@ index 3bf69f1..61b4738 100644
  	.notifiers = &cpu_dma_lat_notifier,
  	.name = "cpu_dma_latency",
  	.target_value = PM_QOS_CPU_DMA_LAT_DEFAULT_VALUE,
-@@ -84,7 +84,7 @@ static struct pm_qos_object cpu_dma_pm_qos = {
+@@ -84,7 +84,7 @@ static struct pm_qos_object cpu_dma_pm_q
  
  static BLOCKING_NOTIFIER_HEAD(network_lat_notifier);
  static struct pm_qos_object network_lat_pm_qos = {
@@ -191,7 +181,7 @@ index 3bf69f1..61b4738 100644
  	.notifiers = &network_lat_notifier,
  	.name = "network_latency",
  	.target_value = PM_QOS_NETWORK_LAT_DEFAULT_VALUE,
-@@ -95,7 +95,7 @@ static struct pm_qos_object network_lat_pm_qos = {
+@@ -95,7 +95,7 @@ static struct pm_qos_object network_lat_
  
  static BLOCKING_NOTIFIER_HEAD(network_throughput_notifier);
  static struct pm_qos_object network_throughput_pm_qos = {
@@ -200,11 +190,9 @@ index 3bf69f1..61b4738 100644
  	.notifiers = &network_throughput_notifier,
  	.name = "network_throughput",
  	.target_value = PM_QOS_NETWORK_THROUGHPUT_DEFAULT_VALUE,
-diff --git a/kernel/rtmutex.c b/kernel/rtmutex.c
-index ab44911..255e166 100644
 --- a/kernel/rtmutex.c
 +++ b/kernel/rtmutex.c
-@@ -890,7 +890,7 @@ void __rt_mutex_init(struct rt_mutex *lock, const char *name)
+@@ -890,7 +890,7 @@ void __rt_mutex_init(struct rt_mutex *lo
  {
  	lock->owner = NULL;
  	raw_spin_lock_init(&lock->wait_lock);
@@ -213,11 +201,9 @@ index ab44911..255e166 100644
  
  	debug_rt_mutex_init(lock, name);
  }
-diff --git a/kernel/sched.c b/kernel/sched.c
-index 063d7a4..75a7b6f 100644
 --- a/kernel/sched.c
 +++ b/kernel/sched.c
-@@ -7924,7 +7924,7 @@ static void init_rt_rq(struct rt_rq *rt_rq, struct rq *rq)
+@@ -7923,7 +7923,7 @@ static void init_rt_rq(struct rt_rq *rt_
  #ifdef CONFIG_SMP
  	rt_rq->rt_nr_migratory = 0;
  	rt_rq->overloaded = 0;
@@ -226,7 +212,7 @@ index 063d7a4..75a7b6f 100644
  #endif
  
  	rt_rq->rt_time = 0;
-@@ -8129,7 +8129,7 @@ void __init sched_init(void)
+@@ -8128,7 +8128,7 @@ void __init sched_init(void)
  #endif
  
  #ifdef CONFIG_RT_MUTEXES
@@ -235,11 +221,9 @@ index 063d7a4..75a7b6f 100644
  #endif
  
  	/*
-diff --git a/lib/plist.c b/lib/plist.c
-index 0ae7e64..a0a4da4 100644
 --- a/lib/plist.c
 +++ b/lib/plist.c
-@@ -56,11 +56,6 @@ static void plist_check_list(struct list_head *top)
+@@ -56,11 +56,6 @@ static void plist_check_list(struct list
  
  static void plist_check_head(struct plist_head *head)
  {
@@ -260,6 +244,3 @@ index 0ae7e64..a0a4da4 100644
  	for (i = 0; i < ARRAY_SIZE(test_node); i++)
  		plist_node_init(test_node + i, 0);
  
--- 
-1.7.10.1.362.g242cab3
-
