@@ -3,7 +3,6 @@ From: Marco Stornelli <marco.stornelli@gmail.com>
 Date: Sat, 12 May 2012 19:11:30 +0200
 Subject: pramfs: ACL support
 To: LTSI <ltsi-dev@lists.linuxfoundation.org>
-Message-ID: <4FAE99C2.5020909@gmail.com>
 
 
 From: Marco Stornelli <marco.stornelli@gmail.com>
@@ -424,7 +423,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
 +		return -EINVAL;
 +	if (!test_opt(dentry->d_sb, POSIX_ACL))
 +		return -EOPNOTSUPP;
-+	if (!is_owner_or_cap(dentry->d_inode))
++	if (!inode_owner_or_capable(dentry->d_inode))
 +		return -EPERM;
 +
 +	if (value) {
