@@ -878,3 +878,17 @@ patches.sh7757lcr/018-sh-fix-the-sh_mmcif_plat_data-in-board-sh7757lcr.patch
 patches.sh7757lcr/019-sh-modify-a-resource-of-sh_eth_giga1_resources-in-board-sh7757lcr.patch
 patches.sh7757lcr/020-sh-kexec-register-crashk_res.patch
 patches.sh7757lcr/021-sh-kexec-add-physical_start.patch
+
+
+patches.r8a66597-udc/001-usb-gadget-add-platform-module-alias-where-it-is-missing.patch
+patches.r8a66597-udc/002-usb-update-email-address-in-r8a66597-udc-and-m66592-udc.patch
+patches.r8a66597-udc/003-usb-gadget-r8a66597-udc-make-buswait-configurable-through-platform-data.patch
+patches.r8a66597-udc/004-usb-gadget-r8a66597-udc-add-support-for-test_mode.patch
+patches.r8a66597-udc/005-usb-gadget-clean-up-fsf-boilerplate-text.patch
+patches.r8a66597-udc/006-usb-irq-remove-irqf_disabled.patch
+patches.r8a66597-udc/007-usb-gadget-r8a66597-udc-change-prototype-of-r8a66597_write_fifo.patch
+patches.r8a66597-udc/008-usb-r8a66597-hcd-add-function-for-external-controller.patch
+patches.r8a66597-udc/009-usb-gadget-r8a66597-udc-add-function-for-external-controller.patch
+patches.r8a66597-udc/010-usb-gadget-r8a66597-udc-use-dev_-instead-of-printk.patch
+patches.r8a66597-udc/011-usb-gadget-r8a66597-udc-add-support-for-sudmac.patch
+patches.r8a66597-udc/012-usb-gadget-r8a66597-udc-fix-flush-fifo-handling.patch
