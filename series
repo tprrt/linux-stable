@@ -2,11 +2,21 @@
 # LTSI patch queue series
 #
 
-#
+#############################################################################
 # LTSI project specific patches
 #
-
 patches.ltsi/ltsi-makefile-addition.patch
+
+
+#############################################################################
+# Patches that are upstream for the next -stable release, but are added here
+# before a stable tree can be released.
+#
+# Also, any needed reverts that we don't want from the -stable releases should
+# go here.
+#
+patches.kernel.org/arm-fix-rcu-stalls-on-smp-platforms.patch
+
 
 #############################################################################
 # Android patches.

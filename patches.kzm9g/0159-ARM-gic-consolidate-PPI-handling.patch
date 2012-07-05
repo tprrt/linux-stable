@@ -31,24 +31,22 @@ Conflicts:
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/common/gic.c                             | 75 ++++++++++++++++++++++-
- arch/arm/include/asm/entry-macro-multi.S          |  7 ---
- arch/arm/include/asm/hardirq.h                    |  3 -
- arch/arm/include/asm/hardware/entry-macro-gic.S   | 19 +-----
- arch/arm/include/asm/localtimer.h                 | 11 ++--
- arch/arm/include/asm/smp.h                        |  5 --
- arch/arm/kernel/irq.c                             |  3 -
- arch/arm/kernel/smp.c                             | 32 ++--------
- arch/arm/mach-exynos4/include/mach/entry-macro.S  | 13 +---
- arch/arm/mach-msm/board-msm8x60.c                 | 11 ----
- arch/arm/mach-msm/include/mach/entry-macro-qgic.S | 73 +---------------------
- arch/arm/mach-omap2/include/mach/entry-macro.S    | 14 +----
- arch/arm/mach-shmobile/entry-intc.S               |  3 -
- arch/arm/mach-shmobile/include/mach/entry-macro.S |  3 -
+ arch/arm/common/gic.c                             |   75 +++++++++++++++++++++-
+ arch/arm/include/asm/entry-macro-multi.S          |    7 --
+ arch/arm/include/asm/hardirq.h                    |    3 
+ arch/arm/include/asm/hardware/entry-macro-gic.S   |   19 -----
+ arch/arm/include/asm/localtimer.h                 |   11 +--
+ arch/arm/include/asm/smp.h                        |    5 -
+ arch/arm/kernel/irq.c                             |    3 
+ arch/arm/kernel/smp.c                             |   32 +--------
+ arch/arm/mach-exynos4/include/mach/entry-macro.S  |   13 ---
+ arch/arm/mach-msm/board-msm8x60.c                 |   11 ---
+ arch/arm/mach-msm/include/mach/entry-macro-qgic.S |   73 ---------------------
+ arch/arm/mach-omap2/include/mach/entry-macro.S    |   14 ----
+ arch/arm/mach-shmobile/entry-intc.S               |    3 
+ arch/arm/mach-shmobile/include/mach/entry-macro.S |    3 
  14 files changed, 88 insertions(+), 184 deletions(-)
 
-diff --git a/arch/arm/common/gic.c b/arch/arm/common/gic.c
-index 8b5be72..95ad8d1 100644
 --- a/arch/arm/common/gic.c
 +++ b/arch/arm/common/gic.c
 @@ -29,10 +29,14 @@
@@ -66,7 +64,7 @@ index 8b5be72..95ad8d1 100644
  
  static DEFINE_SPINLOCK(irq_controller_lock);
  
-@@ -256,6 +260,32 @@ void __init gic_cascade_irq(unsigned int gic_nr, unsigned int irq)
+@@ -256,6 +260,32 @@ void __init gic_cascade_irq(unsigned int
  	irq_set_chained_handler(irq, gic_handle_cascade_irq);
  }
  
@@ -99,7 +97,7 @@ index 8b5be72..95ad8d1 100644
  static void __init gic_dist_init(struct gic_chip_data *gic,
  	unsigned int irq_start)
  {
-@@ -263,6 +293,7 @@ static void __init gic_dist_init(struct gic_chip_data *gic,
+@@ -263,6 +293,7 @@ static void __init gic_dist_init(struct
  	u32 cpumask;
  	void __iomem *base = gic->dist_base;
  	u32 cpu = 0;
@@ -107,7 +105,7 @@ index 8b5be72..95ad8d1 100644
  
  #ifdef CONFIG_SMP
  	cpu = cpu_logical_map(smp_processor_id());
-@@ -286,6 +317,33 @@ static void __init gic_dist_init(struct gic_chip_data *gic,
+@@ -286,6 +317,33 @@ static void __init gic_dist_init(struct
  	gic->gic_irqs = gic_irqs;
  
  	/*
@@ -141,7 +139,7 @@ index 8b5be72..95ad8d1 100644
  	 * Set all global interrupts to be level triggered, active low.
  	 */
  	for (i = 32; i < gic_irqs; i += 16)
-@@ -320,7 +378,22 @@ static void __init gic_dist_init(struct gic_chip_data *gic,
+@@ -320,7 +378,22 @@ static void __init gic_dist_init(struct
  	/*
  	 * Setup the Linux IRQ subsystem.
  	 */
@@ -165,8 +163,6 @@ index 8b5be72..95ad8d1 100644
  		irq_set_chip_and_handler(i, &gic_chip, handle_fasteoi_irq);
  		irq_set_chip_data(i, gic);
  		set_irq_flags(i, IRQF_VALID | IRQF_PROBE);
-diff --git a/arch/arm/include/asm/entry-macro-multi.S b/arch/arm/include/asm/entry-macro-multi.S
-index 2f1e209..88d6181 100644
 --- a/arch/arm/include/asm/entry-macro-multi.S
 +++ b/arch/arm/include/asm/entry-macro-multi.S
 @@ -25,13 +25,6 @@
@@ -183,8 +179,6 @@ index 2f1e209..88d6181 100644
  #endif
  9997:
  	.endm
-diff --git a/arch/arm/include/asm/hardirq.h b/arch/arm/include/asm/hardirq.h
-index 89ad180..ddf07a9 100644
 --- a/arch/arm/include/asm/hardirq.h
 +++ b/arch/arm/include/asm/hardirq.h
 @@ -9,9 +9,6 @@
@@ -197,8 +191,6 @@ index 89ad180..ddf07a9 100644
  #ifdef CONFIG_SMP
  	unsigned int ipi_irqs[NR_IPI];
  #endif
-diff --git a/arch/arm/include/asm/hardware/entry-macro-gic.S b/arch/arm/include/asm/hardware/entry-macro-gic.S
-index c115b82..74ebc80 100644
 --- a/arch/arm/include/asm/hardware/entry-macro-gic.S
 +++ b/arch/arm/include/asm/hardware/entry-macro-gic.S
 @@ -22,15 +22,11 @@
@@ -242,8 +234,6 @@ index c115b82..74ebc80 100644
 -	streq	\irqstat, [\base, #GIC_CPU_EOI]
 -	cmp	\tmp, #0
 -	.endm
-diff --git a/arch/arm/include/asm/localtimer.h b/arch/arm/include/asm/localtimer.h
-index 3306f28..5c8acb4 100644
 --- a/arch/arm/include/asm/localtimer.h
 +++ b/arch/arm/include/asm/localtimer.h
 @@ -10,6 +10,8 @@
@@ -272,11 +262,9 @@ index 3306f28..5c8acb4 100644
  
  #ifdef CONFIG_LOCAL_TIMERS
  
-diff --git a/arch/arm/include/asm/smp.h b/arch/arm/include/asm/smp.h
-index 0a17b62..1e5717a 100644
 --- a/arch/arm/include/asm/smp.h
 +++ b/arch/arm/include/asm/smp.h
-@@ -99,9 +99,4 @@ extern void platform_cpu_enable(unsigned int cpu);
+@@ -99,9 +99,4 @@ extern void platform_cpu_enable(unsigned
  extern void arch_send_call_function_single_ipi(int cpu);
  extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
  
@@ -286,11 +274,9 @@ index 0a17b62..1e5717a 100644
 -extern void show_local_irqs(struct seq_file *, int);
 -
  #endif /* ifndef __ASM_ARM_SMP_H */
-diff --git a/arch/arm/kernel/irq.c b/arch/arm/kernel/irq.c
-index 3e34b1f..0ad5e98 100644
 --- a/arch/arm/kernel/irq.c
 +++ b/arch/arm/kernel/irq.c
-@@ -59,9 +59,6 @@ int arch_show_interrupts(struct seq_file *p, int prec)
+@@ -59,9 +59,6 @@ int arch_show_interrupts(struct seq_file
  #ifdef CONFIG_SMP
  	show_ipi_list(p, prec);
  #endif
@@ -300,8 +286,6 @@ index 3e34b1f..0ad5e98 100644
  	seq_printf(p, "%*s: %10lu\n", prec, "Err", irq_err_count);
  	return 0;
  }
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 53aaa59..7db7120 100644
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
 @@ -450,10 +450,6 @@ u64 smp_irq_stat_cpu(unsigned int cpu)
@@ -315,18 +299,18 @@ index 53aaa59..7db7120 100644
  	return sum;
  }
  
-@@ -471,34 +467,16 @@ static void ipi_timer(void)
+@@ -469,34 +465,16 @@ static void ipi_timer(void)
  }
  
  #ifdef CONFIG_LOCAL_TIMERS
 -asmlinkage void __exception_irq_entry do_local_timer(struct pt_regs *regs)
--{
++irqreturn_t percpu_timer_handler(int irq, void *dev_id)
+ {
 -	handle_local_timer(regs);
 -}
 -
 -void handle_local_timer(struct pt_regs *regs)
-+irqreturn_t percpu_timer_handler(int irq, void *dev_id)
- {
+-{
 -	struct pt_regs *old_regs = set_irq_regs(regs);
 -	int cpu = smp_processor_id();
 +	struct clock_event_device *evt = &__get_cpu_var(percpu_clockevent);
@@ -355,8 +339,6 @@ index 53aaa59..7db7120 100644
  }
  #endif
  
-diff --git a/arch/arm/mach-exynos4/include/mach/entry-macro.S b/arch/arm/mach-exynos4/include/mach/entry-macro.S
-index d8f38c2..9be072f 100644
 --- a/arch/arm/mach-exynos4/include/mach/entry-macro.S
 +++ b/arch/arm/mach-exynos4/include/mach/entry-macro.S
 @@ -50,7 +50,7 @@
@@ -383,8 +365,6 @@ index d8f38c2..9be072f 100644
 -		streq	\irqstat, [\base, #GIC_CPU_EOI]
 -		cmp	\tmp, #0
 -		.endm
-diff --git a/arch/arm/mach-msm/board-msm8x60.c b/arch/arm/mach-msm/board-msm8x60.c
-index 1163b6f..d70a2f6 100644
 --- a/arch/arm/mach-msm/board-msm8x60.c
 +++ b/arch/arm/mach-msm/board-msm8x60.c
 @@ -36,8 +36,6 @@ static void __init msm8x60_map_io(void)
@@ -396,7 +376,7 @@ index 1163b6f..d70a2f6 100644
  	gic_init(0, GIC_PPI_START, MSM_QGIC_DIST_BASE,
  		 (void *)MSM_QGIC_CPU_BASE);
  
-@@ -49,15 +47,6 @@ static void __init msm8x60_init_irq(void)
+@@ -49,15 +47,6 @@ static void __init msm8x60_init_irq(void
  	 */
  	if (!machine_is_msm8x60_sim())
  		writel(0x0000FFFF, MSM_QGIC_DIST_BASE + GIC_DIST_ENABLE_SET);
@@ -412,8 +392,6 @@ index 1163b6f..d70a2f6 100644
  }
  
  static void __init msm8x60_init(void)
-diff --git a/arch/arm/mach-msm/include/mach/entry-macro-qgic.S b/arch/arm/mach-msm/include/mach/entry-macro-qgic.S
-index 1246715..717076f 100644
 --- a/arch/arm/mach-msm/include/mach/entry-macro-qgic.S
 +++ b/arch/arm/mach-msm/include/mach/entry-macro-qgic.S
 @@ -8,81 +8,10 @@
@@ -499,8 +477,6 @@ index 1246715..717076f 100644
 -    streq   \irqstat, [\base, #GIC_CPU_EOI]
 -    cmp \tmp, #0
 -	.endm
-diff --git a/arch/arm/mach-omap2/include/mach/entry-macro.S b/arch/arm/mach-omap2/include/mach/entry-macro.S
-index a48690b..22d86ef 100644
 --- a/arch/arm/mach-omap2/include/mach/entry-macro.S
 +++ b/arch/arm/mach-omap2/include/mach/entry-macro.S
 @@ -78,7 +78,7 @@
@@ -531,8 +507,6 @@ index a48690b..22d86ef 100644
  #endif	/* CONFIG_SMP */
  
  #else	/* MULTI_OMAP2 */
-diff --git a/arch/arm/mach-shmobile/entry-intc.S b/arch/arm/mach-shmobile/entry-intc.S
-index cac0a7a..1a1c00c 100644
 --- a/arch/arm/mach-shmobile/entry-intc.S
 +++ b/arch/arm/mach-shmobile/entry-intc.S
 @@ -51,7 +51,4 @@
@@ -543,8 +517,6 @@ index cac0a7a..1a1c00c 100644
 -	.endm
 -
  	arch_irq_handler shmobile_handle_irq_intc
-diff --git a/arch/arm/mach-shmobile/include/mach/entry-macro.S b/arch/arm/mach-shmobile/include/mach/entry-macro.S
-index d791f10..8d4a416 100644
 --- a/arch/arm/mach-shmobile/include/mach/entry-macro.S
 +++ b/arch/arm/mach-shmobile/include/mach/entry-macro.S
 @@ -27,8 +27,5 @@
@@ -556,6 +528,3 @@ index d791f10..8d4a416 100644
 -
  	.macro  arch_ret_to_user, tmp1, tmp2
  	.endm
--- 
-1.7.10.2.565.gbd578b5
-
