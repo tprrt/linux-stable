@@ -313,7 +313,7 @@ patches.armadillo800eva/0250-ARM-mach-shmobile-armadillo800eva-add-support-LCDC0
 patches.armadillo800eva/0251-ARM-mach-shmobile-armadillo800eva-add-support-ST1232.patch
 patches.armadillo800eva/0252-ARM-mach-shmobile-armadillo800eva-add-support-gpio_k.patch
 patches.armadillo800eva/0253-ARM-mach-shmobile-armadillo800eva-add-support-sh_eth.patch
-
+patches.armadillo800eva/arm-mach-shmobile-sh7372-ap4evb-and-mackerel-timer-rework.patch
 
 
 
