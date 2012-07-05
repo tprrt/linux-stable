@@ -366,6 +366,7 @@ patches.lttng/0172-staging-lttng-Fix-recent-modifications-to-string_fro.patch
 patches.lttng/0173-staging-lttng-TODO-update-lttng-reported-to-work-fin.patch
 patches.lttng/0174-staging-lttng-Update-max-symbol-length-to-256.patch
 patches.lttng/lttng-update-to-v2.0.1.patch
+patches.lttng/lttng-update-2.0.1-to-2.0.4.patch
 
 patches.runtime_pm/0001-Revert-PM-Runtime-Automatically-retry-failed-autosus.patch
 patches.runtime_pm/0002-PM-Domains-Rename-struct-dev_power_domain-to-struct-.patch
