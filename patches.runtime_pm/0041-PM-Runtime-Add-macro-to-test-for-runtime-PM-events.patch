@@ -55,7 +55,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	Mutual exclusion
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -1112,7 +1112,7 @@ static int btusb_suspend(struct usb_inte
+@@ -1126,7 +1126,7 @@ static int btusb_suspend(struct usb_inte
  		return 0;
  
  	spin_lock_irq(&data->txlock);
@@ -138,7 +138,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/drivers/usb/class/cdc-acm.c
 +++ b/drivers/usb/class/cdc-acm.c
-@@ -1319,7 +1319,7 @@ static int acm_suspend(struct usb_interf
+@@ -1327,7 +1327,7 @@ static int acm_suspend(struct usb_interf
  	struct acm *acm = usb_get_intfdata(intf);
  	int cnt;
  
@@ -279,7 +279,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	}
 --- a/drivers/usb/serial/sierra.c
 +++ b/drivers/usb/serial/sierra.c
-@@ -1012,7 +1012,7 @@ static int sierra_suspend(struct usb_ser
+@@ -1016,7 +1016,7 @@ static int sierra_suspend(struct usb_ser
  	struct sierra_intf_private *intfdata;
  	int b;
  
