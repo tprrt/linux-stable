@@ -314,6 +314,7 @@ patches.armadillo800eva/0251-ARM-mach-shmobile-armadillo800eva-add-support-ST123
 patches.armadillo800eva/0252-ARM-mach-shmobile-armadillo800eva-add-support-gpio_k.patch
 patches.armadillo800eva/0253-ARM-mach-shmobile-armadillo800eva-add-support-sh_eth.patch
 patches.armadillo800eva/arm-mach-shmobile-sh7372-ap4evb-and-mackerel-timer-rework.patch
+patches.armadillo800eva/ltsi-bugfix-armadillo800eva-sh_eth-needs-net_ethernet-on-defconfig.patch
 
 
 
@@ -856,6 +857,9 @@ patches.kzm9g/0061-mach-shmobile-Emma-Mobile-EV2-SMP-support-V3.patch
 patches.kzm9g/0062-mach-shmobile-Emma-Mobile-EV2-GPIO-support-V3.patch
 patches.kzm9g/0063-mach-shmobile-KZM9D-board-Ethernet-support-V3.patch
 
+patches.kzm9g/ltsi-arm-shmobile-kzm9g-support-real-time-clock.patch
+patches.kzm9g/ltsi-bugfix-add-config_i2c-to-kzm9g_defconfig.patch
+
 
 patches.sh7757lcr/001-spi-add-support-for-renesas-rspi.patch
 patches.sh7757lcr/002-spi-irq-remove-irqf_disabled.patch
@@ -892,3 +896,10 @@ patches.r8a66597-udc/009-usb-gadget-r8a66597-udc-add-function-for-external-contr
 patches.r8a66597-udc/010-usb-gadget-r8a66597-udc-use-dev_-instead-of-printk.patch
 patches.r8a66597-udc/011-usb-gadget-r8a66597-udc-add-support-for-sudmac.patch
 patches.r8a66597-udc/012-usb-gadget-r8a66597-udc-fix-flush-fifo-handling.patch
+
+# bugfixes due to LTSI-specific things that happened above.
+# This is usually due to merge issues, or specific things like config file
+# changes that are needed for the BSP being added.
+
+patches.ltsi/ltsi-bugfix-sh73a0-add-lost-clk_enable_on_init-for-div6_zb1.patch
+
