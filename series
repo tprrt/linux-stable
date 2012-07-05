@@ -857,3 +857,24 @@ patches.kzm9g/0062-mach-shmobile-Emma-Mobile-EV2-GPIO-support-V3.patch
 patches.kzm9g/0063-mach-shmobile-KZM9D-board-Ethernet-support-V3.patch
 
 
+patches.sh7757lcr/001-spi-add-support-for-renesas-rspi.patch
+patches.sh7757lcr/002-spi-irq-remove-irqf_disabled.patch
+patches.sh7757lcr/003-drivercore-add-helper-macro-for-platform_driver-boilerplate.patch
+patches.sh7757lcr/004-spi-spi-sh-add-ioresource_mem_type_mask-decoding-for-access-size.patch
+patches.sh7757lcr/005-sh-clock-sh7757-add-clkdev_ick_id-for-cleanup.patch
+patches.sh7757lcr/006-sh-move-clkdev_xxx_id-macro-to-sh_clk.h.patch
+patches.sh7757lcr/007-sh-fix-the-compile-error-in-setup-sh7757.c.patch
+patches.sh7757lcr/008-sh-add-parameters-for-ehci-and-riic-in-clock-sh7757.c.patch
+patches.sh7757lcr/009-sh-add-a-resource-name-for-shdma.patch
+patches.sh7757lcr/010-sh-modify-resource-for-spi0-in-setup-sh7757.patch
+patches.sh7757lcr/011-sh-add-platform_device-for-spi1-in-setup-sh7757.patch
+patches.sh7757lcr/012-sh-modify-clock-sh7757-for-renesas_usbhs.patch
+patches.sh7757lcr/013-sh-add-parameter-for-rspi-in-clock-sh7757.patch
+#patches.sh7757lcr/014-sh-modify-the-asm-sh_eth.h-to-linux-sh_eth.h-in-sh7757lcr.patch
+patches.sh7757lcr/015-sh-add-platform_device-for-rspi-in-setup-sh7757.patch
+patches.sh7757lcr/016-sh-fix-build-warning-in-board-sh7757lcr.patch
+patches.sh7757lcr/017-sh-add-platform_device-for-renesas_usbhs-in-board-sh7757lcr.patch
+patches.sh7757lcr/018-sh-fix-the-sh_mmcif_plat_data-in-board-sh7757lcr.patch
+patches.sh7757lcr/019-sh-modify-a-resource-of-sh_eth_giga1_resources-in-board-sh7757lcr.patch
+patches.sh7757lcr/020-sh-kexec-register-crashk_res.patch
+patches.sh7757lcr/021-sh-kexec-add-physical_start.patch
