@@ -859,6 +859,12 @@ patches.kzm9g/0063-mach-shmobile-KZM9D-board-Ethernet-support-V3.patch
 
 patches.kzm9g/ltsi-arm-shmobile-kzm9g-support-real-time-clock.patch
 patches.kzm9g/ltsi-bugfix-add-config_i2c-to-kzm9g_defconfig.patch
+patches.kzm9g/arm-shmobile-sh73a0-bugfix-sy-dmac-number.patch
+
+patches.kzm9g/001-ltsi-backport-arm-mach-shmobile-kzm9g-add-smsc-9221-support.patch
+patches.kzm9g/002-lsti-backport-arm-mach-shmobile-kzm9g-add-external-usb-host-support.patch
+patches.kzm9g/003-ltsi-bugfix-sh73a0-add-lost-clk_enable_on_init-for-div6_zb1.patch
+patches.kzm9g/004-ltsi-arm-mach_shmobile-kzm9g-update-defconfig.patch
 
 
 patches.sh7757lcr/001-spi-add-support-for-renesas-rspi.patch
@@ -901,5 +907,4 @@ patches.r8a66597-udc/012-usb-gadget-r8a66597-udc-fix-flush-fifo-handling.patch
 # This is usually due to merge issues, or specific things like config file
 # changes that are needed for the BSP being added.
 
-patches.ltsi/ltsi-bugfix-sh73a0-add-lost-clk_enable_on_init-for-div6_zb1.patch
 
