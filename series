@@ -2,11 +2,21 @@
 # LTSI patch queue series
 #
 
-#
+#############################################################################
 # LTSI project specific patches
 #
-
 patches.ltsi/ltsi-makefile-addition.patch
+
+
+#############################################################################
+# Patches that are upstream for the next -stable release, but are added here
+# before a stable tree can be released.
+#
+# Also, any needed reverts that we don't want from the -stable releases should
+# go here.
+#
+patches.kernel.org/arm-fix-rcu-stalls-on-smp-platforms.patch
+
 
 #############################################################################
 # Android patches.
@@ -313,7 +323,8 @@ patches.armadillo800eva/0250-ARM-mach-shmobile-armadillo800eva-add-support-LCDC0
 patches.armadillo800eva/0251-ARM-mach-shmobile-armadillo800eva-add-support-ST1232.patch
 patches.armadillo800eva/0252-ARM-mach-shmobile-armadillo800eva-add-support-gpio_k.patch
 patches.armadillo800eva/0253-ARM-mach-shmobile-armadillo800eva-add-support-sh_eth.patch
-
+patches.armadillo800eva/arm-mach-shmobile-sh7372-ap4evb-and-mackerel-timer-rework.patch
+patches.armadillo800eva/ltsi-bugfix-armadillo800eva-sh_eth-needs-net_ethernet-on-defconfig.patch
 
 
 
@@ -355,6 +366,7 @@ patches.lttng/0172-staging-lttng-Fix-recent-modifications-to-string_fro.patch
 patches.lttng/0173-staging-lttng-TODO-update-lttng-reported-to-work-fin.patch
 patches.lttng/0174-staging-lttng-Update-max-symbol-length-to-256.patch
 patches.lttng/lttng-update-to-v2.0.1.patch
+patches.lttng/lttng-update-2.0.1-to-2.0.4.patch
 
 patches.runtime_pm/0001-Revert-PM-Runtime-Automatically-retry-failed-autosus.patch
 patches.runtime_pm/0002-PM-Domains-Rename-struct-dev_power_domain-to-struct-.patch
@@ -792,3 +804,119 @@ patches.kzm9g/0202-ARM-mach-shmobile-kzm9g-add-PCF8757-gpio-key.patch
 patches.kzm9g/0203-ARM-mach-shmobile-kzm9g-defconfig-update.patch
 patches.kzm9g/0204-ARM-mach-shmobile-clock-sh73a0-add-FSI-clock.patch
 patches.kzm9g/0205-ARM-mach-shmobile-kzm9g-add-FSI-AK4648-support.patch
+
+patches.kzm9g/0001-tty-serial-allow-ports-to-override-the-irq-handler.patch
+patches.kzm9g/0002-serial-introduce-generic-port-in-out-helpers.patch
+patches.kzm9g/0003-serial-8250-increase-PASS_LIMIT.patch
+patches.kzm9g/0004-serial-Fix-wakeup-init-logic-to-speed-up-startup.patch
+patches.kzm9g/0005-tty-serial8250-allow-platforms-to-override-irq-handl.patch
+patches.kzm9g/0006-tty-serial8250-remove-UPIO_DWAPB-32.patch
+patches.kzm9g/0007-tty-8250-export-serial8250_handle_irq.patch
+patches.kzm9g/0008-serial-8250-Move-UPIO_TSI-to-powerpc.patch
+patches.kzm9g/0009-serial-Support-the-EFR-register-of-XR1715x-uarts.patch
+patches.kzm9g/0010-8250-ratelimit-LSR-safety-check-engaged-warning.patch
+patches.kzm9g/0011-serial-8250-replace-hardcoded-0xbf-with-define.patch
+patches.kzm9g/0012-serial-move-struct-uart_8250_port-from-8250.c-to-825.patch
+patches.kzm9g/0013-serial-clean-up-parameter-passing-for-8250-Rx-IRQ-ha.patch
+patches.kzm9g/0014-serial-export-the-key-functions-for-an-8250-IRQ-hand.patch
+patches.kzm9g/0015-serial-make-8250-timeout-use-the-specified-IRQ-handl.patch
+patches.kzm9g/0016-serial-manually-inline-serial8250_handle_port.patch
+patches.kzm9g/0017-serial-group-all-the-8250-related-code-together.patch
+patches.kzm9g/0018-serial-Kill-off-NO_IRQ.patch
+patches.kzm9g/0019-tty-fix-a-build-failure-on-sparc.patch
+patches.kzm9g/0020-tty-sparc-rename-drivers-tty-serial-suncore.h-includ.patch
+patches.kzm9g/0021-serial-delete-last-unused-traces-of-pausing-I-O-in-8.patch
+patches.kzm9g/0022-serial-make-8250-s-serial_in-shareable-to-other-driv.patch
+patches.kzm9g/0023-serial-delete-useless-void-casts-in-8250.c.patch
+patches.kzm9g/0024-serial-reduce-number-of-indirections-in-8250-code.patch
+patches.kzm9g/0025-serial-use-serial_port_in-out-vs-serial_in-out-in-82.patch
+patches.kzm9g/0026-serial-remove-back-and-forth-conversions-in-serial_o.patch
+patches.kzm9g/0027-serial-8250_pci-add-a-force-background-timer-flag-an.patch
+patches.kzm9g/0028-8250.c-less-than-2400-baud-fix.patch
+patches.kzm9g/0029-serial8250-Add-dl_read-dl_write-callbacks.patch
+patches.kzm9g/0030-serial8250-Use-dl_read-dl_write-on-Alchemy.patch
+patches.kzm9g/0031-serial8250-Use-dl_read-dl_write-on-RM9K.patch
+patches.kzm9g/0032-serial8250-Clean-up-default-map-and-dl-code.patch
+patches.kzm9g/0033-serial8250-Introduce-serial8250_register_8250_port.patch
+patches.kzm9g/0034-serial8250-em-Emma-Mobile-UART-driver-V2.patch
+patches.kzm9g/0035-serial8250-em-clk_get-IS_ERR-error-handling-fix.patch
+patches.kzm9g/0036-cpuidle-create-bootparam-cpuidle.off-1.patch
+patches.kzm9g/0037-cpuidle-replace-xen-access-to-x86-pm_idle-and-defaul.patch
+patches.kzm9g/0038-cpuidle-stop-depending-on-pm_idle.patch
+patches.kzm9g/0039-cpuidle-Consistent-spelling-of-cpuidle_idle_call.patch
+patches.kzm9g/0040-sh-Fix-up-fallout-from-cpuidle-changes.patch
+patches.kzm9g/0041-cpuidle-Add-module.h-to-drivers-cpuidle-files-as-req.patch
+patches.kzm9g/0042-cpuidle-Move-dev-last_residency-update-to-driver-ent.patch
+patches.kzm9g/0043-cpuidle-Remove-CPUIDLE_FLAG_IGNORE-and-dev-prepare.patch
+patches.kzm9g/0044-cpuidle-Split-cpuidle_state-structure-and-move-per-c.patch
+patches.kzm9g/0045-cpuidle-Single-Global-registration-of-idle-states.patch
+patches.kzm9g/0046-cpuidle-Add-common-time-keeping-and-irq-enabling.patch
+patches.kzm9g/0047-mm-add-vm_area_add_early.patch
+patches.kzm9g/0048-clockevents-Make-clockevents_config-a-global-symbol.patch
+patches.kzm9g/0049-clocksource-em_sti-Emma-Mobile-STI-driver-V2.patch
+patches.kzm9g/0050-ARM-move-initialization-of-the-high_memory-variable-.patch
+patches.kzm9g/0051-ARM-move-iotable-mappings-within-the-vmalloc-region.patch
+patches.kzm9g/0052-ARM-simplify-__iounmap-when-dealing-with-section-bas.patch
+patches.kzm9g/0053-ARM-add-generic-ioremap-optimization-by-reusing-stat.patch
+patches.kzm9g/0054-ARM-mach-shmobile-Introduce-shmobile_setup_delay.patch
+patches.kzm9g/0055-ARM-mach-shmobile-Allow-SoC-specific-CPU-kill-code.patch
+patches.kzm9g/0056-ARM-mach-shmobile-Use-preset_lpj-with-calibrate_dela.patch
+patches.kzm9g/0057-ARM-Undelete-KZM9D-mach-type.patch
+patches.kzm9g/0058-gpio-Emma-Mobile-GPIO-driver.patch
+patches.kzm9g/0059-mach-shmobile-Emma-Mobile-EV2-SoC-base-support-V3.patch
+patches.kzm9g/0060-mach-shmobile-KZM9D-board-support-V3.patch
+patches.kzm9g/0061-mach-shmobile-Emma-Mobile-EV2-SMP-support-V3.patch
+patches.kzm9g/0062-mach-shmobile-Emma-Mobile-EV2-GPIO-support-V3.patch
+patches.kzm9g/0063-mach-shmobile-KZM9D-board-Ethernet-support-V3.patch
+
+patches.kzm9g/ltsi-arm-shmobile-kzm9g-support-real-time-clock.patch
+patches.kzm9g/ltsi-bugfix-add-config_i2c-to-kzm9g_defconfig.patch
+patches.kzm9g/arm-shmobile-sh73a0-bugfix-sy-dmac-number.patch
+
+patches.kzm9g/001-ltsi-backport-arm-mach-shmobile-kzm9g-add-smsc-9221-support.patch
+patches.kzm9g/002-lsti-backport-arm-mach-shmobile-kzm9g-add-external-usb-host-support.patch
+patches.kzm9g/003-ltsi-bugfix-sh73a0-add-lost-clk_enable_on_init-for-div6_zb1.patch
+patches.kzm9g/004-ltsi-arm-mach_shmobile-kzm9g-update-defconfig.patch
+
+
+patches.sh7757lcr/001-spi-add-support-for-renesas-rspi.patch
+patches.sh7757lcr/002-spi-irq-remove-irqf_disabled.patch
+patches.sh7757lcr/003-drivercore-add-helper-macro-for-platform_driver-boilerplate.patch
+patches.sh7757lcr/004-spi-spi-sh-add-ioresource_mem_type_mask-decoding-for-access-size.patch
+patches.sh7757lcr/005-sh-clock-sh7757-add-clkdev_ick_id-for-cleanup.patch
+patches.sh7757lcr/006-sh-move-clkdev_xxx_id-macro-to-sh_clk.h.patch
+patches.sh7757lcr/007-sh-fix-the-compile-error-in-setup-sh7757.c.patch
+patches.sh7757lcr/008-sh-add-parameters-for-ehci-and-riic-in-clock-sh7757.c.patch
+patches.sh7757lcr/009-sh-add-a-resource-name-for-shdma.patch
+patches.sh7757lcr/010-sh-modify-resource-for-spi0-in-setup-sh7757.patch
+patches.sh7757lcr/011-sh-add-platform_device-for-spi1-in-setup-sh7757.patch
+patches.sh7757lcr/012-sh-modify-clock-sh7757-for-renesas_usbhs.patch
+patches.sh7757lcr/013-sh-add-parameter-for-rspi-in-clock-sh7757.patch
+#patches.sh7757lcr/014-sh-modify-the-asm-sh_eth.h-to-linux-sh_eth.h-in-sh7757lcr.patch
+patches.sh7757lcr/015-sh-add-platform_device-for-rspi-in-setup-sh7757.patch
+patches.sh7757lcr/016-sh-fix-build-warning-in-board-sh7757lcr.patch
+patches.sh7757lcr/017-sh-add-platform_device-for-renesas_usbhs-in-board-sh7757lcr.patch
+patches.sh7757lcr/018-sh-fix-the-sh_mmcif_plat_data-in-board-sh7757lcr.patch
+patches.sh7757lcr/019-sh-modify-a-resource-of-sh_eth_giga1_resources-in-board-sh7757lcr.patch
+patches.sh7757lcr/020-sh-kexec-register-crashk_res.patch
+patches.sh7757lcr/021-sh-kexec-add-physical_start.patch
+
+
+patches.r8a66597-udc/001-usb-gadget-add-platform-module-alias-where-it-is-missing.patch
+patches.r8a66597-udc/002-usb-update-email-address-in-r8a66597-udc-and-m66592-udc.patch
+patches.r8a66597-udc/003-usb-gadget-r8a66597-udc-make-buswait-configurable-through-platform-data.patch
+patches.r8a66597-udc/004-usb-gadget-r8a66597-udc-add-support-for-test_mode.patch
+patches.r8a66597-udc/005-usb-gadget-clean-up-fsf-boilerplate-text.patch
+patches.r8a66597-udc/006-usb-irq-remove-irqf_disabled.patch
+patches.r8a66597-udc/007-usb-gadget-r8a66597-udc-change-prototype-of-r8a66597_write_fifo.patch
+patches.r8a66597-udc/008-usb-r8a66597-hcd-add-function-for-external-controller.patch
+patches.r8a66597-udc/009-usb-gadget-r8a66597-udc-add-function-for-external-controller.patch
+patches.r8a66597-udc/010-usb-gadget-r8a66597-udc-use-dev_-instead-of-printk.patch
+patches.r8a66597-udc/011-usb-gadget-r8a66597-udc-add-support-for-sudmac.patch
+patches.r8a66597-udc/012-usb-gadget-r8a66597-udc-fix-flush-fifo-handling.patch
+
+# bugfixes due to LTSI-specific things that happened above.
+# This is usually due to merge issues, or specific things like config file
+# changes that are needed for the BSP being added.
+
+

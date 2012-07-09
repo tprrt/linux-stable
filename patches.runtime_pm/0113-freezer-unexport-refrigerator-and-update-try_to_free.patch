@@ -54,11 +54,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/freezer.c                          |   10 +++++++---
  15 files changed, 37 insertions(+), 39 deletions(-)
 
-diff --git a/Documentation/power/freezing-of-tasks.txt b/Documentation/power/freezing-of-tasks.txt
-index 587e082..3ab9fbd 100644
 --- a/Documentation/power/freezing-of-tasks.txt
 +++ b/Documentation/power/freezing-of-tasks.txt
-@@ -21,7 +21,7 @@ freeze_processes() (defined in kernel/power/process.c) is called.  It executes
+@@ -21,7 +21,7 @@ freeze_processes() (defined in kernel/po
  try_to_freeze_tasks() that sets TIF_FREEZE for all of the freezable tasks and
  either wakes them up, if they are kernel threads, or sends fake signals to them,
  if they are user space processes.  A task that has TIF_FREEZE set, should react
@@ -67,7 +65,7 @@ index 587e082..3ab9fbd 100644
  kernel/freezer.c), which sets the task's PF_FROZEN flag, changes its state
  to TASK_UNINTERRUPTIBLE and makes it loop until PF_FROZEN is cleared for it.
  Then, we say that the task is 'frozen' and therefore the set of functions
-@@ -29,10 +29,10 @@ handling this mechanism is referred to as 'the freezer' (these functions are
+@@ -29,10 +29,10 @@ handling this mechanism is referred to a
  defined in kernel/power/process.c, kernel/freezer.c & include/linux/freezer.h).
  User space processes are generally frozen before kernel threads.
  
@@ -82,7 +80,7 @@ index 587e082..3ab9fbd 100644
  
  For user space processes try_to_freeze() is called automatically from the
  signal-handling code, but the freezable kernel threads need to call it
-@@ -61,7 +61,7 @@ wait_event_freezable() and wait_event_freezable_timeout() macros.
+@@ -61,7 +61,7 @@ wait_event_freezable() and wait_event_fr
  After the system memory state has been restored from a hibernation image and
  devices have been reinitialized, the function thaw_processes() is called in
  order to clear the PF_FROZEN flag for each frozen task.  Then, the tasks that
@@ -91,11 +89,9 @@ index 587e082..3ab9fbd 100644
  
  III. Which kernel threads are freezable?
  
-diff --git a/drivers/net/irda/stir4200.c b/drivers/net/irda/stir4200.c
-index 41c96b3..e880c79 100644
 --- a/drivers/net/irda/stir4200.c
 +++ b/drivers/net/irda/stir4200.c
-@@ -750,7 +750,7 @@ static int stir_transmit_thread(void *arg)
+@@ -750,7 +750,7 @@ static int stir_transmit_thread(void *ar
  
  			write_reg(stir, REG_CTRL1, CTRL1_TXPWD|CTRL1_RXPWD);
  
@@ -104,8 +100,6 @@ index 41c96b3..e880c79 100644
  
  			if (change_speed(stir, stir->speed))
  				break;
-diff --git a/fs/btrfs/async-thread.c b/fs/btrfs/async-thread.c
-index 7ec1409..98ab240 100644
 --- a/fs/btrfs/async-thread.c
 +++ b/fs/btrfs/async-thread.c
 @@ -340,7 +340,7 @@ again:
@@ -117,8 +111,6 @@ index 7ec1409..98ab240 100644
  		} else {
  			spin_unlock_irq(&worker->lock);
  			if (!kthread_should_stop()) {
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 1ac8db5d..66f4b9e 100644
 --- a/fs/btrfs/disk-io.c
 +++ b/fs/btrfs/disk-io.c
 @@ -1479,9 +1479,7 @@ static int cleaner_kthread(void *arg)
@@ -143,11 +135,9 @@ index 1ac8db5d..66f4b9e 100644
  			set_current_state(TASK_INTERRUPTIBLE);
  			if (!kthread_should_stop() &&
  			    !btrfs_transaction_blocked(root->fs_info))
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index df121b2..8de0a54 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -2820,8 +2820,7 @@ cont_thread:
+@@ -2821,8 +2821,7 @@ cont_thread:
  		}
  		mutex_unlock(&eli->li_list_mtx);
  
@@ -157,8 +147,6 @@ index df121b2..8de0a54 100644
  
  		cur = jiffies;
  		if ((time_after_eq(cur, next_wakeup)) ||
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 85c6292..b342c71 100644
 --- a/fs/gfs2/log.c
 +++ b/fs/gfs2/log.c
 @@ -951,8 +951,8 @@ int gfs2_logd(void *data)
@@ -172,8 +160,6 @@ index 85c6292..b342c71 100644
  
  		do {
  			prepare_to_wait(&sdp->sd_logd_waitq, &wait,
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 42e8d23..2ccaaac 100644
 --- a/fs/gfs2/quota.c
 +++ b/fs/gfs2/quota.c
 @@ -1431,8 +1431,8 @@ int gfs2_quotad(void *data)
@@ -187,8 +173,6 @@ index 42e8d23..2ccaaac 100644
  		t = min(quotad_timeo, statfs_timeo);
  
  		prepare_to_wait(&sdp->sd_quota_wait, &wait, TASK_INTERRUPTIBLE);
-diff --git a/fs/jbd/journal.c b/fs/jbd/journal.c
-index 9f36384..b889c55 100644
 --- a/fs/jbd/journal.c
 +++ b/fs/jbd/journal.c
 @@ -163,7 +163,7 @@ loop:
@@ -200,8 +184,6 @@ index 9f36384..b889c55 100644
  		spin_lock(&journal->j_state_lock);
  	} else {
  		/*
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 40c5fb7..c7b7079 100644
 --- a/fs/jbd2/journal.c
 +++ b/fs/jbd2/journal.c
 @@ -173,7 +173,7 @@ loop:
@@ -213,8 +195,6 @@ index 40c5fb7..c7b7079 100644
  		write_lock(&journal->j_state_lock);
  	} else {
  		/*
-diff --git a/fs/jfs/jfs_logmgr.c b/fs/jfs/jfs_logmgr.c
-index 583636f..c8c2d35 100644
 --- a/fs/jfs/jfs_logmgr.c
 +++ b/fs/jfs/jfs_logmgr.c
 @@ -2348,7 +2348,7 @@ int jfsIOWait(void *arg)
@@ -226,8 +206,6 @@ index 583636f..c8c2d35 100644
  		} else {
  			set_current_state(TASK_INTERRUPTIBLE);
  			spin_unlock_irq(&log_redrive_lock);
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index f6cc0c0..8a2f83b 100644
 --- a/fs/jfs/jfs_txnmgr.c
 +++ b/fs/jfs/jfs_txnmgr.c
 @@ -2801,7 +2801,7 @@ int jfs_lazycommit(void *arg)
@@ -248,11 +226,9 @@ index f6cc0c0..8a2f83b 100644
  		} else {
  			set_current_state(TASK_INTERRUPTIBLE);
  			TXN_UNLOCK();
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index bb24ab6..0e72ad6 100644
 --- a/fs/nilfs2/segment.c
 +++ b/fs/nilfs2/segment.c
-@@ -2470,7 +2470,7 @@ static int nilfs_segctor_thread(void *arg)
+@@ -2470,7 +2470,7 @@ static int nilfs_segctor_thread(void *ar
  
  	if (freezing(current)) {
  		spin_unlock(&sci->sc_state_lock);
@@ -261,8 +237,6 @@ index bb24ab6..0e72ad6 100644
  		spin_lock(&sci->sc_state_lock);
  	} else {
  		DEFINE_WAIT(wait);
-diff --git a/fs/xfs/linux-2.6/xfs_buf.c b/fs/xfs/linux-2.6/xfs_buf.c
-index 5e68099..5930e87b 100644
 --- a/fs/xfs/linux-2.6/xfs_buf.c
 +++ b/fs/xfs/linux-2.6/xfs_buf.c
 @@ -1764,7 +1764,7 @@ xfsbufd(
@@ -274,11 +248,9 @@ index 5e68099..5930e87b 100644
  		} else {
  			clear_bit(XBT_FORCE_SLEEP, &target->bt_flags);
  		}
-diff --git a/include/linux/freezer.h b/include/linux/freezer.h
-index aa56cf3..eb9c977 100644
 --- a/include/linux/freezer.h
 +++ b/include/linux/freezer.h
-@@ -47,18 +47,17 @@ static inline bool should_send_signal(struct task_struct *p)
+@@ -47,18 +47,17 @@ static inline bool should_send_signal(st
  /* Takes and releases task alloc lock using task_lock() */
  extern int thaw_process(struct task_struct *p);
  
@@ -303,7 +275,7 @@ index aa56cf3..eb9c977 100644
  }
  
  extern bool freeze_task(struct task_struct *p, bool sig_only);
-@@ -171,12 +170,12 @@ static inline void set_freeze_flag(struct task_struct *p) {}
+@@ -171,12 +170,12 @@ static inline void set_freeze_flag(struc
  static inline void clear_freeze_flag(struct task_struct *p) {}
  static inline int thaw_process(struct task_struct *p) { return 1; }
  
@@ -318,8 +290,6 @@ index aa56cf3..eb9c977 100644
  
  static inline void freezer_do_not_count(void) {}
  static inline void freezer_count(void) {}
-diff --git a/kernel/freezer.c b/kernel/freezer.c
-index 575f863..4d59904 100644
 --- a/kernel/freezer.c
 +++ b/kernel/freezer.c
 @@ -23,10 +23,11 @@ static inline void frozen_process(void)
@@ -364,6 +334,3 @@ index 575f863..4d59904 100644
  
  static void fake_signal_wake_up(struct task_struct *p)
  {
--- 
-1.7.10.1.362.g242cab3
-

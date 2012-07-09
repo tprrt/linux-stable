@@ -13,12 +13,10 @@ Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/include/asm/localtimer.h | 4 ++++
- arch/arm/kernel/smp.c             | 5 +++++
+ arch/arm/include/asm/localtimer.h |    4 ++++
+ arch/arm/kernel/smp.c             |    5 +++++
  2 files changed, 9 insertions(+)
 
-diff --git a/arch/arm/include/asm/localtimer.h b/arch/arm/include/asm/localtimer.h
-index 080d74f..3306f28 100644
 --- a/arch/arm/include/asm/localtimer.h
 +++ b/arch/arm/include/asm/localtimer.h
 @@ -22,6 +22,10 @@ void percpu_timer_setup(void);
@@ -32,11 +30,9 @@ index 080d74f..3306f28 100644
  
  #ifdef CONFIG_LOCAL_TIMERS
  
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 74ac4bb..53aaa59 100644
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -473,6 +473,11 @@ static void ipi_timer(void)
+@@ -471,6 +471,11 @@ static void ipi_timer(void)
  #ifdef CONFIG_LOCAL_TIMERS
  asmlinkage void __exception_irq_entry do_local_timer(struct pt_regs *regs)
  {
@@ -48,6 +44,3 @@ index 74ac4bb..53aaa59 100644
  	struct pt_regs *old_regs = set_irq_regs(regs);
  	int cpu = smp_processor_id();
  
--- 
-1.7.10.2.565.gbd578b5
-

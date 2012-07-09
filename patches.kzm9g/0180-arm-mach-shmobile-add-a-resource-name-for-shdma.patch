@@ -9,15 +9,13 @@ Signed-off-by: Paul Mundt <lethal@linux-sh.org>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/mach-shmobile/setup-sh7372.c | 6 +++---
- arch/arm/mach-shmobile/setup-sh73a0.c | 2 +-
+ arch/arm/mach-shmobile/setup-sh7372.c |    6 +++---
+ arch/arm/mach-shmobile/setup-sh73a0.c |    2 +-
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-shmobile/setup-sh7372.c b/arch/arm/mach-shmobile/setup-sh7372.c
-index cd807ee..8ddef91 100644
 --- a/arch/arm/mach-shmobile/setup-sh7372.c
 +++ b/arch/arm/mach-shmobile/setup-sh7372.c
-@@ -503,7 +503,7 @@ static struct resource sh7372_dmae0_resources[] = {
+@@ -505,7 +505,7 @@ static struct resource sh7372_dmae0_reso
  		.flags	= IORESOURCE_MEM,
  	},
  	{
@@ -26,7 +24,7 @@ index cd807ee..8ddef91 100644
  		.start	= evt2irq(0x20c0),
  		.end	= evt2irq(0x20c0),
  		.flags	= IORESOURCE_IRQ,
-@@ -531,7 +531,7 @@ static struct resource sh7372_dmae1_resources[] = {
+@@ -533,7 +533,7 @@ static struct resource sh7372_dmae1_reso
  		.flags	= IORESOURCE_MEM,
  	},
  	{
@@ -35,7 +33,7 @@ index cd807ee..8ddef91 100644
  		.start	= evt2irq(0x21c0),
  		.end	= evt2irq(0x21c0),
  		.flags	= IORESOURCE_IRQ,
-@@ -559,7 +559,7 @@ static struct resource sh7372_dmae2_resources[] = {
+@@ -561,7 +561,7 @@ static struct resource sh7372_dmae2_reso
  		.flags	= IORESOURCE_MEM,
  	},
  	{
@@ -44,11 +42,9 @@ index cd807ee..8ddef91 100644
  		.start	= evt2irq(0x22c0),
  		.end	= evt2irq(0x22c0),
  		.flags	= IORESOURCE_IRQ,
-diff --git a/arch/arm/mach-shmobile/setup-sh73a0.c b/arch/arm/mach-shmobile/setup-sh73a0.c
-index e46821c..20e71e5 100644
 --- a/arch/arm/mach-shmobile/setup-sh73a0.c
 +++ b/arch/arm/mach-shmobile/setup-sh73a0.c
-@@ -607,7 +607,7 @@ static struct resource sh73a0_dmae_resources[] = {
+@@ -607,7 +607,7 @@ static struct resource sh73a0_dmae_resou
  		.flags  = IORESOURCE_MEM,
  	},
  	{
@@ -57,6 +53,3 @@ index e46821c..20e71e5 100644
  		.start  = gic_spi(129),
  		.end    = gic_spi(129),
  		.flags  = IORESOURCE_IRQ,
--- 
-1.7.10.2.565.gbd578b5
-
