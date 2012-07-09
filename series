@@ -728,6 +728,7 @@ patches.kzm9g/0139-ARM-mach-shmobile-armadillo800eva-Add-FSI-WM8978-sup.patch
 patches.kzm9g/0140-ARM-mach-shmobile-Add-support-for-PINT-though-INTC-m.patch
 patches.kzm9g/0141-irq-Track-the-owner-of-irq-descriptor.patch
 patches.kzm9g/0142-irq-add-irq_domain-translation-infrastructure.patch
+patches.kzm9g/of-address-add-of_find_matching_node_by_address-helper.patch
 patches.kzm9g/0143-dt-irq-add-irq_domain_generate_simple-helper.patch
 patches.kzm9g/0144-irq-Add-declaration-of-irq_domain_simple_ops-to-irqd.patch
 patches.kzm9g/0145-irq-Fix-check-for-already-initialized-irq_domain-in-.patch
