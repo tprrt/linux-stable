@@ -22,13 +22,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 7f37a2a..fdd09de 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -1718,6 +1718,8 @@ static void r8a66597_fifo_flush(struct usb_ep *_ep)
+@@ -1718,6 +1718,8 @@ static void r8a66597_fifo_flush(struct u
  	if (list_empty(&ep->queue) && !ep->busy) {
  		pipe_stop(ep->r8a66597, ep->pipenum);
  		r8a66597_bclr(ep->r8a66597, BCLR, ep->fifoctr);
@@ -37,10 +35,3 @@ index 7f37a2a..fdd09de 100644
  	}
  	spin_unlock_irqrestore(&ep->r8a66597->lock, flags);
  }
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

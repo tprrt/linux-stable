@@ -38,14 +38,14 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  arch/arm/include/asm/localtimer.h                 |   11 +--
  arch/arm/include/asm/smp.h                        |    5 -
  arch/arm/kernel/irq.c                             |    3 
- arch/arm/kernel/smp.c                             |   32 +--------
+ arch/arm/kernel/smp.c                             |   34 +--------
  arch/arm/mach-exynos4/include/mach/entry-macro.S  |   13 ---
  arch/arm/mach-msm/board-msm8x60.c                 |   11 ---
  arch/arm/mach-msm/include/mach/entry-macro-qgic.S |   73 ---------------------
  arch/arm/mach-omap2/include/mach/entry-macro.S    |   14 ----
  arch/arm/mach-shmobile/entry-intc.S               |    3 
  arch/arm/mach-shmobile/include/mach/entry-macro.S |    3 
- 14 files changed, 88 insertions(+), 184 deletions(-)
+ 14 files changed, 88 insertions(+), 186 deletions(-)
 
 --- a/arch/arm/common/gic.c
 +++ b/arch/arm/common/gic.c
@@ -299,7 +299,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	return sum;
  }
  
-@@ -469,34 +465,16 @@ static void ipi_timer(void)
+@@ -469,36 +465,16 @@ static void ipi_timer(void)
  }
  
  #ifdef CONFIG_LOCAL_TIMERS
@@ -317,7 +317,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
  	if (local_timer_ack()) {
 -		__inc_irq_stat(cpu, local_timer_irqs);
+-		irq_enter();
 -		ipi_timer();
+-		irq_exit();
 +		evt->event_handler(evt);
 +		return IRQ_HANDLED;
  	}

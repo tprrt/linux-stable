@@ -228,7 +228,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			TXN_UNLOCK();
 --- a/fs/nilfs2/segment.c
 +++ b/fs/nilfs2/segment.c
-@@ -2470,7 +2470,7 @@ static int nilfs_segctor_thread(void *ar
+@@ -2472,7 +2472,7 @@ static int nilfs_segctor_thread(void *ar
  
  	if (freezing(current)) {
  		spin_unlock(&sci->sc_state_lock);
