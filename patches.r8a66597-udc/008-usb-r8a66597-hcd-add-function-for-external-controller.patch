@@ -28,26 +28,17 @@ Conflicts:
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  include/linux/usb/r8a66597.h |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/usb/r8a66597.h b/include/linux/usb/r8a66597.h
-index 6e1bfae..7cd89e7 100644
 --- a/include/linux/usb/r8a66597.h
 +++ b/include/linux/usb/r8a66597.h
 @@ -45,6 +45,9 @@ struct r8a66597_platdata {
-
+ 
  	/* set one = big endian, set zero = little endian */
  	unsigned	endian:1;
 +
 +	/* (external controller only) set one = WR0_N shorted to WR1_N */
 +	unsigned	wr0_shorted_to_wr1:1;
  };
-
+ 
  /* Register definitions */
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

@@ -29,24 +29,15 @@ Conflicts:
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 6dcc1f6..600a2e7 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -1679,6 +1679,7 @@ static struct platform_driver r8a66597_driver = {
+@@ -1679,6 +1679,7 @@ static struct platform_driver r8a66597_d
  		.name =	(char *) udc_name,
  	},
  };
 +MODULE_ALIAS("platform:r8a66597_udc");
-
+ 
  static int __init r8a66597_udc_init(void)
  {
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

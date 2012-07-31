@@ -26,8 +26,6 @@ Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
  drivers/usb/gadget/r8a66597-udc.h |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 600a2e7..9fc3979 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
 @@ -3,7 +3,7 @@
@@ -39,8 +37,6 @@ index 600a2e7..9fc3979 100644
   *
   * This program is free software; you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
-diff --git a/drivers/usb/gadget/r8a66597-udc.h b/drivers/usb/gadget/r8a66597-udc.h
-index 5fc22e0..503f766 100644
 --- a/drivers/usb/gadget/r8a66597-udc.h
 +++ b/drivers/usb/gadget/r8a66597-udc.h
 @@ -3,7 +3,7 @@
@@ -52,10 +48,3 @@ index 5fc22e0..503f766 100644
   *
   * This program is free software; you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

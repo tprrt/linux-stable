@@ -21,11 +21,9 @@ Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
  drivers/usb/gadget/r8a66597-udc.h |    4 ++--
  2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 460b3bf..3450038 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -723,7 +723,7 @@ static void irq_ep0_write(struct r8a66597_ep *ep, struct r8a66597_request *req)
+@@ -723,7 +723,7 @@ static void irq_ep0_write(struct r8a6659
  	/* write fifo */
  	if (req->req.buf) {
  		if (size > 0)
@@ -34,8 +32,8 @@ index 460b3bf..3450038 100644
  		if ((size == 0) || ((size % ep->ep.maxpacket) != 0))
  			r8a66597_bset(r8a66597, BVAL, ep->fifoctr);
  	}
-@@ -770,7 +770,7 @@ static void irq_packet_write(struct r8a66597_ep *ep,
-
+@@ -770,7 +770,7 @@ static void irq_packet_write(struct r8a6
+ 
  	/* write fifo */
  	if (req->req.buf) {
 -		r8a66597_write_fifo(r8a66597, ep->fifoaddr, buf, size);
@@ -43,13 +41,11 @@ index 460b3bf..3450038 100644
  		if ((size == 0)
  				|| ((size % ep->ep.maxpacket) != 0)
  				|| ((bufsize != ep->ep.maxpacket)
-diff --git a/drivers/usb/gadget/r8a66597-udc.h b/drivers/usb/gadget/r8a66597-udc.h
-index a373c4e..31047f8 100644
 --- a/drivers/usb/gadget/r8a66597-udc.h
 +++ b/drivers/usb/gadget/r8a66597-udc.h
-@@ -173,11 +173,11 @@ static inline void r8a66597_write(struct r8a66597 *r8a66597, u16 val,
+@@ -173,11 +173,11 @@ static inline void r8a66597_write(struct
  }
-
+ 
  static inline void r8a66597_write_fifo(struct r8a66597 *r8a66597,
 -				       unsigned long offset,
 +				       struct r8a66597_ep *ep,
@@ -60,11 +56,4 @@ index a373c4e..31047f8 100644
 +	void __iomem *fifoaddr = r8a66597->reg + ep->fifoaddr;
  	int adj = 0;
  	int i;
-
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-
+ 

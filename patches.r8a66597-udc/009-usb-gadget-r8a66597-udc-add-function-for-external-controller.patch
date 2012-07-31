@@ -23,16 +23,14 @@ Signed-off-by: Felipe Balbi <balbi@ti.com>
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.h |   34 +++++++++++++++++++---------------
- 1 files changed, 19 insertions(+), 15 deletions(-)
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.h b/drivers/usb/gadget/r8a66597-udc.h
-index 31047f8..f9ac2d7 100644
 --- a/drivers/usb/gadget/r8a66597-udc.h
 +++ b/drivers/usb/gadget/r8a66597-udc.h
-@@ -172,6 +172,21 @@ static inline void r8a66597_write(struct r8a66597 *r8a66597, u16 val,
+@@ -172,6 +172,21 @@ static inline void r8a66597_write(struct
  	iowrite16(val, r8a66597->reg + offset);
  }
-
+ 
 +static inline void r8a66597_mdfy(struct r8a66597 *r8a66597,
 +				 u16 val, u16 pat, unsigned long offset)
 +{
@@ -51,10 +49,10 @@ index 31047f8..f9ac2d7 100644
  static inline void r8a66597_write_fifo(struct r8a66597 *r8a66597,
  				       struct r8a66597_ep *ep,
  				       unsigned char *buf,
-@@ -205,18 +220,12 @@ static inline void r8a66597_write_fifo(struct r8a66597 *r8a66597,
+@@ -205,18 +220,12 @@ static inline void r8a66597_write_fifo(s
  			adj = 0x01; /* 16-bit wide */
  	}
-
+ 
 +	if (r8a66597->pdata->wr0_shorted_to_wr1)
 +		r8a66597_bclr(r8a66597, MBW_16, ep->fifosel);
  	for (i = 0; i < len; i++)
@@ -72,24 +70,17 @@ index 31047f8..f9ac2d7 100644
 +	if (r8a66597->pdata->wr0_shorted_to_wr1)
 +		r8a66597_bclr(r8a66597, MBW_16, ep->fifosel);
  }
-
+ 
  static inline u16 get_xtal_from_pdata(struct r8a66597_platdata *pdata)
-@@ -241,11 +250,6 @@ static inline u16 get_xtal_from_pdata(struct r8a66597_platdata *pdata)
+@@ -241,11 +250,6 @@ static inline u16 get_xtal_from_pdata(st
  	return clock;
  }
-
+ 
 -#define r8a66597_bclr(r8a66597, val, offset)	\
 -			r8a66597_mdfy(r8a66597, 0, val, offset)
 -#define r8a66597_bset(r8a66597, val, offset)	\
 -			r8a66597_mdfy(r8a66597, val, 0, offset)
 -
  #define get_pipectr_addr(pipenum)	(PIPE1CTR + (pipenum - 1) * 2)
-
+ 
  #define enable_irq_ready(r8a66597, pipenum)	\
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

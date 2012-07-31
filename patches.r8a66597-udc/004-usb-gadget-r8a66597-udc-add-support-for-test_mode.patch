@@ -23,35 +23,33 @@ Signed-off-by: Felipe Balbi <balbi@ti.com>
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |   23 ++++++++++++++++++++++-
- 1 files changed, 22 insertions(+), 1 deletions(-)
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 8a3a32a..eb1ad72 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -622,6 +622,7 @@ static void disable_controller(struct r8a66597 *r8a66597)
+@@ -622,6 +622,7 @@ static void disable_controller(struct r8
  {
  	if (r8a66597->pdata->on_chip) {
  		r8a66597_bset(r8a66597, SCKE, SYSCFG0);
 +		r8a66597_bclr(r8a66597, UTST, TESTMODE);
-
+ 
  		/* disable interrupts */
  		r8a66597_write(r8a66597, 0, INTENB0);
-@@ -639,6 +640,7 @@ static void disable_controller(struct r8a66597 *r8a66597)
+@@ -639,6 +640,7 @@ static void disable_controller(struct r8
  		r8a66597_bclr(r8a66597, SCKE, SYSCFG0);
-
+ 
  	} else {
 +		r8a66597_bclr(r8a66597, UTST, TESTMODE);
  		r8a66597_bclr(r8a66597, SCKE, SYSCFG0);
  		udelay(1);
  		r8a66597_bclr(r8a66597, PLLC, SYSCFG0);
-@@ -1003,10 +1005,29 @@ static void clear_feature(struct r8a66597 *r8a66597,
-
+@@ -1003,10 +1005,29 @@ static void clear_feature(struct r8a6659
+ 
  static void set_feature(struct r8a66597 *r8a66597, struct usb_ctrlrequest *ctrl)
  {
 +	u16 tmp;
 +	int timeout = 3000;
-
+ 
  	switch (ctrl->bRequestType & USB_RECIP_MASK) {
  	case USB_RECIP_DEVICE:
 -		control_end(r8a66597, 1);
@@ -76,10 +74,3 @@ index 8a3a32a..eb1ad72 100644
  		break;
  	case USB_RECIP_INTERFACE:
  		control_end(r8a66597, 1);
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

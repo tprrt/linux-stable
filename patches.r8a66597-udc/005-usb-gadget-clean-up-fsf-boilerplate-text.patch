@@ -92,10 +92,8 @@ Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |   10 ----------
  drivers/usb/gadget/r8a66597-udc.h |   10 ----------
- 2 files changed, 0 insertions(+), 20 deletions(-)
+ 2 files changed, 20 deletions(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index eb1ad72..fe3313a 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
 @@ -8,16 +8,6 @@
@@ -113,10 +111,8 @@ index eb1ad72..fe3313a 100644
 - * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 - *
   */
-
+ 
  #include <linux/module.h>
-diff --git a/drivers/usb/gadget/r8a66597-udc.h b/drivers/usb/gadget/r8a66597-udc.h
-index 503f766..a373c4e 100644
 --- a/drivers/usb/gadget/r8a66597-udc.h
 +++ b/drivers/usb/gadget/r8a66597-udc.h
 @@ -8,16 +8,6 @@
@@ -134,12 +130,5 @@ index 503f766..a373c4e 100644
 - * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 - *
   */
-
+ 
  #ifndef __R8A66597_H__
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

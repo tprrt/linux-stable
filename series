@@ -904,6 +904,9 @@ patches.sh7757lcr/018-sh-fix-the-sh_mmcif_plat_data-in-board-sh7757lcr.patch
 patches.sh7757lcr/019-sh-modify-a-resource-of-sh_eth_giga1_resources-in-board-sh7757lcr.patch
 patches.sh7757lcr/020-sh-kexec-register-crashk_res.patch
 patches.sh7757lcr/021-sh-kexec-add-physical_start.patch
+patches.sh7757lcr/drivers-sh-generalize-runtime-pm-platform-stub.patch
+patches.sh7757lcr/sh-also-without-pm_runtime-pm_runtime.o-must-be-built.patch
+patches.sh7757lcr/sh-fix-clock-sh7757-for-the-latest-sh_mobile_sdhi-driver.patch
 
 
 patches.r8a66597-udc/001-usb-gadget-add-platform-module-alias-where-it-is-missing.patch

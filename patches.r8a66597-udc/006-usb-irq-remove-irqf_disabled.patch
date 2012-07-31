@@ -77,26 +77,16 @@ Conflicts:
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index fe3313a..460b3bf 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -1618,7 +1618,7 @@ static int __init r8a66597_probe(struct platform_device *pdev)
-
+@@ -1618,7 +1618,7 @@ static int __init r8a66597_probe(struct
+ 
  	disable_controller(r8a66597); /* make sure controller is disabled */
-
+ 
 -	ret = request_irq(irq, r8a66597_irq, IRQF_DISABLED | IRQF_SHARED,
 +	ret = request_irq(irq, r8a66597_irq, IRQF_SHARED,
  			udc_name, r8a66597);
  	if (ret < 0) {
  		printk(KERN_ERR "request_irq error (%d)\n", ret);
--- 
-1.7.1
-
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-

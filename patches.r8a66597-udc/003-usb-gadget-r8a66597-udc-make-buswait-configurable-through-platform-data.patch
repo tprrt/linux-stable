@@ -32,15 +32,13 @@ Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 ---
  drivers/usb/gadget/r8a66597-udc.c |    6 +++++-
  include/linux/usb/r8a66597.h      |    3 +++
- 2 files changed, 8 insertions(+), 1 deletions(-)
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/r8a66597-udc.c b/drivers/usb/gadget/r8a66597-udc.c
-index 9fc3979..8a3a32a 100644
 --- a/drivers/usb/gadget/r8a66597-udc.c
 +++ b/drivers/usb/gadget/r8a66597-udc.c
-@@ -576,7 +576,11 @@ static void init_controller(struct r8a66597 *r8a66597)
+@@ -576,7 +576,11 @@ static void init_controller(struct r8a66
  	u16 endian = r8a66597->pdata->endian ? BIGEND : 0;
-
+ 
  	if (r8a66597->pdata->on_chip) {
 -		r8a66597_bset(r8a66597, 0x04, SYSCFG1);
 +		if (r8a66597->pdata->buswait)
@@ -49,26 +47,17 @@ index 9fc3979..8a3a32a 100644
 +		else
 +			r8a66597_write(r8a66597, 0x0f, SYSCFG1);
  		r8a66597_bset(r8a66597, HSE, SYSCFG0);
-
+ 
  		r8a66597_bclr(r8a66597, USBE, SYSCFG0);
-diff --git a/include/linux/usb/r8a66597.h b/include/linux/usb/r8a66597.h
-index 26d2167..6e1bfae 100644
 --- a/include/linux/usb/r8a66597.h
 +++ b/include/linux/usb/r8a66597.h
 @@ -31,6 +31,9 @@ struct r8a66597_platdata {
  	/* This callback can control port power instead of DVSTCTR register. */
  	void (*port_power)(int port, int power);
-
+ 
 +	/* This parameter is for BUSWAIT */
 +	u16		buswait;
 +
  	/* set one = on chip controller, set zero = external controller */
  	unsigned	on_chip:1;
-
--- 
-1.7.1
-_______________________________________________
-LTSI-dev mailing list
-LTSI-dev@lists.linuxfoundation.org
-https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev
-
+ 
