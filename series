@@ -325,6 +325,8 @@ patches.armadillo800eva/0253-ARM-mach-shmobile-armadillo800eva-add-support-sh_et
 patches.armadillo800eva/arm-mach-shmobile-sh7372-ap4evb-and-mackerel-timer-rework.patch
 patches.armadillo800eva/ltsi-bugfix-armadillo800eva-sh_eth-needs-net_ethernet-on-defconfig.patch
 patches.armadillo800eva/arm-mach-shmobile-armadillo800eva-defconfig-update.patch
+patches.armadillo800eva/arm-mach-shmobile-armadillo800eva-defconfig-allow-use-of-armhf-userspace.patch
+patches.armadillo800eva/arm-mach-shmobile-armadillo800eva-defconfig-disable-config_sysfs_deprecated.patch
 
 
 #############################################################################
