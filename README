@@ -20,7 +20,7 @@ single compressed patch, or as an RPM source package that will
 successfully build in an OBS instance.
 
 For questions about the LTSI project, and how it operates, please see
-the documentation at http://somewhere.linuxfoundation.org
+the documentation at http://ltsi.linuxfoundation.org/what-is-ltsi
 
 For discussions about these patches, or anything else related to the
 LTSI project, please contact the partipitants at the ltsi-dev mailing
