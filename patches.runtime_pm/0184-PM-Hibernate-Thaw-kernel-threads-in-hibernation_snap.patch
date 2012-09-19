@@ -20,11 +20,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/user.c      |    8 ++------
  2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index f3b03d4..23c1fe3 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -343,13 +343,13 @@ int hibernation_snapshot(int platform_mode)
+@@ -343,13 +343,13 @@ int hibernation_snapshot(int platform_mo
  		 * successful freezer test.
  		 */
  		freezer_test_done = true;
@@ -40,20 +38,18 @@ index f3b03d4..23c1fe3 100644
  	}
  
  	suspend_console();
-@@ -385,6 +385,8 @@ int hibernation_snapshot(int platform_mode)
- 	platform_end(platform_mode);
- 	return error;
+@@ -391,6 +391,8 @@ int hibernation_snapshot(int platform_mo
+ 	platform_recover(platform_mode);
+ 	goto Resume_devices;
  
 + Thaw:
 +	thaw_kernel_threads();
   Cleanup:
  	swsusp_free();
  	goto Close;
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 3e10007..7bee91f 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
-@@ -249,16 +249,12 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -249,16 +249,12 @@ static long snapshot_ioctl(struct file *
  		}
  		pm_restore_gfp_mask();
  		error = hibernation_snapshot(data->platform_support);
@@ -72,6 +68,3 @@ index 3e10007..7bee91f 100644
  		}
  		break;
  
--- 
-1.7.10.1.362.g242cab3
-

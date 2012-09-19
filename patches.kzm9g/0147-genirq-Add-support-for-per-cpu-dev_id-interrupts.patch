@@ -48,21 +48,19 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- include/linux/interrupt.h |  38 ++++++---
- include/linux/irq.h       |  16 +++-
- include/linux/irqdesc.h   |   1 +
- kernel/irq/chip.c         |  64 +++++++++++++--
- kernel/irq/internals.h    |  19 +++--
- kernel/irq/irqdesc.c      |  32 +++++++-
- kernel/irq/manage.c       | 202 +++++++++++++++++++++++++++++++++++++++++++---
- kernel/irq/settings.h     |   7 ++
+ include/linux/interrupt.h |   38 ++++++--
+ include/linux/irq.h       |   16 +++
+ include/linux/irqdesc.h   |    1 
+ kernel/irq/chip.c         |   64 ++++++++++++--
+ kernel/irq/internals.h    |   19 +++-
+ kernel/irq/irqdesc.c      |   32 +++++++
+ kernel/irq/manage.c       |  202 +++++++++++++++++++++++++++++++++++++++++++---
+ kernel/irq/settings.h     |    7 +
  8 files changed, 345 insertions(+), 34 deletions(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index b9490bf..6fe4e3c 100644
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -98,6 +98,7 @@ typedef irqreturn_t (*irq_handler_t)(int, void *);
+@@ -98,6 +98,7 @@ typedef irqreturn_t (*irq_handler_t)(int
   * @flags:	flags (see IRQF_* above)
   * @name:	name of the device
   * @dev_id:	cookie to identify the device
@@ -70,7 +68,7 @@ index b9490bf..6fe4e3c 100644
   * @next:	pointer to the next irqaction for shared interrupts
   * @irq:	interrupt number
   * @dir:	pointer to the proc/irq/NN/name entry
-@@ -107,17 +108,18 @@ typedef irqreturn_t (*irq_handler_t)(int, void *);
+@@ -107,17 +108,18 @@ typedef irqreturn_t (*irq_handler_t)(int
   * @thread_mask:	bitmask for keeping track of @thread activity
   */
  struct irqaction {
@@ -111,7 +109,7 @@ index b9490bf..6fe4e3c 100644
  extern void exit_irq_thread(void);
  #else
  
-@@ -167,10 +173,18 @@ request_any_context_irq(unsigned int irq, irq_handler_t handler,
+@@ -167,10 +173,18 @@ request_any_context_irq(unsigned int irq
  	return request_irq(irq, handler, flags, name, dev_id);
  }
  
@@ -130,7 +128,7 @@ index b9490bf..6fe4e3c 100644
  
  struct device;
  
-@@ -210,7 +224,9 @@ extern void devm_free_irq(struct device *dev, unsigned int irq, void *dev_id);
+@@ -210,7 +224,9 @@ extern void devm_free_irq(struct device
  
  extern void disable_irq_nosync(unsigned int irq);
  extern void disable_irq(unsigned int irq);
@@ -140,11 +138,9 @@ index b9490bf..6fe4e3c 100644
  
  /* The following three functions are for the core kernel use only. */
  #ifdef CONFIG_GENERIC_HARDIRQS
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index d65dfca..b6cbe62 100644
 --- a/include/linux/irq.h
 +++ b/include/linux/irq.h
-@@ -66,6 +66,7 @@ typedef	void (*irq_preflow_handler_t)(struct irq_data *data);
+@@ -66,6 +66,7 @@ typedef	void (*irq_preflow_handler_t)(st
   * IRQ_NO_BALANCING		- Interrupt cannot be balanced (affinity set)
   * IRQ_MOVE_PCNTXT		- Interrupt can be migrated from process context
   * IRQ_NESTED_TRHEAD		- Interrupt nests into another thread
@@ -176,7 +172,7 @@ index d65dfca..b6cbe62 100644
  
  extern void irq_cpu_online(void);
  extern void irq_cpu_offline(void);
-@@ -399,6 +403,7 @@ extern void handle_edge_irq(unsigned int irq, struct irq_desc *desc);
+@@ -399,6 +403,7 @@ extern void handle_edge_irq(unsigned int
  extern void handle_edge_eoi_irq(unsigned int irq, struct irq_desc *desc);
  extern void handle_simple_irq(unsigned int irq, struct irq_desc *desc);
  extern void handle_percpu_irq(unsigned int irq, struct irq_desc *desc);
@@ -184,7 +180,7 @@ index d65dfca..b6cbe62 100644
  extern void handle_bad_irq(unsigned int irq, struct irq_desc *desc);
  extern void handle_nested_irq(unsigned int irq);
  
-@@ -427,6 +432,8 @@ static inline void irq_set_chip_and_handler(unsigned int irq, struct irq_chip *c
+@@ -427,6 +432,8 @@ static inline void irq_set_chip_and_hand
  	irq_set_chip_and_handler_name(irq, chip, handle, NULL);
  }
  
@@ -193,7 +189,7 @@ index d65dfca..b6cbe62 100644
  extern void
  __irq_set_handler(unsigned int irq, irq_flow_handler_t handle, int is_chained,
  		  const char *name);
-@@ -488,6 +495,13 @@ static inline void irq_set_nested_thread(unsigned int irq, bool nest)
+@@ -488,6 +495,13 @@ static inline void irq_set_nested_thread
  		irq_clear_status_flags(irq, IRQ_NESTED_THREAD);
  }
  
@@ -207,11 +203,9 @@ index d65dfca..b6cbe62 100644
  /* Handle dynamic irq creation and destruction */
  extern unsigned int create_irq_nr(unsigned int irq_want, int node);
  extern int create_irq(void);
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 150134a..6b69c2c 100644
 --- a/include/linux/irqdesc.h
 +++ b/include/linux/irqdesc.h
-@@ -53,6 +53,7 @@ struct irq_desc {
+@@ -52,6 +52,7 @@ struct irq_desc {
  	unsigned long		last_unhandled;	/* Aging timer for unhandled count */
  	unsigned int		irqs_unhandled;
  	raw_spinlock_t		lock;
@@ -219,8 +213,6 @@ index 150134a..6b69c2c 100644
  #ifdef CONFIG_SMP
  	const struct cpumask	*affinity_hint;
  	struct irq_affinity_notify *affinity_notify;
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 990965e..25784d6 100644
 --- a/kernel/irq/chip.c
 +++ b/kernel/irq/chip.c
 @@ -26,7 +26,7 @@
@@ -259,7 +251,7 @@ index 990965e..25784d6 100644
  
  	if (!desc)
  		return -EINVAL;
-@@ -118,7 +118,7 @@ int irq_set_msi_desc(unsigned int irq, struct msi_desc *entry)
+@@ -118,7 +118,7 @@ int irq_set_msi_desc(unsigned int irq, s
  int irq_set_chip_data(unsigned int irq, void *data)
  {
  	unsigned long flags;
@@ -293,7 +285,7 @@ index 990965e..25784d6 100644
  static inline void mask_ack_irq(struct irq_desc *desc)
  {
  	if (desc->irq_data.chip->irq_mask_ack)
-@@ -567,12 +585,44 @@ handle_percpu_irq(unsigned int irq, struct irq_desc *desc)
+@@ -567,12 +585,44 @@ handle_percpu_irq(unsigned int irq, stru
  		chip->irq_eoi(&desc->irq_data);
  }
  
@@ -339,7 +331,7 @@ index 990965e..25784d6 100644
  
  	if (!desc)
  		return;
-@@ -616,7 +666,7 @@ irq_set_chip_and_handler_name(unsigned int irq, struct irq_chip *chip,
+@@ -616,7 +666,7 @@ irq_set_chip_and_handler_name(unsigned i
  void irq_modify_status(unsigned int irq, unsigned long clr, unsigned long set)
  {
  	unsigned long flags;
@@ -348,11 +340,9 @@ index 990965e..25784d6 100644
  
  	if (!desc)
  		return;
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index 62efdc4..e1a8b64 100644
 --- a/kernel/irq/internals.h
 +++ b/kernel/irq/internals.h
-@@ -71,6 +71,8 @@ extern int irq_startup(struct irq_desc *desc, bool resend);
+@@ -71,6 +71,8 @@ extern int irq_startup(struct irq_desc *
  extern void irq_shutdown(struct irq_desc *desc);
  extern void irq_enable(struct irq_desc *desc);
  extern void irq_disable(struct irq_desc *desc);
@@ -361,7 +351,7 @@ index 62efdc4..e1a8b64 100644
  extern void mask_irq(struct irq_desc *desc);
  extern void unmask_irq(struct irq_desc *desc);
  
-@@ -114,14 +116,21 @@ static inline void chip_bus_sync_unlock(struct irq_desc *desc)
+@@ -114,14 +116,21 @@ static inline void chip_bus_sync_unlock(
  		desc->irq_data.chip->irq_bus_sync_unlock(&desc->irq_data);
  }
  
@@ -386,7 +376,7 @@ index 62efdc4..e1a8b64 100644
  }
  
  static inline void
-@@ -131,9 +140,9 @@ irq_put_desc_busunlock(struct irq_desc *desc, unsigned long flags)
+@@ -131,9 +140,9 @@ irq_put_desc_busunlock(struct irq_desc *
  }
  
  static inline struct irq_desc *
@@ -398,11 +388,9 @@ index 62efdc4..e1a8b64 100644
  }
  
  static inline void
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index cb65d03..028e377 100644
 --- a/kernel/irq/irqdesc.c
 +++ b/kernel/irq/irqdesc.c
-@@ -423,11 +423,22 @@ unsigned int irq_get_next_irq(unsigned int offset)
+@@ -423,11 +423,22 @@ unsigned int irq_get_next_irq(unsigned i
  }
  
  struct irq_desc *
@@ -426,7 +414,7 @@ index cb65d03..028e377 100644
  		if (bus)
  			chip_bus_lock(desc);
  		raw_spin_lock_irqsave(&desc->lock, *flags);
-@@ -442,6 +453,25 @@ void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)
+@@ -442,6 +453,25 @@ void __irq_put_desc_unlock(struct irq_de
  		chip_bus_sync_unlock(desc);
  }
  
@@ -452,11 +440,9 @@ index cb65d03..028e377 100644
  /**
   * dynamic_irq_cleanup - cleanup a dynamically allocated irq
   * @irq:	irq number to initialize
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 83fb6f5..7923849 100644
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -195,7 +195,7 @@ int irq_set_affinity(unsigned int irq, const struct cpumask *mask)
+@@ -195,7 +195,7 @@ int irq_set_affinity(unsigned int irq, c
  int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
  {
  	unsigned long flags;
@@ -465,7 +451,7 @@ index 83fb6f5..7923849 100644
  
  	if (!desc)
  		return -EINVAL;
-@@ -356,7 +356,7 @@ void __disable_irq(struct irq_desc *desc, unsigned int irq, bool suspend)
+@@ -356,7 +356,7 @@ void __disable_irq(struct irq_desc *desc
  static int __disable_irq_nosync(unsigned int irq)
  {
  	unsigned long flags;
@@ -474,7 +460,7 @@ index 83fb6f5..7923849 100644
  
  	if (!desc)
  		return -EINVAL;
-@@ -448,7 +448,7 @@ void __enable_irq(struct irq_desc *desc, unsigned int irq, bool resume)
+@@ -448,7 +448,7 @@ void __enable_irq(struct irq_desc *desc,
  void enable_irq(unsigned int irq)
  {
  	unsigned long flags;
@@ -483,7 +469,7 @@ index 83fb6f5..7923849 100644
  
  	if (!desc)
  		return;
-@@ -491,7 +491,7 @@ static int set_irq_wake_real(unsigned int irq, unsigned int on)
+@@ -491,7 +491,7 @@ static int set_irq_wake_real(unsigned in
  int irq_set_irq_wake(unsigned int irq, unsigned int on)
  {
  	unsigned long flags;
@@ -501,7 +487,7 @@ index 83fb6f5..7923849 100644
  	int canrequest = 0;
  
  	if (!desc)
-@@ -1156,6 +1156,8 @@ int setup_irq(unsigned int irq, struct irqaction *act)
+@@ -1140,6 +1140,8 @@ int setup_irq(unsigned int irq, struct i
  	int retval;
  	struct irq_desc *desc = irq_to_desc(irq);
  
@@ -510,7 +496,7 @@ index 83fb6f5..7923849 100644
  	chip_bus_lock(desc);
  	retval = __setup_irq(irq, desc, act);
  	chip_bus_sync_unlock(desc);
-@@ -1164,7 +1166,7 @@ int setup_irq(unsigned int irq, struct irqaction *act)
+@@ -1148,7 +1150,7 @@ int setup_irq(unsigned int irq, struct i
  }
  EXPORT_SYMBOL_GPL(setup_irq);
  
@@ -519,7 +505,7 @@ index 83fb6f5..7923849 100644
   * Internal function to unregister an irqaction - used to free
   * regular and special interrupts that are part of the architecture.
   */
-@@ -1262,7 +1264,10 @@ static struct irqaction *__free_irq(unsigned int irq, void *dev_id)
+@@ -1246,7 +1248,10 @@ static struct irqaction *__free_irq(unsi
   */
  void remove_irq(unsigned int irq, struct irqaction *act)
  {
@@ -531,7 +517,7 @@ index 83fb6f5..7923849 100644
  }
  EXPORT_SYMBOL_GPL(remove_irq);
  
-@@ -1284,7 +1289,7 @@ void free_irq(unsigned int irq, void *dev_id)
+@@ -1268,7 +1273,7 @@ void free_irq(unsigned int irq, void *de
  {
  	struct irq_desc *desc = irq_to_desc(irq);
  
@@ -540,7 +526,7 @@ index 83fb6f5..7923849 100644
  		return;
  
  #ifdef CONFIG_SMP
-@@ -1362,7 +1367,8 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+@@ -1345,7 +1350,8 @@ int request_threaded_irq(unsigned int ir
  	if (!desc)
  		return -EINVAL;
  
@@ -550,7 +536,7 @@ index 83fb6f5..7923849 100644
  		return -EINVAL;
  
  	if (!handler) {
-@@ -1447,3 +1453,181 @@ int request_any_context_irq(unsigned int irq, irq_handler_t handler,
+@@ -1430,3 +1436,181 @@ int request_any_context_irq(unsigned int
  	return !ret ? IRQC_IS_HARDIRQ : ret;
  }
  EXPORT_SYMBOL_GPL(request_any_context_irq);
@@ -732,8 +718,6 @@ index 83fb6f5..7923849 100644
 +
 +	return retval;
 +}
-diff --git a/kernel/irq/settings.h b/kernel/irq/settings.h
-index f166783..1162f10 100644
 --- a/kernel/irq/settings.h
 +++ b/kernel/irq/settings.h
 @@ -13,6 +13,7 @@ enum {
@@ -752,7 +736,7 @@ index f166783..1162f10 100644
  #undef IRQF_MODIFY_MASK
  #define IRQF_MODIFY_MASK	GOT_YOU_MORON
  
-@@ -39,6 +41,11 @@ static inline bool irq_settings_is_per_cpu(struct irq_desc *desc)
+@@ -39,6 +41,11 @@ static inline bool irq_settings_is_per_c
  	return desc->status_use_accessors & _IRQ_PER_CPU;
  }
  
@@ -764,6 +748,3 @@ index f166783..1162f10 100644
  static inline void irq_settings_set_per_cpu(struct irq_desc *desc)
  {
  	desc->status_use_accessors |= _IRQ_PER_CPU;
--- 
-1.7.10.2.565.gbd578b5
-

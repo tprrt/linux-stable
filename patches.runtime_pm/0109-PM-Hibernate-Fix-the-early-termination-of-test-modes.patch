@@ -25,8 +25,6 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |   23 +++++++++++++++++------
  1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 3987d43..62c887e 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
 @@ -55,6 +55,8 @@ enum {
@@ -38,7 +36,7 @@ index 3987d43..62c887e 100644
  static const struct platform_hibernation_ops *hibernation_ops;
  
  /**
-@@ -347,6 +349,17 @@ int hibernation_snapshot(int platform_mode)
+@@ -347,6 +349,17 @@ int hibernation_snapshot(int platform_mo
  	if (error)
  		goto Close;
  
@@ -56,7 +54,7 @@ index 3987d43..62c887e 100644
  	error = dpm_prepare(PMSG_FREEZE);
  	if (error)
  		goto Complete_devices;
-@@ -641,15 +654,13 @@ int hibernate(void)
+@@ -647,15 +660,13 @@ int hibernate(void)
  	if (error)
  		goto Free_bitmaps;
  
@@ -76,6 +74,3 @@ index 3987d43..62c887e 100644
  
  	if (in_suspend) {
  		unsigned int flags = 0;
--- 
-1.7.10.1.362.g242cab3
-

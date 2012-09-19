@@ -19,11 +19,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/suspend.c |    2 +-
  3 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/power/main.c b/kernel/power/main.c
-index b1e3248..1c12581 100644
 --- a/kernel/power/main.c
 +++ b/kernel/power/main.c
-@@ -291,12 +291,10 @@ static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -291,12 +291,10 @@ static ssize_t state_store(struct kobjec
  
  #ifdef CONFIG_SUSPEND
  	for (s = &pm_states[state]; state < PM_SUSPEND_MAX; s++, state++) {
@@ -39,8 +37,6 @@ index b1e3248..1c12581 100644
  	}
  #endif
  
-diff --git a/kernel/power/power.h b/kernel/power/power.h
-index 398d42b..98f3622 100644
 --- a/kernel/power/power.h
 +++ b/kernel/power/power.h
 @@ -177,13 +177,11 @@ extern const char *const pm_states[];
@@ -57,11 +53,9 @@ index 398d42b..98f3622 100644
  static inline bool valid_state(suspend_state_t state) { return false; }
  #endif /* !CONFIG_SUSPEND */
  
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index e6b5ef9..4914358 100644
 --- a/kernel/power/suspend.c
 +++ b/kernel/power/suspend.c
-@@ -272,7 +272,7 @@ static void suspend_finish(void)
+@@ -275,7 +275,7 @@ static void suspend_finish(void)
   * Fail if that's not the case.  Otherwise, prepare for system suspend, make the
   * system enter the given sleep state and clean up after wakeup.
   */
@@ -70,6 +64,3 @@ index e6b5ef9..4914358 100644
  {
  	int error;
  
--- 
-1.7.10.1.362.g242cab3
-

@@ -138,7 +138,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/drivers/usb/class/cdc-acm.c
 +++ b/drivers/usb/class/cdc-acm.c
-@@ -1327,7 +1327,7 @@ static int acm_suspend(struct usb_interf
+@@ -1328,7 +1328,7 @@ static int acm_suspend(struct usb_interf
  	struct acm *acm = usb_get_intfdata(intf);
  	int cnt;
  
@@ -235,7 +235,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return 0;
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -2349,7 +2349,7 @@ int usb_port_suspend(struct usb_device *
+@@ -2358,7 +2358,7 @@ int usb_port_suspend(struct usb_device *
  			dev_dbg(&udev->dev, "won't remote wakeup, status %d\n",
  					status);
  			/* bail if autosuspend is requested */
@@ -244,7 +244,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  				return status;
  		}
  	}
-@@ -2374,12 +2374,12 @@ int usb_port_suspend(struct usb_device *
+@@ -2383,12 +2383,12 @@ int usb_port_suspend(struct usb_device *
  				USB_CTRL_SET_TIMEOUT);
  
  		/* System sleep transitions should never fail */
@@ -259,7 +259,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		usb_set_device_state(udev, USB_STATE_SUSPENDED);
  		msleep(10);
  	}
-@@ -2530,7 +2530,7 @@ int usb_port_resume(struct usb_device *u
+@@ -2539,7 +2539,7 @@ int usb_port_resume(struct usb_device *u
  	} else {
  		/* drive resume for at least 20 msec */
  		dev_dbg(&udev->dev, "usb %sresume\n",
@@ -268,7 +268,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		msleep(25);
  
  		/* Virtual root hubs can trigger on GET_PORT_STATUS to
-@@ -2632,7 +2632,7 @@ static int hub_suspend(struct usb_interf
+@@ -2641,7 +2641,7 @@ static int hub_suspend(struct usb_interf
  		udev = hdev->children [port1-1];
  		if (udev && udev->can_submit) {
  			dev_warn(&intf->dev, "port %d nyet suspended\n", port1);

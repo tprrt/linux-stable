@@ -20,11 +20,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |   23 ++++++++++-------------
  1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 0a186cf..639ff6e 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -611,19 +611,19 @@ int hibernate(void)
+@@ -621,19 +621,19 @@ int hibernate(void)
  	if (error)
  		goto Exit;
  
@@ -49,7 +47,7 @@ index 0a186cf..639ff6e 100644
  	error = freeze_processes();
  	if (error)
  		goto Free_bitmaps;
-@@ -660,9 +660,8 @@ int hibernate(void)
+@@ -670,9 +670,8 @@ int hibernate(void)
  	freezer_test_done = false;
  
   Free_bitmaps:
@@ -60,7 +58,7 @@ index 0a186cf..639ff6e 100644
   Exit:
  	pm_notifier_call_chain(PM_POST_HIBERNATION);
  	pm_restore_console();
-@@ -777,15 +776,13 @@ static int software_resume(void)
+@@ -787,15 +786,13 @@ static int software_resume(void)
  	if (error)
  		goto close_finish;
  
@@ -79,7 +77,7 @@ index 0a186cf..639ff6e 100644
  
  	pr_debug("PM: Preparing processes for restore.\n");
  	error = freeze_processes();
-@@ -805,8 +802,8 @@ static int software_resume(void)
+@@ -815,8 +812,8 @@ static int software_resume(void)
  	swsusp_free();
  	thaw_processes();
   Done:
@@ -89,6 +87,3 @@ index 0a186cf..639ff6e 100644
   Finish:
  	pm_notifier_call_chain(PM_POST_RESTORE);
  	pm_restore_console();
--- 
-1.7.10.1.362.g242cab3
-

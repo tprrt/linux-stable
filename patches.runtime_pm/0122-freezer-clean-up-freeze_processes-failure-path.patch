@@ -34,8 +34,6 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/user.c      |    4 +---
  6 files changed, 23 insertions(+), 46 deletions(-)
 
-diff --git a/include/linux/freezer.h b/include/linux/freezer.h
-index 0d161c5..22f1257 100644
 --- a/include/linux/freezer.h
 +++ b/include/linux/freezer.h
 @@ -61,7 +61,6 @@ static inline bool try_to_freeze(void)
@@ -46,8 +44,6 @@ index 0d161c5..22f1257 100644
  
  #ifdef CONFIG_CGROUP_FREEZER
  extern int cgroup_freezing_or_frozen(struct task_struct *task);
-diff --git a/kernel/freezer.c b/kernel/freezer.c
-index a26f0d2..96f9667 100644
 --- a/kernel/freezer.c
 +++ b/kernel/freezer.c
 @@ -135,21 +135,6 @@ out_unlock:
@@ -92,11 +88,9 @@ index a26f0d2..96f9667 100644
 +	}
  	spin_unlock_irqrestore(&freezer_lock, flags);
  }
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 62c887e..4d8f280 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -607,17 +607,6 @@ static void power_down(void)
+@@ -613,17 +613,6 @@ static void power_down(void)
  	while(1);
  }
  
@@ -114,7 +108,7 @@ index 62c887e..4d8f280 100644
  /**
   * hibernate - Carry out system hibernation, including saving the image.
   */
-@@ -650,7 +639,7 @@ int hibernate(void)
+@@ -656,7 +645,7 @@ int hibernate(void)
  	sys_sync();
  	printk("done.\n");
  
@@ -123,7 +117,7 @@ index 62c887e..4d8f280 100644
  	if (error)
  		goto Free_bitmaps;
  
-@@ -812,7 +801,7 @@ static int software_resume(void)
+@@ -818,7 +807,7 @@ static int software_resume(void)
  		goto close_finish;
  
  	pr_debug("PM: Preparing processes for restore.\n");
@@ -132,11 +126,9 @@ index 62c887e..4d8f280 100644
  	if (error) {
  		swsusp_close(FMODE_READ);
  		goto Done;
-diff --git a/kernel/power/process.c b/kernel/power/process.c
-index e59676f..ce64383 100644
 --- a/kernel/power/process.c
 +++ b/kernel/power/process.c
-@@ -91,11 +91,6 @@ static int try_to_freeze_tasks(bool sig_only)
+@@ -91,11 +91,6 @@ static int try_to_freeze_tasks(bool sig_
  	elapsed_csecs = elapsed_csecs64;
  
  	if (todo) {
@@ -148,7 +140,7 @@ index e59676f..ce64383 100644
  		printk("\n");
  		printk(KERN_ERR "Freezing of tasks %s after %d.%02d seconds "
  		       "(%d tasks refusing to freeze, wq_busy=%d):\n",
-@@ -103,14 +98,11 @@ static int try_to_freeze_tasks(bool sig_only)
+@@ -103,14 +98,11 @@ static int try_to_freeze_tasks(bool sig_
  		       elapsed_csecs / 100, elapsed_csecs % 100,
  		       todo - wq_busy, wq_busy);
  
@@ -163,7 +155,7 @@ index e59676f..ce64383 100644
  		} while_each_thread(g, p);
  		read_unlock(&tasklist_lock);
  	} else {
-@@ -123,6 +115,8 @@ static int try_to_freeze_tasks(bool sig_only)
+@@ -123,6 +115,8 @@ static int try_to_freeze_tasks(bool sig_
  
  /**
   * freeze_processes - Signal user space processes to enter the refrigerator.
@@ -197,11 +189,9 @@ index e59676f..ce64383 100644
  	return error;
  }
  
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index 4953dc0..d336b27 100644
 --- a/kernel/power/suspend.c
 +++ b/kernel/power/suspend.c
-@@ -106,13 +106,11 @@ static int suspend_prepare(void)
+@@ -107,13 +107,11 @@ static int suspend_prepare(void)
  		goto Finish;
  
  	error = suspend_freeze_processes();
@@ -218,11 +208,9 @@ index 4953dc0..d336b27 100644
  	usermodehelper_enable();
   Finish:
  	pm_notifier_call_chain(PM_POST_SUSPEND);
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 6d8f535..7cc3f5b 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
-@@ -257,10 +257,8 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -257,10 +257,8 @@ static long snapshot_ioctl(struct file *
  			break;
  
  		error = freeze_processes();
@@ -234,6 +222,3 @@ index 6d8f535..7cc3f5b 100644
  		if (!error)
  			data->frozen = 1;
  		break;
--- 
-1.7.10.1.362.g242cab3
-

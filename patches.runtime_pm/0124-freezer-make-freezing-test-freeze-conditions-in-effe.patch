@@ -145,7 +145,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		break;
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1003,7 +1003,6 @@ static void copy_flags(unsigned long clo
+@@ -1006,7 +1006,6 @@ static void copy_flags(unsigned long clo
  	new_flags |= PF_FORKNOEXEC;
  	new_flags |= PF_STARTING;
  	p->flags = new_flags;

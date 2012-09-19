@@ -16,14 +16,12 @@ Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- kernel/power/Kconfig     |    1 +
- kernel/power/hibernate.c |    3 +
- kernel/power/power.h     |    1 +
- kernel/power/swap.c      |  818 ++++++++++++++++++++++++++++++++++++----------
- 4 files changed, 645 insertions(+), 178 deletions(-)
+ kernel/power/Kconfig     |    1 
+ kernel/power/hibernate.c |    3 
+ kernel/power/power.h     |    1 
+ kernel/power/swap.c      |  824 ++++++++++++++++++++++++++++++++++++-----------
+ 4 files changed, 648 insertions(+), 181 deletions(-)
 
-diff --git a/kernel/power/Kconfig b/kernel/power/Kconfig
-index 2943e3b..deb5461 100644
 --- a/kernel/power/Kconfig
 +++ b/kernel/power/Kconfig
 @@ -27,6 +27,7 @@ config HIBERNATION
@@ -34,11 +32,9 @@ index 2943e3b..deb5461 100644
  	---help---
  	  Enable the suspend to disk (STD) functionality, which is usually
  	  called "hibernation" in user interfaces.  STD checkpoints the
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 148564d..bb170c2 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -657,6 +657,9 @@ int hibernate(void)
+@@ -663,6 +663,9 @@ int hibernate(void)
  			flags |= SF_PLATFORM_MODE;
  		if (nocompress)
  			flags |= SF_NOCOMPRESS_MODE;
@@ -48,8 +44,6 @@ index 148564d..bb170c2 100644
  		pr_debug("PM: writing image.\n");
  		error = swsusp_write(flags);
  		swsusp_free();
-diff --git a/kernel/power/power.h b/kernel/power/power.h
-index e620639..23a2db1 100644
 --- a/kernel/power/power.h
 +++ b/kernel/power/power.h
 @@ -146,6 +146,7 @@ extern int swsusp_swap_in_use(void);
@@ -60,8 +54,6 @@ index e620639..23a2db1 100644
  
  /* kernel/power/hibernate.c */
  extern int swsusp_check(void);
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index 7c97c3a..11a594c 100644
 --- a/kernel/power/swap.c
 +++ b/kernel/power/swap.c
 @@ -27,6 +27,10 @@
@@ -117,7 +109,7 @@ index 7c97c3a..11a594c 100644
  	sector_t image;
  	unsigned int flags;	/* Flags to pass to the "boot" kernel */
  	char	orig_sig[10];
-@@ -199,6 +212,8 @@ static int mark_swapfiles(struct swap_map_handle *handle, unsigned int flags)
+@@ -199,6 +212,8 @@ static int mark_swapfiles(struct swap_ma
  		memcpy(swsusp_header->sig, HIBERNATE_SIG, 10);
  		swsusp_header->image = handle->first_sector;
  		swsusp_header->flags = flags;
@@ -134,7 +126,7 @@ index 7c97c3a..11a594c 100644
  
  	if (!offset)
  		return -ENOSPC;
-@@ -254,9 +270,17 @@ static int write_page(void *buf, sector_t offset, struct bio **bio_chain)
+@@ -254,9 +270,17 @@ static int write_page(void *buf, sector_
  		if (src) {
  			copy_page(src, buf);
  		} else {
@@ -155,7 +147,7 @@ index 7c97c3a..11a594c 100644
  		}
  	} else {
  		src = buf;
-@@ -293,6 +317,8 @@ static int get_swap_writer(struct swap_map_handle *handle)
+@@ -293,6 +317,8 @@ static int get_swap_writer(struct swap_m
  		goto err_rel;
  	}
  	handle->k = 0;
@@ -164,7 +156,7 @@ index 7c97c3a..11a594c 100644
  	handle->first_sector = handle->cur_swap;
  	return 0;
  err_rel:
-@@ -316,20 +342,23 @@ static int swap_write_page(struct swap_map_handle *handle, void *buf,
+@@ -316,20 +342,23 @@ static int swap_write_page(struct swap_m
  		return error;
  	handle->cur->entries[handle->k++] = offset;
  	if (handle->k >= MAP_PAGE_ENTRIES) {
@@ -192,7 +184,7 @@ index 7c97c3a..11a594c 100644
   out:
  	return error;
  }
-@@ -372,6 +401,13 @@ static int swap_writer_finish(struct swap_map_handle *handle,
+@@ -372,6 +401,13 @@ static int swap_writer_finish(struct swa
  			             LZO_HEADER, PAGE_SIZE)
  #define LZO_CMP_SIZE	(LZO_CMP_PAGES * PAGE_SIZE)
  
@@ -206,7 +198,7 @@ index 7c97c3a..11a594c 100644
  /**
   *	save_image - save the suspend image data
   */
-@@ -419,6 +455,92 @@ static int save_image(struct swap_map_handle *handle,
+@@ -419,6 +455,92 @@ static int save_image(struct swap_map_ha
  	return ret;
  }
  
@@ -299,7 +291,7 @@ index 7c97c3a..11a594c 100644
  
  /**
   * save_image_lzo - Save the suspend image data compressed with LZO.
-@@ -437,42 +559,93 @@ static int save_image_lzo(struct swap_map_handle *handle,
+@@ -437,42 +559,93 @@ static int save_image_lzo(struct swap_ma
  	struct bio *bio;
  	struct timeval start;
  	struct timeval stop;
@@ -351,9 +343,16 @@ index 7c97c3a..11a594c 100644
 +		printk(KERN_ERR "PM: Failed to allocate crc\n");
 +		ret = -ENOMEM;
 +		goto out_clean;
-+	}
+ 	}
 +	memset(crc, 0, offsetof(struct crc_data, go));
-+
+ 
+-	cmp = vmalloc(LZO_CMP_SIZE);
+-	if (!cmp) {
+-		printk(KERN_ERR "PM: Failed to allocate LZO compressed\n");
+-		vfree(unc);
+-		vfree(wrk);
+-		free_page((unsigned long)page);
+-		return -ENOMEM;
 +	/*
 +	 * Start the compression threads.
 +	 */
@@ -371,15 +370,8 @@ index 7c97c3a..11a594c 100644
 +			ret = -ENOMEM;
 +			goto out_clean;
 +		}
- 	}
- 
--	cmp = vmalloc(LZO_CMP_SIZE);
--	if (!cmp) {
--		printk(KERN_ERR "PM: Failed to allocate LZO compressed\n");
--		vfree(unc);
--		vfree(wrk);
--		free_page((unsigned long)page);
--		return -ENOMEM;
++	}
++
 +	/*
 +	 * Adjust number of free pages after all allocations have been done.
 +	 * We don't want to run out of pages when writing.
@@ -415,7 +407,7 @@ index 7c97c3a..11a594c 100644
  	m = nr_to_write / 100;
  	if (!m)
  		m = 1;
-@@ -480,55 +653,83 @@ static int save_image_lzo(struct swap_map_handle *handle,
+@@ -480,55 +653,83 @@ static int save_image_lzo(struct swap_ma
  	bio = NULL;
  	do_gettimeofday(&start);
  	for (;;) {
@@ -469,6 +461,11 @@ index 7c97c3a..11a594c 100644
 +		crc->run_threads = thr;
 +		atomic_set(&crc->ready, 1);
 +		wake_up(&crc->go);
++
++		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
++			wait_event(data[thr].done,
++			           atomic_read(&data[thr].stop));
++			atomic_set(&data[thr].stop, 0);
  
 -		if (unlikely(!cmp_len ||
 -		             cmp_len > lzo1x_worst_compress(unc_len))) {
@@ -476,11 +473,7 @@ index 7c97c3a..11a594c 100644
 -			ret = -1;
 -			break;
 -		}
-+		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
-+			wait_event(data[thr].done,
-+			           atomic_read(&data[thr].stop));
-+			atomic_set(&data[thr].stop, 0);
- 
+-
 -		*(size_t *)cmp = cmp_len;
 +			ret = data[thr].ret;
  
@@ -586,7 +579,7 @@ index 7c97c3a..11a594c 100644
  	handle->cur = NULL;
  }
  
-@@ -634,22 +851,46 @@ static int get_swap_reader(struct swap_map_handle *handle,
+@@ -634,22 +851,46 @@ static int get_swap_reader(struct swap_m
  		unsigned int *flags_p)
  {
  	int error;
@@ -640,7 +633,7 @@ index 7c97c3a..11a594c 100644
  	return 0;
  }
  
-@@ -658,6 +899,7 @@ static int swap_read_page(struct swap_map_handle *handle, void *buf,
+@@ -658,6 +899,7 @@ static int swap_read_page(struct swap_ma
  {
  	sector_t offset;
  	int error;
@@ -648,7 +641,7 @@ index 7c97c3a..11a594c 100644
  
  	if (!handle->cur)
  		return -EINVAL;
-@@ -668,13 +910,15 @@ static int swap_read_page(struct swap_map_handle *handle, void *buf,
+@@ -668,13 +910,15 @@ static int swap_read_page(struct swap_ma
  	if (error)
  		return error;
  	if (++handle->k >= MAP_PAGE_ENTRIES) {
@@ -669,7 +662,7 @@ index 7c97c3a..11a594c 100644
  	}
  	return error;
  }
-@@ -697,7 +941,7 @@ static int load_image(struct swap_map_handle *handle,
+@@ -697,7 +941,7 @@ static int load_image(struct swap_map_ha
                        unsigned int nr_to_read)
  {
  	unsigned int m;
@@ -678,7 +671,7 @@ index 7c97c3a..11a594c 100644
  	struct timeval start;
  	struct timeval stop;
  	struct bio *bio;
-@@ -713,15 +957,15 @@ static int load_image(struct swap_map_handle *handle,
+@@ -713,15 +957,15 @@ static int load_image(struct swap_map_ha
  	bio = NULL;
  	do_gettimeofday(&start);
  	for ( ; ; ) {
@@ -700,7 +693,7 @@ index 7c97c3a..11a594c 100644
  			break;
  		if (!(nr_pages % m))
  			printk("\b\b\b\b%3d%%", nr_pages / m);
-@@ -729,17 +973,61 @@ static int load_image(struct swap_map_handle *handle,
+@@ -729,17 +973,61 @@ static int load_image(struct swap_map_ha
  	}
  	err2 = hib_wait_on_bio_chain(&bio);
  	do_gettimeofday(&stop);
@@ -767,7 +760,7 @@ index 7c97c3a..11a594c 100644
  }
  
  /**
-@@ -753,50 +1041,120 @@ static int load_image_lzo(struct swap_map_handle *handle,
+@@ -753,50 +1041,120 @@ static int load_image_lzo(struct swap_ma
                            unsigned int nr_to_read)
  {
  	unsigned int m;
@@ -785,6 +778,9 @@ index 7c97c3a..11a594c 100644
 -		page[i] = (void *)__get_free_page(__GFP_WAIT | __GFP_HIGH);
 -		if (!page[i]) {
 -			printk(KERN_ERR "PM: Failed to allocate LZO page\n");
+-
+-			while (i)
+-				free_page((unsigned long)page[--i]);
 +	size_t off;
 +	unsigned i, thr, run_threads, nr_threads;
 +	unsigned ring = 0, pg = 0, ring_size = 0,
@@ -800,16 +796,19 @@ index 7c97c3a..11a594c 100644
 +	 */
 +	nr_threads = num_online_cpus() - 1;
 +	nr_threads = clamp_val(nr_threads, 1, LZO_THREADS);
-+
+ 
+-			return -ENOMEM;
+-		}
 +	page = vmalloc(sizeof(*page) * LZO_READ_PAGES);
 +	if (!page) {
 +		printk(KERN_ERR "PM: Failed to allocate LZO page\n");
 +		ret = -ENOMEM;
 +		goto out_clean;
-+	}
+ 	}
  
--			while (i)
--				free_page((unsigned long)page[--i]);
+-	unc = vmalloc(LZO_UNC_SIZE);
+-	if (!unc) {
+-		printk(KERN_ERR "PM: Failed to allocate LZO uncompressed\n");
 +	data = vmalloc(sizeof(*data) * nr_threads);
 +	if (!data) {
 +		printk(KERN_ERR "PM: Failed to allocate LZO data\n");
@@ -819,7 +818,8 @@ index 7c97c3a..11a594c 100644
 +	for (thr = 0; thr < nr_threads; thr++)
 +		memset(&data[thr], 0, offsetof(struct dec_data, go));
  
--			return -ENOMEM;
+-		for (i = 0; i < LZO_CMP_PAGES; i++)
+-			free_page((unsigned long)page[i]);
 +	crc = kmalloc(sizeof(*crc), GFP_KERNEL);
 +	if (!crc) {
 +		printk(KERN_ERR "PM: Failed to allocate crc\n");
@@ -827,7 +827,8 @@ index 7c97c3a..11a594c 100644
 +		goto out_clean;
 +	}
 +	memset(crc, 0, offsetof(struct crc_data, go));
-+
+ 
+-		return -ENOMEM;
 +	/*
 +	 * Start the decompression threads.
 +	 */
@@ -844,17 +845,16 @@ index 7c97c3a..11a594c 100644
 +			       "PM: Cannot start decompression threads\n");
 +			ret = -ENOMEM;
 +			goto out_clean;
- 		}
++		}
  	}
  
--	unc = vmalloc(LZO_UNC_SIZE);
--	if (!unc) {
--		printk(KERN_ERR "PM: Failed to allocate LZO uncompressed\n");
+-	cmp = vmalloc(LZO_CMP_SIZE);
+-	if (!cmp) {
+-		printk(KERN_ERR "PM: Failed to allocate LZO compressed\n");
 -
+-		vfree(unc);
 -		for (i = 0; i < LZO_CMP_PAGES; i++)
 -			free_page((unsigned long)page[i]);
--
--		return -ENOMEM;
 +	/*
 +	 * Start the CRC32 thread.
 +	 */
@@ -866,11 +866,8 @@ index 7c97c3a..11a594c 100644
 +	for (thr = 0; thr < nr_threads; thr++) {
 +		crc->unc[thr] = data[thr].unc;
 +		crc->unc_len[thr] = &data[thr].unc_len;
- 	}
- 
--	cmp = vmalloc(LZO_CMP_SIZE);
--	if (!cmp) {
--		printk(KERN_ERR "PM: Failed to allocate LZO compressed\n");
++	}
++
 +	crc->thr = kthread_run(crc32_threadfn, crc, "image_crc32");
 +	if (IS_ERR(crc->thr)) {
 +		crc->thr = NULL;
@@ -879,16 +876,13 @@ index 7c97c3a..11a594c 100644
 +		goto out_clean;
 +	}
  
--		vfree(unc);
--		for (i = 0; i < LZO_CMP_PAGES; i++)
--			free_page((unsigned long)page[i]);
+-		return -ENOMEM;
 +	/*
 +	 * Adjust number of pages for read buffering, in case we are short.
 +	 */
 +	read_pages = (nr_free_pages() - snapshot_get_image_size()) >> 1;
 +	read_pages = clamp_val(read_pages, LZO_CMP_PAGES, LZO_READ_PAGES);
- 
--		return -ENOMEM;
++
 +	for (i = 0; i < read_pages; i++) {
 +		page[i] = (void *)__get_free_page(i < LZO_CMP_PAGES ?
 +		                                  __GFP_WAIT | __GFP_HIGH :
@@ -915,7 +909,7 @@ index 7c97c3a..11a594c 100644
  	m = nr_to_read / 100;
  	if (!m)
  		m = 1;
-@@ -804,85 +1162,189 @@ static int load_image_lzo(struct swap_map_handle *handle,
+@@ -804,85 +1162,189 @@ static int load_image_lzo(struct swap_ma
  	bio = NULL;
  	do_gettimeofday(&start);
  
@@ -997,6 +991,7 @@ index 7c97c3a..11a594c 100644
 -		if (error < 0) {
 -			printk(KERN_ERR "PM: LZO decompression failed\n");
 -			break;
+-		}
 +		for (thr = 0; have && thr < nr_threads; thr++) {
 +			data[thr].cmp_len = *(size_t *)page[pg];
 +			if (unlikely(!data[thr].cmp_len ||
@@ -1007,7 +1002,13 @@ index 7c97c3a..11a594c 100644
 +				ret = -1;
 +				goto out_finish;
 +			}
-+
+ 
+-		if (unlikely(!unc_len ||
+-		             unc_len > LZO_UNC_SIZE ||
+-		             unc_len & (PAGE_SIZE - 1))) {
+-			printk(KERN_ERR "PM: Invalid LZO uncompressed length\n");
+-			error = -1;
+-			break;
 +			need = DIV_ROUND_UP(data[thr].cmp_len + LZO_HEADER,
 +			                    PAGE_SIZE);
 +			if (need > have) {
@@ -1033,12 +1034,8 @@ index 7c97c3a..11a594c 100644
 +			wake_up(&data[thr].go);
  		}
  
--		if (unlikely(!unc_len ||
--		             unc_len > LZO_UNC_SIZE ||
--		             unc_len & (PAGE_SIZE - 1))) {
--			printk(KERN_ERR "PM: Invalid LZO uncompressed length\n");
--			error = -1;
--			break;
+-		for (off = 0; off < unc_len; off += PAGE_SIZE) {
+-			memcpy(data_of(*snapshot), unc + off, PAGE_SIZE);
 +		/*
 +		 * Wait for more data while we are decompressing.
 +		 */
@@ -1050,20 +1047,18 @@ index 7c97c3a..11a594c 100644
 +			asked = 0;
 +			if (eof)
 +				eof = 2;
- 		}
++		}
  
--		for (off = 0; off < unc_len; off += PAGE_SIZE) {
--			memcpy(data_of(*snapshot), unc + off, PAGE_SIZE);
+-			if (!(nr_pages % m))
+-				printk("\b\b\b\b%3d%%", nr_pages / m);
+-			nr_pages++;
 +		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
 +			wait_event(data[thr].done,
 +			           atomic_read(&data[thr].stop));
 +			atomic_set(&data[thr].stop, 0);
 +
 +			ret = data[thr].ret;
- 
--			if (!(nr_pages % m))
--				printk("\b\b\b\b%3d%%", nr_pages / m);
--			nr_pages++;
++
 +			if (ret < 0) {
 +				printk(KERN_ERR
 +				       "PM: LZO decompression failed\n");
@@ -1155,6 +1150,3 @@ index 7c97c3a..11a594c 100644
  }
  
  /**
--- 
-1.7.10.1.362.g242cab3
-

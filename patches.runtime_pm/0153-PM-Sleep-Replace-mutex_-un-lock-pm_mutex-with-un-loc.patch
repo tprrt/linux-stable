@@ -24,8 +24,6 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/user.c      |   16 ++++++++--------
  5 files changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/kernel/kexec.c b/kernel/kexec.c
-index 8d814cb..581b553 100644
 --- a/kernel/kexec.c
 +++ b/kernel/kexec.c
 @@ -1506,7 +1506,7 @@ int kernel_kexec(void)
@@ -46,11 +44,9 @@ index 8d814cb..581b553 100644
  	}
  #endif
  
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 111947e..7bef755 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -69,14 +69,14 @@ void hibernation_set_ops(const struct platform_hibernation_ops *ops)
+@@ -69,14 +69,14 @@ void hibernation_set_ops(const struct pl
  		WARN_ON(1);
  		return;
  	}
@@ -67,7 +63,7 @@ index 111947e..7bef755 100644
  }
  
  static bool entering_platform_hibernation;
-@@ -597,7 +597,7 @@ int hibernate(void)
+@@ -607,7 +607,7 @@ int hibernate(void)
  {
  	int error;
  
@@ -76,7 +72,7 @@ index 111947e..7bef755 100644
  	/* The snapshot device should not be opened while we're running */
  	if (!atomic_add_unless(&snapshot_device_available, -1, 0)) {
  		error = -EBUSY;
-@@ -666,7 +666,7 @@ int hibernate(void)
+@@ -676,7 +676,7 @@ int hibernate(void)
  	pm_restore_console();
  	atomic_inc(&snapshot_device_available);
   Unlock:
@@ -85,7 +81,7 @@ index 111947e..7bef755 100644
  	return error;
  }
  
-@@ -894,7 +894,7 @@ static ssize_t disk_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -904,7 +904,7 @@ static ssize_t disk_store(struct kobject
  	p = memchr(buf, '\n', n);
  	len = p ? p - buf : n;
  
@@ -94,7 +90,7 @@ index 111947e..7bef755 100644
  	for (i = HIBERNATION_FIRST; i <= HIBERNATION_MAX; i++) {
  		if (len == strlen(hibernation_modes[i])
  		    && !strncmp(buf, hibernation_modes[i], len)) {
-@@ -920,7 +920,7 @@ static ssize_t disk_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -930,7 +930,7 @@ static ssize_t disk_store(struct kobject
  	if (!error)
  		pr_debug("PM: Hibernation mode set to '%s'\n",
  			 hibernation_modes[mode]);
@@ -103,7 +99,7 @@ index 111947e..7bef755 100644
  	return error ? error : n;
  }
  
-@@ -947,9 +947,9 @@ static ssize_t resume_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -957,9 +957,9 @@ static ssize_t resume_store(struct kobje
  	if (maj != MAJOR(res) || min != MINOR(res))
  		goto out;
  
@@ -115,11 +111,9 @@ index 111947e..7bef755 100644
  	printk(KERN_INFO "PM: Starting manual resume from disk\n");
  	noresume = 0;
  	software_resume();
-diff --git a/kernel/power/main.c b/kernel/power/main.c
-index 7d36fb3..9824b41e 100644
 --- a/kernel/power/main.c
 +++ b/kernel/power/main.c
-@@ -116,7 +116,7 @@ static ssize_t pm_test_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -116,7 +116,7 @@ static ssize_t pm_test_store(struct kobj
  	p = memchr(buf, '\n', n);
  	len = p ? p - buf : n;
  
@@ -128,7 +122,7 @@ index 7d36fb3..9824b41e 100644
  
  	level = TEST_FIRST;
  	for (s = &pm_tests[level]; level <= TEST_MAX; s++, level++)
-@@ -126,7 +126,7 @@ static ssize_t pm_test_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -126,7 +126,7 @@ static ssize_t pm_test_store(struct kobj
  			break;
  		}
  
@@ -137,11 +131,9 @@ index 7d36fb3..9824b41e 100644
  
  	return error ? error : n;
  }
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index d336b27..4fd51be 100644
 --- a/kernel/power/suspend.c
 +++ b/kernel/power/suspend.c
-@@ -42,9 +42,9 @@ static const struct platform_suspend_ops *suspend_ops;
+@@ -43,9 +43,9 @@ static const struct platform_suspend_ops
   */
  void suspend_set_ops(const struct platform_suspend_ops *ops)
  {
@@ -153,11 +145,9 @@ index d336b27..4fd51be 100644
  }
  EXPORT_SYMBOL_GPL(suspend_set_ops);
  
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 06ea33d..98ade21 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
-@@ -71,7 +71,7 @@ static int snapshot_open(struct inode *inode, struct file *filp)
+@@ -71,7 +71,7 @@ static int snapshot_open(struct inode *i
  	struct snapshot_data *data;
  	int error;
  
@@ -166,7 +156,7 @@ index 06ea33d..98ade21 100644
  
  	if (!atomic_add_unless(&snapshot_device_available, -1, 0)) {
  		error = -EBUSY;
-@@ -123,7 +123,7 @@ static int snapshot_open(struct inode *inode, struct file *filp)
+@@ -123,7 +123,7 @@ static int snapshot_open(struct inode *i
  	data->platform_support = 0;
  
   Unlock:
@@ -175,7 +165,7 @@ index 06ea33d..98ade21 100644
  
  	return error;
  }
-@@ -132,7 +132,7 @@ static int snapshot_release(struct inode *inode, struct file *filp)
+@@ -132,7 +132,7 @@ static int snapshot_release(struct inode
  {
  	struct snapshot_data *data;
  
@@ -184,7 +174,7 @@ index 06ea33d..98ade21 100644
  
  	swsusp_free();
  	free_basic_memory_bitmaps();
-@@ -146,7 +146,7 @@ static int snapshot_release(struct inode *inode, struct file *filp)
+@@ -146,7 +146,7 @@ static int snapshot_release(struct inode
  			PM_POST_HIBERNATION : PM_POST_RESTORE);
  	atomic_inc(&snapshot_device_available);
  
@@ -193,7 +183,7 @@ index 06ea33d..98ade21 100644
  
  	return 0;
  }
-@@ -158,7 +158,7 @@ static ssize_t snapshot_read(struct file *filp, char __user *buf,
+@@ -158,7 +158,7 @@ static ssize_t snapshot_read(struct file
  	ssize_t res;
  	loff_t pg_offp = *offp & ~PAGE_MASK;
  
@@ -202,7 +192,7 @@ index 06ea33d..98ade21 100644
  
  	data = filp->private_data;
  	if (!data->ready) {
-@@ -179,7 +179,7 @@ static ssize_t snapshot_read(struct file *filp, char __user *buf,
+@@ -179,7 +179,7 @@ static ssize_t snapshot_read(struct file
  		*offp += res;
  
   Unlock:
@@ -211,7 +201,7 @@ index 06ea33d..98ade21 100644
  
  	return res;
  }
-@@ -191,7 +191,7 @@ static ssize_t snapshot_write(struct file *filp, const char __user *buf,
+@@ -191,7 +191,7 @@ static ssize_t snapshot_write(struct fil
  	ssize_t res;
  	loff_t pg_offp = *offp & ~PAGE_MASK;
  
@@ -220,7 +210,7 @@ index 06ea33d..98ade21 100644
  
  	data = filp->private_data;
  
-@@ -208,7 +208,7 @@ static ssize_t snapshot_write(struct file *filp, const char __user *buf,
+@@ -208,7 +208,7 @@ static ssize_t snapshot_write(struct fil
  	if (res > 0)
  		*offp += res;
  unlock:
@@ -229,6 +219,3 @@ index 06ea33d..98ade21 100644
  
  	return res;
  }
--- 
-1.7.10.1.362.g242cab3
-

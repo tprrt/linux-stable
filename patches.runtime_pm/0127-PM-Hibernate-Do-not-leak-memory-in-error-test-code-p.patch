@@ -19,11 +19,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |   16 ++++++++++------
  1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 4d8f280..863c14d 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -347,7 +347,7 @@ int hibernation_snapshot(int platform_mode)
+@@ -347,7 +347,7 @@ int hibernation_snapshot(int platform_mo
  
  	error = freeze_kernel_threads();
  	if (error)
@@ -32,7 +30,7 @@ index 4d8f280..863c14d 100644
  
  	if (hibernation_test(TEST_FREEZER) ||
  		hibernation_testmode(HIBERNATION_TESTPROC)) {
-@@ -357,12 +357,14 @@ int hibernation_snapshot(int platform_mode)
+@@ -357,12 +357,14 @@ int hibernation_snapshot(int platform_mo
  		 * successful freezer test.
  		 */
  		freezer_test_done = true;
@@ -49,17 +47,17 @@ index 4d8f280..863c14d 100644
 +	}
  
  	suspend_console();
- 	pm_restrict_gfp_mask();
-@@ -391,8 +393,6 @@ int hibernation_snapshot(int platform_mode)
- 		pm_restore_gfp_mask();
+ 	ftrace_stop();
+@@ -393,8 +395,6 @@ int hibernation_snapshot(int platform_mo
  
+ 	ftrace_start();
  	resume_console();
 -
 - Complete_devices:
  	dpm_complete(msg);
  
   Close:
-@@ -402,6 +402,10 @@ int hibernation_snapshot(int platform_mode)
+@@ -404,6 +404,10 @@ int hibernation_snapshot(int platform_mo
   Recover_platform:
  	platform_recover(platform_mode);
  	goto Resume_devices;
@@ -70,6 +68,3 @@ index 4d8f280..863c14d 100644
  }
  
  /**
--- 
-1.7.10.1.362.g242cab3
-

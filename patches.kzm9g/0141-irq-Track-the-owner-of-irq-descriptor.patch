@@ -24,14 +24,12 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- include/linux/irq.h     | 11 ++++++++++-
- include/linux/irqdesc.h |  1 +
- kernel/irq/irqdesc.c    | 36 ++++++++++++++++++++++++------------
- kernel/irq/manage.c     | 17 +++++++++++++----
+ include/linux/irq.h     |   11 ++++++++++-
+ include/linux/irqdesc.h |    1 +
+ kernel/irq/irqdesc.c    |   36 ++++++++++++++++++++++++------------
+ kernel/irq/manage.c     |   17 +++++++++++++----
  4 files changed, 48 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 094c211..58d1e49 100644
 --- a/include/linux/irq.h
 +++ b/include/linux/irq.h
 @@ -23,6 +23,7 @@
@@ -42,7 +40,7 @@ index 094c211..58d1e49 100644
  
  #include <asm/irq.h>
  #include <asm/ptrace.h>
-@@ -548,7 +549,15 @@ static inline struct msi_desc *irq_data_get_msi(struct irq_data *d)
+@@ -548,7 +549,15 @@ static inline struct msi_desc *irq_data_
  	return d->msi_desc;
  }
  
@@ -59,11 +57,9 @@ index 094c211..58d1e49 100644
  void irq_free_descs(unsigned int irq, unsigned int cnt);
  int irq_reserve_irqs(unsigned int from, unsigned int cnt);
  
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index 2d921b3..150134a 100644
 --- a/include/linux/irqdesc.h
 +++ b/include/linux/irqdesc.h
-@@ -66,6 +66,7 @@ struct irq_desc {
+@@ -65,6 +65,7 @@ struct irq_desc {
  #ifdef CONFIG_PROC_FS
  	struct proc_dir_entry	*dir;
  #endif
@@ -71,11 +67,9 @@ index 2d921b3..150134a 100644
  	const char		*name;
  } ____cacheline_internodealigned_in_smp;
  
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 4c60a50..cb65d03 100644
 --- a/kernel/irq/irqdesc.c
 +++ b/kernel/irq/irqdesc.c
-@@ -70,7 +70,8 @@ static inline void desc_smp_init(struct irq_desc *desc, int node) { }
+@@ -70,7 +70,8 @@ static inline void desc_smp_init(struct
  static inline int desc_node(struct irq_desc *desc) { return 0; }
  #endif
  
@@ -85,7 +79,7 @@ index 4c60a50..cb65d03 100644
  {
  	int cpu;
  
-@@ -86,6 +87,7 @@ static void desc_set_defaults(unsigned int irq, struct irq_desc *desc, int node)
+@@ -86,6 +87,7 @@ static void desc_set_defaults(unsigned i
  	desc->irq_count = 0;
  	desc->irqs_unhandled = 0;
  	desc->name = NULL;
@@ -93,7 +87,7 @@ index 4c60a50..cb65d03 100644
  	for_each_possible_cpu(cpu)
  		*per_cpu_ptr(desc->kstat_irqs, cpu) = 0;
  	desc_smp_init(desc, node);
-@@ -128,7 +130,7 @@ static void free_masks(struct irq_desc *desc)
+@@ -128,7 +130,7 @@ static void free_masks(struct irq_desc *
  static inline void free_masks(struct irq_desc *desc) { }
  #endif
  
@@ -102,7 +96,7 @@ index 4c60a50..cb65d03 100644
  {
  	struct irq_desc *desc;
  	gfp_t gfp = GFP_KERNEL;
-@@ -147,7 +149,7 @@ static struct irq_desc *alloc_desc(int irq, int node)
+@@ -147,7 +149,7 @@ static struct irq_desc *alloc_desc(int i
  	raw_spin_lock_init(&desc->lock);
  	lockdep_set_class(&desc->lock, &irq_desc_lock_class);
  
@@ -174,7 +168,7 @@ index 4c60a50..cb65d03 100644
  {
  	int start, ret;
  
-@@ -366,13 +378,13 @@ irq_alloc_descs(int irq, unsigned int from, unsigned int cnt, int node)
+@@ -366,13 +378,13 @@ irq_alloc_descs(int irq, unsigned int fr
  
  	bitmap_set(allocated_irqs, start, cnt);
  	mutex_unlock(&sparse_irq_lock);
@@ -190,7 +184,7 @@ index 4c60a50..cb65d03 100644
  
  /**
   * irq_reserve_irqs - mark irqs allocated
-@@ -440,7 +452,7 @@ void dynamic_irq_cleanup(unsigned int irq)
+@@ -440,7 +452,7 @@ void dynamic_irq_cleanup(unsigned int ir
  	unsigned long flags;
  
  	raw_spin_lock_irqsave(&desc->lock, flags);
@@ -199,20 +193,18 @@ index 4c60a50..cb65d03 100644
  	raw_spin_unlock_irqrestore(&desc->lock, flags);
  }
  
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index bbc6a35..83fb6f5 100644
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -889,6 +889,8 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+@@ -889,6 +889,8 @@ __setup_irq(unsigned int irq, struct irq
  
  	if (desc->irq_data.chip == &no_irq_chip)
  		return -ENOSYS;
 +	if (!try_module_get(desc->owner))
 +		return -ENODEV;
+ 
  	/*
- 	 * Some drivers like serial.c use request_irq() heavily,
- 	 * so we have to be careful not to interfere with a
-@@ -912,8 +914,10 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+ 	 * Check whether the interrupt nests into another interrupt
+@@ -896,8 +898,10 @@ __setup_irq(unsigned int irq, struct irq
  	 */
  	nested = irq_settings_is_nested_thread(desc);
  	if (nested) {
@@ -225,7 +217,7 @@ index bbc6a35..83fb6f5 100644
  		/*
  		 * Replace the primary handler which was provided from
  		 * the driver for non nested interrupt handling by the
-@@ -935,8 +939,10 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+@@ -919,8 +923,10 @@ __setup_irq(unsigned int irq, struct irq
  
  		t = kthread_create(irq_thread, new, "irq/%d-%s", irq,
  				   new->name);
@@ -238,7 +230,7 @@ index bbc6a35..83fb6f5 100644
  		/*
  		 * We keep the reference to the task struct even if
  		 * the thread dies to avoid that the interrupt code
-@@ -1133,6 +1139,8 @@ out_thread:
+@@ -1117,6 +1123,8 @@ out_thread:
  			kthread_stop(t);
  		put_task_struct(t);
  	}
@@ -247,7 +239,7 @@ index bbc6a35..83fb6f5 100644
  	return ret;
  }
  
-@@ -1241,6 +1249,7 @@ static struct irqaction *__free_irq(unsigned int irq, void *dev_id)
+@@ -1225,6 +1233,7 @@ static struct irqaction *__free_irq(unsi
  		put_task_struct(action->thread);
  	}
  
@@ -255,6 +247,3 @@ index bbc6a35..83fb6f5 100644
  	return action;
  }
  
--- 
-1.7.10.2.565.gbd578b5
-

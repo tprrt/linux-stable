@@ -17,11 +17,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 878218e..089ab9c 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -467,7 +467,7 @@ static int resume_target_kernel(bool platform_mode)
+@@ -469,7 +469,7 @@ static int resume_target_kernel(bool pla
   * @platform_mode: If set, use platform driver to prepare for the transition.
   *
   * This routine must be called with pm_mutex held.  If it is successful, control
@@ -30,6 +28,3 @@ index 878218e..089ab9c 100644
   */
  int hibernation_restore(int platform_mode)
  {
--- 
-1.7.10.1.362.g242cab3
-

@@ -141,7 +141,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  # define INIT_RT_MUTEXES(tsk)
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1017,7 +1017,7 @@ static void rt_mutex_init_task(struct ta
+@@ -1020,7 +1020,7 @@ static void rt_mutex_init_task(struct ta
  {
  	raw_spin_lock_init(&p->pi_lock);
  #ifdef CONFIG_RT_MUTEXES
@@ -152,7 +152,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2736,7 +2736,7 @@ static int __init futex_init(void)
+@@ -2739,7 +2739,7 @@ static int __init futex_init(void)
  		futex_cmpxchg_enabled = 1;
  
  	for (i = 0; i < ARRAY_SIZE(futex_queues); i++) {

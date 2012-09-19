@@ -17,11 +17,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 6495e6a..4f2ebf4 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
-@@ -797,8 +797,10 @@ static int software_resume(void)
+@@ -807,8 +807,10 @@ static int software_resume(void)
  		goto close_finish;
  
  	error = create_basic_memory_bitmaps();
@@ -33,6 +31,3 @@ index 6495e6a..4f2ebf4 100644
  
  	pr_debug("PM: Preparing processes for restore.\n");
  	error = freeze_processes();
--- 
-1.7.10.1.362.g242cab3
-

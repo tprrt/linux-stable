@@ -46,18 +46,16 @@ Conflicts:
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- Documentation/power/basic-pm-debugging.txt |   24 +++++++
- drivers/base/power/main.c                  |   31 +++++++--
+ Documentation/power/basic-pm-debugging.txt |   24 ++++++
+ drivers/base/power/main.c                  |   31 +++++++-
  include/linux/suspend.h                    |   52 ++++++++++++++
- kernel/power/main.c                        |  102 ++++++++++++++++++++++++++++
- kernel/power/suspend.c                     |   17 ++++-
+ kernel/power/main.c                        |  102 +++++++++++++++++++++++++++++
+ kernel/power/suspend.c                     |   17 +++-
  5 files changed, 218 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/power/basic-pm-debugging.txt b/Documentation/power/basic-pm-debugging.txt
-index 05a7fe7..40a4c65 100644
 --- a/Documentation/power/basic-pm-debugging.txt
 +++ b/Documentation/power/basic-pm-debugging.txt
-@@ -201,3 +201,27 @@ case, you may be able to search for failing drivers by following the procedure
+@@ -201,3 +201,27 @@ case, you may be able to search for fail
  analogous to the one described in section 1.  If you find some failing drivers,
  you will have to unload them every time before an STR transition (ie. before
  you run s2ram), and please report the problems with them.
@@ -85,8 +83,6 @@ index 05a7fe7..40a4c65 100644
 +the failure number. Others are the failure number of different steps of suspend
 +to RAM. suspend_stats just lists the last 2 failed devices, error number and
 +failed step of suspend.
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index c6291ab..b1b5826 100644
 --- a/drivers/base/power/main.c
 +++ b/drivers/base/power/main.c
 @@ -46,6 +46,7 @@ LIST_HEAD(dpm_prepared_list);
@@ -97,7 +93,7 @@ index c6291ab..b1b5826 100644
  static DEFINE_MUTEX(dpm_list_mtx);
  static pm_message_t pm_transition;
  
-@@ -467,8 +468,12 @@ void dpm_resume_noirq(pm_message_t state)
+@@ -467,8 +468,12 @@ void dpm_resume_noirq(pm_message_t state
  		mutex_unlock(&dpm_list_mtx);
  
  		error = device_resume_noirq(dev, state);
@@ -125,7 +121,7 @@ index c6291ab..b1b5826 100644
  
  			mutex_lock(&dpm_list_mtx);
  		}
-@@ -805,6 +814,9 @@ int dpm_suspend_noirq(pm_message_t state)
+@@ -805,6 +814,9 @@ int dpm_suspend_noirq(pm_message_t state
  		mutex_lock(&dpm_list_mtx);
  		if (error) {
  			pm_dev_err(dev, state, " late", error);
@@ -135,7 +131,7 @@ index c6291ab..b1b5826 100644
  			put_device(dev);
  			break;
  		}
-@@ -926,8 +938,10 @@ static void async_suspend(void *data, async_cookie_t cookie)
+@@ -926,8 +938,10 @@ static void async_suspend(void *data, as
  	int error;
  
  	error = __device_suspend(dev, pm_transition, true);
@@ -167,7 +163,7 @@ index c6291ab..b1b5826 100644
  		dpm_show_time(starttime, state, NULL);
  	return error;
  }
-@@ -1091,7 +1109,10 @@ int dpm_suspend_start(pm_message_t state)
+@@ -1091,7 +1109,10 @@ int dpm_suspend_start(pm_message_t state
  	int error;
  
  	error = dpm_prepare(state);
@@ -179,8 +175,6 @@ index c6291ab..b1b5826 100644
  		error = dpm_suspend(state);
  	return error;
  }
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index e1e3742..94eb364 100644
 --- a/include/linux/suspend.h
 +++ b/include/linux/suspend.h
 @@ -34,6 +34,58 @@ typedef int __bitwise suspend_state_t;
@@ -242,8 +236,6 @@ index e1e3742..94eb364 100644
  /**
   * struct platform_suspend_ops - Callbacks for managing platform dependent
   *	system sleep states.
-diff --git a/kernel/power/main.c b/kernel/power/main.c
-index 6c601f8..2757acb 100644
 --- a/kernel/power/main.c
 +++ b/kernel/power/main.c
 @@ -12,6 +12,8 @@
@@ -357,7 +349,7 @@ index 6c601f8..2757acb 100644
  struct kobject *power_kobj;
  
  /**
-@@ -194,6 +291,11 @@ static ssize_t state_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -194,6 +291,11 @@ static ssize_t state_store(struct kobjec
  	}
  	if (state < PM_SUSPEND_MAX && *s)
  		error = enter_state(state);
@@ -369,11 +361,9 @@ index 6c601f8..2757acb 100644
  #endif
  
   Exit:
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index d3caa76..fdd4263 100644
 --- a/kernel/power/suspend.c
 +++ b/kernel/power/suspend.c
-@@ -104,7 +104,10 @@ static int suspend_prepare(void)
+@@ -105,7 +105,10 @@ static int suspend_prepare(void)
  		goto Finish;
  
  	error = suspend_freeze_processes();
@@ -385,7 +375,7 @@ index d3caa76..fdd4263 100644
  		return 0;
  
  	suspend_thaw_processes();
-@@ -315,8 +318,16 @@ int enter_state(suspend_state_t state)
+@@ -318,8 +321,16 @@ int enter_state(suspend_state_t state)
   */
  int pm_suspend(suspend_state_t state)
  {
@@ -404,6 +394,3 @@ index d3caa76..fdd4263 100644
  	return -EINVAL;
  }
  EXPORT_SYMBOL(pm_suspend);
--- 
-1.7.10.1.362.g242cab3
-

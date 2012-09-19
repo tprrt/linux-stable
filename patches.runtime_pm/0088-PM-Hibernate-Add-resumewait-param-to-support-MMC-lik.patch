@@ -32,11 +32,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c            |   16 ++++++++++++++++
  2 files changed, 20 insertions(+)
 
-diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
-index aa47be7..5841804 100644
 --- a/Documentation/kernel-parameters.txt
 +++ b/Documentation/kernel-parameters.txt
-@@ -2220,6 +2220,10 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+@@ -2220,6 +2220,10 @@ bytes respectively. Such letter suffixes
  			in <PAGE_SIZE> units (needed only for swap files).
  			See  Documentation/power/swsusp-and-swap-files.txt
  
@@ -47,8 +45,6 @@ index aa47be7..5841804 100644
  	hibernate=	[HIBERNATION]
  		noresume	Don't check if there's a hibernation image
  				present during boot.
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 089ab9c..fe4a742 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
 @@ -14,6 +14,7 @@
@@ -67,7 +63,7 @@ index 089ab9c..fe4a742 100644
  static char resume_file[256] = CONFIG_PM_STD_PARTITION;
  dev_t swsusp_resume_device;
  sector_t swsusp_resume_block;
-@@ -737,6 +739,13 @@ static int software_resume(void)
+@@ -743,6 +745,13 @@ static int software_resume(void)
  		 * to wait for this to finish.
  		 */
  		wait_for_device_probe();
@@ -81,7 +77,7 @@ index 089ab9c..fe4a742 100644
  		/*
  		 * We can't depend on SCSI devices being available after loading
  		 * one of their modules until scsi_complete_async_scans() is
-@@ -1065,7 +1074,14 @@ static int __init noresume_setup(char *str)
+@@ -1071,7 +1080,14 @@ static int __init noresume_setup(char *s
  	return 1;
  }
  
@@ -96,6 +92,3 @@ index 089ab9c..fe4a742 100644
  __setup("resume=", resume_setup);
  __setup("hibernate=", hibernate_setup);
 +__setup("resumewait", resumewait_setup);
--- 
-1.7.10.1.362.g242cab3
-

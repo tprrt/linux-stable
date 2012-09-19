@@ -22,11 +22,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c            |   14 ++++++++++++++
  2 files changed, 17 insertions(+)
 
-diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
-index 5841804..09a5f8a 100644
 --- a/Documentation/kernel-parameters.txt
 +++ b/Documentation/kernel-parameters.txt
-@@ -2220,6 +2220,9 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+@@ -2220,6 +2220,9 @@ bytes respectively. Such letter suffixes
  			in <PAGE_SIZE> units (needed only for swap files).
  			See  Documentation/power/swsusp-and-swap-files.txt
  
@@ -36,8 +34,6 @@ index 5841804..09a5f8a 100644
  	resumewait	[HIBERNATION] Wait (indefinitely) for resume device to show up.
  			Useful for devices that are detected asynchronously
  			(e.g. USB and MMC devices).
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index fe4a742..96477fc 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
 @@ -33,6 +33,7 @@
@@ -48,7 +44,7 @@ index fe4a742..96477fc 100644
  static char resume_file[256] = CONFIG_PM_STD_PARTITION;
  dev_t swsusp_resume_device;
  sector_t swsusp_resume_block;
-@@ -731,6 +732,12 @@ static int software_resume(void)
+@@ -737,6 +738,12 @@ static int software_resume(void)
  
  	pr_debug("PM: Checking hibernation image partition %s\n", resume_file);
  
@@ -61,7 +57,7 @@ index fe4a742..96477fc 100644
  	/* Check if the device is there */
  	swsusp_resume_device = name_to_dev_t(resume_file);
  	if (!swsusp_resume_device) {
-@@ -1080,8 +1087,15 @@ static int __init resumewait_setup(char *str)
+@@ -1086,8 +1093,15 @@ static int __init resumewait_setup(char
  	return 1;
  }
  
@@ -77,6 +73,3 @@ index fe4a742..96477fc 100644
  __setup("hibernate=", hibernate_setup);
  __setup("resumewait", resumewait_setup);
 +__setup("resumedelay=", resumedelay_setup);
--- 
-1.7.10.1.362.g242cab3
-

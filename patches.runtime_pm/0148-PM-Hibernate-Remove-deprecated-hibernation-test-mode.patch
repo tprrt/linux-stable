@@ -19,8 +19,6 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/hibernate.c |   33 ++++-----------------------------
  1 file changed, 4 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 19500b5..111947e 100644
 --- a/kernel/power/hibernate.c
 +++ b/kernel/power/hibernate.c
 @@ -43,8 +43,6 @@ int in_suspend __nosavedata;
@@ -32,7 +30,7 @@ index 19500b5..111947e 100644
  	HIBERNATION_SHUTDOWN,
  	HIBERNATION_REBOOT,
  	/* keep last */
-@@ -96,15 +94,6 @@ static void hibernation_debug_sleep(void)
+@@ -96,15 +94,6 @@ static void hibernation_debug_sleep(void
  	mdelay(5000);
  }
  
@@ -56,7 +54,7 @@ index 19500b5..111947e 100644
  static int hibernation_test(int level) { return 0; }
  #endif /* !CONFIG_PM_DEBUG */
  
-@@ -278,8 +266,7 @@ static int create_image(int platform_mode)
+@@ -278,8 +266,7 @@ static int create_image(int platform_mod
  		goto Platform_finish;
  
  	error = disable_nonboot_cpus();
@@ -66,7 +64,7 @@ index 19500b5..111947e 100644
  		goto Enable_cpus;
  
  	local_irq_disable();
-@@ -349,8 +336,7 @@ int hibernation_snapshot(int platform_mode)
+@@ -349,8 +336,7 @@ int hibernation_snapshot(int platform_mo
  	if (error)
  		goto Cleanup;
  
@@ -76,7 +74,7 @@ index 19500b5..111947e 100644
  
  		/*
  		 * Indicate to the caller that we are returning due to a
-@@ -586,9 +572,6 @@ int hibernation_platform_enter(void)
+@@ -596,9 +582,6 @@ int hibernation_platform_enter(void)
  static void power_down(void)
  {
  	switch (hibernation_mode) {
@@ -86,7 +84,7 @@ index 19500b5..111947e 100644
  	case HIBERNATION_REBOOT:
  		kernel_restart(NULL);
  		break;
-@@ -843,8 +826,6 @@ static const char * const hibernation_modes[] = {
+@@ -853,8 +836,6 @@ static const char * const hibernation_mo
  	[HIBERNATION_PLATFORM]	= "platform",
  	[HIBERNATION_SHUTDOWN]	= "shutdown",
  	[HIBERNATION_REBOOT]	= "reboot",
@@ -95,7 +93,7 @@ index 19500b5..111947e 100644
  };
  
  /*
-@@ -853,17 +834,15 @@ static const char * const hibernation_modes[] = {
+@@ -863,17 +844,15 @@ static const char * const hibernation_mo
   * Hibernation can be handled in several ways.  There are a few different ways
   * to put the system into the sleep state: using the platform driver (e.g. ACPI
   * or other hibernation_ops), powering it off or rebooting it (for testing
@@ -115,7 +113,7 @@ index 19500b5..111947e 100644
   *
   * If a platform hibernation driver is in use, 'platform' will be supported
   * and will be used by default.  Otherwise, 'shutdown' will be used by default.
-@@ -887,8 +866,6 @@ static ssize_t disk_show(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -897,8 +876,6 @@ static ssize_t disk_show(struct kobject
  		switch (i) {
  		case HIBERNATION_SHUTDOWN:
  		case HIBERNATION_REBOOT:
@@ -124,7 +122,7 @@ index 19500b5..111947e 100644
  			break;
  		case HIBERNATION_PLATFORM:
  			if (hibernation_ops)
-@@ -929,8 +906,6 @@ static ssize_t disk_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -939,8 +916,6 @@ static ssize_t disk_store(struct kobject
  		switch (mode) {
  		case HIBERNATION_SHUTDOWN:
  		case HIBERNATION_REBOOT:
@@ -133,6 +131,3 @@ index 19500b5..111947e 100644
  			hibernation_mode = mode;
  			break;
  		case HIBERNATION_PLATFORM:
--- 
-1.7.10.1.362.g242cab3
-

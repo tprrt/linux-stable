@@ -19,15 +19,13 @@ Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- include/linux/interrupt.h |  2 +-
- kernel/irq/manage.c       | 15 ++++++++++++++-
+ include/linux/interrupt.h |    2 +-
+ kernel/irq/manage.c       |   15 ++++++++++++++-
  2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 6fe4e3c..8854a4c 100644
 --- a/include/linux/interrupt.h
 +++ b/include/linux/interrupt.h
-@@ -226,7 +226,7 @@ extern void disable_irq_nosync(unsigned int irq);
+@@ -226,7 +226,7 @@ extern void disable_irq_nosync(unsigned
  extern void disable_irq(unsigned int irq);
  extern void disable_percpu_irq(unsigned int irq);
  extern void enable_irq(unsigned int irq);
@@ -36,11 +34,9 @@ index 6fe4e3c..8854a4c 100644
  
  /* The following three functions are for the core kernel use only. */
  #ifdef CONFIG_GENERIC_HARDIRQS
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 7923849..fea7c71 100644
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -1454,7 +1454,7 @@ int request_any_context_irq(unsigned int irq, irq_handler_t handler,
+@@ -1437,7 +1437,7 @@ int request_any_context_irq(unsigned int
  }
  EXPORT_SYMBOL_GPL(request_any_context_irq);
  
@@ -49,7 +45,7 @@ index 7923849..fea7c71 100644
  {
  	unsigned int cpu = smp_processor_id();
  	unsigned long flags;
-@@ -1463,7 +1463,20 @@ void enable_percpu_irq(unsigned int irq)
+@@ -1446,7 +1446,20 @@ void enable_percpu_irq(unsigned int irq)
  	if (!desc)
  		return;
  
@@ -70,6 +66,3 @@ index 7923849..fea7c71 100644
  	irq_put_desc_unlock(desc, flags);
  }
  
--- 
-1.7.10.2.565.gbd578b5
-

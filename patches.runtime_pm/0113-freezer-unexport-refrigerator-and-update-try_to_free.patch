@@ -102,7 +102,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  				break;
 --- a/fs/btrfs/async-thread.c
 +++ b/fs/btrfs/async-thread.c
-@@ -340,7 +340,7 @@ again:
+@@ -347,7 +347,7 @@ again:
  		if (freezing(current)) {
  			worker->working = 0;
  			spin_unlock_irq(&worker->lock);
@@ -113,7 +113,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			if (!kthread_should_stop()) {
 --- a/fs/btrfs/disk-io.c
 +++ b/fs/btrfs/disk-io.c
-@@ -1479,9 +1479,7 @@ static int cleaner_kthread(void *arg)
+@@ -1480,9 +1480,7 @@ static int cleaner_kthread(void *arg)
  			btrfs_run_defrag_inodes(root->fs_info);
  		}
  
@@ -124,7 +124,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			set_current_state(TASK_INTERRUPTIBLE);
  			if (!kthread_should_stop())
  				schedule();
-@@ -1535,9 +1533,7 @@ sleep:
+@@ -1536,9 +1534,7 @@ sleep:
  		wake_up_process(root->fs_info->cleaner_kthread);
  		mutex_unlock(&root->fs_info->transaction_kthread_mutex);
  
@@ -137,7 +137,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			    !btrfs_transaction_blocked(root->fs_info))
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -2821,8 +2821,7 @@ cont_thread:
+@@ -2822,8 +2822,7 @@ cont_thread:
  		}
  		mutex_unlock(&eli->li_list_mtx);
  
