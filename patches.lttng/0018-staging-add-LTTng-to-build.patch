@@ -12,19 +12,19 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 
 --- a/drivers/staging/Kconfig
 +++ b/drivers/staging/Kconfig
-@@ -78,6 +78,8 @@ source "drivers/staging/line6/Kconfig"
+@@ -64,6 +64,8 @@ source "drivers/staging/phison/Kconfig"
  
- source "drivers/gpu/drm/vmwgfx/Kconfig"
+ source "drivers/staging/line6/Kconfig"
  
 +source "drivers/staging/lttng/Kconfig"
 +
- source "drivers/gpu/drm/nouveau/Kconfig"
- 
  source "drivers/staging/octeon/Kconfig"
+ 
+ source "drivers/staging/serqt_usb2/Kconfig"
 --- a/drivers/staging/Makefile
 +++ b/drivers/staging/Makefile
-@@ -32,6 +32,7 @@ obj-$(CONFIG_TRANZPORT)		+= frontier/
- obj-$(CONFIG_POHMELFS)		+= pohmelfs/
+@@ -24,6 +24,7 @@ obj-$(CONFIG_RTS5139)		+= rts5139/
+ obj-$(CONFIG_TRANZPORT)		+= frontier/
  obj-$(CONFIG_IDE_PHISON)	+= phison/
  obj-$(CONFIG_LINE6_USB)		+= line6/
 +obj-$(CONFIG_LTTNG)		+= lttng/

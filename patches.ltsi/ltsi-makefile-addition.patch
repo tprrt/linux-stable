@@ -17,10 +17,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +++ b/Makefile
 @@ -1,7 +1,7 @@
  VERSION = 3
- PATCHLEVEL = 0
- SUBLEVEL = 38
+ PATCHLEVEL = 4
+ SUBLEVEL = 11
 -EXTRAVERSION =
 +EXTRAVERSION = -ltsi
- NAME = Sneaky Weasel
+ NAME = Saber-toothed Squirrel
  
  # *DOCUMENTATION*

@@ -307,7 +307,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
 +#endif	/* __PRAM_H */
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -405,6 +405,7 @@ struct kobject;
+@@ -414,6 +414,7 @@ struct kobject;
  struct pipe_inode_info;
  struct poll_table_struct;
  struct kstatfs;
@@ -315,7 +315,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  struct vm_area_struct;
  struct vfsmount;
  struct cred;
-@@ -2347,6 +2348,7 @@ extern int nonseekable_open(struct inode
+@@ -2409,6 +2410,7 @@ extern int nonseekable_open(struct inode
  #ifdef CONFIG_FS_XIP
  extern ssize_t xip_file_read(struct file *filp, char __user *buf, size_t len,
  			     loff_t *ppos);
@@ -325,14 +325,13 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  			      size_t len, loff_t *ppos);
 --- a/include/linux/magic.h
 +++ b/include/linux/magic.h
-@@ -41,6 +41,7 @@
- #define NFS_SUPER_MAGIC		0x6969
- #define OPENPROM_SUPER_MAGIC	0x9fa1
- #define PROC_SUPER_MAGIC	0x9fa0
-+#define PRAM_SUPER_MAGIC	0xEFFA
- #define QNX4_SUPER_MAGIC	0x002f		/* qnx4 fs detection */
+@@ -68,5 +68,6 @@
+ #define MTD_INODE_FS_MAGIC      0x11307854
+ #define ANON_INODE_FS_MAGIC	0x09041934
  
- #define REISERFS_SUPER_MAGIC	0x52654973	/* used by gcc */
++#define PRAM_SUPER_MAGIC	0xEFFA
+ 
+ #endif /* __LINUX_MAGIC_H__ */
 --- /dev/null
 +++ b/include/linux/pram_fs.h
 @@ -0,0 +1,130 @@

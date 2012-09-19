@@ -24,8 +24,8 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
 
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -5049,6 +5049,15 @@ S:	Maintained
- F:	drivers/net/pptp.c
+@@ -5351,6 +5351,15 @@ S:	Maintained
+ F:	drivers/net/ppp/pptp.c
  W:	http://sourceforge.net/projects/accel-pptp
  
 +PRAM FILE SYSTEM
@@ -42,7 +42,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  L:	kpreempt-tech@lists.sourceforge.net
 --- a/arch/Kconfig
 +++ b/arch/Kconfig
-@@ -97,6 +97,9 @@ config USER_RETURN_NOTIFIER
+@@ -112,6 +112,9 @@ config USER_RETURN_NOTIFIER
  config HAVE_IOREMAP_PROT
  	bool
  
@@ -54,8 +54,8 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -22,6 +22,7 @@ config X86
- 	select HAVE_OPROFILE
+@@ -23,6 +23,7 @@ config X86
+ 	select HAVE_PCSPKR_PLATFORM
  	select HAVE_PERF_EVENTS
  	select HAVE_IRQ_WORK
 +	select HAVE_SET_MEMORY_RO
@@ -64,7 +64,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  	select HAVE_MEMBLOCK
 --- a/fs/Kconfig
 +++ b/fs/Kconfig
-@@ -13,7 +13,7 @@ source "fs/ext4/Kconfig"
+@@ -17,7 +17,7 @@ source "fs/ext4/Kconfig"
  config FS_XIP
  # execute in place
  	bool
@@ -73,7 +73,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  	default y
  
  source "fs/jbd/Kconfig"
-@@ -25,7 +25,8 @@ config FS_MBCACHE
+@@ -29,7 +29,8 @@ config FS_MBCACHE
  	default y if EXT2_FS=y && EXT2_FS_XATTR
  	default y if EXT3_FS=y && EXT3_FS_XATTR
  	default y if EXT4_FS=y && EXT4_FS_XATTR
@@ -83,7 +83,7 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  
  source "fs/reiserfs/Kconfig"
  source "fs/jfs/Kconfig"
-@@ -207,6 +208,7 @@ source "fs/romfs/Kconfig"
+@@ -219,6 +220,7 @@ source "fs/romfs/Kconfig"
  source "fs/pstore/Kconfig"
  source "fs/sysv/Kconfig"
  source "fs/ufs/Kconfig"
@@ -93,8 +93,8 @@ Signed-off-by: Marco Stornelli <marco.stornelli@gmail.com>
  endif # MISC_FILESYSTEMS
 --- a/fs/Makefile
 +++ b/fs/Makefile
-@@ -124,3 +124,4 @@ obj-$(CONFIG_GFS2_FS)           += gfs2/
- obj-$(CONFIG_EXOFS_FS)          += exofs/
+@@ -125,3 +125,4 @@ obj-$(CONFIG_GFS2_FS)           += gfs2/
+ obj-y				+= exofs/ # Multiple modules
  obj-$(CONFIG_CEPH_FS)		+= ceph/
  obj-$(CONFIG_PSTORE)		+= pstore/
 +obj-$(CONFIG_PRAMFS)		+= pramfs/
