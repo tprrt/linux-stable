@@ -176,8 +176,15 @@ static struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci,
 		struct xhci_segment	*next;
 
 		next = xhci_segment_alloc(xhci, flags);
-		if (!next)
+		if (!next) {
+			prev = ring->first_seg;
+			while (prev) {
+				next = prev->next;
+				xhci_segment_free(xhci, prev);
+				prev = next;
+			}
 			goto fail;
+		}
 		xhci_link_segments(xhci, prev, next, link_trbs);
 
 		prev = next;
@@ -197,7 +204,7 @@ static struct xhci_ring *xhci_ring_alloc(struct xhci_hcd *xhci,
 	return ring;
 
 fail:
-	xhci_ring_free(xhci, ring);
+	kfree(ring);
 	return NULL;
 }
 
