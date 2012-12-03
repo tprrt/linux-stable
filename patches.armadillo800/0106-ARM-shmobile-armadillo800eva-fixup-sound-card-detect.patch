@@ -1,0 +1,43 @@
+From 974462b8ff3fbb6468b94d52690a5707b2ccb955 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Wed, 8 Aug 2012 23:03:07 -0700
+Subject: ARM: shmobile: armadillo800eva: fixup: sound card detection order
+
+Since armadillo800eva has 2 sound cards,
+and had reversed deferred probe order issue,
+it was purposely registered in reverse order.
+
+But it was solved by
+1d29cfa57471a5e4b8a7c2a7433eeba170d3ad92
+(driver core: fixup reversed deferred probe order)
+
+armadillo800eva board is expecting that
+FSI-WM8978 is the 1st, and FSI-HDMI is the 2nd sound card.
+This patch fixes it up
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Simon Horman <horms@verge.net.au>
+(cherry picked from commit ee3c843d0fc21c68ced93b982b5731178a24df68)
+
+Signed-off-by: Simon Horman <horms@verge.net.au>
+---
+ arch/arm/mach-shmobile/board-armadillo800eva.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-shmobile/board-armadillo800eva.c b/arch/arm/mach-shmobile/board-armadillo800eva.c
+index 65cb793..453a6e5 100644
+--- a/arch/arm/mach-shmobile/board-armadillo800eva.c
++++ b/arch/arm/mach-shmobile/board-armadillo800eva.c
+@@ -902,8 +902,8 @@ static struct platform_device *eva_devices[] __initdata = {
+ 	&camera_device,
+ 	&ceu0_device,
+ 	&fsi_device,
+-	&fsi_hdmi_device,
+ 	&fsi_wm8978_device,
++	&fsi_hdmi_device,
+ };
+ 
+ static void __init eva_clock_init(void)
+-- 
+1.8.0.197.g5a90748
+
