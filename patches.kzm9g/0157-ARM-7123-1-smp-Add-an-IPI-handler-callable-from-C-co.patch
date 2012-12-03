@@ -32,7 +32,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  extern void smp_init_cpus(void);
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -580,6 +580,11 @@ static void ipi_cpu_stop(unsigned int cp
+@@ -586,6 +586,11 @@ static void ipi_cpu_stop(unsigned int cp
   */
  asmlinkage void __exception_irq_entry do_IPI(int ipinr, struct pt_regs *regs)
  {

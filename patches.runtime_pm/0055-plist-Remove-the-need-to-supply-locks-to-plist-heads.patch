@@ -152,7 +152,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2739,7 +2739,7 @@ static int __init futex_init(void)
+@@ -2758,7 +2758,7 @@ static int __init futex_init(void)
  		futex_cmpxchg_enabled = 1;
  
  	for (i = 0; i < ARRAY_SIZE(futex_queues); i++) {
@@ -203,7 +203,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
 --- a/kernel/sched.c
 +++ b/kernel/sched.c
-@@ -7920,7 +7920,7 @@ static void init_rt_rq(struct rt_rq *rt_
+@@ -7949,7 +7949,7 @@ static void init_rt_rq(struct rt_rq *rt_
  #ifdef CONFIG_SMP
  	rt_rq->rt_nr_migratory = 0;
  	rt_rq->overloaded = 0;
@@ -212,7 +212,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  #endif
  
  	rt_rq->rt_time = 0;
-@@ -8125,7 +8125,7 @@ void __init sched_init(void)
+@@ -8154,7 +8154,7 @@ void __init sched_init(void)
  #endif
  
  #ifdef CONFIG_RT_MUTEXES

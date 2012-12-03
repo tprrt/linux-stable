@@ -37,20 +37,18 @@ Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/Kconfig                |  25 +++++++
- arch/arm/include/asm/cputype.h  |   6 ++
- arch/arm/include/asm/topology.h |  33 +++++++++
- arch/arm/kernel/Makefile        |   1 +
- arch/arm/kernel/smp.c           |   5 ++
- arch/arm/kernel/topology.c      | 148 ++++++++++++++++++++++++++++++++++++++++
+ arch/arm/Kconfig                |   25 ++++++
+ arch/arm/include/asm/cputype.h  |    6 +
+ arch/arm/include/asm/topology.h |   33 ++++++++
+ arch/arm/kernel/Makefile        |    1 
+ arch/arm/kernel/smp.c           |    5 +
+ arch/arm/kernel/topology.c      |  148 ++++++++++++++++++++++++++++++++++++++++
  6 files changed, 218 insertions(+)
  create mode 100644 arch/arm/kernel/topology.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index d7f1a02..7692bca 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -1370,6 +1370,31 @@ config SMP_ON_UP
+@@ -1380,6 +1380,31 @@ config SMP_ON_UP
  
  	  If you don't know what to do here, say Y.
  
@@ -82,8 +80,6 @@ index d7f1a02..7692bca 100644
  config HAVE_ARM_SCU
  	bool
  	depends on SMP
-diff --git a/arch/arm/include/asm/cputype.h b/arch/arm/include/asm/cputype.h
-index cd4458f..cb47d28 100644
 --- a/arch/arm/include/asm/cputype.h
 +++ b/arch/arm/include/asm/cputype.h
 @@ -8,6 +8,7 @@
@@ -94,7 +90,7 @@ index cd4458f..cb47d28 100644
  
  #define CPUID_EXT_PFR0	"c1, 0"
  #define CPUID_EXT_PFR1	"c1, 1"
-@@ -70,6 +71,11 @@ static inline unsigned int __attribute_const__ read_cpuid_tcmstatus(void)
+@@ -70,6 +71,11 @@ static inline unsigned int __attribute_c
  	return read_cpuid(CPUID_TCM);
  }
  
@@ -106,8 +102,6 @@ index cd4458f..cb47d28 100644
  /*
   * Intel's XScale3 core supports some v6 features (supersections, L2)
   * but advertises itself as v5 as it does not support the v6 ISA.  For
-diff --git a/arch/arm/include/asm/topology.h b/arch/arm/include/asm/topology.h
-index accbd7c..a7e457e 100644
 --- a/arch/arm/include/asm/topology.h
 +++ b/arch/arm/include/asm/topology.h
 @@ -1,6 +1,39 @@
@@ -150,8 +144,6 @@ index accbd7c..a7e457e 100644
  #include <asm-generic/topology.h>
  
  #endif /* _ASM_ARM_TOPOLOGY_H */
-diff --git a/arch/arm/kernel/Makefile b/arch/arm/kernel/Makefile
-index a5b31af..816a481 100644
 --- a/arch/arm/kernel/Makefile
 +++ b/arch/arm/kernel/Makefile
 @@ -61,6 +61,7 @@ obj-$(CONFIG_IWMMXT)		+= iwmmxt.o
@@ -162,8 +154,6 @@ index a5b31af..816a481 100644
  
  ifneq ($(CONFIG_ARCH_EBSA110),y)
    obj-y		+= io.o
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index e7f92a4..8e3a000 100644
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
 @@ -31,6 +31,7 @@
@@ -174,7 +164,7 @@ index e7f92a4..8e3a000 100644
  #include <asm/mmu_context.h>
  #include <asm/pgtable.h>
  #include <asm/pgalloc.h>
-@@ -268,6 +269,8 @@ static void __cpuinit smp_store_cpu_info(unsigned int cpuid)
+@@ -268,6 +269,8 @@ static void __cpuinit smp_store_cpu_info
  	struct cpuinfo_arm *cpu_info = &per_cpu(cpu_data, cpuid);
  
  	cpu_info->loops_per_jiffy = loops_per_jiffy;
@@ -183,7 +173,7 @@ index e7f92a4..8e3a000 100644
  }
  
  /*
-@@ -358,6 +361,8 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+@@ -364,6 +367,8 @@ void __init smp_prepare_cpus(unsigned in
  {
  	unsigned int ncores = num_possible_cpus();
  
@@ -192,9 +182,6 @@ index e7f92a4..8e3a000 100644
  	smp_store_cpu_info(smp_processor_id());
  
  	/*
-diff --git a/arch/arm/kernel/topology.c b/arch/arm/kernel/topology.c
-new file mode 100644
-index 0000000..1040c00
 --- /dev/null
 +++ b/arch/arm/kernel/topology.c
 @@ -0,0 +1,148 @@
@@ -346,6 +333,3 @@ index 0000000..1040c00
 +	}
 +	smp_wmb();
 +}
--- 
-1.7.10.2.565.gbd578b5
-

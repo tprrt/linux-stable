@@ -14,11 +14,9 @@ backporting other PM fixes to the same file.
  drivers/base/power/runtime.c       |   18 ++----------------
  2 files changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/power/runtime_pm.txt b/Documentation/power/runtime_pm.txt
-index 6ade987..b24875b 100644
 --- a/Documentation/power/runtime_pm.txt
 +++ b/Documentation/power/runtime_pm.txt
-@@ -708,16 +708,6 @@ will behave normally, not taking the autosuspend delay into account.
+@@ -708,16 +708,6 @@ will behave normally, not taking the aut
  Similarly, if the power.use_autosuspend field isn't set then the autosuspend
  helper functions will behave just like the non-autosuspend counterparts.
  
@@ -35,11 +33,9 @@ index 6ade987..b24875b 100644
  The implementation is well suited for asynchronous use in interrupt contexts.
  However such use inevitably involves races, because the PM core can't
  synchronize ->runtime_suspend() callbacks with the arrival of I/O requests.
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 1023392..0d4587b 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -278,9 +278,6 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
+@@ -278,9 +278,6 @@ static int rpm_callback(int (*cb)(struct
   * If a deferred resume was requested while the callback was running then carry
   * it out; otherwise send an idle notification for the device (if the suspend
   * failed) or for its parent (if the suspend succeeded).
@@ -49,7 +45,7 @@ index 1023392..0d4587b 100644
   *
   * This function must be called under dev->power.lock with interrupts disabled.
   */
-@@ -392,21 +389,10 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -391,21 +388,10 @@ static int rpm_suspend(struct device *de
  	if (retval) {
  		__update_runtime_status(dev, RPM_ACTIVE);
  		dev->power.deferred_resume = 0;
@@ -73,6 +69,3 @@ index 1023392..0d4587b 100644
  	} else {
   no_callback:
  		__update_runtime_status(dev, RPM_SUSPENDED);
--- 
-1.7.10.1.362.g242cab3
-

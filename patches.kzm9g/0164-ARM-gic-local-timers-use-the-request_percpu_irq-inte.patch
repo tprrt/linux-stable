@@ -195,7 +195,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  #endif
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -464,20 +464,6 @@ static void ipi_timer(void)
+@@ -470,20 +470,6 @@ static void ipi_timer(void)
  	evt->event_handler(evt);
  }
  
@@ -216,7 +216,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  #ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
  static void smp_timer_broadcast(const struct cpumask *mask)
  {
-@@ -528,7 +514,7 @@ static void percpu_timer_stop(void)
+@@ -534,7 +520,7 @@ static void percpu_timer_stop(void)
  	unsigned int cpu = smp_processor_id();
  	struct clock_event_device *evt = &per_cpu(percpu_clockevent, cpu);
  

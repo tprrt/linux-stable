@@ -35,11 +35,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  include/linux/pm_runtime.h               |    2 +-
  11 files changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/Documentation/power/devices.txt b/Documentation/power/devices.txt
-index 64565aa..85c6f98 100644
 --- a/Documentation/power/devices.txt
 +++ b/Documentation/power/devices.txt
-@@ -506,8 +506,8 @@ routines.  Nevertheless, different callback pointers are used in case there is a
+@@ -506,8 +506,8 @@ routines.  Nevertheless, different callb
  situation where it actually matters.
  
  
@@ -50,7 +48,7 @@ index 64565aa..85c6f98 100644
  Sometimes devices share reference clocks or other power resources.  In those
  cases it generally is not possible to put devices into low-power states
  individually.  Instead, a set of devices sharing a power resource can be put
-@@ -516,8 +516,8 @@ power resource.  Of course, they also need to be put into the full-power state
+@@ -516,8 +516,8 @@ power resource.  Of course, they also ne
  together, by turning the shared power resource on.  A set of devices with this
  property is often referred to as a power domain.
  
@@ -61,11 +59,9 @@ index 64565aa..85c6f98 100644
  defined in include/linux/pm.h, providing a set of power management callbacks
  analogous to the subsystem-level and device driver callbacks that are executed
  for the given device during all power transitions, instead of the respective
-diff --git a/arch/arm/mach-omap1/pm_bus.c b/arch/arm/mach-omap1/pm_bus.c
-index 334fb88..212f331 100644
 --- a/arch/arm/mach-omap1/pm_bus.c
 +++ b/arch/arm/mach-omap1/pm_bus.c
-@@ -49,20 +49,20 @@ static int omap1_pm_runtime_resume(struct device *dev)
+@@ -49,20 +49,20 @@ static int omap1_pm_runtime_resume(struc
  	return pm_generic_runtime_resume(dev);
  }
  
@@ -90,11 +86,9 @@ index 334fb88..212f331 100644
  	.con_ids = { "ick", "fck", NULL, },
  };
  
-diff --git a/arch/arm/mach-shmobile/pm_runtime.c b/arch/arm/mach-shmobile/pm_runtime.c
-index 2d1b67a..99802d2 100644
 --- a/arch/arm/mach-shmobile/pm_runtime.c
 +++ b/arch/arm/mach-shmobile/pm_runtime.c
-@@ -28,7 +28,7 @@ static int default_platform_runtime_idle(struct device *dev)
+@@ -28,7 +28,7 @@ static int default_platform_runtime_idle
  	return pm_runtime_suspend(dev);
  }
  
@@ -103,7 +97,7 @@ index 2d1b67a..99802d2 100644
  	.ops = {
  		.runtime_suspend = pm_runtime_clk_suspend,
  		.runtime_resume = pm_runtime_clk_resume,
-@@ -37,16 +37,16 @@ static struct dev_power_domain default_power_domain = {
+@@ -37,16 +37,16 @@ static struct dev_power_domain default_p
  	},
  };
  
@@ -123,11 +117,9 @@ index 2d1b67a..99802d2 100644
  	.con_ids = { NULL, },
  };
  
-diff --git a/arch/arm/plat-omap/omap_device.c b/arch/arm/plat-omap/omap_device.c
-index 49fc0df..d21579b 100644
 --- a/arch/arm/plat-omap/omap_device.c
 +++ b/arch/arm/plat-omap/omap_device.c
-@@ -564,7 +564,7 @@ static int _od_runtime_resume(struct device *dev)
+@@ -564,7 +564,7 @@ static int _od_runtime_resume(struct dev
  	return pm_generic_runtime_resume(dev);
  }
  
@@ -136,7 +128,7 @@ index 49fc0df..d21579b 100644
  	.ops = {
  		.runtime_suspend = _od_runtime_suspend,
  		.runtime_idle = _od_runtime_idle,
-@@ -586,7 +586,7 @@ int omap_device_register(struct omap_device *od)
+@@ -586,7 +586,7 @@ int omap_device_register(struct omap_dev
  	pr_debug("omap_device: %s: registering\n", od->pdev.name);
  
  	od->pdev.dev.parent = &omap_device_parent;
@@ -145,8 +137,6 @@ index 49fc0df..d21579b 100644
  	return platform_device_register(&od->pdev);
  }
  
-diff --git a/arch/sh/kernel/cpu/shmobile/pm_runtime.c b/arch/sh/kernel/cpu/shmobile/pm_runtime.c
-index 64c807c..bf280c8 100644
 --- a/arch/sh/kernel/cpu/shmobile/pm_runtime.c
 +++ b/arch/sh/kernel/cpu/shmobile/pm_runtime.c
 @@ -256,7 +256,7 @@ out:
@@ -158,7 +148,7 @@ index 64c807c..bf280c8 100644
  	.ops = {
  		.runtime_suspend = default_platform_runtime_suspend,
  		.runtime_resume = default_platform_runtime_resume,
-@@ -285,7 +285,7 @@ static int platform_bus_notify(struct notifier_block *nb,
+@@ -285,7 +285,7 @@ static int platform_bus_notify(struct no
  		hwblk_disable(hwblk_info, hwblk);
  		/* make sure driver re-inits itself once */
  		__set_bit(PDEV_ARCHDATA_FLAG_INIT, &pdev->archdata.flags);
@@ -167,7 +157,7 @@ index 64c807c..bf280c8 100644
  		break;
  	/* TODO: add BUS_NOTIFY_BIND_DRIVER and increase idle count */
  	case BUS_NOTIFY_BOUND_DRIVER:
-@@ -299,7 +299,7 @@ static int platform_bus_notify(struct notifier_block *nb,
+@@ -299,7 +299,7 @@ static int platform_bus_notify(struct no
  		__set_bit(PDEV_ARCHDATA_FLAG_INIT, &pdev->archdata.flags);
  		break;
  	case BUS_NOTIFY_DEL_DEVICE:
@@ -176,11 +166,9 @@ index 64c807c..bf280c8 100644
  		break;
  	}
  	return 0;
-diff --git a/drivers/base/power/clock_ops.c b/drivers/base/power/clock_ops.c
-index ad367c4..c562481 100644
 --- a/drivers/base/power/clock_ops.c
 +++ b/drivers/base/power/clock_ops.c
-@@ -278,11 +278,11 @@ int pm_runtime_clk_resume(struct device *dev)
+@@ -278,11 +278,11 @@ int pm_runtime_clk_resume(struct device
   *
   * For this function to work, @nb must be a member of an object of type
   * struct pm_clk_notifier_block containing all of the requisite data.
@@ -195,7 +183,7 @@ index ad367c4..c562481 100644
   * from the one stored in the struct pm_clk_notifier_block object, the function
   * does nothing.
   */
-@@ -300,14 +300,14 @@ static int pm_runtime_clk_notify(struct notifier_block *nb,
+@@ -300,14 +300,14 @@ static int pm_runtime_clk_notify(struct
  
  	switch (action) {
  	case BUS_NOTIFY_ADD_DEVICE:
@@ -212,7 +200,7 @@ index ad367c4..c562481 100644
  		if (clknb->con_ids[0]) {
  			for (con_id = clknb->con_ids; *con_id; con_id++)
  				pm_runtime_clk_add(dev, *con_id);
-@@ -317,10 +317,10 @@ static int pm_runtime_clk_notify(struct notifier_block *nb,
+@@ -317,10 +317,10 @@ static int pm_runtime_clk_notify(struct
  
  		break;
  	case BUS_NOTIFY_DEL_DEVICE:
@@ -225,11 +213,9 @@ index ad367c4..c562481 100644
  		pm_runtime_clk_destroy(dev);
  		break;
  	}
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 06f09bf..85b591a 100644
 --- a/drivers/base/power/main.c
 +++ b/drivers/base/power/main.c
-@@ -425,9 +425,9 @@ static int device_resume_noirq(struct device *dev, pm_message_t state)
+@@ -425,9 +425,9 @@ static int device_resume_noirq(struct de
  	TRACE_DEVICE(dev);
  	TRACE_RESUME(0);
  
@@ -241,7 +227,7 @@ index 06f09bf..85b591a 100644
  	} else if (dev->type && dev->type->pm) {
  		pm_dev_dbg(dev, state, "EARLY type ");
  		error = pm_noirq_op(dev, dev->type->pm, state);
-@@ -521,9 +521,9 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+@@ -521,9 +521,9 @@ static int device_resume(struct device *
  	if (!dev->power.is_suspended)
  		goto Unlock;
  
@@ -253,7 +239,7 @@ index 06f09bf..85b591a 100644
  		goto End;
  	}
  
-@@ -641,10 +641,10 @@ static void device_complete(struct device *dev, pm_message_t state)
+@@ -641,10 +641,10 @@ static void device_complete(struct devic
  {
  	device_lock(dev);
  
@@ -267,7 +253,7 @@ index 06f09bf..85b591a 100644
  	} else if (dev->type && dev->type->pm) {
  		pm_dev_dbg(dev, state, "completing type ");
  		if (dev->type->pm->complete)
-@@ -744,9 +744,9 @@ static int device_suspend_noirq(struct device *dev, pm_message_t state)
+@@ -744,9 +744,9 @@ static int device_suspend_noirq(struct d
  {
  	int error;
  
@@ -279,7 +265,7 @@ index 06f09bf..85b591a 100644
  		if (error)
  			return error;
  	} else if (dev->type && dev->type->pm) {
-@@ -853,9 +853,9 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+@@ -853,9 +853,9 @@ static int __device_suspend(struct devic
  		goto Unlock;
  	}
  
@@ -291,7 +277,7 @@ index 06f09bf..85b591a 100644
  		goto End;
  	}
  
-@@ -982,11 +982,11 @@ static int device_prepare(struct device *dev, pm_message_t state)
+@@ -982,11 +982,11 @@ static int device_prepare(struct device
  
  	device_lock(dev);
  
@@ -307,11 +293,9 @@ index 06f09bf..85b591a 100644
  		if (error)
  			goto End;
  	} else if (dev->type && dev->type->pm) {
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 0d4587b..5f5c423 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -213,8 +213,8 @@ static int rpm_idle(struct device *dev, int rpmflags)
+@@ -213,8 +213,8 @@ static int rpm_idle(struct device *dev,
  
  	dev->power.idle_notification = true;
  
@@ -322,7 +306,7 @@ index 0d4587b..5f5c423 100644
  	else if (dev->type && dev->type->pm)
  		callback = dev->type->pm->runtime_idle;
  	else if (dev->class && dev->class->pm)
-@@ -374,8 +374,8 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -373,8 +373,8 @@ static int rpm_suspend(struct device *de
  
  	__update_runtime_status(dev, RPM_SUSPENDING);
  
@@ -333,7 +317,7 @@ index 0d4587b..5f5c423 100644
  	else if (dev->type && dev->type->pm)
  		callback = dev->type->pm->runtime_suspend;
  	else if (dev->class && dev->class->pm)
-@@ -573,8 +573,8 @@ static int rpm_resume(struct device *dev, int rpmflags)
+@@ -574,8 +574,8 @@ static int rpm_resume(struct device *dev
  
  	__update_runtime_status(dev, RPM_RESUMING);
  
@@ -344,8 +328,6 @@ index 0d4587b..5f5c423 100644
  	else if (dev->type && dev->type->pm)
  		callback = dev->type->pm->runtime_resume;
  	else if (dev->class && dev->class->pm)
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 680656e..ad8ecfd 100644
 --- a/include/linux/device.h
 +++ b/include/linux/device.h
 @@ -585,7 +585,7 @@ struct device_dma_parameters {
@@ -366,11 +348,9 @@ index 680656e..ad8ecfd 100644
  
  #ifdef CONFIG_NUMA
  	int		numa_node;	/* NUMA node this device is close to */
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 411e4f4..e396320 100644
 --- a/include/linux/pm.h
 +++ b/include/linux/pm.h
-@@ -472,7 +472,7 @@ extern void update_pm_runtime_accounting(struct device *dev);
+@@ -472,7 +472,7 @@ extern void update_pm_runtime_accounting
   * hibernation, system resume and during runtime PM transitions along with
   * subsystem-level and driver-level callbacks.
   */
@@ -379,11 +359,9 @@ index 411e4f4..e396320 100644
  	struct dev_pm_ops	ops;
  };
  
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 878cf84..ef91904 100644
 --- a/include/linux/pm_runtime.h
 +++ b/include/linux/pm_runtime.h
-@@ -247,7 +247,7 @@ static inline void pm_runtime_dont_use_autosuspend(struct device *dev)
+@@ -247,7 +247,7 @@ static inline void pm_runtime_dont_use_a
  
  struct pm_clk_notifier_block {
  	struct notifier_block nb;
@@ -392,6 +370,3 @@ index 878cf84..ef91904 100644
  	char *con_ids[];
  };
  
--- 
-1.7.10.1.362.g242cab3
-

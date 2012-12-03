@@ -33,24 +33,22 @@ Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/Kconfig            |   1 +
- arch/arm/include/asm/prom.h |   5 --
- arch/arm/kernel/devtree.c   |  14 -----
- include/linux/irq.h         |   6 +++
- include/linux/irqdomain.h   |  81 +++++++++++++++++++++++++++++
- include/linux/of_irq.h      |   4 ++
- kernel/irq/Kconfig          |   4 ++
- kernel/irq/Makefile         |   1 +
- kernel/irq/irqdomain.c      | 122 ++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/Kconfig            |    1 
+ arch/arm/include/asm/prom.h |    5 -
+ arch/arm/kernel/devtree.c   |   14 -----
+ include/linux/irq.h         |    6 ++
+ include/linux/irqdomain.h   |   81 +++++++++++++++++++++++++++++
+ include/linux/of_irq.h      |    4 +
+ kernel/irq/Kconfig          |    4 +
+ kernel/irq/Makefile         |    1 
+ kernel/irq/irqdomain.c      |  122 ++++++++++++++++++++++++++++++++++++++++++++
  9 files changed, 219 insertions(+), 19 deletions(-)
  create mode 100644 include/linux/irqdomain.h
  create mode 100644 kernel/irq/irqdomain.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index f9b212e..d7f1a02 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -1705,6 +1705,7 @@ config USE_OF
+@@ -1715,6 +1715,7 @@ config USE_OF
  	bool "Flattened Device Tree support"
  	select OF
  	select OF_EARLY_FLATTREE
@@ -58,8 +56,6 @@ index f9b212e..d7f1a02 100644
  	help
  	  Include support for flattened device tree machine descriptions.
  
-diff --git a/arch/arm/include/asm/prom.h b/arch/arm/include/asm/prom.h
-index 11b8708..6f65ca8 100644
 --- a/arch/arm/include/asm/prom.h
 +++ b/arch/arm/include/asm/prom.h
 @@ -16,11 +16,6 @@
@@ -74,11 +70,9 @@ index 11b8708..6f65ca8 100644
  extern struct machine_desc *setup_machine_fdt(unsigned int dt_phys);
  extern void arm_dt_memblock_reserve(void);
  
-diff --git a/arch/arm/kernel/devtree.c b/arch/arm/kernel/devtree.c
-index 0cdd7b4..1a33e9d 100644
 --- a/arch/arm/kernel/devtree.c
 +++ b/arch/arm/kernel/devtree.c
-@@ -132,17 +132,3 @@ struct machine_desc * __init setup_machine_fdt(unsigned int dt_phys)
+@@ -132,17 +132,3 @@ struct machine_desc * __init setup_machi
  
  	return mdesc_best;
  }
@@ -96,8 +90,6 @@ index 0cdd7b4..1a33e9d 100644
 -	return intspec[0];
 -}
 -EXPORT_SYMBOL_GPL(irq_create_of_mapping);
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 58d1e49..d65dfca 100644
 --- a/include/linux/irq.h
 +++ b/include/linux/irq.h
 @@ -114,14 +114,18 @@ enum {
@@ -131,9 +123,6 @@ index 58d1e49..d65dfca 100644
  	void			*handler_data;
  	void			*chip_data;
  	struct msi_desc		*msi_desc;
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-new file mode 100644
-index 0000000..8f2c10a
 --- /dev/null
 +++ b/include/linux/irqdomain.h
 @@ -0,0 +1,81 @@
@@ -218,11 +207,9 @@ index 0000000..8f2c10a
 +#endif /* CONFIG_IRQ_DOMAIN */
 +
 +#endif /* _LINUX_IRQDOMAIN_H */
-diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
-index e6955f5..cd2e61c 100644
 --- a/include/linux/of_irq.h
 +++ b/include/linux/of_irq.h
-@@ -63,6 +63,9 @@ extern int of_irq_map_one(struct device_node *device, int index,
+@@ -63,6 +63,9 @@ extern int of_irq_map_one(struct device_
  extern unsigned int irq_create_of_mapping(struct device_node *controller,
  					  const u32 *intspec,
  					  unsigned int intsize);
@@ -232,7 +219,7 @@ index e6955f5..cd2e61c 100644
  extern int of_irq_to_resource(struct device_node *dev, int index,
  			      struct resource *r);
  extern int of_irq_count(struct device_node *dev);
-@@ -70,6 +73,7 @@ extern int of_irq_to_resource_table(struct device_node *dev,
+@@ -70,6 +73,7 @@ extern int of_irq_to_resource_table(stru
  		struct resource *res, int nr_irqs);
  extern struct device_node *of_irq_find_parent(struct device_node *child);
  
@@ -240,8 +227,6 @@ index e6955f5..cd2e61c 100644
  #endif /* CONFIG_OF_IRQ */
  #endif /* CONFIG_OF */
  #endif /* __OF_IRQ_H */
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index d1d051b3..5a38bf4 100644
 --- a/kernel/irq/Kconfig
 +++ b/kernel/irq/Kconfig
 @@ -52,6 +52,10 @@ config IRQ_EDGE_EOI_HANDLER
@@ -255,8 +240,6 @@ index d1d051b3..5a38bf4 100644
  # Support forced irq threading
  config IRQ_FORCED_THREADING
         bool
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index 7329005..fff1738 100644
 --- a/kernel/irq/Makefile
 +++ b/kernel/irq/Makefile
 @@ -2,6 +2,7 @@
@@ -267,9 +250,6 @@ index 7329005..fff1738 100644
  obj-$(CONFIG_PROC_FS) += proc.o
  obj-$(CONFIG_GENERIC_PENDING_IRQ) += migration.o
  obj-$(CONFIG_PM_SLEEP) += pm.o
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-new file mode 100644
-index 0000000..29c7bd4
 --- /dev/null
 +++ b/kernel/irq/irqdomain.c
 @@ -0,0 +1,122 @@
@@ -395,6 +375,3 @@ index 0000000..29c7bd4
 +}
 +EXPORT_SYMBOL_GPL(irq_dispose_mapping);
 +#endif /* CONFIG_OF_IRQ */
--- 
-1.7.10.2.565.gbd578b5
-

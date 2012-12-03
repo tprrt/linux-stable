@@ -26,17 +26,15 @@ Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- Documentation/power/devices.txt    |   37 +++++-----
- Documentation/power/runtime_pm.txt |  130 +++++++++++++++++++-----------------
- drivers/base/power/main.c          |  109 ++++++++++++++++++++----------
- drivers/base/power/runtime.c       |    9 +++
+ Documentation/power/devices.txt    |   39 ++++++-----
+ Documentation/power/runtime_pm.txt |  128 +++++++++++++++++++------------------
+ drivers/base/power/main.c          |  109 ++++++++++++++++++++-----------
+ drivers/base/power/runtime.c       |    9 ++
  4 files changed, 170 insertions(+), 115 deletions(-)
 
-diff --git a/Documentation/power/devices.txt b/Documentation/power/devices.txt
-index 3139fb5..20af7de 100644
 --- a/Documentation/power/devices.txt
 +++ b/Documentation/power/devices.txt
-@@ -126,7 +126,9 @@ The core methods to suspend and resume devices reside in struct dev_pm_ops
+@@ -126,7 +126,9 @@ The core methods to suspend and resume d
  pointed to by the ops member of struct dev_pm_domain, or by the pm member of
  struct bus_type, struct device_type and struct class.  They are mostly of
  interest to the people writing infrastructure for platforms and buses, like PCI
@@ -47,7 +45,7 @@ index 3139fb5..20af7de 100644
  
  Bus drivers implement these methods as appropriate for the hardware and the
  drivers using it; PCI works differently from USB, and so on.  Not many people
-@@ -268,32 +270,35 @@ various phases always run after tasks have been frozen and before they are
+@@ -268,32 +270,35 @@ various phases always run after tasks ha
  unfrozen.  Furthermore, the *_noirq phases run at a time when IRQ handlers have
  been disabled (except for those marked with the IRQF_NO_SUSPEND flag).
  
@@ -58,6 +56,10 @@ index 3139fb5..20af7de 100644
 -while type callbacks take precedence over bus and class callbacks, and class
 -callbacks take precedence over bus callbacks.  To be precise, the following
 -rules are used to determine which callback to execute in the given phase:
+-
+-    1.	If dev->pm_domain is present, the PM core will attempt to execute the
+-	callback included in dev->pm_domain->ops.  If that callback is not
+-	present, no action will be carried out for the given device.
 +All phases use PM domain, bus, type, class or driver callbacks (that is, methods
 +defined in dev->pm_domain->ops, dev->bus->pm, dev->type->pm, dev->class->pm or
 +dev->driver->pm).  These callbacks are regarded by the PM core as mutually
@@ -65,10 +67,7 @@ index 3139fb5..20af7de 100644
 +other callbacks and, for example, type callbacks take precedence over bus, class
 +and driver callbacks.  To be precise, the following rules are used to determine
 +which callback to execute in the given phase:
- 
--    1.	If dev->pm_domain is present, the PM core will attempt to execute the
--	callback included in dev->pm_domain->ops.  If that callback is not
--	present, no action will be carried out for the given device.
++
 +    1.	If dev->pm_domain is present, the PM core will choose the callback
 +	included in dev->pm_domain->ops for execution
  
@@ -98,8 +97,6 @@ index 3139fb5..20af7de 100644
  
  
  Entering System Suspend
-diff --git a/Documentation/power/runtime_pm.txt b/Documentation/power/runtime_pm.txt
-index c2ae8bf..4abe83e 100644
 --- a/Documentation/power/runtime_pm.txt
 +++ b/Documentation/power/runtime_pm.txt
 @@ -57,6 +57,10 @@ the following:
@@ -113,7 +110,7 @@ index c2ae8bf..4abe83e 100644
  The PM core always checks which callback to use in the order given above, so the
  priority order of callbacks from high to low is: PM domain, device type, class
  and bus type.  Moreover, the high-priority one will always take precedence over
-@@ -64,86 +68,88 @@ a low-priority one.  The PM domain, bus type, device type and class callbacks
+@@ -64,86 +68,88 @@ a low-priority one.  The PM domain, bus
  are referred to as subsystem-level callbacks in what follows.
  
  By default, the callbacks are always invoked in process context with interrupts
@@ -160,8 +157,6 @@ index c2ae8bf..4abe83e 100644
 -    refuse to run the helper functions described in Section 4 for the device,
 -    until the status of it is directly set either to 'active', or to 'suspended'
 -    (the PM core provides special helper functions for this purpose).
--
--In particular, if the driver requires remote wake-up capability (i.e. hardware
 +  * Once the subsystem-level suspend callback (or the driver suspend callback,
 +    if invoked directly) has completed successfully for the given device, the PM
 +    core regards the device as suspended, which need not mean that it has been
@@ -180,7 +175,8 @@ index c2ae8bf..4abe83e 100644
 +    the helper functions described in Section 4 for the device until its status
 +    is directly set to  either'active', or 'suspended' (the PM core provides
 +    special helper functions for this purpose).
-+
+ 
+-In particular, if the driver requires remote wake-up capability (i.e. hardware
 +In particular, if the driver requires remote wakeup capability (i.e. hardware
  mechanism allowing the device to request a change of its power state, such as
  PCI PME) for proper functioning and device_run_wake() returns 'false' for the
@@ -264,11 +260,9 @@ index c2ae8bf..4abe83e 100644
  
  (1) The callbacks are mutually exclusive (e.g. it is forbidden to execute
      ->runtime_suspend() in parallel with ->runtime_resume() or with another
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index b5cef7e..e2cc3d2 100644
 --- a/drivers/base/power/main.c
 +++ b/drivers/base/power/main.c
-@@ -383,10 +383,15 @@ static int device_resume_noirq(struct device *dev, pm_message_t state)
+@@ -383,10 +383,15 @@ static int device_resume_noirq(struct de
  		info = "EARLY class ";
  		callback = pm_noirq_op(dev->class->pm, state);
  	} else if (dev->bus && dev->bus->pm) {
@@ -285,7 +279,7 @@ index b5cef7e..e2cc3d2 100644
  	error = dpm_run_callback(callback, dev, state, info);
  
  	TRACE_RESUME(error);
-@@ -464,20 +469,20 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+@@ -464,20 +469,20 @@ static int device_resume(struct device *
  	if (dev->pm_domain) {
  		info = "power domain ";
  		callback = pm_op(&dev->pm_domain->ops, state);
@@ -309,7 +303,7 @@ index b5cef7e..e2cc3d2 100644
  		} else if (dev->class->resume) {
  			info = "legacy class ";
  			callback = dev->class->resume;
-@@ -487,14 +492,21 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+@@ -487,14 +492,21 @@ static int device_resume(struct device *
  
  	if (dev->bus) {
  		if (dev->bus->pm) {
@@ -379,7 +373,7 @@ index b5cef7e..e2cc3d2 100644
  	}
  
  	device_unlock(dev);
-@@ -704,10 +725,15 @@ static int device_suspend_noirq(struct device *dev, pm_message_t state)
+@@ -704,10 +725,15 @@ static int device_suspend_noirq(struct d
  		info = "LATE class ";
  		callback = pm_noirq_op(dev->class->pm, state);
  	} else if (dev->bus && dev->bus->pm) {
@@ -396,7 +390,7 @@ index b5cef7e..e2cc3d2 100644
  	return dpm_run_callback(callback, dev, state, info);
  }
  
-@@ -832,16 +858,21 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+@@ -832,16 +858,21 @@ static int __device_suspend(struct devic
  
  	if (dev->bus) {
  		if (dev->bus->pm) {
@@ -429,7 +423,7 @@ index b5cef7e..e2cc3d2 100644
  	int error = 0;
  
  	device_lock(dev);
-@@ -956,25 +989,27 @@ static int device_prepare(struct device *dev, pm_message_t state)
+@@ -956,25 +989,27 @@ static int device_prepare(struct device
  	dev->power.wakeup_path = device_may_wakeup(dev);
  
  	if (dev->pm_domain) {
@@ -473,11 +467,9 @@ index b5cef7e..e2cc3d2 100644
  	}
  
  	device_unlock(dev);
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 068f7ed..541f821 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -250,6 +250,9 @@ static int rpm_idle(struct device *dev, int rpmflags)
+@@ -250,6 +250,9 @@ static int rpm_idle(struct device *dev,
  	else
  		callback = NULL;
  
@@ -487,7 +479,7 @@ index 068f7ed..541f821 100644
  	if (callback)
  		__rpm_callback(callback, dev);
  
-@@ -485,6 +488,9 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -484,6 +487,9 @@ static int rpm_suspend(struct device *de
  	else
  		callback = NULL;
  
@@ -497,7 +489,7 @@ index 068f7ed..541f821 100644
  	retval = rpm_callback(callback, dev);
  	if (retval)
  		goto fail;
-@@ -713,6 +719,9 @@ static int rpm_resume(struct device *dev, int rpmflags)
+@@ -714,6 +720,9 @@ static int rpm_resume(struct device *dev
  	else
  		callback = NULL;
  
@@ -507,6 +499,3 @@ index 068f7ed..541f821 100644
  	retval = rpm_callback(callback, dev);
  	if (retval) {
  		__update_runtime_status(dev, RPM_SUSPENDED);
--- 
-1.7.10.1.362.g242cab3
-

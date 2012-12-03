@@ -36,8 +36,6 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/base/power/runtime.c |   11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index aecb2a8..7a6fb5e 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
 @@ -9,6 +9,7 @@
@@ -48,7 +46,7 @@ index aecb2a8..7a6fb5e 100644
  #include "power.h"
  
  static int rpm_resume(struct device *dev, int rpmflags);
-@@ -196,6 +197,7 @@ static int rpm_idle(struct device *dev, int rpmflags)
+@@ -196,6 +197,7 @@ static int rpm_idle(struct device *dev,
  	int (*callback)(struct device *);
  	int retval;
  
@@ -56,7 +54,7 @@ index aecb2a8..7a6fb5e 100644
  	retval = rpm_check_suspend_allowed(dev);
  	if (retval < 0)
  		;	/* Conditions are wrong. */
-@@ -257,6 +259,7 @@ static int rpm_idle(struct device *dev, int rpmflags)
+@@ -257,6 +259,7 @@ static int rpm_idle(struct device *dev,
  	wake_up_all(&dev->power.wait_queue);
  
   out:
@@ -64,7 +62,7 @@ index aecb2a8..7a6fb5e 100644
  	return retval;
  }
  
-@@ -301,7 +304,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -301,7 +304,7 @@ static int rpm_suspend(struct device *de
  	struct device *parent = NULL;
  	int retval;
  
@@ -73,7 +71,7 @@ index aecb2a8..7a6fb5e 100644
  
   repeat:
  	retval = rpm_check_suspend_allowed(dev);
-@@ -445,7 +448,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -445,7 +448,7 @@ static int rpm_suspend(struct device *de
  	}
  
   out:
@@ -82,7 +80,7 @@ index aecb2a8..7a6fb5e 100644
  
  	return retval;
  }
-@@ -474,7 +477,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+@@ -474,7 +477,7 @@ static int rpm_resume(struct device *dev
  	struct device *parent = NULL;
  	int retval = 0;
  
@@ -91,7 +89,7 @@ index aecb2a8..7a6fb5e 100644
  
   repeat:
  	if (dev->power.runtime_error)
-@@ -639,7 +642,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+@@ -640,7 +643,7 @@ static int rpm_resume(struct device *dev
  		spin_lock_irq(&dev->power.lock);
  	}
  
@@ -100,6 +98,3 @@ index aecb2a8..7a6fb5e 100644
  
  	return retval;
  }
--- 
-1.7.10.1.362.g242cab3
-

@@ -14,11 +14,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/base/power/runtime.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index be7b982..8dc247c 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -389,7 +389,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -388,7 +388,7 @@ static int rpm_suspend(struct device *de
  	retval = rpm_callback(callback, dev);
  	if (retval) {
  		__update_runtime_status(dev, RPM_ACTIVE);
@@ -27,6 +25,3 @@ index be7b982..8dc247c 100644
  		if (retval == -EAGAIN || retval == -EBUSY)
  			dev->power.runtime_error = 0;
  		else
--- 
-1.7.10.1.362.g242cab3
-

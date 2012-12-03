@@ -24,7 +24,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
 
 --- a/Documentation/kernel-parameters.txt
 +++ b/Documentation/kernel-parameters.txt
-@@ -2220,6 +2220,9 @@ bytes respectively. Such letter suffixes
+@@ -2225,6 +2225,9 @@ bytes respectively. Such letter suffixes
  			in <PAGE_SIZE> units (needed only for swap files).
  			See  Documentation/power/swsusp-and-swap-files.txt
  

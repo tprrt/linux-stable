@@ -24,11 +24,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/base/power/runtime.c |   25 +++++++++++++------------
  1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index aa23a64..6bb3aaf 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -291,11 +291,11 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
+@@ -291,11 +291,11 @@ static int rpm_callback(int (*cb)(struct
   * another suspend has been started earlier, either return immediately
   * or wait for it to finish, depending on the RPM_NOWAIT and RPM_ASYNC
   * flags. If the RPM_ASYNC flag is set then queue a suspend request;
@@ -45,7 +43,7 @@ index aa23a64..6bb3aaf 100644
   *
   * This function must be called under dev->power.lock with interrupts disabled.
   */
-@@ -420,15 +420,16 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -419,15 +419,16 @@ static int rpm_suspend(struct device *de
  			dev->power.runtime_error = 0;
  		else
  			pm_runtime_cancel_pending(dev);
@@ -69,6 +67,3 @@ index aa23a64..6bb3aaf 100644
  	}
  	wake_up_all(&dev->power.wait_queue);
  
--- 
-1.7.10.1.362.g242cab3
-

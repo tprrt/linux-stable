@@ -34,15 +34,13 @@ Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- drivers/base/power/qos.c     |   24 ++++---
- drivers/base/power/runtime.c |  148 ++++++++++++++++++++++++++++++++++++------
- include/linux/pm.h           |    2 +
- include/linux/pm_qos.h       |    3 +
- include/linux/pm_runtime.h   |    5 ++
+ drivers/base/power/qos.c     |   24 ++++--
+ drivers/base/power/runtime.c |  148 +++++++++++++++++++++++++++++++++++++------
+ include/linux/pm.h           |    2 
+ include/linux/pm_qos.h       |    3 
+ include/linux/pm_runtime.h   |    5 +
  5 files changed, 154 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/base/power/qos.c b/drivers/base/power/qos.c
-index 86de6c5..03f4bd0 100644
 --- a/drivers/base/power/qos.c
 +++ b/drivers/base/power/qos.c
 @@ -47,21 +47,29 @@ static DEFINE_MUTEX(dev_pm_qos_mtx);
@@ -83,11 +81,9 @@ index 86de6c5..03f4bd0 100644
  	spin_unlock_irqrestore(&dev->power.lock, flags);
  
  	return ret;
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 8c78443..068f7ed 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -279,6 +279,47 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
+@@ -279,6 +279,47 @@ static int rpm_callback(int (*cb)(struct
  	return retval != -EACCES ? retval : -EIO;
  }
  
@@ -135,7 +131,7 @@ index 8c78443..068f7ed 100644
  /**
   * rpm_suspend - Carry out runtime suspend of given device.
   * @dev: Device to suspend.
-@@ -305,6 +346,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -305,6 +346,7 @@ static int rpm_suspend(struct device *de
  {
  	int (*callback)(struct device *);
  	struct device *parent = NULL;
@@ -143,7 +139,7 @@ index 8c78443..068f7ed 100644
  	int retval;
  
  	trace_rpm_suspend(dev, rpmflags);
-@@ -400,8 +442,38 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -399,8 +441,38 @@ static int rpm_suspend(struct device *de
  		goto out;
  	}
  
@@ -182,7 +178,7 @@ index 8c78443..068f7ed 100644
  	if (dev->pm_domain)
  		callback = dev->pm_domain->ops.runtime_suspend;
  	else if (dev->type && dev->type->pm)
-@@ -414,27 +486,9 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -413,27 +485,9 @@ static int rpm_suspend(struct device *de
  		callback = NULL;
  
  	retval = rpm_callback(callback, dev);
@@ -212,7 +208,7 @@ index 8c78443..068f7ed 100644
   no_callback:
  	__update_runtime_status(dev, RPM_SUSPENDED);
  	pm_runtime_deactivate_timer(dev);
-@@ -466,6 +520,29 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -466,6 +520,29 @@ static int rpm_suspend(struct device *de
  	trace_rpm_return_int(dev, _THIS_IP_, retval);
  
  	return retval;
@@ -242,7 +238,7 @@ index 8c78443..068f7ed 100644
  }
  
  /**
-@@ -620,6 +697,9 @@ static int rpm_resume(struct device *dev, int rpmflags)
+@@ -621,6 +698,9 @@ static int rpm_resume(struct device *dev
  	if (dev->power.no_callbacks)
  		goto no_callback;	/* Assume success. */
  
@@ -252,7 +248,7 @@ index 8c78443..068f7ed 100644
  	__update_runtime_status(dev, RPM_RESUMING);
  
  	if (dev->pm_domain)
-@@ -1279,6 +1359,9 @@ void pm_runtime_init(struct device *dev)
+@@ -1280,6 +1360,9 @@ void pm_runtime_init(struct device *dev)
  	setup_timer(&dev->power.suspend_timer, pm_suspend_timer_fn,
  			(unsigned long)dev);
  
@@ -262,7 +258,7 @@ index 8c78443..068f7ed 100644
  	init_waitqueue_head(&dev->power.wait_queue);
  }
  
-@@ -1296,3 +1379,28 @@ void pm_runtime_remove(struct device *dev)
+@@ -1297,3 +1380,28 @@ void pm_runtime_remove(struct device *de
  	if (dev->power.irq_safe && dev->parent)
  		pm_runtime_put_sync(dev->parent);
  }
@@ -291,8 +287,6 @@ index 8c78443..068f7ed 100644
 +
 +	spin_unlock_irqrestore(&dev->power.lock, flags);
 +}
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 3f3ed83..a7676ef 100644
 --- a/include/linux/pm.h
 +++ b/include/linux/pm.h
 @@ -521,6 +521,8 @@ struct dev_pm_info {
@@ -304,11 +298,9 @@ index 3f3ed83..a7676ef 100644
  #endif
  	struct pm_subsys_data	*subsys_data;  /* Owned by the subsystem. */
  	struct pm_qos_constraints *constraints;
-diff --git a/include/linux/pm_qos.h b/include/linux/pm_qos.h
-index 83b0ea3..775a323 100644
 --- a/include/linux/pm_qos.h
 +++ b/include/linux/pm_qos.h
-@@ -78,6 +78,7 @@ int pm_qos_remove_notifier(int pm_qos_class, struct notifier_block *notifier);
+@@ -78,6 +78,7 @@ int pm_qos_remove_notifier(int pm_qos_cl
  int pm_qos_request_active(struct pm_qos_request *req);
  s32 pm_qos_read_value(struct pm_qos_constraints *c);
  
@@ -316,7 +308,7 @@ index 83b0ea3..775a323 100644
  s32 dev_pm_qos_read_value(struct device *dev);
  int dev_pm_qos_add_request(struct device *dev, struct dev_pm_qos_request *req,
  			   s32 value);
-@@ -119,6 +120,8 @@ static inline int pm_qos_request_active(struct pm_qos_request *req)
+@@ -119,6 +120,8 @@ static inline int pm_qos_request_active(
  static inline s32 pm_qos_read_value(struct pm_qos_constraints *c)
  			{ return 0; }
  
@@ -325,11 +317,9 @@ index 83b0ea3..775a323 100644
  static inline s32 dev_pm_qos_read_value(struct device *dev)
  			{ return 0; }
  static inline int dev_pm_qos_add_request(struct device *dev,
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index d3085e7..609daae 100644
 --- a/include/linux/pm_runtime.h
 +++ b/include/linux/pm_runtime.h
-@@ -45,6 +45,8 @@ extern void pm_runtime_irq_safe(struct device *dev);
+@@ -45,6 +45,8 @@ extern void pm_runtime_irq_safe(struct d
  extern void __pm_runtime_use_autosuspend(struct device *dev, bool use);
  extern void pm_runtime_set_autosuspend_delay(struct device *dev, int delay);
  extern unsigned long pm_runtime_autosuspend_expiration(struct device *dev);
@@ -338,7 +328,7 @@ index d3085e7..609daae 100644
  
  static inline bool pm_children_suspended(struct device *dev)
  {
-@@ -148,6 +150,9 @@ static inline void pm_runtime_set_autosuspend_delay(struct device *dev,
+@@ -148,6 +150,9 @@ static inline void pm_runtime_set_autosu
  static inline unsigned long pm_runtime_autosuspend_expiration(
  				struct device *dev) { return 0; }
  
@@ -348,6 +338,3 @@ index d3085e7..609daae 100644
  #endif /* !CONFIG_PM_RUNTIME */
  
  static inline int pm_runtime_idle(struct device *dev)
--- 
-1.7.10.1.362.g242cab3
-

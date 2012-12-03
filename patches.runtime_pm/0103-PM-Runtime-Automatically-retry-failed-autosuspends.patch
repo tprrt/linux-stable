@@ -31,11 +31,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/base/power/runtime.c       |   18 ++++++++++++++++--
  2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/power/runtime_pm.txt b/Documentation/power/runtime_pm.txt
-index 0e85608..5336149 100644
 --- a/Documentation/power/runtime_pm.txt
 +++ b/Documentation/power/runtime_pm.txt
-@@ -789,6 +789,16 @@ will behave normally, not taking the autosuspend delay into account.
+@@ -789,6 +789,16 @@ will behave normally, not taking the aut
  Similarly, if the power.use_autosuspend field isn't set then the autosuspend
  helper functions will behave just like the non-autosuspend counterparts.
  
@@ -52,11 +50,9 @@ index 0e85608..5336149 100644
  The implementation is well suited for asynchronous use in interrupt contexts.
  However such use inevitably involves races, because the PM core can't
  synchronize ->runtime_suspend() callbacks with the arrival of I/O requests.
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index e8a5172..8c78443 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -294,6 +294,9 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
+@@ -294,6 +294,9 @@ static int rpm_callback(int (*cb)(struct
   * the callback was running then carry it out, otherwise send an idle
   * notification for its parent (if the suspend succeeded and both
   * ignore_children of parent->power and irq_safe of dev->power are not set).
@@ -66,7 +62,7 @@ index e8a5172..8c78443 100644
   *
   * This function must be called under dev->power.lock with interrupts disabled.
   */
-@@ -414,10 +417,21 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+@@ -413,10 +416,21 @@ static int rpm_suspend(struct device *de
  	if (retval) {
  		__update_runtime_status(dev, RPM_ACTIVE);
  		dev->power.deferred_resume = false;
@@ -90,6 +86,3 @@ index e8a5172..8c78443 100644
  		wake_up_all(&dev->power.wait_queue);
  		goto out;
  	}
--- 
-1.7.10.1.362.g242cab3
-

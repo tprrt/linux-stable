@@ -24,11 +24,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  include/linux/serial_reg.h    |    1 +
  4 files changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/8250.c b/drivers/tty/serial/8250.c
-index a0e502b..69802bd 100644
 --- a/drivers/tty/serial/8250.c
 +++ b/drivers/tty/serial/8250.c
-@@ -309,6 +309,13 @@ static const struct serial8250_config uart_config[] = {
+@@ -309,6 +309,13 @@ static const struct serial8250_config ua
  				  UART_FCR_T_TRIG_01,
  		.flags		= UART_CAP_FIFO | UART_CAP_RTOIE,
  	},
@@ -42,7 +40,7 @@ index a0e502b..69802bd 100644
  };
  
  #if defined(CONFIG_MIPS_ALCHEMY)
-@@ -1052,6 +1059,14 @@ static void autoconfig_16550a(struct uart_8250_port *up)
+@@ -1052,6 +1059,14 @@ static void autoconfig_16550a(struct uar
  	serial_outp(up, UART_IER, iersave);
  
  	/*
@@ -57,7 +55,7 @@ index a0e502b..69802bd 100644
  	 * We distinguish between 16550A and U6 16550A by counting
  	 * how many bytes are in the FIFO.
  	 */
-@@ -2396,7 +2411,10 @@ serial8250_do_set_termios(struct uart_port *port, struct ktermios *termios,
+@@ -2396,7 +2411,10 @@ serial8250_do_set_termios(struct uart_po
  			efr |= UART_EFR_CTS;
  
  		serial_outp(up, UART_LCR, UART_LCR_CONF_MODE_B);
@@ -69,11 +67,9 @@ index a0e502b..69802bd 100644
  	}
  
  #ifdef CONFIG_ARCH_OMAP
-diff --git a/drivers/tty/serial/8250_pci.c b/drivers/tty/serial/8250_pci.c
-index ff48fdb..a213f38 100644
 --- a/drivers/tty/serial/8250_pci.c
 +++ b/drivers/tty/serial/8250_pci.c
-@@ -1003,6 +1003,15 @@ static int pci_eg20t_init(struct pci_dev *dev)
+@@ -1003,6 +1003,15 @@ static int pci_eg20t_init(struct pci_dev
  #endif
  }
  
@@ -89,7 +85,7 @@ index ff48fdb..a213f38 100644
  /* This should be in linux/pci_ids.h */
  #define PCI_VENDOR_ID_SBSMODULARIO	0x124B
  #define PCI_SUBVENDOR_ID_SBSMODULARIO	0x124B
-@@ -1407,6 +1416,30 @@ static struct pci_serial_quirk pci_serial_quirks[] __refdata = {
+@@ -1409,6 +1418,30 @@ static struct pci_serial_quirk pci_seria
  		.setup		= pci_timedia_setup,
  	},
  	/*
@@ -120,8 +116,6 @@ index ff48fdb..a213f38 100644
  	 * Xircom cards
  	 */
  	{
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 4880024..d611ca0 100644
 --- a/include/linux/serial_core.h
 +++ b/include/linux/serial_core.h
 @@ -46,7 +46,8 @@
@@ -142,8 +136,6 @@ index 4880024..d611ca0 100644
  /* The exact UART type is known and should not be probed.  */
  #define UPF_FIXED_TYPE		((__force upf_t) (1 << 27))
  #define UPF_BOOT_AUTOCONF	((__force upf_t) (1 << 28))
-diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
-index c75bda3..8ce70d7 100644
 --- a/include/linux/serial_reg.h
 +++ b/include/linux/serial_reg.h
 @@ -152,6 +152,7 @@
@@ -154,6 +146,3 @@ index c75bda3..8ce70d7 100644
  #define UART_EFR_CTS		0x80 /* CTS flow control */
  #define UART_EFR_RTS		0x40 /* RTS flow control */
  #define UART_EFR_SCD		0x20 /* Special character detect */
--- 
-1.7.10.1.362.g242cab3
-

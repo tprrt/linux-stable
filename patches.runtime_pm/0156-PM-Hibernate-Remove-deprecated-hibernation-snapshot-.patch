@@ -13,15 +13,13 @@ Signed-off-by: Rafael J. Wysocki <rjw@sisk.pl>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- Documentation/feature-removal-schedule.txt |   11 ----
- kernel/power/user.c                        |   87 ----------------------------
+ Documentation/feature-removal-schedule.txt |   11 ---
+ kernel/power/user.c                        |   87 -----------------------------
  2 files changed, 98 deletions(-)
 
-diff --git a/Documentation/feature-removal-schedule.txt b/Documentation/feature-removal-schedule.txt
-index b1c921c..7bb7798 100644
 --- a/Documentation/feature-removal-schedule.txt
 +++ b/Documentation/feature-removal-schedule.txt
-@@ -85,17 +85,6 @@ Who:	Robin Getz <rgetz@blackfin.uclinux.org> & Matt Mackall <mpm@selenic.com>
+@@ -77,17 +77,6 @@ Who:	Robin Getz <rgetz@blackfin.uclinux.
  
  ---------------------------
  
@@ -39,8 +37,6 @@ index b1c921c..7bb7798 100644
  What:	The ieee80211_regdom module parameter
  When:	March 2010 / desktop catchup
  
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 98ade21..78bdb44 100644
 --- a/kernel/power/user.c
 +++ b/kernel/power/user.c
 @@ -30,28 +30,6 @@
@@ -88,7 +84,7 @@ index 98ade21..78bdb44 100644
  static long snapshot_ioctl(struct file *filp, unsigned int cmd,
  							unsigned long arg)
  {
-@@ -272,8 +241,6 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -272,8 +241,6 @@ static long snapshot_ioctl(struct file *
  		data->frozen = 0;
  		break;
  
@@ -97,7 +93,7 @@ index 98ade21..78bdb44 100644
  	case SNAPSHOT_CREATE_IMAGE:
  		if (data->mode != O_RDONLY || !data->frozen  || data->ready) {
  			error = -EPERM;
-@@ -308,8 +275,6 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -308,8 +275,6 @@ static long snapshot_ioctl(struct file *
  		data->ready = 0;
  		break;
  
@@ -106,7 +102,7 @@ index 98ade21..78bdb44 100644
  	case SNAPSHOT_PREF_IMAGE_SIZE:
  		image_size = arg;
  		break;
-@@ -324,16 +289,12 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -324,16 +289,12 @@ static long snapshot_ioctl(struct file *
  		error = put_user(size, (loff_t __user *)arg);
  		break;
  
@@ -123,7 +119,7 @@ index 98ade21..78bdb44 100644
  	case SNAPSHOT_ALLOC_SWAP_PAGE:
  		if (data->swap < 0 || data->swap >= MAX_SWAPFILES) {
  			error = -ENODEV;
-@@ -356,27 +317,6 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -356,27 +317,6 @@ static long snapshot_ioctl(struct file *
  		free_all_swap_pages(data->swap);
  		break;
  
@@ -151,7 +147,7 @@ index 98ade21..78bdb44 100644
  	case SNAPSHOT_S2RAM:
  		if (!data->frozen) {
  			error = -EPERM;
-@@ -399,33 +339,6 @@ static long snapshot_ioctl(struct file *filp, unsigned int cmd,
+@@ -399,33 +339,6 @@ static long snapshot_ioctl(struct file *
  			error = hibernation_platform_enter();
  		break;
  
@@ -185,6 +181,3 @@ index 98ade21..78bdb44 100644
  	case SNAPSHOT_SET_SWAP_AREA:
  		if (swsusp_swap_in_use()) {
  			error = -EPERM;
--- 
-1.7.10.1.362.g242cab3
-

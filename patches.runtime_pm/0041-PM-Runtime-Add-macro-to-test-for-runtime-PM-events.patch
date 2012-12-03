@@ -55,7 +55,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	Mutual exclusion
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -1126,7 +1126,7 @@ static int btusb_suspend(struct usb_inte
+@@ -1128,7 +1128,7 @@ static int btusb_suspend(struct usb_inte
  		return 0;
  
  	spin_lock_irq(&data->txlock);
@@ -107,7 +107,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		if (status < 0)
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1502,7 +1502,7 @@ int usbnet_suspend (struct usb_interface
+@@ -1505,7 +1505,7 @@ int usbnet_suspend (struct usb_interface
  	if (!dev->suspend_count++) {
  		spin_lock_irq(&dev->txq.lock);
  		/* don't autosuspend while transmitting */
@@ -138,7 +138,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/drivers/usb/class/cdc-acm.c
 +++ b/drivers/usb/class/cdc-acm.c
-@@ -1328,7 +1328,7 @@ static int acm_suspend(struct usb_interf
+@@ -1338,7 +1338,7 @@ static int acm_suspend(struct usb_interf
  	struct acm *acm = usb_get_intfdata(intf);
  	int cnt;
  
@@ -215,7 +215,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/drivers/usb/core/hcd.c
 +++ b/drivers/usb/core/hcd.c
-@@ -1950,7 +1950,7 @@ int hcd_bus_suspend(struct usb_device *r
+@@ -1948,7 +1948,7 @@ int hcd_bus_suspend(struct usb_device *r
  	int		old_state = hcd->state;
  
  	dev_dbg(&rhdev->dev, "bus %s%s\n",
@@ -224,7 +224,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	if (HCD_DEAD(hcd)) {
  		dev_dbg(&rhdev->dev, "skipped %s of dead bus\n", "suspend");
  		return 0;
-@@ -1986,7 +1986,7 @@ int hcd_bus_resume(struct usb_device *rh
+@@ -1984,7 +1984,7 @@ int hcd_bus_resume(struct usb_device *rh
  	int		old_state = hcd->state;
  
  	dev_dbg(&rhdev->dev, "usb %s%s\n",
@@ -235,7 +235,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return 0;
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -2358,7 +2358,7 @@ int usb_port_suspend(struct usb_device *
+@@ -2361,7 +2361,7 @@ int usb_port_suspend(struct usb_device *
  			dev_dbg(&udev->dev, "won't remote wakeup, status %d\n",
  					status);
  			/* bail if autosuspend is requested */
@@ -244,7 +244,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  				return status;
  		}
  	}
-@@ -2383,12 +2383,12 @@ int usb_port_suspend(struct usb_device *
+@@ -2386,12 +2386,12 @@ int usb_port_suspend(struct usb_device *
  				USB_CTRL_SET_TIMEOUT);
  
  		/* System sleep transitions should never fail */
@@ -259,7 +259,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		usb_set_device_state(udev, USB_STATE_SUSPENDED);
  		msleep(10);
  	}
-@@ -2539,7 +2539,7 @@ int usb_port_resume(struct usb_device *u
+@@ -2542,7 +2542,7 @@ int usb_port_resume(struct usb_device *u
  	} else {
  		/* drive resume for at least 20 msec */
  		dev_dbg(&udev->dev, "usb %sresume\n",
@@ -268,7 +268,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		msleep(25);
  
  		/* Virtual root hubs can trigger on GET_PORT_STATUS to
-@@ -2641,7 +2641,7 @@ static int hub_suspend(struct usb_interf
+@@ -2644,7 +2644,7 @@ static int hub_suspend(struct usb_interf
  		udev = hdev->children [port1-1];
  		if (udev && udev->can_submit) {
  			dev_warn(&intf->dev, "port %d nyet suspended\n", port1);
@@ -279,7 +279,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	}
 --- a/drivers/usb/serial/sierra.c
 +++ b/drivers/usb/serial/sierra.c
-@@ -1016,7 +1016,7 @@ static int sierra_suspend(struct usb_ser
+@@ -1028,7 +1028,7 @@ static int sierra_suspend(struct usb_ser
  	struct sierra_intf_private *intfdata;
  	int b;
  
@@ -312,7 +312,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
   *
 --- a/sound/usb/card.c
 +++ b/sound/usb/card.c
-@@ -631,7 +631,7 @@ static int usb_audio_suspend(struct usb_
+@@ -635,7 +635,7 @@ static int usb_audio_suspend(struct usb_
  	if (chip == (void *)-1L)
  		return 0;
  

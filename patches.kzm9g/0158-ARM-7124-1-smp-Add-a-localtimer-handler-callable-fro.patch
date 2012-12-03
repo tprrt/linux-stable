@@ -32,7 +32,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -471,6 +471,11 @@ static void ipi_timer(void)
+@@ -477,6 +477,11 @@ static void ipi_timer(void)
  #ifdef CONFIG_LOCAL_TIMERS
  asmlinkage void __exception_irq_entry do_local_timer(struct pt_regs *regs)
  {

@@ -26,11 +26,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  kernel/power/process.c |    3 +--
  2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 303bed2..437d0cf 100644
 --- a/kernel/exit.c
 +++ b/kernel/exit.c
-@@ -693,8 +693,6 @@ static void exit_mm(struct task_struct * tsk)
+@@ -693,8 +693,6 @@ static void exit_mm(struct task_struct *
  	tsk->mm = NULL;
  	up_read(&mm->mmap_sem);
  	enter_lazy_tlb(mm, current);
@@ -39,16 +37,14 @@ index 303bed2..437d0cf 100644
  	if (tsk->signal->oom_score_adj == OOM_SCORE_ADJ_MIN)
  		atomic_dec(&mm->oom_disable_count);
  	task_unlock(tsk);
-@@ -1051,6 +1049,7 @@ NORET_TYPE void do_exit(long code)
- 	exit_rcu();
+@@ -1067,6 +1065,7 @@ NORET_TYPE void do_exit(long code)
+ 
  	/* causes final put_task_struct in finish_task_switch(). */
  	tsk->state = TASK_DEAD;
 +	tsk->flags |= PF_NOFREEZE;	/* tell freezer to ignore us */
  	schedule();
  	BUG();
  	/* Avoid "noreturn function does return".  */
-diff --git a/kernel/power/process.c b/kernel/power/process.c
-index fe27872..23822dc 100644
 --- a/kernel/power/process.c
 +++ b/kernel/power/process.c
 @@ -25,8 +25,7 @@
@@ -61,6 +57,3 @@ index fe27872..23822dc 100644
  		return 0;
  	return 1;
  }
--- 
-1.7.10.1.362.g242cab3
-

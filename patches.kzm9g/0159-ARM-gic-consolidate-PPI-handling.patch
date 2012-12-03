@@ -288,7 +288,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -450,10 +450,6 @@ u64 smp_irq_stat_cpu(unsigned int cpu)
+@@ -456,10 +456,6 @@ u64 smp_irq_stat_cpu(unsigned int cpu)
  	for (i = 0; i < NR_IPI; i++)
  		sum += __get_irq_stat(cpu, ipi_irqs[i]);
  
@@ -299,7 +299,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	return sum;
  }
  
-@@ -469,36 +465,16 @@ static void ipi_timer(void)
+@@ -475,36 +471,16 @@ static void ipi_timer(void)
  }
  
  #ifdef CONFIG_LOCAL_TIMERS
