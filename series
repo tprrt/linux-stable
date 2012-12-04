@@ -539,3 +539,18 @@ patches.at91/0252-net-macb-align-ring-buffer-function-with-mainline.patch
 patches.at91/0253-net-macb-move-to-circ_buf-macros-and-fix-initial-con.patch
 
 
+patches.af_bus/0001-net-bus-add-the-AF_BUS-socket-address-family.patch
+patches.af_bus/0002-net-bus-Add-AF_BUS-documentation.patch
+patches.af_bus/0003-net-bus-add-af_bus-address-and-af_bus-socket-address.patch
+patches.af_bus/0004-security-Add-Linux-Security-Modules-hook-for-AF_BUS-.patch
+patches.af_bus/0005-security-selinux-Add-AF_BUS-socket-SELinux-hooks.patch
+patches.af_bus/0006-netfilter-add-NFPROTO_BUS-hook-constant-for-AF_BUS-s.patch
+patches.af_bus/0007-scm-allow-AF_BUS-sockets-to-send-ancillary-data.patch
+patches.af_bus/0008-net-bus-Add-implementation-of-Bus-domain-sockets.patch
+patches.af_bus/0009-net-bus-Add-garbage-collector-for-AF_BUS-sockets.patch
+patches.af_bus/0010-net-bus-Add-the-AF_BUS-socket-address-family-to-KBui.patch
+patches.af_bus/0011-netlink-connector-implement-cn_netlink_reply.patch
+patches.af_bus/0012-netlink-connector-Add-idx-and-val-identifiers-for-ne.patch
+patches.af_bus/0013-netfilter-nfdbus-Add-D-bus-message-parsing.patch
+patches.af_bus/0014-netfilter-nfdbus-Add-D-bus-match-rule-implementation.patch
+patches.af_bus/0015-netfilter-add-netfilter-D-Bus-module.patch
