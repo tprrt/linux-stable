@@ -1,0 +1,28 @@
+From cfcd98b36cbb2f074a06b1665727a72d3677ce64 Mon Sep 17 00:00:00 2001
+From: Nicolas Ferre <nicolas.ferre@atmel.com>
+Date: Thu, 15 Mar 2012 12:21:12 +0100
+Subject: ARM: at91: change AT91 Kconfig entry comment
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+---
+ arch/arm/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7a8660a..ddef021 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -340,8 +340,8 @@ config ARCH_AT91
+ 	select IRQ_DOMAIN
+ 	select NEED_MACH_IO_H if PCCARD
+ 	help
+-	  This enables support for systems based on the Atmel AT91RM9200,
+-	  AT91SAM9 processors.
++	  This enables support for systems based on Atmel
++	  AT91RM9200 and AT91SAM9* processors.
+ 
+ config ARCH_BCMRING
+ 	bool "Broadcom BCMRING"
+-- 
+1.8.0.197.g5a90748
+
