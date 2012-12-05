@@ -109,6 +109,7 @@ patches.pramfs/14-pramfs-memory-write-protection.patch
 patches.pramfs/15-pramfs-test-module.patch
 patches.pramfs/16-pramfs-ioctl-operations.patch
 patches.pramfs/17-pramfs-makefile-and-kconfig.patch
+patches.pramfs/pramfs-mark-it-broken.patch
 
 
 #############################################################################
@@ -131,6 +132,7 @@ patches.axfs/axfs-axfs_bdev.c.patch
 patches.axfs/axfs-xip-debugging-support.patch
 patches.axfs/axfs-add-documentation.patch
 patches.axfs/axfs-mount-as-rootfs.patch
+patches.axfs/axfs-mark-it-broken.patch
 
 
 #############################################################################
@@ -411,6 +413,15 @@ patches.armadillo800/0105-ARM-mach-shmobile-armadillo800eva-Enable-power-butto.p
 patches.armadillo800/0106-ARM-shmobile-armadillo800eva-fixup-sound-card-detect.patch
 patches.armadillo800/0107-ARM-shmobile-armadillo800eva-enable-rw-rootfs-mount.patch
 patches.armadillo800/asoc-sh-fsi-select-simple-card-on-kconfig.patch
+
+patches.armadillo800/shmobile-r8a7740-add-support-for-vcp-1-vpu-vpc-vio-multimedia-ip.patch
+patches.armadillo800/shmobile-armadillo800eva-set-lcd-color-depth-to-32-bpp.patch
+patches.armadillo800/iommu-shmobile-add-iommu-driver-for-renesas-ipmmu-modules.patch
+patches.armadillo800/shmobile-armadillo800eva-enable-iommu-support.patch
+patches.armadillo800/shmobile-ipmmu-add-basic-pmb-support.patch
+patches.armadillo800/shmobile-r8a7740-set-up-meram-address-range.patch
+patches.armadillo800/shmobile-r8a7740-add-meram-uio-device.patch
+
 
 #############################################################################
 # AT91 board support
@@ -742,4 +753,6 @@ patches.uio/drivers-uio_dmem_genirq-don-t-mix-address-spaces-for-dynamic-region-
 patches.uio/drivers-uio_dmem_genirq-don-t-use-dma_error_code-to-indicate-unmapped-regions.patch
 patches.uio/drivers-uio_dmem_genirq-allow-partial-success-when-opening-device.patch
 patches.uio/drivers-uio-only-allocate-new-private-data-when-probing-device-tree-node.patch
+
+
 
