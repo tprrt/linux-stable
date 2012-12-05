@@ -25,16 +25,14 @@ DMA_ERROR_CODE.
 
 Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
 ---
- drivers/uio/Kconfig                           |   16 ++
- drivers/uio/Makefile                          |    1 +
- drivers/uio/uio_dmem_genirq.c                 |  354 +++++++++++++++++++++++++
- include/linux/platform_data/uio_dmem_genirq.h |   26 ++
- 4 files changed, 397 insertions(+), 0 deletions(-)
+ drivers/uio/Kconfig                           |   16 +
+ drivers/uio/Makefile                          |    1 
+ drivers/uio/uio_dmem_genirq.c                 |  354 ++++++++++++++++++++++++++
+ include/linux/platform_data/uio_dmem_genirq.h |   26 +
+ 4 files changed, 397 insertions(+)
  create mode 100644 drivers/uio/uio_dmem_genirq.c
  create mode 100644 include/linux/platform_data/uio_dmem_genirq.h
 
-diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 6f3ea9b..82e2b89 100644
 --- a/drivers/uio/Kconfig
 +++ b/drivers/uio/Kconfig
 @@ -44,6 +44,22 @@ config UIO_PDRV_GENIRQ
@@ -60,8 +58,6 @@ index 6f3ea9b..82e2b89 100644
  config UIO_AEC
  	tristate "AEC video timestamp device"
  	depends on PCI
-diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index d4dd9a5..b354c53 100644
 --- a/drivers/uio/Makefile
 +++ b/drivers/uio/Makefile
 @@ -2,6 +2,7 @@ obj-$(CONFIG_UIO)	+= uio.o
@@ -72,9 +68,6 @@ index d4dd9a5..b354c53 100644
  obj-$(CONFIG_UIO_AEC)	+= uio_aec.o
  obj-$(CONFIG_UIO_SERCOS3)	+= uio_sercos3.o
  obj-$(CONFIG_UIO_PCI_GENERIC)	+= uio_pci_generic.o
-diff --git a/drivers/uio/uio_dmem_genirq.c b/drivers/uio/uio_dmem_genirq.c
-new file mode 100644
-index 0000000..4d4dd00
 --- /dev/null
 +++ b/drivers/uio/uio_dmem_genirq.c
 @@ -0,0 +1,354 @@
@@ -432,9 +425,6 @@ index 0000000..4d4dd00
 +MODULE_DESCRIPTION("Userspace I/O platform driver with dynamic memory.");
 +MODULE_LICENSE("GPL v2");
 +MODULE_ALIAS("platform:" DRIVER_NAME);
-diff --git a/include/linux/platform_data/uio_dmem_genirq.h b/include/linux/platform_data/uio_dmem_genirq.h
-new file mode 100644
-index 0000000..973c1bb
 --- /dev/null
 +++ b/include/linux/platform_data/uio_dmem_genirq.h
 @@ -0,0 +1,26 @@
@@ -464,6 +454,3 @@ index 0000000..973c1bb
 +	unsigned int num_dynamic_regions;
 +};
 +#endif /* _UIO_DMEM_GENIRQ_H */
--- 
-1.7.5.4
-

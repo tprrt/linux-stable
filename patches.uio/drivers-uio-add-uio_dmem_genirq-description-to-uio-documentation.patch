@@ -9,14 +9,12 @@ Message-ID: <1353551213-17996-3-git-send-email-dhobsong@igel.co.jp>
 
 Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
 ---
- Documentation/DocBook/uio-howto.tmpl |   56 ++++++++++++++++++++++++++++++++++
- 1 files changed, 56 insertions(+), 0 deletions(-)
+ Documentation/DocBook/uio-howto.tmpl |   56 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/Documentation/DocBook/uio-howto.tmpl b/Documentation/DocBook/uio-howto.tmpl
-index ac3d001..fdbf86f 100644
 --- a/Documentation/DocBook/uio-howto.tmpl
 +++ b/Documentation/DocBook/uio-howto.tmpl
-@@ -719,6 +719,62 @@ framework to set up sysfs files for this region. Simply leave it alone.
+@@ -719,6 +719,62 @@ framework to set up sysfs files for this
  	</para>
  </sect1>
  
@@ -79,6 +77,3 @@ index ac3d001..fdbf86f 100644
  </chapter>
  
  <chapter id="userspace_driver" xreflabel="Writing a driver in user space">
--- 
-1.7.5.4
-

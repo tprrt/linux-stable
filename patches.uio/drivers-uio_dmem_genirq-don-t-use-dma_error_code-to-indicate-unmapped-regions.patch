@@ -19,11 +19,9 @@ Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
  drivers/uio/uio_dmem_genirq.c        |    6 ++++--
  2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/DocBook/uio-howto.tmpl b/Documentation/DocBook/uio-howto.tmpl
-index fdbf86f..ddb05e9 100644
 --- a/Documentation/DocBook/uio-howto.tmpl
 +++ b/Documentation/DocBook/uio-howto.tmpl
-@@ -771,7 +771,7 @@ framework to set up sysfs files for this region. Simply leave it alone.
+@@ -771,7 +771,7 @@ framework to set up sysfs files for this
  	<varname>/sys/class/uio/uioX/maps/mapY/*</varname>.
  	The dynmaic memory regions will be freed when the UIO device file is
  	closed. When no processes are holding the device file open, the address
@@ -32,8 +30,6 @@ index fdbf86f..ddb05e9 100644
  	</para>
  </sect1>
  
-diff --git a/drivers/uio/uio_dmem_genirq.c b/drivers/uio/uio_dmem_genirq.c
-index d8bbe07..7be8d04 100644
 --- a/drivers/uio/uio_dmem_genirq.c
 +++ b/drivers/uio/uio_dmem_genirq.c
 @@ -29,6 +29,7 @@
@@ -44,7 +40,7 @@ index d8bbe07..7be8d04 100644
  
  struct uio_dmem_genirq_platdata {
  	struct uio_info *uioinfo;
-@@ -60,6 +61,7 @@ static int uio_dmem_genirq_open(struct uio_info *info, struct inode *inode)
+@@ -60,6 +61,7 @@ static int uio_dmem_genirq_open(struct u
  		addr = dma_alloc_coherent(&priv->pdev->dev, uiomem->size,
  				(dma_addr_t *)&uiomem->addr, GFP_KERNEL);
  		if (!addr) {
@@ -52,7 +48,7 @@ index d8bbe07..7be8d04 100644
  			ret = -ENOMEM;
  			break;
  		}
-@@ -95,7 +97,7 @@ static int uio_dmem_genirq_release(struct uio_info *info, struct inode *inode)
+@@ -95,7 +97,7 @@ static int uio_dmem_genirq_release(struc
  		dma_free_coherent(&priv->pdev->dev, uiomem->size,
  				priv->dmem_region_vaddr[dmem_region++],
  				uiomem->addr);
@@ -61,7 +57,7 @@ index d8bbe07..7be8d04 100644
  		++uiomem;
  	}
  
-@@ -238,7 +240,7 @@ static int uio_dmem_genirq_probe(struct platform_device *pdev)
+@@ -238,7 +240,7 @@ static int uio_dmem_genirq_probe(struct
  			break;
  		}
  		uiomem->memtype = UIO_MEM_PHYS;
@@ -70,6 +66,3 @@ index d8bbe07..7be8d04 100644
  		uiomem->size = pdata->dynamic_region_sizes[i];
  		++uiomem;
  	}
--- 
-1.7.5.4
-

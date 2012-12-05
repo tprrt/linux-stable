@@ -19,11 +19,9 @@ Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
  drivers/uio/uio_pdrv_genirq.c |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/uio/uio_dmem_genirq.c b/drivers/uio/uio_dmem_genirq.c
-index bbdf925..252434c 100644
 --- a/drivers/uio/uio_dmem_genirq.c
 +++ b/drivers/uio/uio_dmem_genirq.c
-@@ -153,7 +153,7 @@ static int uio_dmem_genirq_probe(struct platform_device *pdev)
+@@ -153,7 +153,7 @@ static int uio_dmem_genirq_probe(struct
  	int ret = -EINVAL;
  	int i;
  
@@ -32,11 +30,9 @@ index bbdf925..252434c 100644
  		int irq;
  
  		/* alloc uioinfo for one device */
-diff --git a/drivers/uio/uio_pdrv_genirq.c b/drivers/uio/uio_pdrv_genirq.c
-index b98371d..9c976cb 100644
 --- a/drivers/uio/uio_pdrv_genirq.c
 +++ b/drivers/uio/uio_pdrv_genirq.c
-@@ -102,7 +102,7 @@ static int uio_pdrv_genirq_probe(struct platform_device *pdev)
+@@ -102,7 +102,7 @@ static int uio_pdrv_genirq_probe(struct
  	int ret = -EINVAL;
  	int i;
  
@@ -45,6 +41,3 @@ index b98371d..9c976cb 100644
  		int irq;
  
  		/* alloc uioinfo for one device */
--- 
-1.7.5.4
-
