@@ -635,6 +635,10 @@ patches.kzm9g/arm-shmobile-use-common-dmaengine-definitions-on-sh73a0.patch
 patches.kzm9g/arm-shmobile-kzm9g-enable-dmaengine-on-fsi.patch
 patches.kzm9g/arm-shmobile-kzm9g-defconfig-enable-inotify_user.patch
 patches.kzm9g/arm-shmobile-sh73a0-fixup-reloc_base-of-intca_irq_pins_desc.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-restarting.patch
+patches.kzm9g/arm-shmobile-sh73a0-enable-pmu-performance-monitoring-unit.patch
+patches.kzm9g/arm-shmobile-kzm9g-bugfix-correct-mmcif-interrupt-settings.patch
+patches.kzm9g/arm-shmobile-add-new-__iomem-annotation-for-new-code.patch
 
 
 #############################################################################
