@@ -600,3 +600,40 @@ patches.at91/0252-net-macb-align-ring-buffer-function-with-mainline.patch
 patches.at91/0253-net-macb-move-to-circ_buf-macros-and-fix-initial-con.patch
 
 
+#############################################################################
+# kzm9g board support
+#
+patches.kzm9g/arm-update-mach-types.patch
+patches.kzm9g/arm-mach-shmobile-add-kzm-a9-gt-board-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-defconfig.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-smsc-9221-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-external-usb-host-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-lcdc-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-st1232-touchscreen-support.patch
+patches.kzm9g/arm-mach-shmobile-pfc-sh73a0-fixup-msel2cr-msel18-for-i2c-3.patch
+patches.kzm9g/arm-mach-shmobile-sh73a0.h-add-gpio_nr.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-correct-screen-direction.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-mmcif-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-sdhi-support.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-add-pcf8757-gpio-key.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-defconfig-update.patch
+patches.kzm9g/arm-mach-shmobile-kzm9g-enable-smp-boot.patch
+patches.kzm9g/arm-mach-shmobile-use-dt_machine-for-kzm9g.patch
+patches.kzm9g/arm-shmobile-fix-smp-build.patch
+patches.kzm9g/arm-mach-shmobile-sh73a0-fixup-pint-irq16-irq31-irq-number-conflict.patch
+patches.kzm9g/arm-shmobile-sh73a0-bugfix-sy-dmac-number.patch
+patches.kzm9g/arm-shmobile-fix-platsmp.c-build-when-arch_sh73a0-n.patch
+patches.kzm9g/arm-mach-shmobile-add-compilation-support-for-dtbs-using-make-dtbs.patch
+patches.kzm9g/arm-shmobile-sh73a0-add-fsi-clock.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-fsi-ak4648.patch
+patches.kzm9g/arm-shmobile-kzm9g-support-real-time-clock.patch
+patches.kzm9g/arm-shmobile-sh73a0-add-usb-clock-support.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-usb-function.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-microsd.patch
+patches.kzm9g/arm-shmobile-sh73a0-add-dmaengine-support-for-mpdmac.patch
+patches.kzm9g/arm-shmobile-use-common-dmaengine-definitions-on-sh73a0.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-dmaengine-on-fsi.patch
+patches.kzm9g/arm-shmobile-kzm9g-defconfig-enable-inotify_user.patch
+patches.kzm9g/arm-shmobile-sh73a0-fixup-reloc_base-of-intca_irq_pins_desc.patch
+
+
