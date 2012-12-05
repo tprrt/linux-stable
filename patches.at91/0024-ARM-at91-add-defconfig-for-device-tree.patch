@@ -1,7 +1,9 @@
-From 73aa3911713fc739b9213475b4ff86d85d80d113 Mon Sep 17 00:00:00 2001
+From 5227ce7aea2f044e2e189626ea6f8d0cb7ac682c Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Sun, 8 Apr 2012 17:40:06 +0200
 Subject: ARM: at91: add defconfig for device tree
+
+commit 39ecc143b4c1f3d42e8300e7f5274681b99f95c2 upstream.
 
 This will enable all current SoC support on DT (9260, 9g20, 9g45 family
 and 9x5 family).

@@ -1,7 +1,9 @@
-From 77a5977e7fdc175bb1963143b80ad2a74cf3d9b8 Mon Sep 17 00:00:00 2001
+From 48fbfca1c5db644eb14c62307d2608def41a78cf Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 1 Mar 2012 14:47:44 +0800
 Subject: ARM: at91/dt: do not specify the board any more
+
+commit 7c8a98c8c0475f0659beb9798f6ddebc2c840079 upstream.
 
 This will allow to add any board to a compiled kernel by just passing the DTB.
 

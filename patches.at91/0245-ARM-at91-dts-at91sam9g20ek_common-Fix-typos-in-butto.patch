@@ -1,7 +1,9 @@
-From b3b0a725ce779a5ff6fa9b05edced0ee2f9dd836 Mon Sep 17 00:00:00 2001
+From 270c2034f23b4fc57136c147f4e98daeaf28cffc Mon Sep 17 00:00:00 2001
 From: Marek Belisko <marek.belisko@open-nandra.com>
 Date: Mon, 1 Oct 2012 22:46:09 +0200
 Subject: ARM: at91/dts: at91sam9g20ek_common: Fix typos in buttons labels.
+
+commit b6edfbeacd5804038ea7ea8821a83ad704c107cc upstream.
 
 Signed-off-by: Marek Belisko <marek.belisko@open-nandra.com>
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>

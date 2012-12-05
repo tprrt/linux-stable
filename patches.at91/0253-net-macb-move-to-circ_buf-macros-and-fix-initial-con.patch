@@ -1,4 +1,4 @@
-From 10c4df2b1b3697e748032c8729d26b262eca651d Mon Sep 17 00:00:00 2001
+From b89a2bd3ff16d088eca080c6ba298e097c786287 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Mon, 19 Nov 2012 16:05:28 +0100
 Subject: net/macb: move to circ_buf macros and fix initial condition

@@ -1,4 +1,4 @@
-From d97e722de56d81f2d86606ff2537c14bd7ec270f Mon Sep 17 00:00:00 2001
+From 09d9306960be4117e00c086bc90bb510e581fdc9 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 19 Oct 2012 15:13:13 +0800
 Subject: arm: at91sam9x5ek: drop temporary pinmux

@@ -1,7 +1,9 @@
-From 2fc9a0d7df19f33a08242efb22d64e8d3d0280de Mon Sep 17 00:00:00 2001
+From a38377b607a1019457b443714b66b7d9cdd47380 Mon Sep 17 00:00:00 2001
 From: Hong Xu <hong.xu@atmel.com>
 Date: Tue, 17 Apr 2012 14:26:29 +0800
 Subject: ARM: at91: Add DT description files for AT91SAM9N12-EK
+
+commit cce783c608fee0716cff65926d1835a5fd097b69 upstream.
 
 Added AT91SAM9N12 SoC DT file, as well as the board definition
 .dts file for AT91SAM9N12-EK.

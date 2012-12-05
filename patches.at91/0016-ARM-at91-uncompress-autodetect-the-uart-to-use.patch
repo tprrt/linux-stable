@@ -1,7 +1,9 @@
-From e740a739f469c0128ad12bf8388cdb69bdccc005 Mon Sep 17 00:00:00 2001
+From b975f66bd77491d4f1b426fb4c02f337f0178f5f Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 15 Feb 2012 18:44:40 +0800
 Subject: ARM: at91: uncompress: autodetect the uart to use
+
+commit 5f29d0a0ee2c3c2ed06384c923db336183ee6708 upstream.
 
 This will now autodetect the first uart enabled by the bootloader
 and will use it for uncompress. This will still assume that the bootloader

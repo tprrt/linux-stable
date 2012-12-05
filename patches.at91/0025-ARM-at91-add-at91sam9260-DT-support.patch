@@ -1,7 +1,9 @@
-From d795dab6d067cd5734cd7af4b67634f3b3961bd7 Mon Sep 17 00:00:00 2001
+From 91c5d96f8c4ace401677cb00a843a1ab9f8646c6 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Mon, 9 Apr 2012 19:26:33 +0800
 Subject: ARM: at91: add at91sam9260 DT support
+
+commit 5b6089cb6f283b29e7b1e181f95afd3dcf2d8948 upstream.
 
 The at91sam9260 and at91sam9g20 share most of the same IP.
 So udpate the node property in the at91sam9g20 only.

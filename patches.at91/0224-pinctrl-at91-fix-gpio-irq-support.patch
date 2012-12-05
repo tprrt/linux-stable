@@ -1,4 +1,4 @@
-From 54090e0c3b619793d8058ceb1d717ea453f65893 Mon Sep 17 00:00:00 2001
+From 84fe665121d2a8f3389d33acfc29257eb8b2d8d1 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 19 Oct 2012 08:45:55 +0800
 Subject: pinctrl: at91: fix gpio irq support

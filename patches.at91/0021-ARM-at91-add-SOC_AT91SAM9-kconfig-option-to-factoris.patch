@@ -1,7 +1,9 @@
-From 54af5dc6fcc90243d7d161c83f2c94cb1ef67697 Mon Sep 17 00:00:00 2001
+From c57f12b42c6bb7481d27ffb9073b32102ab3015c Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 6 Apr 2012 13:04:04 +0800
 Subject: ARM: at91: add SOC_AT91SAM9 kconfig option to factorise select
+
+commit 1441bd325bbbcd38d190b2444481b23cdf70069a upstream.
 
 This will allow to simplify the switch to multi soc in the same kernel.
 

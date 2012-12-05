@@ -1,7 +1,9 @@
-From 01175552b5bdf3438fa9bb6acbbfa5498414d2ab Mon Sep 17 00:00:00 2001
+From 2f0374f8e78dc83a1589f405fac8c86e7fe2f2cd Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 5 Apr 2012 14:14:28 +0800
 Subject: ARM: at91: do not pin mux the UARTs in init_early
+
+commit 71b149b3f740501c2d59c80de5b10f5e45051099 upstream.
 
 There is no need to pinmux the UART so early in the kernel.
 Move it to the board init.

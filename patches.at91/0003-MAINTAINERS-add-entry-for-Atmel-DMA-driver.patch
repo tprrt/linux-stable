@@ -1,7 +1,9 @@
-From 2dd30cf629c3267c2925a9925b31addf1ef168b6 Mon Sep 17 00:00:00 2001
+From aebdb4a2d3da9740c830b56ebdaaf9ade2e52b93 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Mon, 26 Mar 2012 15:50:36 +0200
 Subject: MAINTAINERS: add entry for Atmel DMA driver
+
+commit b414dc16f6ee64a23c525f80b924e44b0f0bee18 upstream.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---

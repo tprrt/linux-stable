@@ -1,8 +1,10 @@
-From 420a99e1110afb0a9a2fd8ac6e1c18ba2136002e Mon Sep 17 00:00:00 2001
+From f9375e3c4c45dafefe52350547b1f927f966ddd3 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 6 Apr 2012 11:51:50 +0800
 Subject: ARN: at91: introduce SOC_AT91xxx define to allow to compile SoC core
  support
+
+commit 1e3ce2b8545390a2aee8dbfcd49ca4161b636000 upstream.
 
 We can now compile all SoC core support together and DT boards.
 We still can not compile together the non DT board.

@@ -1,7 +1,9 @@
-From 37b8c7ad2aa24a15b778cff614913c63b7e5c505 Mon Sep 17 00:00:00 2001
+From db8c0e1e68b38c879f7ff677bdacd20c3ec5b388 Mon Sep 17 00:00:00 2001
 From: Hong Xu <hong.xu@atmel.com>
 Date: Tue, 17 Apr 2012 14:26:31 +0800
 Subject: ARM: at91: Add machine files for AT91SAM9N12 SoC
+
+commit 74db4fb93e4ed4d6241bf0f28e4b5d68a7a05577 upstream.
 
 Signed-off-by: Hong Xu <hong.xu@atmel.com>
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>

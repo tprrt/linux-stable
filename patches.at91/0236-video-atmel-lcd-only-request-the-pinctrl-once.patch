@@ -1,4 +1,4 @@
-From e932c44de6861621566b9a74a1498c72b14dae49 Mon Sep 17 00:00:00 2001
+From ddf17dd12f2a3a717ad9b947682b5d7d3b350245 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 19 Oct 2012 14:11:05 +0800
 Subject: video: atmel lcd only request the pinctrl once

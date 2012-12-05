@@ -1,4 +1,4 @@
-From 9924801dfee9489e8df05d857df0d872a4f02193 Mon Sep 17 00:00:00 2001
+From 13a4a967e2e9ef7f99ea38b2cd6b369d401d6182 Mon Sep 17 00:00:00 2001
 From: Josh Wu <josh.wu@atmel.com>
 Date: Mon, 24 Sep 2012 08:06:30 +0800
 Subject: mtd: atmel_nand: fix the compile error which miss label

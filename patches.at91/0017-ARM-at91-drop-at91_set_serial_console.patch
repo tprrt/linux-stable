@@ -1,7 +1,9 @@
-From 9e4b59887ceab4e5a9a311f91da86196106c75c1 Mon Sep 17 00:00:00 2001
+From bfb9a880b47717d96c83725f5134f1b24fc43550 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 5 Apr 2012 13:43:40 +0800
 Subject: ARM: at91: drop at91_set_serial_console
+
+commit a27fa58117ae1161adefedde449e5a71b3c593a4 upstream.
 
 at91_set_serial_console is used to define the default console of linux.
 This is already manage by the cmdline. And if the boot loader can not be

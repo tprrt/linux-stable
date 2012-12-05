@@ -1,7 +1,9 @@
-From 735aea5075e405af25ecdaea8a00091fa0b45c29 Mon Sep 17 00:00:00 2001
+From e3ade6b868e15d2280fee9d17e5bdd0301411e76 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Mon, 30 Jan 2012 23:45:52 +0800
 Subject: arm: at91: add Calao TNY-A9260 and TNY-A9G20 board support
+
+commit 995376a54460ea2e6279ad96353323048f7db3ab upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

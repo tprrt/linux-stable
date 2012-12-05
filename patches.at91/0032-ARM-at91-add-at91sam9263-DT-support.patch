@@ -1,7 +1,9 @@
-From 6703c4d1f42cf346f9a6f5f174f46c01ece33c90 Mon Sep 17 00:00:00 2001
+From 04f070b90ea4e6121ecf05da4f2d86e28a7e3d72 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Sun, 26 Feb 2012 19:12:43 +0800
 Subject: ARM: at91: add at91sam9263 DT support
+
+commit 4abb367722c2dc06972658c8fad5b4763114477c upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

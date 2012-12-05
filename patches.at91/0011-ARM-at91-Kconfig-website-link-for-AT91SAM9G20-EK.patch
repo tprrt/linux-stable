@@ -1,7 +1,9 @@
-From 761e63c4d6f8cbf48f12bc90aff9083eefb37e2c Mon Sep 17 00:00:00 2001
+From b1331a2b88162177d8a1f011736a51401724c20e Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 13:56:44 +0100
 Subject: ARM: at91/Kconfig: website link for AT91SAM9G20-EK
+
+commit ff65e398f3e3d1ee38a6b23d5a9f8e2fd950be49 upstream.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---

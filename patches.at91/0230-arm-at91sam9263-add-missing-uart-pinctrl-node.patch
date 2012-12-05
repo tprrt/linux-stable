@@ -1,4 +1,4 @@
-From 9f223333d037f72115defc10f27afaf6fc900721 Mon Sep 17 00:00:00 2001
+From 140ae475ee6bbf6287ccdba37173a91de2a41179 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Fri, 19 Oct 2012 05:52:10 +0800
 Subject: arm: at91sam9263: add missing uart pinctrl node

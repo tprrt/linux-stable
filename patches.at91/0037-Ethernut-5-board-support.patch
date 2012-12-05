@@ -1,7 +1,9 @@
-From 6d9ded2c6183d8098f852b2a5dcd18454f9de0e7 Mon Sep 17 00:00:00 2001
+From b05042223346bdeceecd5f4039da27b86010f682 Mon Sep 17 00:00:00 2001
 From: Tim Schendekehl <tim.schendekehl@egnite.de>
 Date: Tue, 24 Apr 2012 18:47:59 +0200
 Subject: Ethernut 5 board support
+
+commit 26690863e2c1fa4fee5f6137b219f4b8a1a02287 upstream.
 
 Add support for the Ethernut 5 open hardware design, based
 on Atmel's AT91SAM9XE512 SoC.

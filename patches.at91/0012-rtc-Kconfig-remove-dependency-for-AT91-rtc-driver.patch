@@ -1,7 +1,9 @@
-From aa2c1a9a69b0a74992d2e4d129f69f58c9b9c433 Mon Sep 17 00:00:00 2001
+From 4af884378298168d5bdd0e8d16a3d0ce86b0925a Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 14:38:09 +0100
 Subject: rtc: Kconfig: remove dependency for AT91 rtc driver
+
+commit 938f970eb23d40dba49d7b14b774ed7ae7ec974a upstream.
 
 This will allow to select this driver for newer SoCs.
 Keep dependency on AT91 because of the use of an header

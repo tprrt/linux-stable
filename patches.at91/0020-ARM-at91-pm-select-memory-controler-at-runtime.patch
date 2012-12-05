@@ -1,7 +1,9 @@
-From e7d4df4ef74b1ed11a0e2037bc5cbe8123cf258d Mon Sep 17 00:00:00 2001
+From ec2eded8dc34a9404174de06999cdeab641651c4 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Mon, 13 Feb 2012 14:58:30 +0800
 Subject: ARM: at91: pm select memory controler at runtime
+
+commit efd09165aa554f84a42565d5ae6a1af58b06a97a upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 [nicolas.ferre@atmel.com: add cpuidle modification]

@@ -1,7 +1,9 @@
-From 6c84b391e098cad2350f661ebffd8b8d4f6b8981 Mon Sep 17 00:00:00 2001
+From ae8f5dd8fc1213e42edc565e31cd14f4aee1ff8d Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 12 Apr 2012 18:01:33 +0800
 Subject: ARM: at91: DT: add Calao USB A9263 board support
+
+commit 1fb4f71977c5ffe5875412949b0b7ab2bed3a283 upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

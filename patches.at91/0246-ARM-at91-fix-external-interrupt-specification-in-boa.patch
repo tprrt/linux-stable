@@ -1,7 +1,9 @@
-From 2bc3ffd68ba8a607974259eac81a93889a576c8d Mon Sep 17 00:00:00 2001
+From abf14fdfedb328e664222c2d7b6951d9d9c69a50 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Wed, 24 Oct 2012 16:19:47 +0200
 Subject: ARM: at91: fix external interrupt specification in board code
+
+commit 69e7ea04c9365626c0963ff09bbaa3a1b49e293a upstream.
 
 Since the switch to sparse irq, we have to add the NR_IRQS_LEGACY
 offset to static irq numbers. It has been forgotten on these

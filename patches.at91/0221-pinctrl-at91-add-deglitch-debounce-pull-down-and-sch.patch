@@ -1,4 +1,4 @@
-From 07549383aa7e1b5c99ca47f9bd75600ba1b159fc Mon Sep 17 00:00:00 2001
+From 8826cf74bca084ee93056cc92da87e655b46a76c Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 26 Sep 2012 14:57:45 +0800
 Subject: pinctrl: at91 add deglitch, debounce, pull down and schmitt trigger

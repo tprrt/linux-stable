@@ -1,7 +1,9 @@
-From f46c2a68a6ad0d570c5c8894d8589cb91f0e2d5f Mon Sep 17 00:00:00 2001
+From 7be4beaa63a35e15e2c80938cc45aee62670cf49 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 13:49:21 +0100
 Subject: ARM: at91/Kconfig: add AT91SAM9x5 family to AT91_EARLY_DBGU0 entry
+
+commit 514982adc7a5439140e09facf492e58fc8a7fcc3 upstream.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---

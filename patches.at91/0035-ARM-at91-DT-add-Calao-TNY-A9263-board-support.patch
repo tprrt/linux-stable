@@ -1,7 +1,9 @@
-From 242797da12e5e34231572f9d5472ab2f80bbc301 Mon Sep 17 00:00:00 2001
+From 7c00f8580d1555427d9619881d0ad59f57665fbc Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 12 Apr 2012 18:47:32 +0800
 Subject: ARM: at91: DT: add Calao TNY A9263 board support
+
+commit 15787753d08107f2066b8ed8c9f8046ef3b766bb upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

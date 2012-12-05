@@ -1,7 +1,9 @@
-From e5e253baa31df4db3db0db218019e425bd4df9cd Mon Sep 17 00:00:00 2001
+From 66147723d43199d5aa36937cfaf5080bba782063 Mon Sep 17 00:00:00 2001
 From: Arnd Bergmann <arnd@arndb.de>
 Date: Fri, 26 Oct 2012 22:49:09 +0200
 Subject: ARM: at91: fix at91x40 build
+
+commit 0654f4ab2baa6100dc6b0b26f4f1fa3f02d10245 upstream.
 
 patch 738a0fd7 "ARM: at91: fix external interrupts in non-DT case"
 fixed a run-time error on some at91 platforms but did not apply

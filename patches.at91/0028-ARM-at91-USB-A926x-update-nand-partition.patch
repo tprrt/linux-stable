@@ -1,7 +1,9 @@
-From b2b5334c32e6c1c8c0333279e4ee9600b3d4d34a Mon Sep 17 00:00:00 2001
+From 820b7c95d6958edce4db6d204c9e3ccb8fb742a5 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 11 Apr 2012 23:40:31 +0800
 Subject: ARM: at91: USB A926x update nand partition
+
+commit d78504774435d5fc961f58a92ba7ec441d8b74c9 upstream.
 
 We now store the dtb in a nand partition.
 

@@ -1,4 +1,4 @@
-From 0179610747d87250bfba95479c9410511c8158de Mon Sep 17 00:00:00 2001
+From 87437fe8c93900352b99d6f883e730e7577f2a22 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Tue, 23 Oct 2012 13:47:30 +0800
 Subject: pinctrl: at19: fix typo on PULL_UP

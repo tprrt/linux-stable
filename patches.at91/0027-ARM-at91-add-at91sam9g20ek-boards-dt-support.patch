@@ -1,7 +1,9 @@
-From a72c0834c3f846f3fe9f2c782c8d6a67df258458 Mon Sep 17 00:00:00 2001
+From 8eb252d75d14c55d013aafe27d6fd74f587d7e53 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Mon, 13 Feb 2012 00:54:47 +0800
 Subject: ARM: at91: add at91sam9g20ek boards dt support
+
+commit 5cb4e73575e3c66b73ccda811b2ba70339703ea5 upstream.
 
 Add both board revision support 1mmc and 2mmc and use a dtsi for common part.
 

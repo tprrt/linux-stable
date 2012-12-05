@@ -1,7 +1,9 @@
-From f7a7be1650e7160181c9ab1c4aeb5dd8b67ac939 Mon Sep 17 00:00:00 2001
+From 27948a35ec0d89d516dad5eca85e2bd27109483e Mon Sep 17 00:00:00 2001
 From: Ludovic Desroches <ludovic.desroches@atmel.com>
 Date: Thu, 31 May 2012 17:26:05 +0200
 Subject: ARM: at91: fix at91_aic_write macro
+
+commit f25b00be60ab3865308a89437af66b277b04f53e upstream.
 
 Fix at91_aic_write macro to avoid potential issues.
 

@@ -1,7 +1,9 @@
-From 3511638f3d8c7369a85592a17b186482c1057b99 Mon Sep 17 00:00:00 2001
+From 2a6149a2914f5495085f2535a26b19a6e74de0bc Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 16:10:59 +0100
 Subject: hwrng: Kconfig: remove dependency for atmel-rng driver
+
+commit 1234f4bada54cfcd4dfeeebccf0295d49174da40 upstream.
 
 This will allow to select this driver for newer SoCs. Make sure to
 keep dependency on HAVE_CLK to avoid breaking other machines.

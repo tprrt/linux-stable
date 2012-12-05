@@ -1,4 +1,4 @@
-From d7ab9be8967e1884bba0228ea65f2893b10b019e Mon Sep 17 00:00:00 2001
+From f89227d6aec0e90ca9b2969e806703e63ca2d324 Mon Sep 17 00:00:00 2001
 From: Ludovic Desroches <ludovic.desroches@atmel.com>
 Date: Tue, 16 Oct 2012 17:07:17 +0200
 Subject: media: atmel_isi: add pinctrl

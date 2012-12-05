@@ -1,4 +1,4 @@
-From e624846db6e105762542cb6c09276609a7932ea3 Mon Sep 17 00:00:00 2001
+From 0ffceb12d5e93ea68125847c9ecc02c45f1d5d31 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 12 Jul 2012 23:36:52 +0800
 Subject: arm: at91: dt: at91sam9 add nand pinctrl support

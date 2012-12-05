@@ -1,7 +1,9 @@
-From 83be7b15e8dea5beb4d3299835b79347c3148fd2 Mon Sep 17 00:00:00 2001
+From 4c5e3f92533de94648bd618ec5825c9952f1ab57 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Mon, 9 Apr 2012 14:43:34 +0800
 Subject: ARM: at91: DT: add Calao USB A9260 DT support
+
+commit 4e114c9576b53461b14ac30f5e6159e73aa6abd3 upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

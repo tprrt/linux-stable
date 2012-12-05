@@ -1,7 +1,9 @@
-From 3f06a6301f2cba15b6e6f60283c5910f6383ed3f Mon Sep 17 00:00:00 2001
+From 491ea72aa5bb04a0ab7078c74e0f8159044ececc Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 16:02:02 +0100
 Subject: Input: Kconfig: remove dependency for atmel_tsadcc driver
+
+commit 1fc4ec3791729db4e2602e9afb1045aef1bc3a58 upstream.
 
 This will allow to select this driver for newer SoCs.
 Keep dependency on AT91 because of the use of an header

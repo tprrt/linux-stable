@@ -1,4 +1,4 @@
-From 15398d1b5861b197b75d85e9cfd4c2560ecc49de Mon Sep 17 00:00:00 2001
+From 79f38b7f00e4a08e1f0066ebfcbf2540a4a8b8cb Mon Sep 17 00:00:00 2001
 From: Ludovic Desroches <ludovic.desroches@atmel.com>
 Date: Tue, 16 Oct 2012 17:06:37 +0200
 Subject: i2c: at91: add pinctrl

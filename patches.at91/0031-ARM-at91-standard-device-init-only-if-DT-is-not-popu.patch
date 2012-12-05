@@ -1,7 +1,9 @@
-From 07e34d884cb904668fe1e413fe10958a65de3c57 Mon Sep 17 00:00:00 2001
+From e693aa3e62f8ab17d523978b44543d489c4525e6 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Tue, 28 Feb 2012 15:23:43 +0800
 Subject: ARM: at91: standard device init only if DT is not populated.
+
+commit 8cf93b9ceaf4534cdeda5727782001f8fecb1688 upstream.
 
 This will avoid the CONFIG_OF on the *_devices.c as this file is deprecated
 for DT support.

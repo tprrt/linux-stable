@@ -1,7 +1,9 @@
-From 6b36e56532a5b9d9f2311165a95f2a0d31c40464 Mon Sep 17 00:00:00 2001
+From b6a6d64d8d141bd4f88453c6586dfe67813db266 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Wed, 9 May 2012 10:49:41 +0200
 Subject: USB: ohci-at91: use resource_size() for memory/io resource length
+
+commit 7a82f612fa3aadb5676184ae202903f5a42e4f4a upstream.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

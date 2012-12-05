@@ -1,7 +1,9 @@
-From d100869e11a7ed455412896d44314a81a386ed42 Mon Sep 17 00:00:00 2001
+From 07c647f806c4b990c3ece3a6389de178d131b0d3 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 15 Feb 2012 18:35:40 +0800
 Subject: ARM: at91: uncompress Store UART address in a variable
+
+commit c40a763be603867c226505dbe0845ea16a4ee538 upstream.
 
 This will allow a future change to auto-detect which UART to use.
 

@@ -1,7 +1,9 @@
-From 2d672820ba5d6f2b3be8f73decfc00d4994af6ba Mon Sep 17 00:00:00 2001
+From cf269a7d1c0c08e2f7d609f026c28e32d41a1b0d Mon Sep 17 00:00:00 2001
 From: Paul Bolle <pebolle@tiscali.nl>
 Date: Thu, 7 Jun 2012 12:18:46 +0200
 Subject: ARM: at91: remove two unused headers
+
+commit 2d1c9ccd68cdee502eb4829dfe1def7debc0298e upstream.
 
 Commit 82c583e3ae31ffa76d1280197274cc1e1cde3179 ("AT91RM9200 hardware
 headers") introduced arch/arm/mach-at91/include/mach/at91_spi.h and

@@ -1,4 +1,4 @@
-From 550797fd7773e9ebe542e55e770381273fe1a2f7 Mon Sep 17 00:00:00 2001
+From 067de7270b3433afc244ba4a607f3491f0d0fc5c Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Fri, 16 Nov 2012 16:47:44 +0100
 Subject: net/macb: align ring buffer function with mainline

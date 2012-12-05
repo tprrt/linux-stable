@@ -1,4 +1,4 @@
-From 5adaa6978db065d84ab39eb02b1035efca7ae7c6 Mon Sep 17 00:00:00 2001
+From f5e557974fc40c9886708fba8a4ff73d88696a73 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Tue, 23 Oct 2012 14:25:36 +0800
 Subject: pinctrl: at91: fix pull down support

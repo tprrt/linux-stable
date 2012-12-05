@@ -1,4 +1,4 @@
-From 5bc80812222fefb18a5ea8b9fcf8bb93eec37942 Mon Sep 17 00:00:00 2001
+From 5c8912c7fe8e2cf9fe8e2ec695810fa72202f354 Mon Sep 17 00:00:00 2001
 From: Ludovic Desroches <ludovic.desroches@atmel.com>
 Date: Tue, 16 Oct 2012 17:08:54 +0200
 Subject: video: atmel_lcdfb: add pinctrl

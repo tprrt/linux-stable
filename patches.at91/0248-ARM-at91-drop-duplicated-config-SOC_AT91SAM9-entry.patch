@@ -1,7 +1,9 @@
-From 075b74ccf13912a227ca33f103e29f3b645fb4da Mon Sep 17 00:00:00 2001
+From 028918cfee7f910c65cf0dc9b126cb391700293b Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 24 Oct 2012 18:31:50 +0200
 Subject: ARM: at91: drop duplicated config SOC_AT91SAM9 entry
+
+commit 08d04a135a1c2e24c4d4bc7bbafee5e0e58f80c6 upstream.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>

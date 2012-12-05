@@ -1,7 +1,9 @@
-From 771d02d8690db4118b239f864edca3d80d1c163f Mon Sep 17 00:00:00 2001
+From 917cda0ea634a3812fbe22a20f634254beafa1a0 Mon Sep 17 00:00:00 2001
 From: Hong Xu <hong.xu@atmel.com>
 Date: Tue, 17 Apr 2012 14:26:30 +0800
 Subject: ARM: at91: Add machine header file for AT91SAM9N12 SoC
+
+commit 02059684271079f96e2a7a4bdc7912f029997866 upstream.
 
 Signed-off-by: Hong Xu <hong.xu@atmel.com>
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>

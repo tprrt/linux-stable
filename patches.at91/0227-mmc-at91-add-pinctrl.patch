@@ -1,4 +1,4 @@
-From 6d2ed0a1963bcf555e5cdc12035ae105a94da9cf Mon Sep 17 00:00:00 2001
+From 06938a0f16eb491a16c123065cd5cda8e4111ba2 Mon Sep 17 00:00:00 2001
 From: Ludovic Desroches <ludovic.desroches@atmel.com>
 Date: Tue, 16 Oct 2012 17:08:12 +0200
 Subject: mmc: at91: add pinctrl

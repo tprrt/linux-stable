@@ -1,4 +1,4 @@
-From 38bb2e5fb1310a6e4f4a6750037dc5a824c3cfdc Mon Sep 17 00:00:00 2001
+From 8bf3e7d44fe43bcb7b5a80dddd3fc59ac748cf0a Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 12 Jul 2012 23:31:39 +0800
 Subject: MTD: atmel_nand: add pinctrl consumer support

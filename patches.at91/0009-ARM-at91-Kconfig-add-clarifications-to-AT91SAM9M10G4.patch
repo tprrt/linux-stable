@@ -1,7 +1,9 @@
-From 2eb2471c5bf340e1057c2e5faba6d8b23f6f23e4 Mon Sep 17 00:00:00 2001
+From 18a3e8c78f1e37ef27874b915a8719589c801557 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Thu, 15 Mar 2012 12:57:03 +0100
 Subject: ARM: at91/Kconfig: add clarifications to AT91SAM9M10G45-EK entry
+
+commit fefbc4075a191e9e8c1064906c400ed19a0bc48a upstream.
 
 Add clarifications about the SoCs that can be found on an AT91SAM9M10G45-EK
 board. Add also the web link to this board on Atmel's website.

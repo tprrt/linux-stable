@@ -1,7 +1,9 @@
-From 0543012c6006a0638654943130daae637f764d5a Mon Sep 17 00:00:00 2001
+From 940c679c9142bff7bc2c16192d6e118b9b07d9a2 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Thu, 5 Apr 2012 14:27:57 +0800
 Subject: ARM: at91: move at91_init_leds to board init
+
+commit 7eb1dbb3beb982a7d72514abff96ebc08a22e5cd upstream.
 
 This will also allow to finally move the gpio driver to platform device/driver.
 

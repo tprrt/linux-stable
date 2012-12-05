@@ -1,4 +1,4 @@
-From b325d161ba97b1a84b3dc3fc2edcb60cd4254902 Mon Sep 17 00:00:00 2001
+From 7bc6b19e0e851436b17dd40d9ec55566c19d4ceb Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 24 Oct 2012 01:15:51 +0800
 Subject: pinctrl: at91: fix debounce support

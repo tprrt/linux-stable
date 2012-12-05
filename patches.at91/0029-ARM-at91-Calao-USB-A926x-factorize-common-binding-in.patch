@@ -1,8 +1,10 @@
-From 23f3c5a2f5746c2e1eca2364ea6fb3d3e4515cf3 Mon Sep 17 00:00:00 2001
+From 7c87b9d5d1ab4d9487de665e92ab94de3bdf050f Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 11 Apr 2012 23:42:44 +0800
 Subject: ARM: at91: Calao USB A926x factorize common binding in
  usb_a9260_common
+
+commit cff4175ecdc2447847526b6352ca6f7d1139d5b5 upstream.
 
 This will simplify the adding of the A9260.
 

@@ -1,7 +1,9 @@
-From a2dcc54f95495c63504c6ee51ff1082343e5f4be Mon Sep 17 00:00:00 2001
+From 998f85c1d457709bf7decfd45760879aa8e182df Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Wed, 24 Oct 2012 16:09:57 +0200
 Subject: ARM: at91: fix external interrupts in non-DT case
+
+commit 738a0fd752dc60e20beeda6f2f0f62e58dc0e344 upstream.
 
 Management of external interrupts has changed but the
 non-DT code has not integrated these changes.

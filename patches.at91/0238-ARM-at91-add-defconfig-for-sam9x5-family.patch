@@ -1,4 +1,4 @@
-From 82c87f0c1d7b1077da380336e59180e3ed4c9407 Mon Sep 17 00:00:00 2001
+From b5aefffc52ac50286873f9f5952f6bb428f822c7 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Wed, 17 Oct 2012 11:37:49 +0200
 Subject: ARM: at91: add defconfig for sam9x5 family

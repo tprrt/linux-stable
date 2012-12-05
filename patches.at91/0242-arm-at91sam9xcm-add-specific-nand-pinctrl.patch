@@ -1,4 +1,4 @@
-From 4d69b49852403ccd7ac2103908b455a65138aa95 Mon Sep 17 00:00:00 2001
+From c5e8d355aa1cc2b2fe24f55777cbc08454af9d24 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Tue, 23 Oct 2012 15:06:54 +0800
 Subject: arm: at91sam9xcm: add specific nand pinctrl
