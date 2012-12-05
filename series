@@ -637,3 +637,30 @@ patches.kzm9g/arm-shmobile-kzm9g-defconfig-enable-inotify_user.patch
 patches.kzm9g/arm-shmobile-sh73a0-fixup-reloc_base-of-intca_irq_pins_desc.patch
 
 
+#############################################################################
+# kzm9d board support
+#
+patches.kzm9d/tegra-serial8250-add-handle_break-uart_port-op.patch
+patches.kzm9d/serial-8250_pci-clear-fifos-for-intel-me-serial-over-lan-device-on-bi.patch
+patches.kzm9d/serial-8250_pci-fix-suspend-resume-vs-init-exit-quirks.patch
+patches.kzm9d/serial8250-add-dl_read-dl_write-callbacks.patch
+patches.kzm9d/serial8250-use-dl_read-dl_write-on-alchemy.patch
+patches.kzm9d/serial8250-use-dl_read-dl_write-on-rm9k.patch
+patches.kzm9d/serial8250-clean-up-default-map-and-dl-code.patch
+patches.kzm9d/serial8250-introduce-serial8250_register_8250_port.patch
+patches.kzm9d/serial8250-em-emma-mobile-uart-driver-v2.patch
+patches.kzm9d/serial8250-em-clk_get-is_err-error-handling-fix.patch
+patches.kzm9d/serial8250-em-add-dt-support.patch
+patches.kzm9d/clockevents-make-clockevents_config-a-global-symbol.patch
+patches.kzm9d/clocksource-em_sti-emma-mobile-sti-driver.patch
+patches.kzm9d/clocksource-em_sti-add-dt-support.patch
+patches.kzm9d/gpio-emma-mobile-gpio-driver-v2.patch
+patches.kzm9d/mach-shmobile-emma-mobile-ev2-soc-base-support-v3.patch
+patches.kzm9d/mach-shmobile-kzm9d-board-support-v3.patch
+patches.kzm9d/mach-shmobile-emma-mobile-ev2-smp-support-v3.patch
+patches.kzm9d/mach-shmobile-emma-mobile-ev2-gpio-support-v3.patch
+patches.kzm9d/mach-shmobile-kzm9d-board-ethernet-support-v3.patch
+patches.kzm9d/arm-mach-shmobile-kzm9d-add-defconfig.patch
+patches.kzm9d/mach-shmobile-emma-mobile-ev2-dt-support-v3.patch
+patches.kzm9d/mach-shmobile-use-dt_machine-for-kzm9d-v3.patch
+patches.kzm9d/arm-mach-shmobile-fix-build-when-smp-is-enabled-and-emev2-is-not-enabled.patch
