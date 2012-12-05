@@ -733,3 +733,13 @@ patches.kzm9d/mach-shmobile-use-dt_machine-for-kzm9d-v3.patch
 patches.kzm9d/arm-mach-shmobile-fix-build-when-smp-is-enabled-and-emev2-is-not-enabled.patch
 
 
+#############################################################################
+# UIO driver patches
+#
+patches.uio/drivers-uio-add-new-uio-device-for-dynamic-memory-allocation.patch
+patches.uio/drivers-uio-add-uio_dmem_genirq-description-to-uio-documentation.patch
+patches.uio/drivers-uio_dmem_genirq-don-t-mix-address-spaces-for-dynamic-region-vaddr.patch
+patches.uio/drivers-uio_dmem_genirq-don-t-use-dma_error_code-to-indicate-unmapped-regions.patch
+patches.uio/drivers-uio_dmem_genirq-allow-partial-success-when-opening-device.patch
+patches.uio/drivers-uio-only-allocate-new-private-data-when-probing-device-tree-node.patch
+
