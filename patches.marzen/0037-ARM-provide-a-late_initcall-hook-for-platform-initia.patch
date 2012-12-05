@@ -15,12 +15,10 @@ Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/include/asm/mach/arch.h | 1 +
- arch/arm/kernel/setup.c          | 8 ++++++++
+ arch/arm/include/asm/mach/arch.h |    1 +
+ arch/arm/kernel/setup.c          |    8 ++++++++
  2 files changed, 9 insertions(+)
 
-diff --git a/arch/arm/include/asm/mach/arch.h b/arch/arm/include/asm/mach/arch.h
-index d7692ca..0b1c94b 100644
 --- a/arch/arm/include/asm/mach/arch.h
 +++ b/arch/arm/include/asm/mach/arch.h
 @@ -43,6 +43,7 @@ struct machine_desc {
@@ -31,11 +29,9 @@ index d7692ca..0b1c94b 100644
  #ifdef CONFIG_MULTI_IRQ_HANDLER
  	void			(*handle_irq)(struct pt_regs *);
  #endif
-diff --git a/arch/arm/kernel/setup.c b/arch/arm/kernel/setup.c
-index ebfac78..549f036 100644
 --- a/arch/arm/kernel/setup.c
 +++ b/arch/arm/kernel/setup.c
-@@ -800,6 +800,14 @@ static int __init customize_machine(void)
+@@ -801,6 +801,14 @@ static int __init customize_machine(void
  }
  arch_initcall(customize_machine);
  
@@ -50,6 +46,3 @@ index ebfac78..549f036 100644
  #ifdef CONFIG_KEXEC
  static inline unsigned long long get_total_mem(void)
  {
--- 
-1.8.0.197.g5a90748
-

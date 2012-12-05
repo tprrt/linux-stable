@@ -7,14 +7,12 @@ commit 929e994f7e249a58f50ccdd066da9899a6e39c7a upstream.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---
- arch/arm/Kconfig | 4 ++--
+ arch/arm/Kconfig |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7a8660a..ddef021 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -340,8 +340,8 @@ config ARCH_AT91
+@@ -350,8 +350,8 @@ config ARCH_AT91
  	select IRQ_DOMAIN
  	select NEED_MACH_IO_H if PCCARD
  	help
@@ -25,6 +23,3 @@ index 7a8660a..ddef021 100644
  
  config ARCH_BCMRING
  	bool "Broadcom BCMRING"
--- 
-1.8.0.197.g5a90748
-

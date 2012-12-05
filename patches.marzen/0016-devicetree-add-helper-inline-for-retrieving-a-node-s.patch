@@ -17,23 +17,21 @@ Signed-off-by: Rob Herring <rob.herring@calxeda.com>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/microblaze/pci/pci-common.c       |  6 ++----
- arch/powerpc/kernel/pci-common.c       |  6 ++----
- arch/powerpc/kernel/vio.c              |  5 ++---
- arch/powerpc/platforms/cell/iommu.c    |  3 +--
- arch/powerpc/platforms/pseries/iommu.c |  2 +-
- arch/sparc/kernel/of_device_64.c       |  2 +-
- drivers/of/base.c                      |  2 +-
- drivers/of/irq.c                       |  2 +-
- include/linux/of.h                     | 10 ++++++++++
- kernel/irq/irqdomain.c                 |  8 ++++----
+ arch/microblaze/pci/pci-common.c       |    6 ++----
+ arch/powerpc/kernel/pci-common.c       |    6 ++----
+ arch/powerpc/kernel/vio.c              |    5 ++---
+ arch/powerpc/platforms/cell/iommu.c    |    3 +--
+ arch/powerpc/platforms/pseries/iommu.c |    2 +-
+ arch/sparc/kernel/of_device_64.c       |    2 +-
+ drivers/of/base.c                      |    2 +-
+ drivers/of/irq.c                       |    2 +-
+ include/linux/of.h                     |   10 ++++++++++
+ kernel/irq/irqdomain.c                 |    8 ++++----
  10 files changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/arch/microblaze/pci/pci-common.c b/arch/microblaze/pci/pci-common.c
-index d10403d..162b4e5 100644
 --- a/arch/microblaze/pci/pci-common.c
 +++ b/arch/microblaze/pci/pci-common.c
-@@ -249,8 +249,7 @@ int pci_read_irq_line(struct pci_dev *pci_dev)
+@@ -249,8 +249,7 @@ int pci_read_irq_line(struct pci_dev *pc
  	} else {
  		pr_debug(" Got one, spec %d cells (0x%08x 0x%08x...) on %s\n",
  			 oirq.size, oirq.specifier[0], oirq.specifier[1],
@@ -43,7 +41,7 @@ index d10403d..162b4e5 100644
  
  		virq = irq_create_of_mapping(oirq.controller, oirq.specifier,
  					     oirq.size);
-@@ -1492,8 +1491,7 @@ static void __devinit pcibios_scan_phb(struct pci_controller *hose)
+@@ -1492,8 +1491,7 @@ static void __devinit pcibios_scan_phb(s
  	struct pci_bus *bus;
  	struct device_node *node = hose->dn;
  
@@ -53,11 +51,9 @@ index d10403d..162b4e5 100644
  
  	pcibios_setup_phb_resources(hose, &resources);
  
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 8e78e93..886c254 100644
 --- a/arch/powerpc/kernel/pci-common.c
 +++ b/arch/powerpc/kernel/pci-common.c
-@@ -248,8 +248,7 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+@@ -248,8 +248,7 @@ static int pci_read_irq_line(struct pci_
  	} else {
  		pr_debug(" Got one, spec %d cells (0x%08x 0x%08x...) on %s\n",
  			 oirq.size, oirq.specifier[0], oirq.specifier[1],
@@ -67,7 +63,7 @@ index 8e78e93..886c254 100644
  
  		virq = irq_create_of_mapping(oirq.controller, oirq.specifier,
  					     oirq.size);
-@@ -1628,8 +1627,7 @@ void __devinit pcibios_scan_phb(struct pci_controller *hose)
+@@ -1628,8 +1627,7 @@ void __devinit pcibios_scan_phb(struct p
  	struct device_node *node = hose->dn;
  	int mode;
  
@@ -77,11 +73,9 @@ index 8e78e93..886c254 100644
  
  	/* Get some IO space for the new PHB */
  	pcibios_setup_phb_io_space(hose);
-diff --git a/arch/powerpc/kernel/vio.c b/arch/powerpc/kernel/vio.c
-index a3a9990..ea6081a 100644
 --- a/arch/powerpc/kernel/vio.c
 +++ b/arch/powerpc/kernel/vio.c
-@@ -1193,8 +1193,7 @@ static void __devinit vio_dev_release(struct device *dev)
+@@ -1194,8 +1194,7 @@ static void __devinit vio_dev_release(st
  	struct iommu_table *tbl = get_iommu_table_base(dev);
  
  	if (tbl)
@@ -91,7 +85,7 @@ index a3a9990..ea6081a 100644
  	of_node_put(dev->of_node);
  	kfree(to_vio_dev(dev));
  }
-@@ -1330,7 +1329,7 @@ static ssize_t devspec_show(struct device *dev,
+@@ -1331,7 +1330,7 @@ static ssize_t devspec_show(struct devic
  {
  	struct device_node *of_node = dev->of_node;
  
@@ -100,11 +94,9 @@ index a3a9990..ea6081a 100644
  }
  
  static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
-diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
-index b9f509a..b673200 100644
 --- a/arch/powerpc/platforms/cell/iommu.c
 +++ b/arch/powerpc/platforms/cell/iommu.c
-@@ -552,8 +552,7 @@ static struct iommu_table *cell_get_iommu_table(struct device *dev)
+@@ -552,8 +552,7 @@ static struct iommu_table *cell_get_iomm
  	iommu = cell_iommu_for_node(dev_to_node(dev));
  	if (iommu == NULL || list_empty(&iommu->windows)) {
  		printk(KERN_ERR "iommu: missing iommu for %s (node %d)\n",
@@ -114,11 +106,9 @@ index b9f509a..b673200 100644
  		return NULL;
  	}
  	window = list_entry(iommu->windows.next, struct iommu_window, list);
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 2d311c0..6b58a39 100644
 --- a/arch/powerpc/platforms/pseries/iommu.c
 +++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1051,7 +1051,7 @@ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+@@ -1051,7 +1051,7 @@ static void pci_dma_dev_setup_pSeriesLP(
  	if (!pdn || !PCI_DN(pdn)) {
  		printk(KERN_WARNING "pci_dma_dev_setup_pSeriesLP: "
  		       "no DMA window found for pci dev=%s dn=%s\n",
@@ -127,11 +117,9 @@ index 2d311c0..6b58a39 100644
  		return;
  	}
  	pr_debug("  parent is %s\n", pdn->full_name);
-diff --git a/arch/sparc/kernel/of_device_64.c b/arch/sparc/kernel/of_device_64.c
-index 7a3be6f..7bbdc26 100644
 --- a/arch/sparc/kernel/of_device_64.c
 +++ b/arch/sparc/kernel/of_device_64.c
-@@ -580,7 +580,7 @@ static unsigned int __init build_one_device_irq(struct platform_device *op,
+@@ -580,7 +580,7 @@ static unsigned int __init build_one_dev
  				printk("%s: Apply [%s:%x] imap --> [%s:%x]\n",
  				       op->dev.of_node->full_name,
  				       pp->full_name, this_orig_irq,
@@ -140,11 +128,9 @@ index 7a3be6f..7bbdc26 100644
  
  			if (!iret)
  				break;
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 5806449..6271c2e 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -1173,7 +1173,7 @@ static void of_alias_add(struct alias_prop *ap, struct device_node *np,
+@@ -1173,7 +1173,7 @@ static void of_alias_add(struct alias_pr
  	ap->stem[stem_len] = 0;
  	list_add_tail(&ap->link, &aliases_lookup);
  	pr_debug("adding DT alias:%s: stem=%s id=%i node=%s\n",
@@ -153,11 +139,9 @@ index 5806449..6271c2e 100644
  }
  
  /**
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 9cf0060..ff8ab7b 100644
 --- a/drivers/of/irq.c
 +++ b/drivers/of/irq.c
-@@ -255,7 +255,7 @@ int of_irq_map_raw(struct device_node *parent, const __be32 *intspec,
+@@ -255,7 +255,7 @@ int of_irq_map_raw(struct device_node *p
  
  	skiplevel:
  		/* Iterate again with new parent */
@@ -166,11 +150,9 @@ index 9cf0060..ff8ab7b 100644
  		of_node_put(ipar);
  		ipar = newpar;
  		newpar = NULL;
-diff --git a/include/linux/of.h b/include/linux/of.h
-index fa7fb1d..284d117 100644
 --- a/include/linux/of.h
 +++ b/include/linux/of.h
-@@ -163,6 +163,11 @@ static inline int of_node_to_nid(struct device_node *np) { return -1; }
+@@ -163,6 +163,11 @@ static inline int of_node_to_nid(struct
  #define of_node_to_nid of_node_to_nid
  #endif
  
@@ -182,7 +164,7 @@ index fa7fb1d..284d117 100644
  extern struct device_node *of_find_node_by_name(struct device_node *from,
  	const char *name);
  #define for_each_node_by_name(dn, name) \
-@@ -261,6 +266,11 @@ extern void of_detach_node(struct device_node *);
+@@ -261,6 +266,11 @@ extern void of_detach_node(struct device
  #define of_match_ptr(_ptr)	(_ptr)
  #else /* CONFIG_OF */
  
@@ -194,11 +176,9 @@ index fa7fb1d..284d117 100644
  static inline bool of_have_populated_dt(void)
  {
  	return false;
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 41c1564..38c5eb8 100644
 --- a/kernel/irq/irqdomain.c
 +++ b/kernel/irq/irqdomain.c
-@@ -448,7 +448,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
+@@ -448,7 +448,7 @@ unsigned int irq_create_mapping(struct i
  	}
  
  	pr_debug("irq %lu on domain %s mapped to virtual irq %u\n",
@@ -207,7 +187,7 @@ index 41c1564..38c5eb8 100644
  
  	return virq;
  }
-@@ -477,7 +477,7 @@ unsigned int irq_create_of_mapping(struct device_node *controller,
+@@ -477,7 +477,7 @@ unsigned int irq_create_of_mapping(struc
  			return intspec[0];
  #endif
  		pr_warning("no irq domain found for %s !\n",
@@ -216,7 +196,7 @@ index 41c1564..38c5eb8 100644
  		return 0;
  	}
  
-@@ -725,8 +725,8 @@ static int virq_debug_show(struct seq_file *m, void *private)
+@@ -725,8 +725,8 @@ static int virq_debug_show(struct seq_fi
  			data = irq_desc_get_chip_data(desc);
  			seq_printf(m, data ? "0x%p  " : "  %p  ", data);
  
@@ -227,6 +207,3 @@ index 41c1564..38c5eb8 100644
  			else
  				p = none;
  			seq_printf(m, "%s\n", p);
--- 
-1.8.0.197.g5a90748
-

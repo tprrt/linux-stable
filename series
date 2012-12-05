@@ -112,7 +112,7 @@ patches.pramfs/17-pramfs-makefile-and-kconfig.patch
 
 
 #############################################################################
-# pramfs
+# axfs
 #
 # Currently broken, so don't enable, but leave here for the placeholder.
 #
@@ -131,6 +131,69 @@ patches.axfs/axfs-axfs_bdev.c.patch
 patches.axfs/axfs-xip-debugging-support.patch
 patches.axfs/axfs-add-documentation.patch
 patches.axfs/axfs-mount-as-rootfs.patch
+
+
+#############################################################################
+# dma-mapping and CMA and IOMMU memory allocation feature
+#
+patches.dma-mapping/mm-page_alloc-remove-trailing-whitespace.patch
+patches.dma-mapping/mm-compaction-introduce-isolate_migratepages_range.patch
+patches.dma-mapping/mm-compaction-introduce-map_pages.patch
+patches.dma-mapping/mm-compaction-introduce-isolate_freepages_range.patch
+patches.dma-mapping/mm-compaction-export-some-of-the-functions.patch
+patches.dma-mapping/mm-page_alloc-introduce-alloc_contig_range.patch
+patches.dma-mapping/mm-page_alloc-change-fallbacks-array-handling.patch
+patches.dma-mapping/mm-mmzone-migrate_cma-migration-type-added.patch
+patches.dma-mapping/mm-page_isolation-migrate_cma-isolation-functions-added.patch
+patches.dma-mapping/mm-serialize-access-to-min_free_kbytes.patch
+patches.dma-mapping/mm-extract-reclaim-code-from-__alloc_pages_direct_reclaim.patch
+patches.dma-mapping/mm-trigger-page-reclaim-in-alloc_contig_range-to-stabilise-watermarks.patch
+patches.dma-mapping/drivers-add-contiguous-memory-allocator.patch
+patches.dma-mapping/x86-integrate-cma-with-dma-mapping-subsystem.patch
+patches.dma-mapping/arm-integrate-cma-with-dma-mapping-subsystem.patch
+patches.dma-mapping/cma-fix-migration-mode.patch
+patches.dma-mapping/arm-dma-mapping-use-pmd-size-for-section-unmap.patch
+patches.dma-mapping/common-add-dma_mmap_from_coherent-function.patch
+patches.dma-mapping/arm-dma-mapping-use-dma_mmap_from_coherent.patch
+patches.dma-mapping/arm-dma-mapping-use-pr_-instread-of-printk.patch
+patches.dma-mapping/arm-dma-mapping-introduce-dma_error_code-constant.patch
+patches.dma-mapping/arm-dma-mapping-remove-offset-parameter-to-prepare-for-generic-dma_ops.patch
+patches.dma-mapping/arm-dma-mapping-use-asm-generic-dma-mapping-common.h.patch
+patches.dma-mapping/arm-dma-mapping-implement-dma-sg-methods-on-top-of-any-generic-dma-ops.patch
+patches.dma-mapping/arm-dma-mapping-move-all-dma-bounce-code-to-separate-dma-ops-structure.patch
+patches.dma-mapping/arm-dma-mapping-remove-redundant-code-and-do-the-cleanup.patch
+patches.dma-mapping/arm-dma-mapping-use-alloc-mmap-free-from-dma_ops.patch
+patches.dma-mapping/arm-dma-mapping-add-support-for-iommu-mapper.patch
+patches.dma-mapping/arm-dma-mapping-remove-unconditional-dependency-on-cma.patch
+patches.dma-mapping/iommu-core-pass-a-user-provided-token-to-fault-handlers.patch
+patches.dma-mapping/arm-dma-mapping-add-missing-static-storage-class-specifier.patch
+patches.dma-mapping/arm-mm-fix-type-of-the-arm_dma_limit-global-variable.patch
+patches.dma-mapping/arm-dma-mapping-fix-debug-messages-in-dmabounce-code.patch
+patches.dma-mapping/x86-dma-mapping-fix-broken-allocation-when-dma_mask-has-been-provided.patch
+patches.dma-mapping/mm-cma-don-t-replace-lowmem-pages-with-highmem.patch
+patches.dma-mapping/mm-cma-fix-condition-check-when-setting-global-cma-area.patch
+patches.dma-mapping/arm-dma-mapping-modify-condition-check-while-freeing-pages.patch
+patches.dma-mapping/arm-mm-fix-mmu-mapping-of-cma-regions.patch
+patches.dma-mapping/arm-relax-conditions-required-for-enabling-contiguous-memory-allocator.patch
+patches.dma-mapping/mm-vmalloc-use-const-void-for-caller-argument.patch
+patches.dma-mapping/arm-dma-mapping-remove-custom-consistent-dma-region.patch
+patches.dma-mapping/arm-dma-mapping-add-more-sanity-checks-in-arm_dma_mmap.patch
+patches.dma-mapping/arm-dma-mapping-fix-error-path-for-memory-allocation-failure.patch
+patches.dma-mapping/common-dma-mapping-add-support-for-generic-dma_mmap_-calls.patch
+patches.dma-mapping/mm-clean-up-__count_immobile_pages.patch
+patches.dma-mapping/mm-factor-out-memory-isolate-functions.patch
+patches.dma-mapping/driver-core-fix-some-kernel-doc-warnings-in-dma-.c.patch
+patches.dma-mapping/arm-dma-mapping-fix-buffer-chunk-allocation-order.patch
+patches.dma-mapping/arm-fix-warning-caused-by-wrongly-typed-arm_dma_limit.patch
+patches.dma-mapping/arm-dma-mapping-fix-atomic-allocation-alignment.patch
+patches.dma-mapping/arm-dma-mapping-fix-incorrect-freeing-of-atomic-allocations.patch
+patches.dma-mapping/mm-cma-fix-alignment-requirements-for-contiguous-regions.patch
+patches.dma-mapping/arm-dma-mapping-add-function-for-setting-coherent-pool-size-from-platform-code.patch
+patches.dma-mapping/arm-dma-mapping-print-warning-when-atomic-coherent-allocation-fails.patch
+patches.dma-mapping/arm-dma-mapping-refactor-out-to-introduce-__in_atomic_pool.patch
+patches.dma-mapping/arm-mm-fix-dma-pool-affiliation-check.patch
+patches.dma-mapping/arm-dma-mapping-atomic_pool-with-struct-page-pages.patch
+patches.dma-mapping/arm-dma-mapping-fix-potential-memory-leak-in-atomic_pool_init.patch
 
 
 #############################################################################
@@ -668,3 +731,5 @@ patches.kzm9d/arm-mach-shmobile-kzm9d-add-defconfig.patch
 patches.kzm9d/mach-shmobile-emma-mobile-ev2-dt-support-v3.patch
 patches.kzm9d/mach-shmobile-use-dt_machine-for-kzm9d-v3.patch
 patches.kzm9d/arm-mach-shmobile-fix-build-when-smp-is-enabled-and-emev2-is-not-enabled.patch
+
+
