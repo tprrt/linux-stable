@@ -213,7 +213,7 @@ patches.marzen/0096-mmc-sh_mmcif-remove-redundant-.down_pwr-callback.patch
 patches.marzen/0097-mmc-sh_mmcif-add-regulator-support.patch
 patches.marzen/0098-mmc-sh-mmcif-add-OF-support-make-platform-data-optio.patch
 patches.marzen/0099-mmc-sh_mmcif-support-generic-card-detection.patch
-
+patches.marzen/arm-mach-shmobile-marzen-defconfig-update.patch
 
 #############################################################################
 # Armadillo 800 board support
@@ -325,7 +325,7 @@ patches.armadillo800/0104-ARM-mach-shmobile-armadillo800eva-Fix-GPIO-buttons-d.p
 patches.armadillo800/0105-ARM-mach-shmobile-armadillo800eva-Enable-power-butto.patch
 patches.armadillo800/0106-ARM-shmobile-armadillo800eva-fixup-sound-card-detect.patch
 patches.armadillo800/0107-ARM-shmobile-armadillo800eva-enable-rw-rootfs-mount.patch
-
+patches.armadillo800/asoc-sh-fsi-select-simple-card-on-kconfig.patch
 
 #############################################################################
 # AT91 board support
