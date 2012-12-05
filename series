@@ -112,6 +112,28 @@ patches.pramfs/17-pramfs-makefile-and-kconfig.patch
 
 
 #############################################################################
+# pramfs
+#
+# Currently broken, so don't enable, but leave here for the placeholder.
+#
+patches.axfs/axfs-kconfigs-and-makefiles.patch
+patches.axfs/axfs-axfs.h.patch
+patches.axfs/axfs-axfs_fs.h.patch
+patches.axfs/axfs-axfs_fs_sb.h.patch
+patches.axfs/axfs-axfs_inode.c.patch
+patches.axfs/axfs-axfs_mtd.c.patch
+patches.axfs/axfs-axfs_physmem.c.patch
+patches.axfs/axfs-axfs_profiling.c.patch
+patches.axfs/axfs-axfs_super.c.patch
+patches.axfs/axfs-axfs_uml.c.patch
+patches.axfs/axfs-axfs_uncompress.c.patch
+patches.axfs/axfs-axfs_bdev.c.patch
+patches.axfs/axfs-xip-debugging-support.patch
+patches.axfs/axfs-add-documentation.patch
+patches.axfs/axfs-mount-as-rootfs.patch
+
+
+#############################################################################
 # Marzen board support
 #
 patches.marzen/0001-sh-clkfwk-Support-variable-size-accesses-for-MSTP-cl.patch
@@ -576,4 +598,5 @@ patches.at91/0250-ARM-at91-fix-external-interrupts-in-non-DT-case.patch
 patches.at91/0251-ARM-at91-i2c-change-id-to-let-i2c-at91-work.patch
 patches.at91/0252-net-macb-align-ring-buffer-function-with-mainline.patch
 patches.at91/0253-net-macb-move-to-circ_buf-macros-and-fix-initial-con.patch
+
 
