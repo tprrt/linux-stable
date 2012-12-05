@@ -877,6 +877,10 @@ patches.kzm9g/004-ltsi-arm-mach_shmobile-kzm9g-update-defconfig.patch
 patches.kzm9g/arm-mach-shmobile-kzm9d-add-defconfig.patch
 patches.kzm9g/arm-mach-shmobile-kzm9d-defconfig-enable-net_ethernet.patch
 
+patches.kzm9g/arm-shmobile-sh73a0-add-usb-clock-support.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-usb-function.patch
+patches.kzm9g/mmc-tmio-don-t-access-hardware-registers-after-stopping-clocks.patch
+patches.kzm9g/arm-shmobile-kzm9g-enable-microsd.patch
 
 patches.sh7757lcr/001-spi-add-support-for-renesas-rspi.patch
 patches.sh7757lcr/002-spi-irq-remove-irqf_disabled.patch
