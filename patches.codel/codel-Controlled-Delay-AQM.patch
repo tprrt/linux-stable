@@ -71,11 +71,17 @@ Cc: Stephen Hemminger <shemminger@vyatta.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/linux/pkt_sched.h b/include/linux/pkt_sched.h
-index 410b33d..382e695 100644
+---
+ include/linux/pkt_sched.h |   26 +++
+ include/net/codel.h       |  332 ++++++++++++++++++++++++++++++++++++++++++++++
+ net/sched/Kconfig         |   11 +
+ net/sched/Makefile        |    1 
+ net/sched/sch_codel.c     |  275 ++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 645 insertions(+)
+
 --- a/include/linux/pkt_sched.h
 +++ b/include/linux/pkt_sched.h
-@@ -654,4 +654,30 @@ struct tc_qfq_stats {
+@@ -655,4 +655,30 @@ struct tc_qfq_stats {
  	__u32 lmax;
  };
  
@@ -106,9 +112,6 @@ index 410b33d..382e695 100644
 +};
 +
  #endif
-diff --git a/include/net/codel.h b/include/net/codel.h
-new file mode 100644
-index 0000000..bce2cef
 --- /dev/null
 +++ b/include/net/codel.h
 @@ -0,0 +1,332 @@
@@ -444,8 +447,6 @@ index 0000000..bce2cef
 +	return skb;
 +}
 +#endif
-diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index 75b58f8..fadd252 100644
 --- a/net/sched/Kconfig
 +++ b/net/sched/Kconfig
 @@ -250,6 +250,17 @@ config NET_SCH_QFQ
@@ -466,8 +467,6 @@ index 75b58f8..fadd252 100644
  config NET_SCH_INGRESS
  	tristate "Ingress Qdisc"
  	depends on NET_CLS_ACT
-diff --git a/net/sched/Makefile b/net/sched/Makefile
-index 8cdf4e2..30fab03 100644
 --- a/net/sched/Makefile
 +++ b/net/sched/Makefile
 @@ -37,6 +37,7 @@ obj-$(CONFIG_NET_SCH_PLUG)	+= sch_plug.o
@@ -478,9 +477,6 @@ index 8cdf4e2..30fab03 100644
  
  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-new file mode 100644
-index 0000000..b4a1a81
 --- /dev/null
 +++ b/net/sched/sch_codel.c
 @@ -0,0 +1,275 @@
@@ -759,6 +755,3 @@ index 0000000..b4a1a81
 +MODULE_AUTHOR("Dave Taht");
 +MODULE_AUTHOR("Eric Dumazet");
 +MODULE_LICENSE("Dual BSD/GPL");
--- 
-1.7.9.1
-
