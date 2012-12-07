@@ -60,7 +60,7 @@ if [ -n "$AUTORESUME" ]; then
 		DS1=`mktemp`
 		DS2=`mktemp`
 		git show | diffstat -p0 > $DS1
-		for i in $DIR/*\.patch ; do
+		for i in $DIR/patches\.*/*\.patch ; do
 			cat $i | diffstat -p0 > $DS2
 			cmp -s $DS1 $DS2
 			if [ $? = 0 ]; then
@@ -85,7 +85,7 @@ if [ -n "$AUTORESUME" ]; then
 		exit 1
 	fi
 
-	START=`basename $START`
+	START=`echo $START|sed 's/^.*patches\./patches./'`
 	echo resuming from current \"$START\"
 fi
 
