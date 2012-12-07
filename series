@@ -755,4 +755,16 @@ patches.uio/drivers-uio_dmem_genirq-allow-partial-success-when-opening-device.pa
 patches.uio/drivers-uio-only-allocate-new-private-data-when-probing-device-tree-node.patch
 
 
-
+#############################################################################
+# CoDEL
+# Controlled Delay active queue management
+#
+patches.codel/netem-add-ECN-capability.patch
+patches.codel/codel-Controlled-Delay-AQM.patch
+patches.codel/fq_codel-Fair-Queue-Codel-AQM.patch
+patches.codel/codel-use-Newton-method-instead-of-sqrt-and-divides.patch
+patches.codel/codel-use-u16-field-instead-of-31bits-for-rec_inv_sq.patch
+patches.codel/net-codel-Add-missing-include-linux-prefetch.h.patch
+patches.codel/net-codel-fix-build-errors.patch
+patches.codel/fq_codel-should-use-qdisc-backlog-as-threshold.patch
+patches.codel/codel-refine-one-condition-to-avoid-a-nul-rec_inv_sq.patch
