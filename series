@@ -410,7 +410,6 @@ patches.armadillo800/0102-ARM-mach-shmobile-r8a7740-generic-board-support-via-.p
 patches.armadillo800/0103-ARM-mach-shmobile-armadillo800eva-defconfig-Allow-us.patch
 patches.armadillo800/0104-ARM-mach-shmobile-armadillo800eva-Fix-GPIO-buttons-d.patch
 patches.armadillo800/0105-ARM-mach-shmobile-armadillo800eva-Enable-power-butto.patch
-patches.armadillo800/0106-ARM-shmobile-armadillo800eva-fixup-sound-card-detect.patch
 patches.armadillo800/0107-ARM-shmobile-armadillo800eva-enable-rw-rootfs-mount.patch
 patches.armadillo800/asoc-sh-fsi-select-simple-card-on-kconfig.patch
 
