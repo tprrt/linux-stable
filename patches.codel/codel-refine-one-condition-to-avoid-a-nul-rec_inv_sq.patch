@@ -23,11 +23,13 @@ Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/net/codel.h b/include/net/codel.h
-index 550debf..389cf62 100644
+---
+ include/net/codel.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
 --- a/include/net/codel.h
 +++ b/include/net/codel.h
-@@ -305,6 +305,8 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -305,6 +305,8 @@ static struct sk_buff *codel_dequeue(str
  			}
  		}
  	} else if (drop) {
@@ -36,7 +38,7 @@ index 550debf..389cf62 100644
  		if (params->ecn && INET_ECN_set_ce(skb)) {
  			stats->ecn_mark++;
  		} else {
-@@ -320,9 +322,11 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -320,9 +322,11 @@ static struct sk_buff *codel_dequeue(str
  		 * assume that the drop rate that controlled the queue on the
  		 * last cycle is a good starting point to control it now.
  		 */
@@ -50,6 +52,3 @@ index 550debf..389cf62 100644
  			/* we dont care if rec_inv_sqrt approximation
  			 * is not very precise :
  			 * Next Newton steps will correct it quadratically.
--- 
-1.7.12.rc1.1.gbce1580
-
