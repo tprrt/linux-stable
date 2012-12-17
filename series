@@ -109,7 +109,7 @@ patches.pramfs/14-pramfs-memory-write-protection.patch
 patches.pramfs/15-pramfs-test-module.patch
 patches.pramfs/16-pramfs-ioctl-operations.patch
 patches.pramfs/17-pramfs-makefile-and-kconfig.patch
-patches.pramfs/pramfs-mark-it-broken.patch
+patches.pramfs/pramfs-fix-build-for-kernel-3.4.patch
 
 
 #############################################################################
