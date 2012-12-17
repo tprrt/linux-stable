@@ -72,7 +72,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return -ENOSYS;
  	else
  		return p->get_cd(host->pd);
-@@ -1281,6 +1286,9 @@ static void sh_mmcif_init_ocr(struct sh_
+@@ -1277,6 +1282,9 @@ static void sh_mmcif_init_ocr(struct sh_
  
  	mmc_regulator_get_supply(mmc);
  
@@ -82,7 +82,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	if (!mmc->ocr_avail)
  		mmc->ocr_avail = pd->ocr;
  	else if (pd->ocr)
-@@ -1297,11 +1305,6 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1293,11 +1301,6 @@ static int __devinit sh_mmcif_probe(stru
  	void __iomem *reg;
  	char clk_name[8];
  
@@ -94,7 +94,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	irq[0] = platform_get_irq(pdev, 0);
  	irq[1] = platform_get_irq(pdev, 1);
  	if (irq[0] < 0 || irq[1] < 0) {
-@@ -1337,7 +1340,7 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1333,7 +1336,7 @@ static int __devinit sh_mmcif_probe(stru
  	sh_mmcif_init_ocr(host);
  
  	mmc->caps = MMC_CAP_MMC_HIGHSPEED;
@@ -103,7 +103,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		mmc->caps |= pd->caps;
  	mmc->max_segs = 32;
  	mmc->max_blk_size = 512;
-@@ -1474,6 +1477,12 @@ static int sh_mmcif_resume(struct device
+@@ -1470,6 +1473,12 @@ static int sh_mmcif_resume(struct device
  #define sh_mmcif_resume		NULL
  #endif	/* CONFIG_PM */
  
@@ -116,7 +116,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  static const struct dev_pm_ops sh_mmcif_dev_pm_ops = {
  	.suspend = sh_mmcif_suspend,
  	.resume = sh_mmcif_resume,
-@@ -1485,6 +1494,8 @@ static struct platform_driver sh_mmcif_d
+@@ -1481,6 +1490,8 @@ static struct platform_driver sh_mmcif_d
  	.driver		= {
  		.name	= DRIVER_NAME,
  		.pm	= &sh_mmcif_dev_pm_ops,

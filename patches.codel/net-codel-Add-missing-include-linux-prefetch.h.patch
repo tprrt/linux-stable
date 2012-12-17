@@ -19,8 +19,10 @@ Acked-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index b4a1a81..213ef60 100644
+---
+ net/sched/sch_codel.c |    1 +
+ 1 file changed, 1 insertion(+)
+
 --- a/net/sched/sch_codel.c
 +++ b/net/sched/sch_codel.c
 @@ -46,6 +46,7 @@
@@ -31,6 +33,3 @@ index b4a1a81..213ef60 100644
  #include <net/pkt_sched.h>
  #include <net/codel.h>
  
--- 
-1.7.12.rc1.1.ga9c166e
-

@@ -26,11 +26,13 @@ Signed-off-by: Sasha Levin <levinsasha928@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index a7b3754..337ff20 100644
+---
+ net/sched/sch_fq_codel.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
 --- a/net/sched/sch_fq_codel.c
 +++ b/net/sched/sch_fq_codel.c
-@@ -461,13 +461,14 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+@@ -461,13 +461,14 @@ static int fq_codel_dump_stats(struct Qd
  	struct fq_codel_sched_data *q = qdisc_priv(sch);
  	struct tc_fq_codel_xstats st = {
  		.type				= TCA_FQ_CODEL_XSTATS_QDISC,
@@ -49,6 +51,3 @@ index a7b3754..337ff20 100644
  	list_for_each(pos, &q->new_flows)
  		st.qdisc_stats.new_flows_len++;
  
--- 
-1.7.12.rc1.1.gbce1580
-

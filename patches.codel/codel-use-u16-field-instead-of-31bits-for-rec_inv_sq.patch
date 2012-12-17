@@ -17,8 +17,10 @@ Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/net/codel.h b/include/net/codel.h
-index bd8747c..7546517 100644
+---
+ include/net/codel.h |   25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
 --- a/include/net/codel.h
 +++ b/include/net/codel.h
 @@ -133,13 +133,17 @@ struct codel_params {
@@ -41,7 +43,7 @@ index bd8747c..7546517 100644
  /**
   * struct codel_stats - contains codel shared variables and stats
   * @maxpacket:	largest packet we've seen so far
-@@ -173,17 +177,18 @@ static void codel_stats_init(struct codel_stats *stats)
+@@ -173,17 +177,18 @@ static void codel_stats_init(struct code
   * http://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Iterative_methods_for_reciprocal_square_roots
   * new_invsqrt = (invsqrt / 2) * (3 - count * invsqrt^2)
   *
@@ -66,7 +68,7 @@ index bd8747c..7546517 100644
  }
  
  /*
-@@ -195,7 +200,7 @@ static codel_time_t codel_control_law(codel_time_t t,
+@@ -195,7 +200,7 @@ static codel_time_t codel_control_law(co
  				      codel_time_t interval,
  				      u32 rec_inv_sqrt)
  {
@@ -75,7 +77,7 @@ index bd8747c..7546517 100644
  }
  
  
-@@ -326,7 +331,7 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -326,7 +331,7 @@ static struct sk_buff *codel_dequeue(str
  			codel_Newton_step(vars);
  		} else {
  			vars->count = 1;
@@ -84,6 +86,3 @@ index bd8747c..7546517 100644
  		}
  		vars->lastcount = vars->count;
  		vars->drop_next = codel_control_law(now, params->interval,
--- 
-1.7.12.rc1.1.gbce1580
-

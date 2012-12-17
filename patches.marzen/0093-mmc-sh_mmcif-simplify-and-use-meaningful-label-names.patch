@@ -20,7 +20,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
 
 --- a/drivers/mmc/host/sh_mmcif.c
 +++ b/drivers/mmc/host/sh_mmcif.c
-@@ -1253,11 +1253,16 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1249,11 +1249,16 @@ static int __devinit sh_mmcif_probe(stru
  	int ret = 0, irq[2];
  	struct mmc_host *mmc;
  	struct sh_mmcif_host *host;
@@ -38,7 +38,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	irq[0] = platform_get_irq(pdev, 0);
  	irq[1] = platform_get_irq(pdev, 1);
  	if (irq[0] < 0 || irq[1] < 0) {
-@@ -1274,16 +1279,11 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1270,16 +1275,11 @@ static int __devinit sh_mmcif_probe(stru
  		dev_err(&pdev->dev, "ioremap error.\n");
  		return -ENOMEM;
  	}
@@ -57,7 +57,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	}
  	host		= mmc_priv(mmc);
  	host->mmc	= mmc;
-@@ -1295,7 +1295,7 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1291,7 +1291,7 @@ static int __devinit sh_mmcif_probe(stru
  	if (IS_ERR(host->hclk)) {
  		dev_err(&pdev->dev, "cannot get clock \"%s\"\n", clk_name);
  		ret = PTR_ERR(host->hclk);
@@ -66,7 +66,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	}
  	clk_enable(host->hclk);
  	host->clk = clk_get_rate(host->hclk);
-@@ -1325,7 +1325,7 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1321,7 +1321,7 @@ static int __devinit sh_mmcif_probe(stru
  
  	ret = pm_runtime_resume(&pdev->dev);
  	if (ret < 0)
@@ -75,7 +75,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
  	INIT_DELAYED_WORK(&host->timeout_work, mmcif_timeout_work);
  
-@@ -1334,17 +1334,17 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1330,17 +1330,17 @@ static int __devinit sh_mmcif_probe(stru
  	ret = request_threaded_irq(irq[0], sh_mmcif_intr, sh_mmcif_irqt, 0, "sh_mmc:error", host);
  	if (ret) {
  		dev_err(&pdev->dev, "request_irq error (sh_mmc:error)\n");
@@ -96,7 +96,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
  	dev_pm_qos_expose_latency_limit(&pdev->dev, 100);
  
-@@ -1353,20 +1353,19 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1349,20 +1349,19 @@ static int __devinit sh_mmcif_probe(stru
  		sh_mmcif_readl(host->addr, MMCIF_CE_VERSION) & 0x0000ffff);
  	return ret;
  

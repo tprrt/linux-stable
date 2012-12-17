@@ -75,7 +75,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			sh_mmcif_clk_update(host);
  			pm_runtime_get_sync(&host->pd->dev);
  			host->power = true;
-@@ -1263,6 +1274,19 @@ static void mmcif_timeout_work(struct wo
+@@ -1259,6 +1270,19 @@ static void mmcif_timeout_work(struct wo
  	mmc_request_done(host->mmc, mrq);
  }
  
@@ -95,7 +95,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  static int __devinit sh_mmcif_probe(struct platform_device *pdev)
  {
  	int ret = 0, irq[2];
-@@ -1310,8 +1334,8 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1306,8 +1330,8 @@ static int __devinit sh_mmcif_probe(stru
  	spin_lock_init(&host->lock);
  
  	mmc->ops = &sh_mmcif_ops;

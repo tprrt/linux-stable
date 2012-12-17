@@ -36,7 +36,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			pm_runtime_get_sync(&host->pd->dev);
  			host->power = true;
  			sh_mmcif_sync_reset(host);
-@@ -1290,22 +1292,11 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1286,22 +1288,11 @@ static int __devinit sh_mmcif_probe(stru
  	host->addr	= reg;
  	host->timeout	= 1000;
  
@@ -59,7 +59,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	if (pd->ocr)
  		mmc->ocr_avail = pd->ocr;
  	mmc->caps = MMC_CAP_MMC_HIGHSPEED;
-@@ -1317,18 +1308,30 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1313,18 +1304,30 @@ static int __devinit sh_mmcif_probe(stru
  	mmc->max_blk_count = mmc->max_req_size / mmc->max_blk_size;
  	mmc->max_seg_size = mmc->max_req_size;
  
@@ -91,7 +91,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	sh_mmcif_writel(host->addr, MMCIF_CE_INT_MASK, MASK_ALL);
  
  	ret = request_threaded_irq(irq[0], sh_mmcif_intr, sh_mmcif_irqt, 0, "sh_mmc:error", host);
-@@ -1342,6 +1345,7 @@ static int __devinit sh_mmcif_probe(stru
+@@ -1338,6 +1341,7 @@ static int __devinit sh_mmcif_probe(stru
  		goto ereqirq1;
  	}
  
@@ -99,7 +99,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	ret = mmc_add_host(mmc);
  	if (ret < 0)
  		goto emmcaddh;
-@@ -1360,9 +1364,10 @@ ereqirq1:
+@@ -1356,9 +1360,10 @@ ereqirq1:
  ereqirq0:
  	pm_runtime_suspend(&pdev->dev);
  eresume:
@@ -111,7 +111,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	mmc_free_host(mmc);
  ealloch:
  	iounmap(reg);
-@@ -1375,6 +1380,7 @@ static int __devexit sh_mmcif_remove(str
+@@ -1371,6 +1376,7 @@ static int __devexit sh_mmcif_remove(str
  	int irq[2];
  
  	host->dying = true;
@@ -119,7 +119,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	pm_runtime_get_sync(&pdev->dev);
  
  	dev_pm_qos_hide_latency_limit(&pdev->dev);
-@@ -1400,9 +1406,9 @@ static int __devexit sh_mmcif_remove(str
+@@ -1396,9 +1402,9 @@ static int __devexit sh_mmcif_remove(str
  
  	platform_set_drvdata(pdev, NULL);
  
@@ -130,7 +130,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	pm_runtime_disable(&pdev->dev);
  
  	return 0;
-@@ -1411,24 +1417,18 @@ static int __devexit sh_mmcif_remove(str
+@@ -1407,24 +1413,18 @@ static int __devexit sh_mmcif_remove(str
  #ifdef CONFIG_PM
  static int sh_mmcif_suspend(struct device *dev)
  {

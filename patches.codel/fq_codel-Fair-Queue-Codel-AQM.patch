@@ -113,8 +113,13 @@ Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/linux/pkt_sched.h b/include/linux/pkt_sched.h
-index cde56c2..32aef0a 100644
+---
+ include/linux/pkt_sched.h |   54 +++
+ net/sched/Kconfig         |   11 
+ net/sched/Makefile        |    1 
+ net/sched/sch_fq_codel.c  |  624 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 690 insertions(+)
+
 --- a/include/linux/pkt_sched.h
 +++ b/include/linux/pkt_sched.h
 @@ -681,4 +681,58 @@ struct tc_codel_xstats {
@@ -176,8 +181,6 @@ index cde56c2..32aef0a 100644
 +};
 +
  #endif
-diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index fadd252..e7a8976 100644
 --- a/net/sched/Kconfig
 +++ b/net/sched/Kconfig
 @@ -261,6 +261,17 @@ config NET_SCH_CODEL
@@ -198,11 +201,9 @@ index fadd252..e7a8976 100644
  config NET_SCH_INGRESS
  	tristate "Ingress Qdisc"
  	depends on NET_CLS_ACT
-diff --git a/net/sched/Makefile b/net/sched/Makefile
-index 30fab03..5940a19 100644
 --- a/net/sched/Makefile
 +++ b/net/sched/Makefile
-@@ -38,6 +38,7 @@ obj-$(CONFIG_NET_SCH_MQPRIO)	+= sch_mqprio.o
+@@ -38,6 +38,7 @@ obj-$(CONFIG_NET_SCH_MQPRIO)	+= sch_mqpr
  obj-$(CONFIG_NET_SCH_CHOKE)	+= sch_choke.o
  obj-$(CONFIG_NET_SCH_QFQ)	+= sch_qfq.o
  obj-$(CONFIG_NET_SCH_CODEL)	+= sch_codel.o
@@ -210,9 +211,6 @@ index 30fab03..5940a19 100644
  
  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-new file mode 100644
-index 0000000..a7b3754
 --- /dev/null
 +++ b/net/sched/sch_fq_codel.c
 @@ -0,0 +1,624 @@
@@ -840,6 +838,3 @@ index 0000000..a7b3754
 +module_exit(fq_codel_module_exit)
 +MODULE_AUTHOR("Eric Dumazet");
 +MODULE_LICENSE("GPL");
--- 
-1.7.12.rc1.1.gbce1580
-

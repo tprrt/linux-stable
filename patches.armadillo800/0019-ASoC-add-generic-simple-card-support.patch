@@ -14,21 +14,18 @@ Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- include/sound/simple_card.h     |  38 ++++++++++++++
- sound/soc/Kconfig               |   3 ++
- sound/soc/Makefile              |   1 +
- sound/soc/generic/Kconfig       |   4 ++
- sound/soc/generic/Makefile      |   3 ++
- sound/soc/generic/simple-card.c | 114 ++++++++++++++++++++++++++++++++++++++++
+ include/sound/simple_card.h     |   38 +++++++++++++
+ sound/soc/Kconfig               |    3 +
+ sound/soc/Makefile              |    1 
+ sound/soc/generic/Kconfig       |    4 +
+ sound/soc/generic/Makefile      |    3 +
+ sound/soc/generic/simple-card.c |  114 ++++++++++++++++++++++++++++++++++++++++
  6 files changed, 163 insertions(+)
  create mode 100644 include/sound/simple_card.h
  create mode 100644 sound/soc/generic/Kconfig
  create mode 100644 sound/soc/generic/Makefile
  create mode 100644 sound/soc/generic/simple-card.c
 
-diff --git a/include/sound/simple_card.h b/include/sound/simple_card.h
-new file mode 100644
-index 0000000..4b62b8d
 --- /dev/null
 +++ b/include/sound/simple_card.h
 @@ -0,0 +1,38 @@
@@ -70,8 +67,6 @@ index 0000000..4b62b8d
 +};
 +
 +#endif /* __SIMPLE_CARD_H */
-diff --git a/sound/soc/Kconfig b/sound/soc/Kconfig
-index 91c9855..38be639 100644
 --- a/sound/soc/Kconfig
 +++ b/sound/soc/Kconfig
 @@ -52,5 +52,8 @@ source "sound/soc/txx9/Kconfig"
@@ -83,11 +78,9 @@ index 91c9855..38be639 100644
 +
  endif	# SND_SOC
  
-diff --git a/sound/soc/Makefile b/sound/soc/Makefile
-index 2feaf37..b55db9c 100644
 --- a/sound/soc/Makefile
 +++ b/sound/soc/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_SND_SOC_DMAENGINE_PCM) += snd-soc-dmaengine-pcm.o
+@@ -7,6 +7,7 @@ endif
  
  obj-$(CONFIG_SND_SOC)	+= snd-soc-core.o
  obj-$(CONFIG_SND_SOC)	+= codecs/
@@ -95,9 +88,6 @@ index 2feaf37..b55db9c 100644
  obj-$(CONFIG_SND_SOC)	+= atmel/
  obj-$(CONFIG_SND_SOC)	+= au1x/
  obj-$(CONFIG_SND_SOC)	+= blackfin/
-diff --git a/sound/soc/generic/Kconfig b/sound/soc/generic/Kconfig
-new file mode 100644
-index 0000000..610f612
 --- /dev/null
 +++ b/sound/soc/generic/Kconfig
 @@ -0,0 +1,4 @@
@@ -105,18 +95,12 @@ index 0000000..610f612
 +	tristate "ASoC Simple sound card support"
 +	help
 +	  This option enables generic simple sound card support
-diff --git a/sound/soc/generic/Makefile b/sound/soc/generic/Makefile
-new file mode 100644
-index 0000000..9c3b246
 --- /dev/null
 +++ b/sound/soc/generic/Makefile
 @@ -0,0 +1,3 @@
 +snd-soc-simple-card-objs	:= simple-card.o
 +
 +obj-$(CONFIG_SND_SIMPLE_CARD)	+= snd-soc-simple-card.o
-diff --git a/sound/soc/generic/simple-card.c b/sound/soc/generic/simple-card.c
-new file mode 100644
-index 0000000..b4b4cab
 --- /dev/null
 +++ b/sound/soc/generic/simple-card.c
 @@ -0,0 +1,114 @@
@@ -234,6 +218,3 @@ index 0000000..b4b4cab
 +MODULE_LICENSE("GPL");
 +MODULE_DESCRIPTION("ASoC Simple Sound Card");
 +MODULE_AUTHOR("Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>");
--- 
-1.8.0.197.g5a90748
-

@@ -33,8 +33,10 @@ Cc: Stephen Hemminger <shemminger@vyatta.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/net/codel.h b/include/net/codel.h
-index bce2cef..bd8747c 100644
+---
+ include/net/codel.h |   68 ++++++++++++++++++++++++++++------------------------
+ 1 file changed, 37 insertions(+), 31 deletions(-)
+
 --- a/include/net/codel.h
 +++ b/include/net/codel.h
 @@ -46,6 +46,7 @@
@@ -63,7 +65,7 @@ index bce2cef..bd8747c 100644
  	codel_time_t	first_above_time;
  	codel_time_t	drop_next;
  	codel_time_t	ldelay;
-@@ -158,11 +161,7 @@ static void codel_params_init(struct codel_params *params)
+@@ -158,11 +161,7 @@ static void codel_params_init(struct cod
  
  static void codel_vars_init(struct codel_vars *vars)
  {
@@ -76,7 +78,7 @@ index bce2cef..bd8747c 100644
  }
  
  static void codel_stats_init(struct codel_stats *stats)
-@@ -170,38 +169,37 @@ static void codel_stats_init(struct codel_stats *stats)
+@@ -170,38 +169,37 @@ static void codel_stats_init(struct code
  	stats->maxpacket = 256;
  }
  
@@ -93,12 +95,12 @@ index bce2cef..bd8747c 100644
  {
 -	u64 interval = _interval;
 -	unsigned long x = _x;
+-
+-	/* Scale operands for max precision */
 +	u32 invsqrt = vars->rec_inv_sqrt;
 +	u32 invsqrt2 = ((u64)invsqrt * invsqrt) >> 31;
 +	u64 val = (3LL << 31) - ((u64)vars->count * invsqrt2);
  
--	/* Scale operands for max precision */
--
 -#if BITS_PER_LONG == 64
 -	x <<= 32; /* On 64bit arches, we can prescale x by 32bits */
 -	interval <<= 16;
@@ -134,7 +136,7 @@ index bce2cef..bd8747c 100644
  			      unsigned int *backlog,
  			      struct codel_vars *vars,
  			      struct codel_params *params,
-@@ -274,14 +272,16 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -274,14 +272,16 @@ static struct sk_buff *codel_dequeue(str
  			 */
  			while (vars->dropping &&
  			       codel_time_after_eq(now, vars->drop_next)) {
@@ -154,7 +156,7 @@ index bce2cef..bd8747c 100644
  					goto end;
  				}
  				qdisc_drop(skb, sch);
-@@ -296,7 +296,7 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -296,7 +296,7 @@ static struct sk_buff *codel_dequeue(str
  					vars->drop_next =
  						codel_control_law(vars->drop_next,
  								  params->interval,
@@ -163,7 +165,7 @@ index bce2cef..bd8747c 100644
  				}
  			}
  		}
-@@ -319,12 +319,18 @@ static struct sk_buff *codel_dequeue(struct Qdisc *sch,
+@@ -319,12 +319,18 @@ static struct sk_buff *codel_dequeue(str
  		if (codel_time_before(now - vars->drop_next,
  				      16 * params->interval)) {
  			vars->count = (vars->count - vars->lastcount) | 1;
@@ -183,6 +185,3 @@ index bce2cef..bd8747c 100644
  	}
  end:
  	return skb;
--- 
-1.7.12.rc1.1.gbce1580
-

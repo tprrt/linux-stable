@@ -20,8 +20,11 @@ Acked-by: Hagen Paul Pfeifer <hagen@jauu.net>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-diff --git a/include/linux/pkt_sched.h b/include/linux/pkt_sched.h
-index 410b33d..ffe975c 100644
+---
+ include/linux/pkt_sched.h |    1 +
+ net/sched/sch_netem.c     |   18 +++++++++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
 --- a/include/linux/pkt_sched.h
 +++ b/include/linux/pkt_sched.h
 @@ -509,6 +509,7 @@ enum {
@@ -32,8 +35,6 @@ index 410b33d..ffe975c 100644
  	__TCA_NETEM_MAX,
  };
  
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 992acaa..16c970b 100644
 --- a/net/sched/sch_netem.c
 +++ b/net/sched/sch_netem.c
 @@ -26,6 +26,7 @@
@@ -52,7 +53,7 @@ index 992acaa..16c970b 100644
  	u32 limit;
  	u32 counter;
  	u32 gap;
-@@ -366,9 +368,12 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch)
+@@ -366,9 +368,12 @@ static int netem_enqueue(struct sk_buff
  		++count;
  
  	/* Drop packet? */
@@ -68,7 +69,7 @@ index 992acaa..16c970b 100644
  	if (count == 0) {
  		sch->qstats.drops++;
  		kfree_skb(skb);
-@@ -692,6 +697,7 @@ static const struct nla_policy netem_policy[TCA_NETEM_MAX + 1] = {
+@@ -692,6 +697,7 @@ static const struct nla_policy netem_pol
  	[TCA_NETEM_CORRUPT]	= { .len = sizeof(struct tc_netem_corrupt) },
  	[TCA_NETEM_RATE]	= { .len = sizeof(struct tc_netem_rate) },
  	[TCA_NETEM_LOSS]	= { .type = NLA_NESTED },
@@ -76,7 +77,7 @@ index 992acaa..16c970b 100644
  };
  
  static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
-@@ -762,6 +768,9 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt)
+@@ -762,6 +768,9 @@ static int netem_change(struct Qdisc *sc
  	if (tb[TCA_NETEM_RATE])
  		get_rate(sch, tb[TCA_NETEM_RATE]);
  
@@ -86,7 +87,7 @@ index 992acaa..16c970b 100644
  	q->loss_model = CLG_RANDOM;
  	if (tb[TCA_NETEM_LOSS])
  		ret = get_loss_clg(sch, tb[TCA_NETEM_LOSS]);
-@@ -881,6 +890,9 @@ static int netem_dump(struct Qdisc *sch, struct sk_buff *skb)
+@@ -881,6 +890,9 @@ static int netem_dump(struct Qdisc *sch,
  	rate.cell_overhead = q->cell_overhead;
  	NLA_PUT(skb, TCA_NETEM_RATE, sizeof(rate), &rate);
  
@@ -96,6 +97,3 @@ index 992acaa..16c970b 100644
  	if (dump_loss_model(q, skb) != 0)
  		goto nla_put_failure;
  
--- 
-1.7.12.1
-
