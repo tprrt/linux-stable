@@ -767,3 +767,11 @@ patches.codel/net-codel-Add-missing-include-linux-prefetch.h.patch
 patches.codel/net-codel-fix-build-errors.patch
 patches.codel/fq_codel-should-use-qdisc-backlog-as-threshold.patch
 patches.codel/codel-refine-one-condition-to-avoid-a-nul-rec_inv_sq.patch
+
+
+#############################################################################
+# fixes that go after all of the above
+#
+patches.fixes/0001-ASoC-fsi-fixup-channels_min-max.patch
+patches.fixes/0002-usb-renesas_usbhs-gadget-remove-usbhsg_uep_init.patch
+patches.fixes/0003-usb-renesas_usbhs-gadget-usbhsg_ep_disable-care-pipe.patch
