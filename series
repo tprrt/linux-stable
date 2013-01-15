@@ -132,7 +132,10 @@ patches.axfs/axfs-axfs_bdev.c.patch
 patches.axfs/axfs-xip-debugging-support.patch
 patches.axfs/axfs-add-documentation.patch
 patches.axfs/axfs-mount-as-rootfs.patch
-patches.axfs/axfs-mark-it-broken.patch
+#patches.axfs/axfs-mark-it-broken.patch
+patches.axfs/axfs-fix-build-failure-due-to-undefined-symbol-axfs_xip_record.patch
+patches.axfs/axfs-fix-build-failure-due-to-undefined-symbol-kern_path_parent.patch
+patches.axfs/axfs-fix-type-cast-warning-in-axfs_region_is_vmalloc.patch
 
 
 #############################################################################
