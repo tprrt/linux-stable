@@ -423,6 +423,8 @@ patches.armadillo800/shmobile-armadillo800eva-enable-iommu-support.patch
 patches.armadillo800/shmobile-ipmmu-add-basic-pmb-support.patch
 patches.armadillo800/shmobile-r8a7740-set-up-meram-address-range.patch
 patches.armadillo800/shmobile-r8a7740-add-meram-uio-device.patch
+patches.armadillo800/shmobile-iommu-only-enable-driver-on-arm-based-shmobile-configuration.patch
+patches.armadillo800/armadillo800eva-defconfig-enable-drivers-used-with-multimedia.patch
 
 
 #############################################################################
