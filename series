@@ -85,7 +85,7 @@ patches.af_bus/0012-netlink-connector-Add-idx-and-val-identifiers-for-ne.patch
 patches.af_bus/0013-netfilter-nfdbus-Add-D-bus-message-parsing.patch
 patches.af_bus/0014-netfilter-nfdbus-Add-D-bus-match-rule-implementation.patch
 patches.af_bus/0015-netfilter-add-netfilter-D-Bus-module.patch
-
+patches.af_bus/af_bus-make-netfilter_dbus-depend-on-netfilter.patch
 
 #############################################################################
 # pramfs
