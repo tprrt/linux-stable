@@ -136,6 +136,21 @@ questions about the patch.  The rules for patch headers are:
    give enough information for reviewing.
 
 
+Minimal Requirements
+====================
+
+o  patch              2.6.1.64            # patch --version
+
+
+patch
+-----
+
+The tree makes extensive use of git formatted patches, which are not
+fully supported by older versions of patch.  Older versions will silently
+discard parts of the diff they don't understand (such as renames), leading
+to inconsistent state with some patches only being partially applied.
+
+
 ----------------------
 
 Many thanks for the SUSE kernel team for their kernel patch rules, upon
