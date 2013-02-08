@@ -304,6 +304,7 @@ patches.marzen/0097-mmc-sh_mmcif-add-regulator-support.patch
 patches.marzen/0098-mmc-sh-mmcif-add-OF-support-make-platform-data-optio.patch
 patches.marzen/0099-mmc-sh_mmcif-support-generic-card-detection.patch
 patches.marzen/arm-mach-shmobile-marzen-defconfig-update.patch
+patches.marzen/arm-shmobile-r8a7779-correct-tmu-clock-support.patch
 
 #############################################################################
 # Armadillo 800 board support
