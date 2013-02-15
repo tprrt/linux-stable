@@ -783,3 +783,5 @@ patches.fixes/0002-usb-renesas_usbhs-gadget-remove-usbhsg_uep_init.patch
 patches.fixes/0003-usb-renesas_usbhs-gadget-usbhsg_ep_disable-care-pipe.patch
 patches.fixes/revert-usb-renesas_usbhs-gadget-usbhsg_ep_disable-care-pipe-settings.patch
 patches.fixes/revert-usb-renesas_usbhs-gadget-remove-usbhsg_uep_init.patch
+patches.fixes/sh-clkfwk-bugfix-sh_clk_div_enable-care-sh_clk_div_set_rate-if-div6.patch
+patches.fixes/asoc-shmobile-armadillo800eva-enable-clock-inversion-on-fsi-a.patch
