@@ -804,7 +804,6 @@ patches.kzm9g/0205-ARM-mach-shmobile-kzm9g-add-FSI-AK4648-support.patch
 
 patches.kzm9g/0001-tty-serial-allow-ports-to-override-the-irq-handler.patch
 patches.kzm9g/0002-serial-introduce-generic-port-in-out-helpers.patch
-patches.kzm9g/0003-serial-8250-increase-PASS_LIMIT.patch
 patches.kzm9g/0004-serial-Fix-wakeup-init-logic-to-speed-up-startup.patch
 patches.kzm9g/0005-tty-serial8250-allow-platforms-to-override-irq-handl.patch
 patches.kzm9g/0006-tty-serial8250-remove-UPIO_DWAPB-32.patch

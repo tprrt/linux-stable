@@ -35,29 +35,27 @@ Conflicts:
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/mach-at91/cpuidle.c          |   31 +++---
- arch/arm/mach-davinci/cpuidle.c       |   39 +++----
- arch/arm/mach-exynos4/cpuidle.c       |   23 ++--
- arch/arm/mach-kirkwood/cpuidle.c      |   30 +++---
- arch/arm/mach-omap2/cpuidle34xx.c     |   73 ++++++++-----
- arch/sh/kernel/cpu/shmobile/cpuidle.c |   18 ++--
- drivers/acpi/processor_driver.c       |   20 +---
- drivers/acpi/processor_idle.c         |  191 ++++++++++++++++++++++++++++-----
- drivers/cpuidle/cpuidle.c             |   45 +++-----
- drivers/cpuidle/driver.c              |   25 +++++
- drivers/cpuidle/governors/ladder.c    |   28 +++--
- drivers/cpuidle/governors/menu.c      |   20 ++--
- drivers/cpuidle/sysfs.c               |    3 +-
+ arch/arm/mach-at91/cpuidle.c          |   31 +++--
+ arch/arm/mach-davinci/cpuidle.c       |   39 +++---
+ arch/arm/mach-exynos4/cpuidle.c       |   21 ++-
+ arch/arm/mach-kirkwood/cpuidle.c      |   30 ++---
+ arch/arm/mach-omap2/cpuidle34xx.c     |   73 ++++++++----
+ arch/sh/kernel/cpu/shmobile/cpuidle.c |   18 +--
+ drivers/acpi/processor_driver.c       |   20 ---
+ drivers/acpi/processor_idle.c         |  191 +++++++++++++++++++++++++++++-----
+ drivers/cpuidle/cpuidle.c             |   45 ++------
+ drivers/cpuidle/driver.c              |   25 ++++
+ drivers/cpuidle/governors/ladder.c    |   28 +++-
+ drivers/cpuidle/governors/menu.c      |   20 ++-
+ drivers/cpuidle/sysfs.c               |    3 
  drivers/idle/intel_idle.c             |   80 ++++++++++----
- include/acpi/processor.h              |    1 +
- include/linux/cpuidle.h               |   19 ++--
- 16 files changed, 439 insertions(+), 207 deletions(-)
+ include/acpi/processor.h              |    1 
+ include/linux/cpuidle.h               |   19 ++-
+ 16 files changed, 438 insertions(+), 206 deletions(-)
 
-diff --git a/arch/arm/mach-at91/cpuidle.c b/arch/arm/mach-at91/cpuidle.c
-index d76a600..a851e6c 100644
 --- a/arch/arm/mach-at91/cpuidle.c
 +++ b/arch/arm/mach-at91/cpuidle.c
-@@ -34,6 +34,7 @@ static struct cpuidle_driver at91_idle_driver = {
+@@ -34,6 +34,7 @@ static struct cpuidle_driver at91_idle_d
  
  /* Actual code that puts the SoC in different idle states */
  static int at91_enter_idle(struct cpuidle_device *dev,
@@ -65,7 +63,7 @@ index d76a600..a851e6c 100644
  			       int index)
  {
  	struct timeval before, after;
-@@ -65,27 +66,29 @@ static int at91_enter_idle(struct cpuidle_device *dev,
+@@ -65,27 +66,29 @@ static int at91_enter_idle(struct cpuidl
  static int at91_init_cpuidle(void)
  {
  	struct cpuidle_device *device;
@@ -109,11 +107,9 @@ index d76a600..a851e6c 100644
  
  	if (cpuidle_register_device(device)) {
  		printk(KERN_ERR "at91_init_cpuidle: Failed registering\n");
-diff --git a/arch/arm/mach-davinci/cpuidle.c b/arch/arm/mach-davinci/cpuidle.c
-index dda6d2f..ed7fb95 100644
 --- a/arch/arm/mach-davinci/cpuidle.c
 +++ b/arch/arm/mach-davinci/cpuidle.c
-@@ -79,6 +79,7 @@ static struct davinci_ops davinci_states[DAVINCI_CPUIDLE_MAX_STATES] = {
+@@ -79,6 +79,7 @@ static struct davinci_ops davinci_states
  
  /* Actual code that puts the SoC in different idle states */
  static int davinci_enter_idle(struct cpuidle_device *dev,
@@ -121,7 +117,7 @@ index dda6d2f..ed7fb95 100644
  						int index)
  {
  	struct cpuidle_state_usage *state_usage = &dev->states_usage[index];
-@@ -110,6 +111,7 @@ static int __init davinci_cpuidle_probe(struct platform_device *pdev)
+@@ -110,6 +111,7 @@ static int __init davinci_cpuidle_probe(
  {
  	int ret;
  	struct cpuidle_device *device;
@@ -129,7 +125,7 @@ index dda6d2f..ed7fb95 100644
  	struct davinci_cpuidle_config *pdata = pdev->dev.platform_data;
  
  	device = &per_cpu(davinci_cpuidle_device, smp_processor_id());
-@@ -121,32 +123,33 @@ static int __init davinci_cpuidle_probe(struct platform_device *pdev)
+@@ -121,32 +123,33 @@ static int __init davinci_cpuidle_probe(
  
  	ddr2_reg_base = pdata->ddr2_ctlr_base;
  
@@ -181,8 +177,6 @@ index dda6d2f..ed7fb95 100644
  
  	ret = cpuidle_register_device(device);
  	if (ret) {
-diff --git a/arch/arm/mach-exynos4/cpuidle.c b/arch/arm/mach-exynos4/cpuidle.c
-index ea026e7..35f6502 100644
 --- a/arch/arm/mach-exynos4/cpuidle.c
 +++ b/arch/arm/mach-exynos4/cpuidle.c
 @@ -16,6 +16,7 @@
@@ -193,7 +187,7 @@ index ea026e7..35f6502 100644
  			      int index);
  
  static struct cpuidle_state exynos4_cpuidle_set[] = {
-@@ -37,6 +38,7 @@ static struct cpuidle_driver exynos4_idle_driver = {
+@@ -37,6 +38,7 @@ static struct cpuidle_driver exynos4_idl
  };
  
  static int exynos4_enter_idle(struct cpuidle_device *dev,
@@ -201,13 +195,12 @@ index ea026e7..35f6502 100644
  			      int index)
  {
  	struct timeval before, after;
-@@ -60,22 +62,23 @@ static int __init exynos4_init_cpuidle(void)
+@@ -60,22 +62,23 @@ static int __init exynos4_init_cpuidle(v
  {
  	int i, max_cpuidle_state, cpu_id;
  	struct cpuidle_device *device;
--
 +	struct cpuidle_driver *drv = &exynos4_idle_driver;
-+
+ 
 +	/* Setup cpuidle driver */
 +	drv->state_count = (sizeof(exynos4_cpuidle_set) /
 +				       sizeof(struct cpuidle_state));
@@ -235,11 +228,9 @@ index ea026e7..35f6502 100644
  
  		if (cpuidle_register_device(device)) {
  			printk(KERN_ERR "CPUidle register device failed\n,");
-diff --git a/arch/arm/mach-kirkwood/cpuidle.c b/arch/arm/mach-kirkwood/cpuidle.c
-index 53d6049..7088180 100644
 --- a/arch/arm/mach-kirkwood/cpuidle.c
 +++ b/arch/arm/mach-kirkwood/cpuidle.c
-@@ -33,6 +33,7 @@ static DEFINE_PER_CPU(struct cpuidle_device, kirkwood_cpuidle_device);
+@@ -33,6 +33,7 @@ static DEFINE_PER_CPU(struct cpuidle_dev
  
  /* Actual code that puts the SoC in different idle states */
  static int kirkwood_enter_idle(struct cpuidle_device *dev,
@@ -247,7 +238,7 @@ index 53d6049..7088180 100644
  			       int index)
  {
  	struct timeval before, after;
-@@ -69,28 +70,29 @@ static int kirkwood_enter_idle(struct cpuidle_device *dev,
+@@ -69,28 +70,29 @@ static int kirkwood_enter_idle(struct cp
  static int kirkwood_init_cpuidle(void)
  {
  	struct cpuidle_device *device;
@@ -291,11 +282,9 @@ index 53d6049..7088180 100644
  	if (cpuidle_register_device(device)) {
  		printk(KERN_ERR "kirkwood_init_cpuidle: Failed registering\n");
  		return -EIO;
-diff --git a/arch/arm/mach-omap2/cpuidle34xx.c b/arch/arm/mach-omap2/cpuidle34xx.c
-index d3fce7b..1fe35c2 100644
 --- a/arch/arm/mach-omap2/cpuidle34xx.c
 +++ b/arch/arm/mach-omap2/cpuidle34xx.c
-@@ -88,12 +88,14 @@ static int _cpuidle_deny_idle(struct powerdomain *pwrdm,
+@@ -88,12 +88,14 @@ static int _cpuidle_deny_idle(struct pow
  /**
   * omap3_enter_idle - Programs OMAP3 to enter the specified state
   * @dev: cpuidle device
@@ -331,7 +320,7 @@ index d3fce7b..1fe35c2 100644
  	struct omap3_idle_statedata *cx = cpuidle_get_statedata(curr_usage);
  	u32 mpu_deepest_state = PWRDM_POWER_RET;
  	u32 core_deepest_state = PWRDM_POWER_RET;
-@@ -188,7 +192,7 @@ static int next_valid_state(struct cpuidle_device *dev,
+@@ -188,7 +192,7 @@ static int next_valid_state(struct cpuid
  
  		/* Reach the current state starting at highest C-state */
  		for (; idx >= 0; idx--) {
@@ -340,7 +329,7 @@ index d3fce7b..1fe35c2 100644
  				next_index = idx;
  				break;
  			}
-@@ -224,12 +228,14 @@ static int next_valid_state(struct cpuidle_device *dev,
+@@ -224,12 +228,14 @@ static int next_valid_state(struct cpuid
  /**
   * omap3_enter_idle_bm - Checks for any bus activity
   * @dev: cpuidle device
@@ -355,7 +344,7 @@ index d3fce7b..1fe35c2 100644
  			       int index)
  {
  	int new_state_idx;
-@@ -238,7 +244,7 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -238,7 +244,7 @@ static int omap3_enter_idle_bm(struct cp
  	int ret;
  
  	if (!omap3_can_sleep()) {
@@ -364,7 +353,7 @@ index d3fce7b..1fe35c2 100644
  		goto select_state;
  	}
  
-@@ -248,7 +254,7 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -248,7 +254,7 @@ static int omap3_enter_idle_bm(struct cp
  	 */
  	cam_state = pwrdm_read_pwrst(cam_pd);
  	if (cam_state == PWRDM_POWER_ON) {
@@ -373,7 +362,7 @@ index d3fce7b..1fe35c2 100644
  		goto select_state;
  	}
  
-@@ -275,10 +281,10 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -275,10 +281,10 @@ static int omap3_enter_idle_bm(struct cp
  	if (per_next_state != per_saved_state)
  		pwrdm_set_next_pwrst(per_pd, per_next_state);
  
@@ -386,7 +375,7 @@ index d3fce7b..1fe35c2 100644
  
  	/* Restore original PER state if it was modified */
  	if (per_next_state != per_saved_state)
-@@ -311,22 +317,30 @@ struct cpuidle_driver omap3_idle_driver = {
+@@ -311,22 +317,30 @@ struct cpuidle_driver omap3_idle_driver
  	.owner = 	THIS_MODULE,
  };
  
@@ -424,7 +413,7 @@ index d3fce7b..1fe35c2 100644
  	cpuidle_set_statedata(state_usage, cx);
  
  	return cx;
-@@ -341,6 +355,7 @@ static inline struct omap3_idle_statedata *_fill_cstate(
+@@ -341,6 +355,7 @@ static inline struct omap3_idle_statedat
  int __init omap3_idle_init(void)
  {
  	struct cpuidle_device *dev;
@@ -506,8 +495,6 @@ index d3fce7b..1fe35c2 100644
  	dev->state_count = OMAP3_NUM_STATES;
  	if (cpuidle_register_device(dev)) {
  		printk(KERN_ERR "%s: CPUidle register device failed\n",
-diff --git a/arch/sh/kernel/cpu/shmobile/cpuidle.c b/arch/sh/kernel/cpu/shmobile/cpuidle.c
-index 7be50d4c..ad1012a 100644
 --- a/arch/sh/kernel/cpu/shmobile/cpuidle.c
 +++ b/arch/sh/kernel/cpu/shmobile/cpuidle.c
 @@ -25,6 +25,7 @@ static unsigned long cpuidle_mode[] = {
@@ -518,7 +505,7 @@ index 7be50d4c..ad1012a 100644
  				int index)
  {
  	unsigned long allowed_mode = arch_hwblk_sleep_mode();
-@@ -64,19 +65,19 @@ static struct cpuidle_driver cpuidle_driver = {
+@@ -64,19 +65,19 @@ static struct cpuidle_driver cpuidle_dri
  void sh_mobile_setup_cpuidle(void)
  {
  	struct cpuidle_device *dev = &cpuidle_dev;
@@ -575,11 +562,9 @@ index 7be50d4c..ad1012a 100644
 +
  	cpuidle_register_device(dev);
  }
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index a4e0f1b..9d7bc9f 100644
 --- a/drivers/acpi/processor_driver.c
 +++ b/drivers/acpi/processor_driver.c
-@@ -426,7 +426,7 @@ static int acpi_cpu_soft_notify(struct notifier_block *nfb,
+@@ -427,7 +427,7 @@ static int acpi_cpu_soft_notify(struct n
  
  	if (action == CPU_ONLINE && pr) {
  		acpi_processor_ppc_has_changed(pr, 0);
@@ -588,7 +573,7 @@ index a4e0f1b..9d7bc9f 100644
  		acpi_processor_reevaluate_tstate(pr, action);
  		acpi_processor_tstate_has_changed(pr);
  	}
-@@ -503,8 +503,7 @@ static int __cpuinit acpi_processor_add(struct acpi_device *device)
+@@ -504,8 +504,7 @@ static int __cpuinit acpi_processor_add(
  	acpi_processor_get_throttling_info(pr);
  	acpi_processor_get_limit_info(pr);
  
@@ -598,7 +583,7 @@ index a4e0f1b..9d7bc9f 100644
  		acpi_processor_power_init(pr, device);
  
  	pr->cdev = thermal_cooling_device_register("Processor", device,
-@@ -800,17 +799,9 @@ static int __init acpi_processor_init(void)
+@@ -801,17 +800,9 @@ static int __init acpi_processor_init(vo
  
  	memset(&errata, 0, sizeof(errata));
  
@@ -617,7 +602,7 @@ index a4e0f1b..9d7bc9f 100644
  
  	acpi_processor_install_hotplug_notify();
  
-@@ -821,11 +812,6 @@ static int __init acpi_processor_init(void)
+@@ -822,11 +813,6 @@ static int __init acpi_processor_init(vo
  	acpi_processor_throttling_init();
  
  	return 0;
@@ -629,11 +614,9 @@ index a4e0f1b..9d7bc9f 100644
  }
  
  static void __exit acpi_processor_exit(void)
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index c7b89f0..da70c26 100644
 --- a/drivers/acpi/processor_idle.c
 +++ b/drivers/acpi/processor_idle.c
-@@ -741,11 +741,13 @@ static inline void acpi_idle_do_entry(struct acpi_processor_cx *cx)
+@@ -741,11 +741,13 @@ static inline void acpi_idle_do_entry(st
  /**
   * acpi_idle_enter_c1 - enters an ACPI C1 state-type
   * @dev: the target CPU
@@ -648,7 +631,7 @@ index c7b89f0..da70c26 100644
  {
  	ktime_t  kt1, kt2;
  	s64 idle_time;
-@@ -787,9 +789,11 @@ static int acpi_idle_enter_c1(struct cpuidle_device *dev, int index)
+@@ -787,9 +789,11 @@ static int acpi_idle_enter_c1(struct cpu
  /**
   * acpi_idle_enter_simple - enters an ACPI state without BM handling
   * @dev: the target CPU
@@ -676,7 +659,7 @@ index c7b89f0..da70c26 100644
  {
  	struct acpi_processor *pr;
  	struct cpuidle_state_usage *state_usage = &dev->states_usage[index];
-@@ -896,9 +902,9 @@ static int acpi_idle_enter_bm(struct cpuidle_device *dev, int index)
+@@ -896,9 +902,9 @@ static int acpi_idle_enter_bm(struct cpu
  	}
  
  	if (!cx->bm_sts_skip && acpi_idle_bm_check()) {
@@ -689,7 +672,7 @@ index c7b89f0..da70c26 100644
  		} else {
  			local_irq_disable();
  			acpi_safe_halt();
-@@ -993,14 +999,15 @@ struct cpuidle_driver acpi_idle_driver = {
+@@ -993,14 +999,15 @@ struct cpuidle_driver acpi_idle_driver =
  };
  
  /**
@@ -708,8 +691,8 @@ index c7b89f0..da70c26 100644
  	struct cpuidle_state_usage *state_usage;
  	struct cpuidle_device *dev = &pr->power.dev;
  
-@@ -1012,18 +1019,12 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
- 	}
+@@ -1015,18 +1022,12 @@ static int acpi_processor_setup_cpuidle(
+ 		return -EINVAL;
  
  	dev->cpu = pr->id;
 -	dev->safe_state_index = -1;
@@ -727,7 +710,7 @@ index c7b89f0..da70c26 100644
  		state_usage = &dev->states_usage[count];
  
  		if (!cx->valid)
-@@ -1035,8 +1036,64 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1038,8 +1039,64 @@ static int acpi_processor_setup_cpuidle(
  		    !(acpi_gbl_FADT.flags & ACPI_FADT_C2_MP_SUPPORTED))
  			continue;
  #endif
@@ -792,7 +775,7 @@ index c7b89f0..da70c26 100644
  		snprintf(state->name, CPUIDLE_NAME_LEN, "C%d", i);
  		strncpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
  		state->exit_latency = cx->latency;
-@@ -1049,13 +1106,13 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1052,13 +1109,13 @@ static int acpi_processor_setup_cpuidle(
  				state->flags |= CPUIDLE_FLAG_TIME_VALID;
  
  			state->enter = acpi_idle_enter_c1;
@@ -808,7 +791,7 @@ index c7b89f0..da70c26 100644
  			break;
  
  			case ACPI_STATE_C3:
-@@ -1071,7 +1128,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1074,7 +1131,7 @@ static int acpi_processor_setup_cpuidle(
  			break;
  	}
  
@@ -817,7 +800,7 @@ index c7b89f0..da70c26 100644
  
  	if (!count)
  		return -EINVAL;
-@@ -1079,7 +1136,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1082,7 +1139,7 @@ static int acpi_processor_setup_cpuidle(
  	return 0;
  }
  
@@ -826,7 +809,7 @@ index c7b89f0..da70c26 100644
  {
  	int ret = 0;
  
-@@ -1100,7 +1157,7 @@ int acpi_processor_cst_has_changed(struct acpi_processor *pr)
+@@ -1103,7 +1160,7 @@ int acpi_processor_cst_has_changed(struc
  	cpuidle_disable_device(&pr->power.dev);
  	acpi_processor_get_power_info(pr);
  	if (pr->flags.power) {
@@ -835,7 +818,7 @@ index c7b89f0..da70c26 100644
  		ret = cpuidle_enable_device(&pr->power.dev);
  	}
  	cpuidle_resume_and_unlock();
-@@ -1108,10 +1165,72 @@ int acpi_processor_cst_has_changed(struct acpi_processor *pr)
+@@ -1111,10 +1168,72 @@ int acpi_processor_cst_has_changed(struc
  	return ret;
  }
  
@@ -908,7 +891,7 @@ index c7b89f0..da70c26 100644
  	static int first_run;
  
  	if (disabled_by_idle_boot_param())
-@@ -1148,9 +1267,26 @@ int __cpuinit acpi_processor_power_init(struct acpi_processor *pr,
+@@ -1151,9 +1270,26 @@ int __cpuinit acpi_processor_power_init(
  	 * platforms that only support C1.
  	 */
  	if (pr->flags.power) {
@@ -938,7 +921,7 @@ index c7b89f0..da70c26 100644
  	}
  	return 0;
  }
-@@ -1161,8 +1297,13 @@ int acpi_processor_power_exit(struct acpi_processor *pr,
+@@ -1164,8 +1300,13 @@ int acpi_processor_power_exit(struct acp
  	if (disabled_by_idle_boot_param())
  		return 0;
  
@@ -954,11 +937,9 @@ index c7b89f0..da70c26 100644
 +	pr->flags.power_setup_done = 0;
  	return 0;
  }
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 219a757..06ce268 100644
 --- a/drivers/cpuidle/cpuidle.c
 +++ b/drivers/cpuidle/cpuidle.c
-@@ -62,6 +62,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev);
+@@ -62,6 +62,7 @@ static int __cpuidle_register_device(str
  int cpuidle_idle_call(void)
  {
  	struct cpuidle_device *dev = __this_cpu_read(cpuidle_devices);
@@ -998,7 +979,7 @@ index 219a757..06ce268 100644
  {
  	ktime_t	t1, t2;
  	s64 diff;
-@@ -184,12 +186,9 @@ static int poll_idle(struct cpuidle_device *dev, int index)
+@@ -184,12 +186,9 @@ static int poll_idle(struct cpuidle_devi
  	return index;
  }
  
@@ -1013,7 +994,7 @@ index 219a757..06ce268 100644
  
  	snprintf(state->name, CPUIDLE_NAME_LEN, "POLL");
  	snprintf(state->desc, CPUIDLE_DESC_LEN, "CPUIDLE CORE POLL IDLE");
-@@ -200,7 +199,7 @@ static void poll_idle_init(struct cpuidle_device *dev)
+@@ -200,7 +199,7 @@ static void poll_idle_init(struct cpuidl
  	state->enter = poll_idle;
  }
  #else
@@ -1022,7 +1003,7 @@ index 219a757..06ce268 100644
  #endif /* CONFIG_ARCH_HAS_CPU_RELAX */
  
  /**
-@@ -227,13 +226,13 @@ int cpuidle_enable_device(struct cpuidle_device *dev)
+@@ -227,13 +226,13 @@ int cpuidle_enable_device(struct cpuidle
  			return ret;
  	}
  
@@ -1038,7 +1019,7 @@ index 219a757..06ce268 100644
  		goto fail_sysfs;
  
  	for (i = 0; i < dev->state_count; i++) {
-@@ -274,7 +273,7 @@ void cpuidle_disable_device(struct cpuidle_device *dev)
+@@ -274,7 +273,7 @@ void cpuidle_disable_device(struct cpuid
  	dev->enabled = 0;
  
  	if (cpuidle_curr_governor->disable)
@@ -1047,7 +1028,7 @@ index 219a757..06ce268 100644
  
  	cpuidle_remove_state_sysfs(dev);
  	enabled_devices--;
-@@ -302,26 +301,6 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
+@@ -302,26 +301,6 @@ static int __cpuidle_register_device(str
  
  	init_completion(&dev->kobj_unregister);
  
@@ -1074,8 +1055,6 @@ index 219a757..06ce268 100644
  	per_cpu(cpuidle_devices, dev->cpu) = dev;
  	list_add(&dev->device_list, &cpuidle_detected_devices);
  	if ((ret = cpuidle_add_sysfs(sys_dev))) {
-diff --git a/drivers/cpuidle/driver.c b/drivers/cpuidle/driver.c
-index 3f7e3ce..284d7af 100644
 --- a/drivers/cpuidle/driver.c
 +++ b/drivers/cpuidle/driver.c
 @@ -17,6 +17,30 @@
@@ -1109,7 +1088,7 @@ index 3f7e3ce..284d7af 100644
  /**
   * cpuidle_register_driver - registers a driver
   * @drv: the driver
-@@ -34,6 +58,7 @@ int cpuidle_register_driver(struct cpuidle_driver *drv)
+@@ -34,6 +58,7 @@ int cpuidle_register_driver(struct cpuid
  		spin_unlock(&cpuidle_driver_lock);
  		return -EBUSY;
  	}
@@ -1117,11 +1096,9 @@ index 3f7e3ce..284d7af 100644
  	cpuidle_curr_driver = drv;
  	spin_unlock(&cpuidle_driver_lock);
  
-diff --git a/drivers/cpuidle/governors/ladder.c b/drivers/cpuidle/governors/ladder.c
-index 78b06d2..261e57a 100644
 --- a/drivers/cpuidle/governors/ladder.c
 +++ b/drivers/cpuidle/governors/ladder.c
-@@ -60,9 +60,11 @@ static inline void ladder_do_selection(struct ladder_device *ldev,
+@@ -60,9 +60,11 @@ static inline void ladder_do_selection(s
  
  /**
   * ladder_select_state - selects the next state to enter
@@ -1134,7 +1111,7 @@ index 78b06d2..261e57a 100644
  {
  	struct ladder_device *ldev = &__get_cpu_var(ladder_devices);
  	struct ladder_device_state *last_state;
-@@ -77,15 +79,17 @@ static int ladder_select_state(struct cpuidle_device *dev)
+@@ -77,15 +79,17 @@ static int ladder_select_state(struct cp
  
  	last_state = &ldev->states[last_idx];
  
@@ -1156,7 +1133,7 @@ index 78b06d2..261e57a 100644
  		last_state->stats.promotion_count++;
  		last_state->stats.demotion_count = 0;
  		if (last_state->stats.promotion_count >= last_state->threshold.promotion_count) {
-@@ -96,11 +100,11 @@ static int ladder_select_state(struct cpuidle_device *dev)
+@@ -96,11 +100,11 @@ static int ladder_select_state(struct cp
  
  	/* consider demotion */
  	if (last_idx > CPUIDLE_DRIVER_STATE_START &&
@@ -1170,7 +1147,7 @@ index 78b06d2..261e57a 100644
  				break;
  		}
  		ladder_do_selection(ldev, last_idx, i);
-@@ -123,9 +127,11 @@ static int ladder_select_state(struct cpuidle_device *dev)
+@@ -123,9 +127,11 @@ static int ladder_select_state(struct cp
  
  /**
   * ladder_enable_device - setup for the governor
@@ -1183,7 +1160,7 @@ index 78b06d2..261e57a 100644
  {
  	int i;
  	struct ladder_device *ldev = &per_cpu(ladder_devices, dev->cpu);
-@@ -134,8 +140,8 @@ static int ladder_enable_device(struct cpuidle_device *dev)
+@@ -134,8 +140,8 @@ static int ladder_enable_device(struct c
  
  	ldev->last_state_idx = CPUIDLE_DRIVER_STATE_START;
  
@@ -1194,7 +1171,7 @@ index 78b06d2..261e57a 100644
  		lstate = &ldev->states[i];
  
  		lstate->stats.promotion_count = 0;
-@@ -144,7 +150,7 @@ static int ladder_enable_device(struct cpuidle_device *dev)
+@@ -144,7 +150,7 @@ static int ladder_enable_device(struct c
  		lstate->threshold.promotion_count = PROMOTION_COUNT;
  		lstate->threshold.demotion_count = DEMOTION_COUNT;
  
@@ -1203,11 +1180,9 @@ index 78b06d2..261e57a 100644
  			lstate->threshold.promotion_time = state->exit_latency;
  		if (i > 0)
  			lstate->threshold.demotion_time = state->exit_latency;
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 2072aeb..ad09526 100644
 --- a/drivers/cpuidle/governors/menu.c
 +++ b/drivers/cpuidle/governors/menu.c
-@@ -183,7 +183,7 @@ static inline int performance_multiplier(void)
+@@ -183,7 +183,7 @@ static inline int performance_multiplier
  
  static DEFINE_PER_CPU(struct menu_device, menu_devices);
  
@@ -1216,7 +1191,7 @@ index 2072aeb..ad09526 100644
  
  /* This implements DIV_ROUND_CLOSEST but avoids 64 bit division */
  static u64 div_round64(u64 dividend, u32 divisor)
-@@ -229,9 +229,10 @@ static void detect_repeating_patterns(struct menu_device *data)
+@@ -229,9 +229,10 @@ static void detect_repeating_patterns(st
  
  /**
   * menu_select - selects the next idle state to enter
@@ -1228,7 +1203,7 @@ index 2072aeb..ad09526 100644
  {
  	struct menu_device *data = &__get_cpu_var(menu_devices);
  	int latency_req = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
-@@ -241,7 +242,7 @@ static int menu_select(struct cpuidle_device *dev)
+@@ -241,7 +242,7 @@ static int menu_select(struct cpuidle_de
  	struct timespec t;
  
  	if (data->needs_update) {
@@ -1237,7 +1212,7 @@ index 2072aeb..ad09526 100644
  		data->needs_update = 0;
  	}
  
-@@ -286,8 +287,8 @@ static int menu_select(struct cpuidle_device *dev)
+@@ -286,8 +287,8 @@ static int menu_select(struct cpuidle_de
  	 * Find the idle state with the lowest power while satisfying
  	 * our constraints.
  	 */
@@ -1248,7 +1223,7 @@ index 2072aeb..ad09526 100644
  
  		if (s->target_residency > data->predicted_us)
  			continue;
-@@ -324,14 +325,15 @@ static void menu_reflect(struct cpuidle_device *dev, int index)
+@@ -324,14 +325,15 @@ static void menu_reflect(struct cpuidle_
  
  /**
   * menu_update - attempts to guess what happened after entry
@@ -1266,7 +1241,7 @@ index 2072aeb..ad09526 100644
  	unsigned int measured_us;
  	u64 new_factor;
  
-@@ -385,9 +387,11 @@ static void menu_update(struct cpuidle_device *dev)
+@@ -385,9 +387,11 @@ static void menu_update(struct cpuidle_d
  
  /**
   * menu_enable_device - scans a CPU's states and does setup
@@ -1279,11 +1254,9 @@ index 2072aeb..ad09526 100644
  {
  	struct menu_device *data = &per_cpu(menu_devices, dev->cpu);
  
-diff --git a/drivers/cpuidle/sysfs.c b/drivers/cpuidle/sysfs.c
-index 8a1ace1..1e756e1 100644
 --- a/drivers/cpuidle/sysfs.c
 +++ b/drivers/cpuidle/sysfs.c
-@@ -322,13 +322,14 @@ int cpuidle_add_state_sysfs(struct cpuidle_device *device)
+@@ -322,13 +322,14 @@ int cpuidle_add_state_sysfs(struct cpuid
  {
  	int i, ret = -ENOMEM;
  	struct cpuidle_state_kobj *kobj;
@@ -1299,8 +1272,6 @@ index 8a1ace1..1e756e1 100644
  		kobj->state_usage = &device->states_usage[i];
  		init_completion(&kobj->kobj_unregister);
  
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index b0c63e9..1f122c6 100644
 --- a/drivers/idle/intel_idle.c
 +++ b/drivers/idle/intel_idle.c
 @@ -81,7 +81,8 @@ static unsigned int mwait_substates;
@@ -1331,7 +1302,7 @@ index b0c63e9..1f122c6 100644
  	struct cpuidle_state_usage *state_usage = &dev->states_usage[index];
  	unsigned long eax = (unsigned long)cpuidle_get_statedata(state_usage);
  	unsigned int cstate;
-@@ -421,6 +424,60 @@ static void intel_idle_cpuidle_devices_uninit(void)
+@@ -421,6 +424,60 @@ static void intel_idle_cpuidle_devices_u
  	return;
  }
  /*
@@ -1392,7 +1363,7 @@ index b0c63e9..1f122c6 100644
   * intel_idle_cpuidle_devices_init()
   * allocate, initialize, register cpuidle_devices
   */
-@@ -454,23 +511,9 @@ static int intel_idle_cpuidle_devices_init(void)
+@@ -454,23 +511,9 @@ static int intel_idle_cpuidle_devices_in
  				continue;
  			/* is the state not enabled? */
  			if (cpuidle_state_table[cstate].enter == NULL) {
@@ -1416,7 +1387,7 @@ index b0c63e9..1f122c6 100644
  			dev->states_usage[dev->state_count].driver_data =
  				(void *)get_driver_data(cstate);
  
-@@ -485,8 +528,6 @@ static int intel_idle_cpuidle_devices_init(void)
+@@ -485,8 +528,6 @@ static int intel_idle_cpuidle_devices_in
  			return -EIO;
  		}
  	}
@@ -1433,11 +1404,9 @@ index b0c63e9..1f122c6 100644
  	retval = cpuidle_register_driver(&intel_idle_driver);
  	if (retval) {
  		printk(KERN_DEBUG PREFIX "intel_idle yielding to %s",
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index ba4928c..716e97b 100644
 --- a/include/acpi/processor.h
 +++ b/include/acpi/processor.h
-@@ -329,6 +329,7 @@ extern void acpi_processor_throttling_init(void);
+@@ -329,6 +329,7 @@ extern void acpi_processor_throttling_in
  int acpi_processor_power_init(struct acpi_processor *pr,
  			      struct acpi_device *device);
  int acpi_processor_cst_has_changed(struct acpi_processor *pr);
@@ -1445,8 +1414,6 @@ index ba4928c..716e97b 100644
  int acpi_processor_power_exit(struct acpi_processor *pr,
  			      struct acpi_device *device);
  int acpi_processor_suspend(struct acpi_device * device, pm_message_t state);
-diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-index 0156540..c904188 100644
 --- a/include/linux/cpuidle.h
 +++ b/include/linux/cpuidle.h
 @@ -22,6 +22,7 @@
@@ -1486,7 +1453,7 @@ index 0156540..c904188 100644
  };
  
  DECLARE_PER_CPU(struct cpuidle_device *, cpuidle_devices);
-@@ -120,6 +119,11 @@ static inline int cpuidle_get_last_residency(struct cpuidle_device *dev)
+@@ -120,6 +119,11 @@ static inline int cpuidle_get_last_resid
  struct cpuidle_driver {
  	char			name[CPUIDLE_NAME_LEN];
  	struct module 		*owner;
@@ -1515,6 +1482,3 @@ index 0156540..c904188 100644
  	void (*reflect)		(struct cpuidle_device *dev, int index);
  
  	struct module 		*owner;
--- 
-1.7.10.1.362.g242cab3
-

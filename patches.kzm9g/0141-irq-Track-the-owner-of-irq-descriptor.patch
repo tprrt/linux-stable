@@ -195,7 +195,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/kernel/irq/manage.c
 +++ b/kernel/irq/manage.c
-@@ -889,6 +889,8 @@ __setup_irq(unsigned int irq, struct irq
+@@ -898,6 +898,8 @@ __setup_irq(unsigned int irq, struct irq
  
  	if (desc->irq_data.chip == &no_irq_chip)
  		return -ENOSYS;
@@ -204,7 +204,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
  	/*
  	 * Check whether the interrupt nests into another interrupt
-@@ -896,8 +898,10 @@ __setup_irq(unsigned int irq, struct irq
+@@ -905,8 +907,10 @@ __setup_irq(unsigned int irq, struct irq
  	 */
  	nested = irq_settings_is_nested_thread(desc);
  	if (nested) {
@@ -217,7 +217,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		/*
  		 * Replace the primary handler which was provided from
  		 * the driver for non nested interrupt handling by the
-@@ -919,8 +923,10 @@ __setup_irq(unsigned int irq, struct irq
+@@ -928,8 +932,10 @@ __setup_irq(unsigned int irq, struct irq
  
  		t = kthread_create(irq_thread, new, "irq/%d-%s", irq,
  				   new->name);
@@ -230,7 +230,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		/*
  		 * We keep the reference to the task struct even if
  		 * the thread dies to avoid that the interrupt code
-@@ -1117,6 +1123,8 @@ out_thread:
+@@ -1136,6 +1142,8 @@ out_thread:
  			kthread_stop(t);
  		put_task_struct(t);
  	}
@@ -239,7 +239,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	return ret;
  }
  
-@@ -1225,6 +1233,7 @@ static struct irqaction *__free_irq(unsi
+@@ -1244,6 +1252,7 @@ static struct irqaction *__free_irq(unsi
  		put_task_struct(action->thread);
  	}
  

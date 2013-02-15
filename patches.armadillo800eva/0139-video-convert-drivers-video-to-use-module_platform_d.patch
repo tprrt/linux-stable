@@ -37,11 +37,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/video/xilinxfb.c         |   20 +-------------------
  14 files changed, 14 insertions(+), 176 deletions(-)
 
-diff --git a/drivers/video/mxsfb.c b/drivers/video/mxsfb.c
-index 0b2f2dd..55e6680 100644
 --- a/drivers/video/mxsfb.c
 +++ b/drivers/video/mxsfb.c
-@@ -901,18 +901,7 @@ static struct platform_driver mxsfb_driver = {
+@@ -902,18 +902,7 @@ static struct platform_driver mxsfb_driv
  	},
  };
  
@@ -61,11 +59,9 @@ index 0b2f2dd..55e6680 100644
  
  MODULE_DESCRIPTION("Freescale mxs framebuffer driver");
  MODULE_AUTHOR("Sascha Hauer, Pengutronix");
-diff --git a/drivers/video/nuc900fb.c b/drivers/video/nuc900fb.c
-index f838d9e..675255e 100644
 --- a/drivers/video/nuc900fb.c
 +++ b/drivers/video/nuc900fb.c
-@@ -763,18 +763,7 @@ static struct platform_driver nuc900fb_driver = {
+@@ -763,18 +763,7 @@ static struct platform_driver nuc900fb_d
  	},
  };
  
@@ -85,11 +81,9 @@ index f838d9e..675255e 100644
  
  MODULE_DESCRIPTION("Framebuffer driver for the NUC900");
  MODULE_LICENSE("GPL");
-diff --git a/drivers/video/pxa168fb.c b/drivers/video/pxa168fb.c
-index bb95ec5..53d575e 100644
 --- a/drivers/video/pxa168fb.c
 +++ b/drivers/video/pxa168fb.c
-@@ -832,17 +832,7 @@ static struct platform_driver pxa168fb_driver = {
+@@ -832,17 +832,7 @@ static struct platform_driver pxa168fb_d
  	.remove		= __devexit_p(pxa168fb_remove),
  };
  
@@ -108,11 +102,9 @@ index bb95ec5..53d575e 100644
  
  MODULE_AUTHOR("Lennert Buytenhek <buytenh@marvell.com> "
  	      "Green Wan <gwan@marvell.com>");
-diff --git a/drivers/video/pxa3xx-gcu.c b/drivers/video/pxa3xx-gcu.c
-index 0283c70..68b8ced 100644
 --- a/drivers/video/pxa3xx-gcu.c
 +++ b/drivers/video/pxa3xx-gcu.c
-@@ -749,20 +749,7 @@ static struct platform_driver pxa3xx_gcu_driver = {
+@@ -749,20 +749,7 @@ static struct platform_driver pxa3xx_gcu
  	},
  };
  
@@ -134,11 +126,9 @@ index 0283c70..68b8ced 100644
  
  MODULE_DESCRIPTION("PXA3xx graphics controller unit driver");
  MODULE_LICENSE("GPL");
-diff --git a/drivers/video/s3c-fb.c b/drivers/video/s3c-fb.c
-index 4aecf21..296e005 100644
 --- a/drivers/video/s3c-fb.c
 +++ b/drivers/video/s3c-fb.c
-@@ -1895,18 +1895,7 @@ static struct platform_driver s3c_fb_driver = {
+@@ -1895,18 +1895,7 @@ static struct platform_driver s3c_fb_dri
  	},
  };
  
@@ -158,11 +148,9 @@ index 4aecf21..296e005 100644
  
  MODULE_AUTHOR("Ben Dooks <ben@simtec.co.uk>");
  MODULE_DESCRIPTION("Samsung S3C SoC Framebuffer driver");
-diff --git a/drivers/video/sh7760fb.c b/drivers/video/sh7760fb.c
-index 45e47d8..83b16e2 100644
 --- a/drivers/video/sh7760fb.c
 +++ b/drivers/video/sh7760fb.c
-@@ -585,18 +585,7 @@ static struct platform_driver sh7760_lcdc_driver = {
+@@ -585,18 +585,7 @@ static struct platform_driver sh7760_lcd
  	.remove = __devexit_p(sh7760fb_remove),
  };
  
@@ -182,11 +170,9 @@ index 45e47d8..83b16e2 100644
  
  MODULE_AUTHOR("Nobuhiro Iwamatsu, Manuel Lauss");
  MODULE_DESCRIPTION("FBdev for SH7760/63 integrated LCD Controller");
-diff --git a/drivers/video/sh_mobile_lcdcfb.c b/drivers/video/sh_mobile_lcdcfb.c
-index 1f49ab4..a264ebf 100644
 --- a/drivers/video/sh_mobile_lcdcfb.c
 +++ b/drivers/video/sh_mobile_lcdcfb.c
-@@ -1709,18 +1709,7 @@ static struct platform_driver sh_mobile_lcdc_driver = {
+@@ -1709,18 +1709,7 @@ static struct platform_driver sh_mobile_
  	.remove		= sh_mobile_lcdc_remove,
  };
  
@@ -206,11 +192,9 @@ index 1f49ab4..a264ebf 100644
  
  MODULE_DESCRIPTION("SuperH Mobile LCDC Framebuffer driver");
  MODULE_AUTHOR("Magnus Damm <damm@opensource.se>");
-diff --git a/drivers/video/sh_mobile_meram.c b/drivers/video/sh_mobile_meram.c
-index 4d63490..f45d83e 100644
 --- a/drivers/video/sh_mobile_meram.c
 +++ b/drivers/video/sh_mobile_meram.c
-@@ -679,18 +679,7 @@ static struct platform_driver sh_mobile_meram_driver = {
+@@ -679,18 +679,7 @@ static struct platform_driver sh_mobile_
  	.remove		= sh_mobile_meram_remove,
  };
  
@@ -230,11 +214,9 @@ index 4d63490..f45d83e 100644
  
  MODULE_DESCRIPTION("SuperH Mobile MERAM driver");
  MODULE_AUTHOR("Damian Hobson-Garcia / Takanari Hayama");
-diff --git a/drivers/video/sm501fb.c b/drivers/video/sm501fb.c
-index 6294dca..420ba8d 100644
 --- a/drivers/video/sm501fb.c
 +++ b/drivers/video/sm501fb.c
-@@ -2230,18 +2230,7 @@ static struct platform_driver sm501fb_driver = {
+@@ -2230,18 +2230,7 @@ static struct platform_driver sm501fb_dr
  	},
  };
  
@@ -254,11 +236,9 @@ index 6294dca..420ba8d 100644
  
  module_param_named(mode, fb_mode, charp, 0);
  MODULE_PARM_DESC(mode,
-diff --git a/drivers/video/vt8500lcdfb.c b/drivers/video/vt8500lcdfb.c
-index 0e120d6..aeea1c1 100644
 --- a/drivers/video/vt8500lcdfb.c
 +++ b/drivers/video/vt8500lcdfb.c
-@@ -457,18 +457,7 @@ static struct platform_driver vt8500lcd_driver = {
+@@ -457,18 +457,7 @@ static struct platform_driver vt8500lcd_
  	},
  };
  
@@ -278,11 +258,9 @@ index 0e120d6..aeea1c1 100644
  
  MODULE_AUTHOR("Alexey Charkov <alchark@gmail.com>");
  MODULE_DESCRIPTION("LCD controller driver for VIA VT8500");
-diff --git a/drivers/video/w100fb.c b/drivers/video/w100fb.c
-index c8be8af..1fce2dc 100644
 --- a/drivers/video/w100fb.c
 +++ b/drivers/video/w100fb.c
-@@ -1619,18 +1619,7 @@ static struct platform_driver w100fb_driver = {
+@@ -1619,18 +1619,7 @@ static struct platform_driver w100fb_dri
  	},
  };
  
@@ -302,11 +280,9 @@ index c8be8af..1fce2dc 100644
  
  MODULE_DESCRIPTION("ATI Imageon w100 framebuffer driver");
  MODULE_LICENSE("GPL");
-diff --git a/drivers/video/wm8505fb.c b/drivers/video/wm8505fb.c
-index 96e34a5..c8703bd 100644
 --- a/drivers/video/wm8505fb.c
 +++ b/drivers/video/wm8505fb.c
-@@ -404,18 +404,7 @@ static struct platform_driver wm8505fb_driver = {
+@@ -404,18 +404,7 @@ static struct platform_driver wm8505fb_d
  	},
  };
  
@@ -326,11 +302,9 @@ index 96e34a5..c8703bd 100644
  
  MODULE_AUTHOR("Ed Spiridonov <edo.rus@gmail.com>");
  MODULE_DESCRIPTION("Framebuffer driver for WMT WM8505");
-diff --git a/drivers/video/wmt_ge_rops.c b/drivers/video/wmt_ge_rops.c
-index 45832b7..55be386 100644
 --- a/drivers/video/wmt_ge_rops.c
 +++ b/drivers/video/wmt_ge_rops.c
-@@ -167,18 +167,7 @@ static struct platform_driver wmt_ge_rops_driver = {
+@@ -167,18 +167,7 @@ static struct platform_driver wmt_ge_rop
  	},
  };
  
@@ -350,11 +324,9 @@ index 45832b7..55be386 100644
  
  MODULE_AUTHOR("Alexey Charkov <alchark@gmail.com");
  MODULE_DESCRIPTION("Accelerators for raster operations using "
-diff --git a/drivers/video/xilinxfb.c b/drivers/video/xilinxfb.c
-index 77dea01..e44e1f0 100644
 --- a/drivers/video/xilinxfb.c
 +++ b/drivers/video/xilinxfb.c
-@@ -512,25 +512,7 @@ static struct platform_driver xilinxfb_of_driver = {
+@@ -512,25 +512,7 @@ static struct platform_driver xilinxfb_o
  	},
  };
  
@@ -381,6 +353,3 @@ index 77dea01..e44e1f0 100644
  
  MODULE_AUTHOR("MontaVista Software, Inc. <source@mvista.com>");
  MODULE_DESCRIPTION("Xilinx TFT frame buffer driver");
--- 
-1.7.10
-

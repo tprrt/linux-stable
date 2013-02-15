@@ -487,7 +487,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	int canrequest = 0;
  
  	if (!desc)
-@@ -1140,6 +1140,8 @@ int setup_irq(unsigned int irq, struct i
+@@ -1159,6 +1159,8 @@ int setup_irq(unsigned int irq, struct i
  	int retval;
  	struct irq_desc *desc = irq_to_desc(irq);
  
@@ -496,7 +496,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	chip_bus_lock(desc);
  	retval = __setup_irq(irq, desc, act);
  	chip_bus_sync_unlock(desc);
-@@ -1148,7 +1150,7 @@ int setup_irq(unsigned int irq, struct i
+@@ -1167,7 +1169,7 @@ int setup_irq(unsigned int irq, struct i
  }
  EXPORT_SYMBOL_GPL(setup_irq);
  
@@ -505,7 +505,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
   * Internal function to unregister an irqaction - used to free
   * regular and special interrupts that are part of the architecture.
   */
-@@ -1246,7 +1248,10 @@ static struct irqaction *__free_irq(unsi
+@@ -1265,7 +1267,10 @@ static struct irqaction *__free_irq(unsi
   */
  void remove_irq(unsigned int irq, struct irqaction *act)
  {
@@ -517,7 +517,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
  EXPORT_SYMBOL_GPL(remove_irq);
  
-@@ -1268,7 +1273,7 @@ void free_irq(unsigned int irq, void *de
+@@ -1287,7 +1292,7 @@ void free_irq(unsigned int irq, void *de
  {
  	struct irq_desc *desc = irq_to_desc(irq);
  
@@ -526,7 +526,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return;
  
  #ifdef CONFIG_SMP
-@@ -1345,7 +1350,8 @@ int request_threaded_irq(unsigned int ir
+@@ -1364,7 +1369,8 @@ int request_threaded_irq(unsigned int ir
  	if (!desc)
  		return -EINVAL;
  
@@ -536,7 +536,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return -EINVAL;
  
  	if (!handler) {
-@@ -1430,3 +1436,181 @@ int request_any_context_irq(unsigned int
+@@ -1449,3 +1455,181 @@ int request_any_context_irq(unsigned int
  	return !ret ? IRQC_IS_HARDIRQ : ret;
  }
  EXPORT_SYMBOL_GPL(request_any_context_irq);

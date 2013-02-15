@@ -137,7 +137,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  			    !btrfs_transaction_blocked(root->fs_info))
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -2822,8 +2822,7 @@ cont_thread:
+@@ -2824,8 +2824,7 @@ cont_thread:
  		}
  		mutex_unlock(&eli->li_list_mtx);
  

@@ -22,19 +22,17 @@ Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
  arch/arm/mach-davinci/cpuidle.c   |    5 ++--
- arch/arm/mach-omap2/cpuidle34xx.c |   13 ++++++-----
- drivers/acpi/processor_idle.c     |   25 ++++++++++----------
- drivers/cpuidle/cpuidle.c         |   11 +++++----
+ arch/arm/mach-omap2/cpuidle34xx.c |   13 +++++-----
+ drivers/acpi/processor_idle.c     |   25 +++++++++-----------
+ drivers/cpuidle/cpuidle.c         |   11 ++++-----
  drivers/cpuidle/sysfs.c           |   19 ++++++++++-----
- drivers/idle/intel_idle.c         |   46 +++++++++++++++++++++++++++----------
+ drivers/idle/intel_idle.c         |   46 ++++++++++++++++++++++++++++----------
  include/linux/cpuidle.h           |   25 ++++++++++++--------
  7 files changed, 90 insertions(+), 54 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/cpuidle.c b/arch/arm/mach-davinci/cpuidle.c
-index ab9a9e4..dda6d2f 100644
 --- a/arch/arm/mach-davinci/cpuidle.c
 +++ b/arch/arm/mach-davinci/cpuidle.c
-@@ -81,7 +81,8 @@ static struct davinci_ops davinci_states[DAVINCI_CPUIDLE_MAX_STATES] = {
+@@ -81,7 +81,8 @@ static struct davinci_ops davinci_states
  static int davinci_enter_idle(struct cpuidle_device *dev,
  						int index)
  {
@@ -44,7 +42,7 @@ index ab9a9e4..dda6d2f 100644
  	struct timeval before, after;
  	int idle_time;
  
-@@ -143,7 +144,7 @@ static int __init davinci_cpuidle_probe(struct platform_device *pdev)
+@@ -143,7 +144,7 @@ static int __init davinci_cpuidle_probe(
  	strcpy(device->states[1].desc, "WFI and DDR Self Refresh");
  	if (pdata->ddr2_pdown)
  		davinci_states[1].flags |= DAVINCI_CPUIDLE_FLAGS_DDR2_PWDN;
@@ -53,11 +51,9 @@ index ab9a9e4..dda6d2f 100644
  
  	device->state_count = DAVINCI_CPUIDLE_MAX_STATES;
  
-diff --git a/arch/arm/mach-omap2/cpuidle34xx.c b/arch/arm/mach-omap2/cpuidle34xx.c
-index 58425c7..d3fce7b 100644
 --- a/arch/arm/mach-omap2/cpuidle34xx.c
 +++ b/arch/arm/mach-omap2/cpuidle34xx.c
-@@ -97,7 +97,7 @@ static int omap3_enter_idle(struct cpuidle_device *dev,
+@@ -97,7 +97,7 @@ static int omap3_enter_idle(struct cpuid
  				int index)
  {
  	struct omap3_idle_statedata *cx =
@@ -77,7 +73,7 @@ index 58425c7..d3fce7b 100644
  	u32 mpu_deepest_state = PWRDM_POWER_RET;
  	u32 core_deepest_state = PWRDM_POWER_RET;
  	int next_index = -1;
-@@ -202,7 +203,7 @@ static int next_valid_state(struct cpuidle_device *dev,
+@@ -202,7 +203,7 @@ static int next_valid_state(struct cpuid
  		 */
  		idx--;
  		for (; idx >= 0; idx--) {
@@ -86,7 +82,7 @@ index 58425c7..d3fce7b 100644
  			if ((cx->valid) &&
  			    (cx->mpu_state >= mpu_deepest_state) &&
  			    (cx->core_state >= core_deepest_state)) {
-@@ -231,7 +232,6 @@ static int next_valid_state(struct cpuidle_device *dev,
+@@ -231,7 +232,6 @@ static int next_valid_state(struct cpuid
  static int omap3_enter_idle_bm(struct cpuidle_device *dev,
  			       int index)
  {
@@ -94,7 +90,7 @@ index 58425c7..d3fce7b 100644
  	int new_state_idx;
  	u32 core_next_state, per_next_state = 0, per_saved_state = 0, cam_state;
  	struct omap3_idle_statedata *cx;
-@@ -264,7 +264,7 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -264,7 +264,7 @@ static int omap3_enter_idle_bm(struct cp
  	 * Prevent PER off if CORE is not in retention or off as this
  	 * would disable PER wakeups completely.
  	 */
@@ -103,7 +99,7 @@ index 58425c7..d3fce7b 100644
  	core_next_state = cx->core_state;
  	per_next_state = per_saved_state = pwrdm_read_next_pwrst(per_pd);
  	if ((per_next_state == PWRDM_POWER_OFF) &&
-@@ -318,6 +318,7 @@ static inline struct omap3_idle_statedata *_fill_cstate(
+@@ -318,6 +318,7 @@ static inline struct omap3_idle_statedat
  {
  	struct omap3_idle_statedata *cx = &omap3_idle_data[idx];
  	struct cpuidle_state *state = &dev->states[idx];
@@ -111,7 +107,7 @@ index 58425c7..d3fce7b 100644
  
  	state->exit_latency	= cpuidle_params_table[idx].exit_latency;
  	state->target_residency	= cpuidle_params_table[idx].target_residency;
-@@ -326,7 +327,7 @@ static inline struct omap3_idle_statedata *_fill_cstate(
+@@ -326,7 +327,7 @@ static inline struct omap3_idle_statedat
  	cx->valid		= cpuidle_params_table[idx].valid;
  	sprintf(state->name, "C%d", idx + 1);
  	strncpy(state->desc, descr, CPUIDLE_DESC_LEN);
@@ -120,11 +116,9 @@ index 58425c7..d3fce7b 100644
  
  	return cx;
  }
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 6be70bf..c7b89f0 100644
 --- a/drivers/acpi/processor_idle.c
 +++ b/drivers/acpi/processor_idle.c
-@@ -745,14 +745,13 @@ static inline void acpi_idle_do_entry(struct acpi_processor_cx *cx)
+@@ -745,14 +745,13 @@ static inline void acpi_idle_do_entry(st
   *
   * This is equivalent to the HALT instruction.
   */
@@ -142,7 +136,7 @@ index 6be70bf..c7b89f0 100644
  
  	pr = __this_cpu_read(processors);
  	dev->last_residency = 0;
-@@ -790,12 +789,11 @@ static int acpi_idle_enter_c1(struct cpuidle_device *dev,
+@@ -790,12 +789,11 @@ static int acpi_idle_enter_c1(struct cpu
   * @dev: the target CPU
   * @index: the index of suggested state
   */
@@ -174,7 +168,7 @@ index 6be70bf..c7b89f0 100644
  	ktime_t  kt1, kt2;
  	s64 idle_time_ns;
  	s64 idle_time;
-@@ -1004,6 +1001,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1004,6 +1001,7 @@ static int acpi_processor_setup_cpuidle(
  	int i, count = CPUIDLE_DRIVER_STATE_START;
  	struct acpi_processor_cx *cx;
  	struct cpuidle_state *state;
@@ -182,7 +176,7 @@ index 6be70bf..c7b89f0 100644
  	struct cpuidle_device *dev = &pr->power.dev;
  
  	if (!pr->flags.power_setup_done)
-@@ -1026,6 +1024,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1029,6 +1027,7 @@ static int acpi_processor_setup_cpuidle(
  	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER && i <= max_cstate; i++) {
  		cx = &pr->power.states[i];
  		state = &dev->states[count];
@@ -190,7 +184,7 @@ index 6be70bf..c7b89f0 100644
  
  		if (!cx->valid)
  			continue;
-@@ -1036,7 +1035,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1039,7 +1038,7 @@ static int acpi_processor_setup_cpuidle(
  		    !(acpi_gbl_FADT.flags & ACPI_FADT_C2_MP_SUPPORTED))
  			continue;
  #endif
@@ -199,8 +193,6 @@ index 6be70bf..c7b89f0 100644
  
  		snprintf(state->name, CPUIDLE_NAME_LEN, "C%d", i);
  		strncpy(state->desc, cx->desc, CPUIDLE_DESC_LEN);
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 70350d2..219a757 100644
 --- a/drivers/cpuidle/cpuidle.c
 +++ b/drivers/cpuidle/cpuidle.c
 @@ -106,9 +106,9 @@ int cpuidle_idle_call(void)
@@ -215,7 +207,7 @@ index 70350d2..219a757 100644
  	}
  
  	/* give the governor an opportunity to reflect on the outcome */
-@@ -187,8 +187,9 @@ static int poll_idle(struct cpuidle_device *dev, int index)
+@@ -187,8 +187,9 @@ static int poll_idle(struct cpuidle_devi
  static void poll_idle_init(struct cpuidle_device *dev)
  {
  	struct cpuidle_state *state = &dev->states[0];
@@ -226,7 +218,7 @@ index 70350d2..219a757 100644
  
  	snprintf(state->name, CPUIDLE_NAME_LEN, "POLL");
  	snprintf(state->desc, CPUIDLE_DESC_LEN, "CPUIDLE CORE POLL IDLE");
-@@ -236,8 +237,8 @@ int cpuidle_enable_device(struct cpuidle_device *dev)
+@@ -236,8 +237,8 @@ int cpuidle_enable_device(struct cpuidle
  		goto fail_sysfs;
  
  	for (i = 0; i < dev->state_count; i++) {
@@ -237,11 +229,9 @@ index 70350d2..219a757 100644
  	}
  	dev->last_residency = 0;
  
-diff --git a/drivers/cpuidle/sysfs.c b/drivers/cpuidle/sysfs.c
-index be7917ec..8a1ace1 100644
 --- a/drivers/cpuidle/sysfs.c
 +++ b/drivers/cpuidle/sysfs.c
-@@ -216,7 +216,8 @@ static struct kobj_type ktype_cpuidle = {
+@@ -216,7 +216,8 @@ static struct kobj_type ktype_cpuidle =
  
  struct cpuidle_state_attr {
  	struct attribute attr;
@@ -278,7 +268,7 @@ index be7917ec..8a1ace1 100644
  { \
  	if (state->_name[0] == '\0')\
  		return sprintf(buf, "<null>\n");\
-@@ -269,16 +273,18 @@ static struct attribute *cpuidle_state_default_attrs[] = {
+@@ -269,16 +273,18 @@ static struct attribute *cpuidle_state_d
  
  #define kobj_to_state_obj(k) container_of(k, struct cpuidle_state_kobj, kobj)
  #define kobj_to_state(k) (kobj_to_state_obj(k)->state)
@@ -298,7 +288,7 @@ index be7917ec..8a1ace1 100644
  
  	return ret;
  }
-@@ -323,6 +329,7 @@ int cpuidle_add_state_sysfs(struct cpuidle_device *device)
+@@ -323,6 +329,7 @@ int cpuidle_add_state_sysfs(struct cpuid
  		if (!kobj)
  			goto error_state;
  		kobj->state = &device->states[i];
@@ -306,11 +296,9 @@ index be7917ec..8a1ace1 100644
  		init_completion(&kobj->kobj_unregister);
  
  		ret = kobject_init_and_add(&kobj->kobj, &ktype_state_cpuidle, &device->kobj,
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 8f056e1..b0c63e9 100644
 --- a/drivers/idle/intel_idle.c
 +++ b/drivers/idle/intel_idle.c
-@@ -109,7 +109,6 @@ static struct cpuidle_state nehalem_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -109,7 +109,6 @@ static struct cpuidle_state nehalem_csta
  	{ /* MWAIT C1 */
  		.name = "C1-NHM",
  		.desc = "MWAIT 0x00",
@@ -318,7 +306,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID,
  		.exit_latency = 3,
  		.target_residency = 6,
-@@ -117,7 +116,6 @@ static struct cpuidle_state nehalem_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -117,7 +116,6 @@ static struct cpuidle_state nehalem_csta
  	{ /* MWAIT C2 */
  		.name = "C3-NHM",
  		.desc = "MWAIT 0x10",
@@ -326,7 +314,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 20,
  		.target_residency = 80,
-@@ -125,7 +123,6 @@ static struct cpuidle_state nehalem_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -125,7 +123,6 @@ static struct cpuidle_state nehalem_csta
  	{ /* MWAIT C3 */
  		.name = "C6-NHM",
  		.desc = "MWAIT 0x20",
@@ -334,7 +322,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 200,
  		.target_residency = 800,
-@@ -137,7 +134,6 @@ static struct cpuidle_state snb_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -137,7 +134,6 @@ static struct cpuidle_state snb_cstates[
  	{ /* MWAIT C1 */
  		.name = "C1-SNB",
  		.desc = "MWAIT 0x00",
@@ -342,7 +330,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID,
  		.exit_latency = 1,
  		.target_residency = 1,
-@@ -145,7 +141,6 @@ static struct cpuidle_state snb_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -145,7 +141,6 @@ static struct cpuidle_state snb_cstates[
  	{ /* MWAIT C2 */
  		.name = "C3-SNB",
  		.desc = "MWAIT 0x10",
@@ -350,7 +338,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 80,
  		.target_residency = 211,
-@@ -153,7 +148,6 @@ static struct cpuidle_state snb_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -153,7 +148,6 @@ static struct cpuidle_state snb_cstates[
  	{ /* MWAIT C3 */
  		.name = "C6-SNB",
  		.desc = "MWAIT 0x20",
@@ -358,7 +346,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 104,
  		.target_residency = 345,
-@@ -161,7 +155,6 @@ static struct cpuidle_state snb_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -161,7 +155,6 @@ static struct cpuidle_state snb_cstates[
  	{ /* MWAIT C4 */
  		.name = "C7-SNB",
  		.desc = "MWAIT 0x30",
@@ -366,7 +354,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 109,
  		.target_residency = 345,
-@@ -173,7 +166,6 @@ static struct cpuidle_state atom_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -173,7 +166,6 @@ static struct cpuidle_state atom_cstates
  	{ /* MWAIT C1 */
  		.name = "C1-ATM",
  		.desc = "MWAIT 0x00",
@@ -374,7 +362,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID,
  		.exit_latency = 1,
  		.target_residency = 4,
-@@ -181,7 +173,6 @@ static struct cpuidle_state atom_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -181,7 +173,6 @@ static struct cpuidle_state atom_cstates
  	{ /* MWAIT C2 */
  		.name = "C2-ATM",
  		.desc = "MWAIT 0x10",
@@ -382,7 +370,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID,
  		.exit_latency = 20,
  		.target_residency = 80,
-@@ -190,7 +181,6 @@ static struct cpuidle_state atom_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -190,7 +181,6 @@ static struct cpuidle_state atom_cstates
  	{ /* MWAIT C4 */
  		.name = "C4-ATM",
  		.desc = "MWAIT 0x30",
@@ -390,7 +378,7 @@ index 8f056e1..b0c63e9 100644
  		.flags = CPUIDLE_FLAG_TIME_VALID | CPUIDLE_FLAG_TLB_FLUSHED,
  		.exit_latency = 100,
  		.target_residency = 400,
-@@ -199,13 +189,41 @@ static struct cpuidle_state atom_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -199,13 +189,41 @@ static struct cpuidle_state atom_cstates
  	{ /* MWAIT C6 */
  		.name = "C6-ATM",
  		.desc = "MWAIT 0x52",
@@ -433,7 +421,7 @@ index 8f056e1..b0c63e9 100644
  /**
   * intel_idle
   * @dev: cpuidle_device
-@@ -216,7 +234,8 @@ static int intel_idle(struct cpuidle_device *dev, int index)
+@@ -216,7 +234,8 @@ static int intel_idle(struct cpuidle_dev
  {
  	unsigned long ecx = 1; /* break on interrupt flag */
  	struct cpuidle_state *state = &dev->states[index];
@@ -443,7 +431,7 @@ index 8f056e1..b0c63e9 100644
  	unsigned int cstate;
  	ktime_t kt_before, kt_after;
  	s64 usec_delta;
-@@ -452,6 +471,9 @@ static int intel_idle_cpuidle_devices_init(void)
+@@ -452,6 +471,9 @@ static int intel_idle_cpuidle_devices_in
  			dev->states[dev->state_count] =	/* structure copy */
  				cpuidle_state_table[cstate];
  
@@ -453,8 +441,6 @@ index 8f056e1..b0c63e9 100644
  			dev->state_count += 1;
  		}
  
-diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-index c6d85cf..0156540 100644
 --- a/include/linux/cpuidle.h
 +++ b/include/linux/cpuidle.h
 @@ -28,19 +28,22 @@ struct cpuidle_device;
@@ -526,6 +512,3 @@ index c6d85cf..0156540 100644
  	struct cpuidle_state_kobj *kobjs[CPUIDLE_STATE_MAX];
  
  	struct list_head 	device_list;
--- 
-1.7.10.1.362.g242cab3
-

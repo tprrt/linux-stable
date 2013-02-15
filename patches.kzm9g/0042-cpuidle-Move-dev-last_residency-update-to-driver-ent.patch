@@ -32,25 +32,23 @@ Signed-off-by: Len Brown <len.brown@intel.com>
 
 Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
- arch/arm/mach-at91/cpuidle.c          |   10 +++--
+ arch/arm/mach-at91/cpuidle.c          |   10 ++--
  arch/arm/mach-davinci/cpuidle.c       |    9 ++--
  arch/arm/mach-exynos4/cpuidle.c       |    7 +--
- arch/arm/mach-kirkwood/cpuidle.c      |   12 ++++--
- arch/arm/mach-omap2/cpuidle34xx.c     |   67 +++++++++++++++++------------
- arch/sh/kernel/cpu/shmobile/cpuidle.c |   12 +++---
- drivers/acpi/processor_idle.c         |   75 +++++++++++++++++++++------------
+ arch/arm/mach-kirkwood/cpuidle.c      |   12 +++--
+ arch/arm/mach-omap2/cpuidle34xx.c     |   67 +++++++++++++++++-------------
+ arch/sh/kernel/cpu/shmobile/cpuidle.c |   12 +++--
+ drivers/acpi/processor_idle.c         |   75 ++++++++++++++++++++++------------
  drivers/cpuidle/cpuidle.c             |   32 +++++++-------
- drivers/cpuidle/governors/ladder.c    |   13 ++++++
+ drivers/cpuidle/governors/ladder.c    |   13 +++++
  drivers/cpuidle/governors/menu.c      |    7 ++-
- drivers/idle/intel_idle.c             |   12 ++++--
- include/linux/cpuidle.h               |    7 ++-
+ drivers/idle/intel_idle.c             |   12 +++--
+ include/linux/cpuidle.h               |    7 +--
  12 files changed, 164 insertions(+), 99 deletions(-)
 
-diff --git a/arch/arm/mach-at91/cpuidle.c b/arch/arm/mach-at91/cpuidle.c
-index f474272..d76a600 100644
 --- a/arch/arm/mach-at91/cpuidle.c
 +++ b/arch/arm/mach-at91/cpuidle.c
-@@ -34,7 +34,7 @@ static struct cpuidle_driver at91_idle_driver = {
+@@ -34,7 +34,7 @@ static struct cpuidle_driver at91_idle_d
  
  /* Actual code that puts the SoC in different idle states */
  static int at91_enter_idle(struct cpuidle_device *dev,
@@ -59,7 +57,7 @@ index f474272..d76a600 100644
  {
  	struct timeval before, after;
  	int idle_time;
-@@ -42,10 +42,10 @@ static int at91_enter_idle(struct cpuidle_device *dev,
+@@ -42,10 +42,10 @@ static int at91_enter_idle(struct cpuidl
  
  	local_irq_disable();
  	do_gettimeofday(&before);
@@ -72,7 +70,7 @@ index f474272..d76a600 100644
  		asm("b 1f; .align 5; 1:");
  		asm("mcr p15, 0, r0, c7, c10, 4");	/* drain write buffer */
  		saved_lpr = sdram_selfrefresh_enable();
-@@ -56,7 +56,9 @@ static int at91_enter_idle(struct cpuidle_device *dev,
+@@ -56,7 +56,9 @@ static int at91_enter_idle(struct cpuidl
  	local_irq_enable();
  	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
  			(after.tv_usec - before.tv_usec);
@@ -83,11 +81,9 @@ index f474272..d76a600 100644
  }
  
  /* Initialize CPU idle by registering the idle states */
-diff --git a/arch/arm/mach-davinci/cpuidle.c b/arch/arm/mach-davinci/cpuidle.c
-index 85cc399..ab9a9e4 100644
 --- a/arch/arm/mach-davinci/cpuidle.c
 +++ b/arch/arm/mach-davinci/cpuidle.c
-@@ -79,9 +79,9 @@ static struct davinci_ops davinci_states[DAVINCI_CPUIDLE_MAX_STATES] = {
+@@ -79,9 +79,9 @@ static struct davinci_ops davinci_states
  
  /* Actual code that puts the SoC in different idle states */
  static int davinci_enter_idle(struct cpuidle_device *dev,
@@ -99,7 +95,7 @@ index 85cc399..ab9a9e4 100644
  	struct timeval before, after;
  	int idle_time;
  
-@@ -99,7 +99,10 @@ static int davinci_enter_idle(struct cpuidle_device *dev,
+@@ -99,7 +99,10 @@ static int davinci_enter_idle(struct cpu
  	local_irq_enable();
  	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
  			(after.tv_usec - before.tv_usec);
@@ -111,8 +107,6 @@ index 85cc399..ab9a9e4 100644
  }
  
  static int __init davinci_cpuidle_probe(struct platform_device *pdev)
-diff --git a/arch/arm/mach-exynos4/cpuidle.c b/arch/arm/mach-exynos4/cpuidle.c
-index bf7e96f..ea026e7 100644
 --- a/arch/arm/mach-exynos4/cpuidle.c
 +++ b/arch/arm/mach-exynos4/cpuidle.c
 @@ -16,7 +16,7 @@
@@ -124,7 +118,7 @@ index bf7e96f..ea026e7 100644
  
  static struct cpuidle_state exynos4_cpuidle_set[] = {
  	[0] = {
-@@ -37,7 +37,7 @@ static struct cpuidle_driver exynos4_idle_driver = {
+@@ -37,7 +37,7 @@ static struct cpuidle_driver exynos4_idl
  };
  
  static int exynos4_enter_idle(struct cpuidle_device *dev,
@@ -133,7 +127,7 @@ index bf7e96f..ea026e7 100644
  {
  	struct timeval before, after;
  	int idle_time;
-@@ -52,7 +52,8 @@ static int exynos4_enter_idle(struct cpuidle_device *dev,
+@@ -52,7 +52,8 @@ static int exynos4_enter_idle(struct cpu
  	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
  		    (after.tv_usec - before.tv_usec);
  
@@ -143,11 +137,9 @@ index bf7e96f..ea026e7 100644
  }
  
  static int __init exynos4_init_cpuidle(void)
-diff --git a/arch/arm/mach-kirkwood/cpuidle.c b/arch/arm/mach-kirkwood/cpuidle.c
-index 864e569..53d6049 100644
 --- a/arch/arm/mach-kirkwood/cpuidle.c
 +++ b/arch/arm/mach-kirkwood/cpuidle.c
-@@ -33,17 +33,17 @@ static DEFINE_PER_CPU(struct cpuidle_device, kirkwood_cpuidle_device);
+@@ -33,17 +33,17 @@ static DEFINE_PER_CPU(struct cpuidle_dev
  
  /* Actual code that puts the SoC in different idle states */
  static int kirkwood_enter_idle(struct cpuidle_device *dev,
@@ -168,7 +160,7 @@ index 864e569..53d6049 100644
  		/*
  		 * Following write will put DDR in self refresh.
  		 * Note that we have 256 cycles before DDR puts it
-@@ -58,7 +58,11 @@ static int kirkwood_enter_idle(struct cpuidle_device *dev,
+@@ -58,7 +58,11 @@ static int kirkwood_enter_idle(struct cp
  	local_irq_enable();
  	idle_time = (after.tv_sec - before.tv_sec) * USEC_PER_SEC +
  			(after.tv_usec - before.tv_usec);
@@ -181,11 +173,9 @@ index 864e569..53d6049 100644
  }
  
  /* Initialize CPU idle by registering the idle states */
-diff --git a/arch/arm/mach-omap2/cpuidle34xx.c b/arch/arm/mach-omap2/cpuidle34xx.c
-index 4bf6e6e..58425c7 100644
 --- a/arch/arm/mach-omap2/cpuidle34xx.c
 +++ b/arch/arm/mach-omap2/cpuidle34xx.c
-@@ -88,17 +88,19 @@ static int _cpuidle_deny_idle(struct powerdomain *pwrdm,
+@@ -88,17 +88,19 @@ static int _cpuidle_deny_idle(struct pow
  /**
   * omap3_enter_idle - Programs OMAP3 to enter the specified state
   * @dev: cpuidle device
@@ -208,7 +198,7 @@ index 4bf6e6e..58425c7 100644
  
  	/* Used to keep track of the total time in idle */
  	getnstimeofday(&ts_preidle);
-@@ -113,7 +115,7 @@ static int omap3_enter_idle(struct cpuidle_device *dev,
+@@ -113,7 +115,7 @@ static int omap3_enter_idle(struct cpuid
  		goto return_sleep_time;
  
  	/* Deny idle for C1 */
@@ -217,7 +207,7 @@ index 4bf6e6e..58425c7 100644
  		pwrdm_for_each_clkdm(mpu_pd, _cpuidle_deny_idle);
  		pwrdm_for_each_clkdm(core_pd, _cpuidle_deny_idle);
  	}
-@@ -122,7 +124,7 @@ static int omap3_enter_idle(struct cpuidle_device *dev,
+@@ -122,7 +124,7 @@ static int omap3_enter_idle(struct cpuid
  	omap_sram_idle();
  
  	/* Re-allow idle for C1 */
@@ -270,7 +260,7 @@ index 4bf6e6e..58425c7 100644
  
  	if (enable_off_mode) {
  		mpu_deepest_state = PWRDM_POWER_OFF;
-@@ -172,20 +181,20 @@ static struct cpuidle_state *next_valid_state(struct cpuidle_device *dev,
+@@ -172,20 +181,20 @@ static struct cpuidle_state *next_valid_
  	if ((cx->valid) &&
  	    (cx->mpu_state >= mpu_deepest_state) &&
  	    (cx->core_state >= core_deepest_state)) {
@@ -294,7 +284,7 @@ index 4bf6e6e..58425c7 100644
  
  		/*
  		 * Drop to next valid state.
-@@ -197,37 +206,39 @@ static struct cpuidle_state *next_valid_state(struct cpuidle_device *dev,
+@@ -197,37 +206,39 @@ static struct cpuidle_state *next_valid_
  			if ((cx->valid) &&
  			    (cx->mpu_state >= mpu_deepest_state) &&
  			    (cx->core_state >= core_deepest_state)) {
@@ -341,7 +331,7 @@ index 4bf6e6e..58425c7 100644
  		goto select_state;
  	}
  
-@@ -237,7 +248,7 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -237,7 +248,7 @@ static int omap3_enter_idle_bm(struct cp
  	 */
  	cam_state = pwrdm_read_pwrst(cam_pd);
  	if (cam_state == PWRDM_POWER_ON) {
@@ -350,7 +340,7 @@ index 4bf6e6e..58425c7 100644
  		goto select_state;
  	}
  
-@@ -264,11 +275,10 @@ static int omap3_enter_idle_bm(struct cpuidle_device *dev,
+@@ -264,11 +275,10 @@ static int omap3_enter_idle_bm(struct cp
  	if (per_next_state != per_saved_state)
  		pwrdm_set_next_pwrst(per_pd, per_next_state);
  
@@ -378,8 +368,6 @@ index 4bf6e6e..58425c7 100644
  	cx->valid = 1;	/* C1 is always valid */
  	cx->mpu_state = PWRDM_POWER_ON;
  	cx->core_state = PWRDM_POWER_ON;
-diff --git a/arch/sh/kernel/cpu/shmobile/cpuidle.c b/arch/sh/kernel/cpu/shmobile/cpuidle.c
-index e4469e72..7be50d4c 100644
 --- a/arch/sh/kernel/cpu/shmobile/cpuidle.c
 +++ b/arch/sh/kernel/cpu/shmobile/cpuidle.c
 @@ -25,11 +25,11 @@ static unsigned long cpuidle_mode[] = {
@@ -396,7 +384,7 @@ index e4469e72..7be50d4c 100644
  	int allowed_state;
  	int k;
  
-@@ -46,11 +46,13 @@ static int cpuidle_sleep_enter(struct cpuidle_device *dev,
+@@ -46,11 +46,13 @@ static int cpuidle_sleep_enter(struct cp
  	 */
  	k = min_t(int, allowed_state, requested_state);
  
@@ -421,11 +409,9 @@ index e4469e72..7be50d4c 100644
  
  	if (sh_mobile_sleep_supported & SUSP_SH_SF) {
  		state = &dev->states[i++];
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 2e69e09..6be70bf 100644
 --- a/drivers/acpi/processor_idle.c
 +++ b/drivers/acpi/processor_idle.c
-@@ -741,22 +741,24 @@ static inline void acpi_idle_do_entry(struct acpi_processor_cx *cx)
+@@ -741,22 +741,24 @@ static inline void acpi_idle_do_entry(st
  /**
   * acpi_idle_enter_c1 - enters an ACPI C1 state-type
   * @dev: the target CPU
@@ -453,7 +439,7 @@ index 2e69e09..6be70bf 100644
  
  	local_irq_disable();
  
-@@ -764,7 +766,7 @@ static int acpi_idle_enter_c1(struct cpuidle_device *dev,
+@@ -764,7 +766,7 @@ static int acpi_idle_enter_c1(struct cpu
  	if (acpi_idle_suspend) {
  		local_irq_enable();
  		cpu_relax();
@@ -462,7 +448,7 @@ index 2e69e09..6be70bf 100644
  	}
  
  	lapic_timer_state_broadcast(pr, cx, 1);
-@@ -773,37 +775,46 @@ static int acpi_idle_enter_c1(struct cpuidle_device *dev,
+@@ -773,37 +775,46 @@ static int acpi_idle_enter_c1(struct cpu
  	kt2 = ktime_get_real();
  	idle_time =  ktime_to_us(ktime_sub(kt2, kt1));
  
@@ -516,7 +502,7 @@ index 2e69e09..6be70bf 100644
  	if (cx->entry_method != ACPI_CSTATE_FFH) {
  		current_thread_info()->status &= ~TS_POLLING;
  		/*
-@@ -815,7 +826,7 @@ static int acpi_idle_enter_simple(struct cpuidle_device *dev,
+@@ -815,7 +826,7 @@ static int acpi_idle_enter_simple(struct
  		if (unlikely(need_resched())) {
  			current_thread_info()->status |= TS_POLLING;
  			local_irq_enable();
@@ -525,7 +511,7 @@ index 2e69e09..6be70bf 100644
  		}
  	}
  
-@@ -837,6 +848,9 @@ static int acpi_idle_enter_simple(struct cpuidle_device *dev,
+@@ -837,6 +848,9 @@ static int acpi_idle_enter_simple(struct
  	idle_time = idle_time_ns;
  	do_div(idle_time, NSEC_PER_USEC);
  
@@ -535,7 +521,7 @@ index 2e69e09..6be70bf 100644
  	/* Tell the scheduler how much we idled: */
  	sched_clock_idle_wakeup_event(idle_time_ns);
  
-@@ -848,7 +862,7 @@ static int acpi_idle_enter_simple(struct cpuidle_device *dev,
+@@ -848,7 +862,7 @@ static int acpi_idle_enter_simple(struct
  
  	lapic_timer_state_broadcast(pr, cx, 0);
  	cx->time += idle_time;
@@ -562,7 +548,7 @@ index 2e69e09..6be70bf 100644
  	struct acpi_processor_cx *cx = cpuidle_get_statedata(state);
  	ktime_t  kt1, kt2;
  	s64 idle_time_ns;
-@@ -872,22 +887,26 @@ static int acpi_idle_enter_bm(struct cpuidle_device *dev,
+@@ -872,22 +887,26 @@ static int acpi_idle_enter_bm(struct cpu
  
  
  	pr = __this_cpu_read(processors);
@@ -571,10 +557,10 @@ index 2e69e09..6be70bf 100644
  	if (unlikely(!pr))
 -		return 0;
 +		return -EINVAL;
++
  
 -	if (acpi_idle_suspend)
 -		return(acpi_idle_enter_c1(dev, state));
-+
 +	if (acpi_idle_suspend) {
 +		cpu_relax();
 +		return -EINVAL;
@@ -596,7 +582,7 @@ index 2e69e09..6be70bf 100644
  		}
  	}
  
-@@ -904,7 +923,7 @@ static int acpi_idle_enter_bm(struct cpuidle_device *dev,
+@@ -904,7 +923,7 @@ static int acpi_idle_enter_bm(struct cpu
  		if (unlikely(need_resched())) {
  			current_thread_info()->status |= TS_POLLING;
  			local_irq_enable();
@@ -605,7 +591,7 @@ index 2e69e09..6be70bf 100644
  		}
  	}
  
-@@ -954,6 +973,9 @@ static int acpi_idle_enter_bm(struct cpuidle_device *dev,
+@@ -954,6 +973,9 @@ static int acpi_idle_enter_bm(struct cpu
  	idle_time = idle_time_ns;
  	do_div(idle_time, NSEC_PER_USEC);
  
@@ -615,7 +601,7 @@ index 2e69e09..6be70bf 100644
  	/* Tell the scheduler how much we idled: */
  	sched_clock_idle_wakeup_event(idle_time_ns);
  
-@@ -965,7 +987,7 @@ static int acpi_idle_enter_bm(struct cpuidle_device *dev,
+@@ -965,7 +987,7 @@ static int acpi_idle_enter_bm(struct cpu
  
  	lapic_timer_state_broadcast(pr, cx, 0);
  	cx->time += idle_time;
@@ -624,15 +610,15 @@ index 2e69e09..6be70bf 100644
  }
  
  struct cpuidle_driver acpi_idle_driver = {
-@@ -992,6 +1014,7 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
- 	}
+@@ -995,6 +1017,7 @@ static int acpi_processor_setup_cpuidle(
+ 		return -EINVAL;
  
  	dev->cpu = pr->id;
 +	dev->safe_state_index = -1;
  	for (i = 0; i < CPUIDLE_STATE_MAX; i++) {
  		dev->states[i].name[0] = '\0';
  		dev->states[i].desc[0] = '\0';
-@@ -1027,13 +1050,13 @@ static int acpi_processor_setup_cpuidle(struct acpi_processor *pr)
+@@ -1030,13 +1053,13 @@ static int acpi_processor_setup_cpuidle(
  				state->flags |= CPUIDLE_FLAG_TIME_VALID;
  
  			state->enter = acpi_idle_enter_c1;
@@ -648,8 +634,6 @@ index 2e69e09..6be70bf 100644
  			break;
  
  			case ACPI_STATE_C3:
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index becd6d9..c0f1a3a 100644
 --- a/drivers/cpuidle/cpuidle.c
 +++ b/drivers/cpuidle/cpuidle.c
 @@ -63,7 +63,7 @@ int cpuidle_idle_call(void)
@@ -712,7 +696,7 @@ index becd6d9..c0f1a3a 100644
  
  	t1 = ktime_get();
  	local_irq_enable();
-@@ -189,8 +189,9 @@ static int poll_idle(struct cpuidle_device *dev, struct cpuidle_state *st)
+@@ -189,8 +189,9 @@ static int poll_idle(struct cpuidle_devi
  	if (diff > INT_MAX)
  		diff = INT_MAX;
  
@@ -724,7 +708,7 @@ index becd6d9..c0f1a3a 100644
  }
  
  static void poll_idle_init(struct cpuidle_device *dev)
-@@ -249,7 +250,6 @@ int cpuidle_enable_device(struct cpuidle_device *dev)
+@@ -249,7 +250,6 @@ int cpuidle_enable_device(struct cpuidle
  		dev->states[i].time = 0;
  	}
  	dev->last_residency = 0;
@@ -732,11 +716,9 @@ index becd6d9..c0f1a3a 100644
  
  	smp_wmb();
  
-diff --git a/drivers/cpuidle/governors/ladder.c b/drivers/cpuidle/governors/ladder.c
-index f62fde2..78b06d2 100644
 --- a/drivers/cpuidle/governors/ladder.c
 +++ b/drivers/cpuidle/governors/ladder.c
-@@ -153,11 +153,24 @@ static int ladder_enable_device(struct cpuidle_device *dev)
+@@ -153,11 +153,24 @@ static int ladder_enable_device(struct c
  	return 0;
  }
  
@@ -761,11 +743,9 @@ index f62fde2..78b06d2 100644
  	.owner =	THIS_MODULE,
  };
  
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 0027524..e27a2af 100644
 --- a/drivers/cpuidle/governors/menu.c
 +++ b/drivers/cpuidle/governors/menu.c
-@@ -311,14 +311,17 @@ static int menu_select(struct cpuidle_device *dev)
+@@ -311,14 +311,17 @@ static int menu_select(struct cpuidle_de
  /**
   * menu_reflect - records that data structures need update
   * @dev: the CPU
@@ -785,8 +765,6 @@ index 0027524..e27a2af 100644
  }
  
  /**
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 026f9aa..8f056e1 100644
 --- a/drivers/idle/intel_idle.c
 +++ b/drivers/idle/intel_idle.c
 @@ -81,7 +81,7 @@ static unsigned int mwait_substates;
@@ -798,7 +776,7 @@ index 026f9aa..8f056e1 100644
  
  static struct cpuidle_state *cpuidle_state_table;
  
-@@ -209,12 +209,13 @@ static struct cpuidle_state atom_cstates[MWAIT_MAX_NUM_CSTATES] = {
+@@ -209,12 +209,13 @@ static struct cpuidle_state atom_cstates
  /**
   * intel_idle
   * @dev: cpuidle_device
@@ -814,7 +792,7 @@ index 026f9aa..8f056e1 100644
  	unsigned long eax = (unsigned long)cpuidle_get_statedata(state);
  	unsigned int cstate;
  	ktime_t kt_before, kt_after;
-@@ -256,7 +257,10 @@ static int intel_idle(struct cpuidle_device *dev, struct cpuidle_state *state)
+@@ -256,7 +257,10 @@ static int intel_idle(struct cpuidle_dev
  	if (!(lapic_timer_reliable_states & (1 << (cstate))))
  		clockevents_notify(CLOCK_EVT_NOTIFY_BROADCAST_EXIT, &cpu);
  
@@ -826,8 +804,6 @@ index 026f9aa..8f056e1 100644
  }
  
  static void __setup_broadcast_timer(void *arg)
-diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-index b51629e..8da811b 100644
 --- a/include/linux/cpuidle.h
 +++ b/include/linux/cpuidle.h
 @@ -42,7 +42,7 @@ struct cpuidle_state {
@@ -863,6 +839,3 @@ index b51629e..8da811b 100644
  
  	struct module 		*owner;
  };
--- 
-1.7.10.1.362.g242cab3
-
