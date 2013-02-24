@@ -1312,13 +1312,15 @@ EXPORT_SYMBOL_GPL(pnfs_generic_pg_test);
 
 int pnfs_write_done_resend_to_mds(struct inode *inode,
 				struct list_head *head,
-				const struct nfs_pgio_completion_ops *compl_ops)
+				const struct nfs_pgio_completion_ops *compl_ops,
+				struct nfs_direct_req *dreq)
 {
 	struct nfs_pageio_descriptor pgio;
 	LIST_HEAD(failed);
 
 	/* Resend all requests through the MDS */
 	nfs_pageio_init_write(&pgio, inode, FLUSH_STABLE, compl_ops);
+	pgio.pg_dreq = dreq;
 	while (!list_empty(head)) {
 		struct nfs_page *req = nfs_list_entry(head->next);
 
@@ -1353,7 +1355,8 @@ static void pnfs_ld_handle_write_error(struct nfs_write_data *data)
 	if (!test_and_set_bit(NFS_IOHDR_REDO, &hdr->flags))
 		data->task.tk_status = pnfs_write_done_resend_to_mds(hdr->inode,
 							&hdr->pages,
-							hdr->completion_ops);
+							hdr->completion_ops,
+							hdr->dreq);
 }
 
 /*
@@ -1468,13 +1471,15 @@ EXPORT_SYMBOL_GPL(pnfs_generic_pg_writepages);
 
 int pnfs_read_done_resend_to_mds(struct inode *inode,
 				struct list_head *head,
-				const struct nfs_pgio_completion_ops *compl_ops)
+				const struct nfs_pgio_completion_ops *compl_ops,
+				struct nfs_direct_req *dreq)
 {
 	struct nfs_pageio_descriptor pgio;
 	LIST_HEAD(failed);
 
 	/* Resend all requests through the MDS */
 	nfs_pageio_init_read(&pgio, inode, compl_ops);
+	pgio.pg_dreq = dreq;
 	while (!list_empty(head)) {
 		struct nfs_page *req = nfs_list_entry(head->next);
 
@@ -1505,7 +1510,8 @@ static void pnfs_ld_handle_read_error(struct nfs_read_data *data)
 	if (!test_and_set_bit(NFS_IOHDR_REDO, &hdr->flags))
 		data->task.tk_status = pnfs_read_done_resend_to_mds(hdr->inode,
 							&hdr->pages,
-							hdr->completion_ops);
+							hdr->completion_ops,
+							hdr->dreq);
 }
 
 /*
