@@ -1,0 +1,140 @@
+From ltsi-dev-bounces@lists.linuxfoundation.org Wed Feb 20 14:11:19 2013
+Return-Path: <ltsi-dev-bounces@lists.linuxfoundation.org>
+Delivered-To: unknown
+Delivered-To: gregkh@linuxfoundation.org
+Received: by 10.64.18.179 with SMTP id x19csp18170ied;
+        Wed, 20 Feb 2013 14:11:19 -0800 (PST)
+X-Received: by 10.68.194.226 with SMTP id hz2mr50991329pbc.39.1361398279080;
+        Wed, 20 Feb 2013 14:11:19 -0800 (PST)
+Received: from mail.linuxfoundation.org (mail.linuxfoundation.org. [140.211.169.12])
+        by mx.google.com with ESMTP id u2si29029528paw.67.2013.02.20.14.11.18;
+        Wed, 20 Feb 2013 14:11:19 -0800 (PST)
+Received-SPF: pass (google.com: domain of ltsi-dev-bounces@lists.linuxfoundation.org designates 140.211.169.12 as permitted sender) client-ip=140.211.169.12;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of ltsi-dev-bounces@lists.linuxfoundation.org designates 140.211.169.12 as permitted sender) smtp.mail=ltsi-dev-bounces@lists.linuxfoundation.org
+Received: from mail.linux-foundation.org (localhost [IPv6:::1])
+	by mail.linuxfoundation.org (Postfix) with ESMTP id BA198711;
+	Wed, 20 Feb 2013 22:11:18 +0000 (UTC)
+X-Original-To: ltsi-dev@lists.linuxfoundation.org
+Delivered-To: ltsi-dev@mail.linuxfoundation.org
+Received: from smtp1.linuxfoundation.org (smtp1.linux-foundation.org
+	[172.17.192.35])
+	by mail.linuxfoundation.org (Postfix) with ESMTP id ADE9A711
+	for <ltsi-dev@lists.linuxfoundation.org>;
+	Wed, 20 Feb 2013 22:11:16 +0000 (UTC)
+X-Greylist: from auto-whitelisted by SQLgrey-1.7.6
+Received: from kirsty.vergenet.net (kirsty.vergenet.net [202.4.237.240])
+	by smtp1.linuxfoundation.org (Postfix) with ESMTP id 683AC20106
+	for <ltsi-dev@lists.linuxfoundation.org>;
+	Wed, 20 Feb 2013 22:11:15 +0000 (UTC)
+Received: from joe.kanocho.kobe.vergenet.net (unknown [69.38.217.222])
+	by kirsty.vergenet.net (Postfix) with ESMTP id D9703266CEF;
+	Thu, 21 Feb 2013 09:11:11 +1100 (EST)
+Received: by joe.kanocho.kobe.vergenet.net (Postfix, from userid 7100)
+	id 5BA0028A006; Thu, 21 Feb 2013 07:06:26 +0900 (JST)
+From: Simon Horman <horms+renesas@verge.net.au>
+To: ltsi-dev@lists.linuxfoundation.org
+Date: Wed, 20 Feb 2013 14:06:18 -0800
+Message-Id: <1361397978-15092-2-git-send-email-horms+renesas@verge.net.au>
+X-Mailer: git-send-email 1.7.10.4
+In-Reply-To: <1361397978-15092-1-git-send-email-horms+renesas@verge.net.au>
+References: <1361397978-15092-1-git-send-email-horms+renesas@verge.net.au>
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+	RP_MATCHES_RCVD autolearn=ham version=3.3.1
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	smtp1.linux-foundation.org
+Cc: Denis Oliver Kropp <dok@directfb.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Subject: ARM: shmobile: r8a7779: Correct TMU clock support again
+X-BeenThere: ltsi-dev@lists.linuxfoundation.org
+X-Mailman-Version: 2.1.12
+Precedence: list
+List-Id: "A list to discuss patches, development,
+	and other things related to the LTSI project"
+	<ltsi-dev.lists.linuxfoundation.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/ltsi-dev>, 
+	<mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/ltsi-dev/>
+List-Post: <mailto:ltsi-dev@lists.linuxfoundation.org>
+List-Help: <mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev>, 
+	<mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: ltsi-dev-bounces@lists.linuxfoundation.org
+Errors-To: ltsi-dev-bounces@lists.linuxfoundation.org
+Status: RO
+Content-Length: 3498
+Lines: 79
+
+After discussion on the linux-sh mailing list and reference to the
+hardware documentation it appears that 'TMU00', 'TMU01' and 'TMU02'
+use a common clock.
+
+The sh_tmu.1 portion of this change resolves a regression introduced in
+58079fa7d54a0929d304054ee759187a2ccd3cdf (ARM: shmobile: r8a7779: Correct
+TMU clock support) and fixes a regression introduced by that patch. That
+patch is queued up for v3.9.
+
+...
+hub 4-0:1.0: USB hub found
+hub 4-0:1.0: 2 ports detected
+INFO: rcu_sched self-detected stall on CPUINFO: rcu_sched detected stalls on
++CPUs/tasks: { 1} (detected by 2, t=279640 jiffies, g=4294967052, c=4294967051,
++q=38)
+Task dump for CPU 1:
+swapper/0       R running      0     1      0 0x00000002
+[<c02b8f5c>] (__schedule+0x1b0/0x4c0) from [<c013c590>] (__loop_delay+0x4/0xc)
+
+ { 1}  (t=279640 jiffies g=4294967052 c=4294967052 q=37)
+[<c000ef9c>] (unwind_backtrace+0x0/0xf8) from [<c0068488>]
++(rcu_check_callbacks+0x218/0x6b8)
+[<c0068488>] (rcu_check_callbacks+0x218/0x6b8) from [<c0026774>]
++(update_process_times+0x38/0x4c)
+[<c0026774>] (update_process_times+0x38/0x4c) from [<c00569e0>]
++(tick_nohz_handler+0xb4/0x11c)
+[<c00569e0>] (tick_nohz_handler+0xb4/0x11c) from [<c000e518>]
++(twd_handler+0x34/0x44)
+[<c000e518>] (twd_handler+0x34/0x44) from [<c0063484>]
++(handle_percpu_devid_irq+0x68/0x80)
+[<c0063484>] (handle_percpu_devid_irq+0x68/0x80) from [<c005febc>]
++(generic_handle_irq+0x20/0x30)
+[<c005febc>] (generic_handle_irq+0x20/0x30) from [<c000a5ec>]
++(handle_IRQ+0x40/0x90)
+[<c000a5ec>] (handle_IRQ+0x40/0x90) from [<c000934c>] (gic_handle_irq+0x2c/0x5c)
+[<c000934c>] (gic_handle_irq+0x2c/0x5c) from [<c0009a40>] (__irq_svc+0x40/0x50)
+Exception stack(0xef03ddf8 to 0xef03de40)
+dde0:                                                       000001c1 ffffffff
+de00: 000001d8 01bf01bf ef35ec40 ef35e800 ef35ec6c 0000002b ef35ec68 c013c560
+de20: c0392994 60000113 00000000 ef03de40 c01a5d40 c013c590 20000113 ffffffff
+[<c0009a40>] (__irq_svc+0x40/0x50) from [<c013c590>] (__loop_delay+0x4/0xc)
+
+Cc: Denis Oliver Kropp <dok@directfb.org>
+Cc: Magnus Damm <damm@opensource.se>
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Paul Mundt <lethal@linux-sh.org>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit f9047306fd7332d682898dd689152bb3b45a3e73)
+
+Conflicts:
+	arch/arm/mach-shmobile/clock-r8a7779.c
+
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/clock-r8a7779.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/arm/mach-shmobile/clock-r8a7779.c
++++ b/arch/arm/mach-shmobile/clock-r8a7779.c
+@@ -142,8 +142,8 @@ static struct clk_lookup lookups[] = {
+ 
+ 	/* MSTP32 clocks */
+ 	CLKDEV_DEV_ID("sh_tmu.0", &mstp_clks[MSTP016]), /* TMU00 */
+-	CLKDEV_DEV_ID("sh_tmu.1", &mstp_clks[MSTP015]), /* TMU01 */
+-	CLKDEV_DEV_ID("sh_tmu.2", &mstp_clks[MSTP014]), /* TMU02 */
++	CLKDEV_DEV_ID("sh_tmu.1", &mstp_clks[MSTP016]), /* TMU01 */
++	CLKDEV_DEV_ID("sh_tmu.2", &mstp_clks[MSTP016]), /* TMU02 */
+ 	CLKDEV_DEV_ID("sh-sci.0", &mstp_clks[MSTP026]), /* SCIF0 */
+ 	CLKDEV_DEV_ID("sh-sci.1", &mstp_clks[MSTP025]), /* SCIF1 */
+ 	CLKDEV_DEV_ID("sh-sci.2", &mstp_clks[MSTP024]), /* SCIF2 */
