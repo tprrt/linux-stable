@@ -1,0 +1,99 @@
+From ltsi-dev-bounces@lists.linuxfoundation.org Fri Feb 22 12:15:13 2013
+Return-Path: <ltsi-dev-bounces@lists.linuxfoundation.org>
+Delivered-To: unknown
+Delivered-To: gregkh@linuxfoundation.org
+Received: by 10.64.18.179 with SMTP id x19csp46597ied;
+        Fri, 22 Feb 2013 12:15:13 -0800 (PST)
+X-Received: by 10.66.154.135 with SMTP id vo7mr5979094pab.142.1361564113066;
+        Fri, 22 Feb 2013 12:15:13 -0800 (PST)
+Received: from mail.linuxfoundation.org (mail.linuxfoundation.org. [140.211.169.12])
+        by mx.google.com with ESMTP id g3si3919240paw.194.2013.02.22.12.15.12;
+        Fri, 22 Feb 2013 12:15:13 -0800 (PST)
+Received-SPF: pass (google.com: domain of ltsi-dev-bounces@lists.linuxfoundation.org designates 140.211.169.12 as permitted sender) client-ip=140.211.169.12;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of ltsi-dev-bounces@lists.linuxfoundation.org designates 140.211.169.12 as permitted sender) smtp.mail=ltsi-dev-bounces@lists.linuxfoundation.org
+Received: from mail.linux-foundation.org (localhost [IPv6:::1])
+	by mail.linuxfoundation.org (Postfix) with ESMTP id 3571E70E;
+	Fri, 22 Feb 2013 20:15:12 +0000 (UTC)
+X-Original-To: ltsi-dev@lists.linuxfoundation.org
+Delivered-To: ltsi-dev@mail.linuxfoundation.org
+Received: from smtp1.linuxfoundation.org (smtp1.linux-foundation.org
+	[172.17.192.35])
+	by mail.linuxfoundation.org (Postfix) with ESMTP id 53F7770E
+	for <ltsi-dev@lists.linuxfoundation.org>;
+	Fri, 22 Feb 2013 20:15:11 +0000 (UTC)
+X-Greylist: delayed 00:42:24 by SQLgrey-1.7.6
+Received: from mail1.windriver.com (mail1.windriver.com [147.11.146.13])
+	by smtp1.linuxfoundation.org (Postfix) with ESMTPS id B70B61F8C1
+	for <ltsi-dev@lists.linuxfoundation.org>;
+	Fri, 22 Feb 2013 20:15:10 +0000 (UTC)
+Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com
+	[147.11.189.40])
+	by mail1.windriver.com (8.14.5/8.14.3) with ESMTP id r1MJWkAg005200
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=FAIL)
+	for <ltsi-dev@lists.linuxfoundation.org>;
+	Fri, 22 Feb 2013 11:32:46 -0800 (PST)
+Received: from yow-pgortmak-d1.corp.ad.wrs.com (128.224.146.65) by
+	ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
+	14.2.318.4; Fri, 22 Feb 2013 11:32:45 -0800
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
+To: <ltsi-dev@lists.linuxfoundation.org>
+Date: Fri, 22 Feb 2013 14:32:42 -0500
+Message-ID: <1361561562-5136-1-git-send-email-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 1.8.1.2
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RP_MATCHES_RCVD
+	autolearn=ham version=3.3.1
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	smtp1.linux-foundation.org
+Subject: lttng: fix reference to obsolete RT Kconfig variable.
+X-BeenThere: ltsi-dev@lists.linuxfoundation.org
+X-Mailman-Version: 2.1.12
+Precedence: list
+List-Id: "A list to discuss patches, development,
+	and other things related to the LTSI project"
+	<ltsi-dev.lists.linuxfoundation.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/ltsi-dev>, 
+	<mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/ltsi-dev/>
+List-Post: <mailto:ltsi-dev@lists.linuxfoundation.org>
+List-Help: <mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/ltsi-dev>, 
+	<mailto:ltsi-dev-request@lists.linuxfoundation.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Sender: ltsi-dev-bounces@lists.linuxfoundation.org
+Errors-To: ltsi-dev-bounces@lists.linuxfoundation.org
+Status: RO
+Content-Length: 1211
+Lines: 38
+
+The preempt-rt patches no longer use CONFIG_PREEMPT_RT in
+the 3.4 (and newer) versions.  So even though LTSI doesn't
+include RT, having this define present can lead to an easy
+to overlook bug for anyone who does try to layer RT onto
+the LTSI baseline.
+
+Update it to use the currently used define name by RT.
+
+Reported-by: Jim Somerville <Jim.Somerville@windriver.com>
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+
+---
+
+[caused by LTSI patch patches.lttng/lttng-update-to-v2.0.1.patch]
+
+ drivers/staging/lttng/lttng-events.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/staging/lttng/lttng-events.c
++++ b/drivers/staging/lttng/lttng-events.c
+@@ -51,7 +51,7 @@ int _lttng_session_metadata_statedump(st
+ void synchronize_trace(void)
+ {
+ 	synchronize_sched();
+-#ifdef CONFIG_PREEMPT_RT
++#ifdef CONFIG_PREEMPT_RT_FULL
+ 	synchronize_rcu();
+ #endif
+ }
