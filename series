@@ -786,6 +786,21 @@ patches.codel/codel-refine-one-condition-to-avoid-a-nul-rec_inv_sq.patch
 #
 patches.misc/arm-soc-add-per-platform-smp-operations.patch
 patches.misc/arm-soc-convert-shmobile-smp-to-smp-operations.patch
+patches.misc/0001-irqchip-add-basic-infrastructure.patch
+patches.misc/0002-irqdomain-augment-add_simple-to-allocate-descs.patch
+patches.misc/0003-irqdomain-stop-screaming-about-preallocated-irqdescs.patch
+patches.misc/0004-irqchip-Renesas-INTC-External-IRQ-pin-driver.patch
+patches.misc/0005-irqchip-intc-irqpin-Cache-mapped-IRQ.patch
+patches.misc/0006-ARM-shmobile-irq_pin-for-static-IRQ-pin-assignment.patch
+patches.misc/0007-ARM-shmobile-INTC-External-IRQ-pin-driver-on-r8a7779.patch
+patches.misc/0008-irqchip-intc-irqpin-Whitespace-fixes.patch
+patches.misc/0009-irqchip-intc-irqpin-Add-force-comments.patch
+patches.misc/0010-irqchip-intc-irqpin-Make-use-of-devm-functions.patch
+patches.misc/0011-irqchip-intc-irqpin-GPL-header-for-platform-data.patch
+patches.misc/0012-irqchip-Renesas-IRQC-driver.patch
+patches.misc/0013-ARM-shmobile-Make-r8a7779-INTC-irqpin-platform-data-.patch
+patches.misc/0014-irqchip-intc-irqpin-Initial-DT-support.patch
+patches.misc/0015-irqchip-irqc-Add-DT-support.patch
 
 
 #############################################################################
