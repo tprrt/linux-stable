@@ -307,6 +307,10 @@ patches.marzen/0099-mmc-sh_mmcif-support-generic-card-detection.patch
 patches.marzen/arm-mach-shmobile-marzen-defconfig-update.patch
 patches.marzen/arm-shmobile-r8a7779-correct-tmu-clock-support.patch
 patches.marzen/libata-add-r-car-sata-driver.patch
+patches.marzen/i2c-add-renesas-r-car-i2c-driver.patch
+patches.marzen/i2c-rcar-used-devm_request_and_ioremap-instead-of-devm_ioremap.patch
+patches.marzen/i2c-rcar-fix-section-mismatch.patch
+patches.marzen/arm-shmobile-r8a7779-add-i2c-driver-support.patch
 
 #############################################################################
 # Armadillo 800 board support
