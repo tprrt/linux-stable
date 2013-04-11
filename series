@@ -782,6 +782,13 @@ patches.codel/codel-refine-one-condition-to-avoid-a-nul-rec_inv_sq.patch
 
 
 #############################################################################
+# Misc patches that don't fit into the above categories.
+#
+patches.misc/arm-soc-add-per-platform-smp-operations.patch
+patches.misc/arm-soc-convert-shmobile-smp-to-smp-operations.patch
+
+
+#############################################################################
 # fixes that go after all of the above
 #
 patches.fixes/0001-ASoC-fsi-fixup-channels_min-max.patch
