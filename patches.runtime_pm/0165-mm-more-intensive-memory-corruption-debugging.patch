@@ -36,16 +36,14 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
 ---
  Documentation/kernel-parameters.txt |   19 +++++++++
  include/linux/mm.h                  |   17 ++++++++
- include/linux/page-debug-flags.h    |    4 +-
- mm/Kconfig.debug                    |    5 +++
- mm/page_alloc.c                     |   75 ++++++++++++++++++++++++++++++++---
+ include/linux/page-debug-flags.h    |    4 +
+ mm/Kconfig.debug                    |    5 ++
+ mm/page_alloc.c                     |   75 +++++++++++++++++++++++++++++++++---
  5 files changed, 113 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
-index 09a5f8a..400b7be 100644
 --- a/Documentation/kernel-parameters.txt
 +++ b/Documentation/kernel-parameters.txt
-@@ -599,6 +599,25 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+@@ -601,6 +601,25 @@ bytes respectively. Such letter suffixes
  	no_debug_objects
  			[KNL] Disable object debugging
  
@@ -71,11 +69,9 @@ index 09a5f8a..400b7be 100644
  	debugpat	[X86] Enable PAT debugging
  
  	decnet.addr=	[HW,NET]
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 18eea05..988b049 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -1660,5 +1660,22 @@ extern void copy_user_huge_page(struct page *dst, struct page *src,
+@@ -1660,5 +1660,22 @@ extern void copy_user_huge_page(struct p
  				unsigned int pages_per_huge_page);
  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
  
@@ -98,8 +94,6 @@ index 18eea05..988b049 100644
 +
  #endif /* __KERNEL__ */
  #endif /* _LINUX_MM_H */
-diff --git a/include/linux/page-debug-flags.h b/include/linux/page-debug-flags.h
-index b0638fd..22691f61 100644
 --- a/include/linux/page-debug-flags.h
 +++ b/include/linux/page-debug-flags.h
 @@ -13,6 +13,7 @@
@@ -120,8 +114,6 @@ index b0638fd..22691f61 100644
  /* && !defined(CONFIG_PAGE_DEBUG_SOMETHING_ELSE) && ... */
  #error WANT_PAGE_DEBUG_FLAGS is turned on with no debug features!
  #endif
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 8b1a477..4b24432 100644
 --- a/mm/Kconfig.debug
 +++ b/mm/Kconfig.debug
 @@ -4,6 +4,7 @@ config DEBUG_PAGEALLOC
@@ -140,8 +132,6 @@ index 8b1a477..4b24432 100644
 +config PAGE_GUARD
 +	bool
 +	select WANT_PAGE_DEBUG_FLAGS
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 947a7e9..b9995d6 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
 @@ -57,6 +57,7 @@
@@ -152,7 +142,7 @@ index 947a7e9..b9995d6 100644
  
  #include <asm/tlbflush.h>
  #include <asm/div64.h>
-@@ -402,6 +403,37 @@ static inline void prep_zero_page(struct page *page, int order, gfp_t gfp_flags)
+@@ -402,6 +403,37 @@ static inline void prep_zero_page(struct
  		clear_highpage(page + i);
  }
  
@@ -190,7 +180,7 @@ index 947a7e9..b9995d6 100644
  static inline void set_page_order(struct page *page, int order)
  {
  	set_page_private(page, order);
-@@ -459,6 +491,11 @@ static inline int page_is_buddy(struct page *page, struct page *buddy,
+@@ -459,6 +491,11 @@ static inline int page_is_buddy(struct p
  	if (page_zone_id(page) != page_zone_id(buddy))
  		return 0;
  
@@ -202,7 +192,7 @@ index 947a7e9..b9995d6 100644
  	if (PageBuddy(buddy) && page_order(buddy) == order) {
  		VM_BUG_ON(page_count(buddy) != 0);
  		return 1;
-@@ -515,11 +552,19 @@ static inline void __free_one_page(struct page *page,
+@@ -515,11 +552,19 @@ static inline void __free_one_page(struc
  		buddy = page + (buddy_idx - page_idx);
  		if (!page_is_buddy(page, buddy, order))
  			break;
@@ -227,7 +217,7 @@ index 947a7e9..b9995d6 100644
  		combined_idx = buddy_idx & page_idx;
  		page = page + (combined_idx - page_idx);
  		page_idx = combined_idx;
-@@ -745,6 +790,23 @@ static inline void expand(struct zone *zone, struct page *page,
+@@ -745,6 +790,23 @@ static inline void expand(struct zone *z
  		high--;
  		size >>= 1;
  		VM_BUG_ON(bad_range(zone, &page[size]));
@@ -251,7 +241,7 @@ index 947a7e9..b9995d6 100644
  		list_add(&page[size].lru, &area->free_list[migratetype]);
  		area->nr_free++;
  		set_page_order(&page[size], high);
-@@ -1774,7 +1836,8 @@ void warn_alloc_failed(gfp_t gfp_mask, int order, const char *fmt, ...)
+@@ -1774,7 +1836,8 @@ void warn_alloc_failed(gfp_t gfp_mask, i
  	va_list args;
  	unsigned int filter = SHOW_MEM_FILTER_NODES;
  
@@ -261,6 +251,3 @@ index 947a7e9..b9995d6 100644
  		return;
  
  	/*
--- 
-1.7.10.1.362.g242cab3
-

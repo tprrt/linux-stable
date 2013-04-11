@@ -24,11 +24,9 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  drivers/cpuidle/governor.c          |    3 +++
  5 files changed, 20 insertions(+)
 
-diff --git a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
-index 400b7be..79cef3c 100644
 --- a/Documentation/kernel-parameters.txt
 +++ b/Documentation/kernel-parameters.txt
-@@ -546,6 +546,9 @@ bytes respectively. Such letter suffixes can also be entirely omitted.
+@@ -548,6 +548,9 @@ bytes respectively. Such letter suffixes
  			/proc/<pid>/coredump_filter.
  			See also Documentation/filesystems/proc.txt.
  
@@ -38,8 +36,6 @@ index 400b7be..79cef3c 100644
  	cpcihp_generic=	[HW,PCI] Generic port I/O CompactPCI driver
  			Format:
  			<first_slot>,<last_slot>,<port>,<enum_bit>[,<debug>]
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index eed4c47..4487396 100644
 --- a/drivers/cpuidle/cpuidle.c
 +++ b/drivers/cpuidle/cpuidle.c
 @@ -28,6 +28,12 @@ LIST_HEAD(cpuidle_detected_devices);
@@ -71,11 +67,9 @@ index eed4c47..4487396 100644
  
 +module_param(off, int, 0444);
  core_initcall(cpuidle_init);
-diff --git a/drivers/cpuidle/cpuidle.h b/drivers/cpuidle/cpuidle.h
-index 33e50d5..38c3fd8 100644
 --- a/drivers/cpuidle/cpuidle.h
 +++ b/drivers/cpuidle/cpuidle.h
-@@ -13,6 +13,7 @@ extern struct list_head cpuidle_governors;
+@@ -13,6 +13,7 @@ extern struct list_head cpuidle_governor
  extern struct list_head cpuidle_detected_devices;
  extern struct mutex cpuidle_lock;
  extern spinlock_t cpuidle_driver_lock;
@@ -83,11 +77,9 @@ index 33e50d5..38c3fd8 100644
  
  /* idle loop */
  extern void cpuidle_install_idle_handler(void);
-diff --git a/drivers/cpuidle/driver.c b/drivers/cpuidle/driver.c
-index fd1601e..3f7e3ce 100644
 --- a/drivers/cpuidle/driver.c
 +++ b/drivers/cpuidle/driver.c
-@@ -26,6 +26,9 @@ int cpuidle_register_driver(struct cpuidle_driver *drv)
+@@ -26,6 +26,9 @@ int cpuidle_register_driver(struct cpuid
  	if (!drv)
  		return -EINVAL;
  
@@ -97,11 +89,9 @@ index fd1601e..3f7e3ce 100644
  	spin_lock(&cpuidle_driver_lock);
  	if (cpuidle_curr_driver) {
  		spin_unlock(&cpuidle_driver_lock);
-diff --git a/drivers/cpuidle/governor.c b/drivers/cpuidle/governor.c
-index 724c164..ea2f8e7 100644
 --- a/drivers/cpuidle/governor.c
 +++ b/drivers/cpuidle/governor.c
-@@ -81,6 +81,9 @@ int cpuidle_register_governor(struct cpuidle_governor *gov)
+@@ -81,6 +81,9 @@ int cpuidle_register_governor(struct cpu
  	if (!gov || !gov->select)
  		return -EINVAL;
  
@@ -111,6 +101,3 @@ index 724c164..ea2f8e7 100644
  	mutex_lock(&cpuidle_lock);
  	if (__cpuidle_find_governor(gov->name) == NULL) {
  		ret = 0;
--- 
-1.7.10.1.362.g242cab3
-
