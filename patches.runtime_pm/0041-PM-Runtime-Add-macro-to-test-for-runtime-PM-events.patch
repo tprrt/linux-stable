@@ -312,7 +312,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
   *
 --- a/sound/usb/card.c
 +++ b/sound/usb/card.c
-@@ -635,7 +635,7 @@ static int usb_audio_suspend(struct usb_
+@@ -637,7 +637,7 @@ static int usb_audio_suspend(struct usb_
  	if (chip == (void *)-1L)
  		return 0;
  

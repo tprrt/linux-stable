@@ -134,7 +134,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  
 --- a/drivers/tty/serial/serial_core.c
 +++ b/drivers/tty/serial/serial_core.c
-@@ -2065,8 +2065,6 @@ uart_report_port(struct uart_driver *drv
+@@ -2069,8 +2069,6 @@ uart_report_port(struct uart_driver *drv
  	case UPIO_MEM32:
  	case UPIO_AU:
  	case UPIO_TSI:
@@ -143,7 +143,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		snprintf(address, sizeof(address),
  			 "MMIO 0x%llx", (unsigned long long)port->mapbase);
  		break;
-@@ -2487,8 +2485,6 @@ int uart_match_port(struct uart_port *po
+@@ -2491,8 +2489,6 @@ int uart_match_port(struct uart_port *po
  	case UPIO_MEM32:
  	case UPIO_AU:
  	case UPIO_TSI:

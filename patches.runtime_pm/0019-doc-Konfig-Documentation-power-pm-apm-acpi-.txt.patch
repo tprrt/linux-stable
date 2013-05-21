@@ -15,7 +15,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
 
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -1746,8 +1746,8 @@ menuconfig APM
+@@ -1742,8 +1742,8 @@ menuconfig APM
  	  machines with more than one CPU.
  
  	  In order to use APM, you will need supporting software. For location

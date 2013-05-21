@@ -71,7 +71,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  	decnet.addr=	[HW,NET]
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -1660,5 +1660,22 @@ extern void copy_user_huge_page(struct p
+@@ -1662,5 +1662,22 @@ extern void copy_user_huge_page(struct p
  				unsigned int pages_per_huge_page);
  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
  

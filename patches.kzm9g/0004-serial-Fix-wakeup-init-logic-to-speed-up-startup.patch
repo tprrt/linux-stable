@@ -43,7 +43,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
 
 --- a/drivers/tty/serial/serial_core.c
 +++ b/drivers/tty/serial/serial_core.c
-@@ -2391,11 +2391,11 @@ int uart_add_one_port(struct uart_driver
+@@ -2395,11 +2395,11 @@ int uart_add_one_port(struct uart_driver
  	 */
  	tty_dev = tty_register_device(drv->tty_driver, uport->line, uport->dev);
  	if (likely(!IS_ERR(tty_dev))) {
