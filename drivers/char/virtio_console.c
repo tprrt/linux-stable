@@ -1037,6 +1037,10 @@ static int port_fops_open(struct inode *inode, struct file *filp)
 	int ret;
 
 	port = find_port_by_devt(cdev->dev);
+	if (!port) {
+		/* Port was unplugged before we could proceed */
+		return -ENXIO;
+	}
 	filp->private_data = port;
 
 	/* Prevent against a port getting hot-unplugged at the same time */
