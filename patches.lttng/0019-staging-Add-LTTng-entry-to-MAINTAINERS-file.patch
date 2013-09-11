@@ -11,7 +11,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
 
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4248,6 +4248,13 @@ T:	git git://github.com/linux-test-proje
+@@ -5079,6 +5079,13 @@ T:	git git://github.com/linux-test-proje
  T:	git git://ltp.git.sourceforge.net/gitroot/ltp/ltp-dev
  S:	Maintained
  
