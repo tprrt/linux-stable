@@ -152,7 +152,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  }
 --- a/kernel/futex.c
 +++ b/kernel/futex.c
-@@ -2758,7 +2758,7 @@ static int __init futex_init(void)
+@@ -2759,7 +2759,7 @@ static int __init futex_init(void)
  		futex_cmpxchg_enabled = 1;
  
  	for (i = 0; i < ARRAY_SIZE(futex_queues); i++) {

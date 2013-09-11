@@ -235,7 +235,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		return 0;
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -2361,7 +2361,7 @@ int usb_port_suspend(struct usb_device *
+@@ -2370,7 +2370,7 @@ int usb_port_suspend(struct usb_device *
  			dev_dbg(&udev->dev, "won't remote wakeup, status %d\n",
  					status);
  			/* bail if autosuspend is requested */
@@ -244,7 +244,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  				return status;
  		}
  	}
-@@ -2386,12 +2386,12 @@ int usb_port_suspend(struct usb_device *
+@@ -2395,12 +2395,12 @@ int usb_port_suspend(struct usb_device *
  				USB_CTRL_SET_TIMEOUT);
  
  		/* System sleep transitions should never fail */
@@ -259,7 +259,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		usb_set_device_state(udev, USB_STATE_SUSPENDED);
  		msleep(10);
  	}
-@@ -2548,7 +2548,7 @@ int usb_port_resume(struct usb_device *u
+@@ -2557,7 +2557,7 @@ int usb_port_resume(struct usb_device *u
  	} else {
  		/* drive resume for at least 20 msec */
  		dev_dbg(&udev->dev, "usb %sresume\n",
@@ -268,7 +268,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
  		msleep(25);
  
  		/* Virtual root hubs can trigger on GET_PORT_STATUS to
-@@ -2650,7 +2650,7 @@ static int hub_suspend(struct usb_interf
+@@ -2659,7 +2659,7 @@ static int hub_suspend(struct usb_interf
  		udev = hdev->children [port1-1];
  		if (udev && udev->can_submit) {
  			dev_warn(&intf->dev, "port %d nyet suspended\n", port1);
@@ -312,7 +312,7 @@ Signed-off-by: Simon Horman <horms@verge.net.au>
   *
 --- a/sound/usb/card.c
 +++ b/sound/usb/card.c
-@@ -637,7 +637,7 @@ static int usb_audio_suspend(struct usb_
+@@ -655,7 +655,7 @@ static int usb_audio_suspend(struct usb_
  	if (chip == (void *)-1L)
  		return 0;
  
