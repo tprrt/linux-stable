@@ -87,6 +87,13 @@ patches.af_bus/0013-netfilter-nfdbus-Add-D-bus-message-parsing.patch
 patches.af_bus/0014-netfilter-nfdbus-Add-D-bus-match-rule-implementation.patch
 patches.af_bus/0015-netfilter-add-netfilter-D-Bus-module.patch
 patches.af_bus/af_bus-make-netfilter_dbus-depend-on-netfilter.patch
+patches.af_bus/netfilter-nfdbus-check-pointer-sanity-before-use.patch
+patches.af_bus/net-bus-fix-eaddrinuse-reply-for-bus_-add-del-_addr-setsockopt.patch
+patches.af_bus/netfilter-nfdbus-fix-null-pointer-dereference-when-releasing-a-name.patch
+patches.af_bus/netfilter-nfdbus-always-accept-when-dest-is-an-eavesdropper.patch
+patches.af_bus/netfilter-nfdbus-use-the-uid-instead-of-the-pid-to-check-permissions.patch
+patches.af_bus/netfilter-nfdbus-add-path-key-to-match-rule-parse-function.patch
+patches.af_bus/netfilter-nfdbus-don-t-try-to-erase-same-node-twice.patch
 
 #############################################################################
 # pramfs
