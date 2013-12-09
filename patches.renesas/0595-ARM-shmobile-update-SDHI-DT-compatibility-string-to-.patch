@@ -18,18 +18,16 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 (cherry picked from commit df1d0584b2292df5b9d576d7e5246e94616220a1)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- Documentation/devicetree/bindings/mmc/tmio_mmc.txt | 17 ++++++++++-------
- arch/arm/boot/dts/r8a73a4.dtsi                     |  6 +++---
- arch/arm/boot/dts/r8a7790.dtsi                     |  8 ++++----
- arch/arm/boot/dts/sh73a0.dtsi                      |  6 +++---
- drivers/mmc/host/sh_mobile_sdhi.c                  | 16 ++++++++--------
+ Documentation/devicetree/bindings/mmc/tmio_mmc.txt |   17 ++++++++++-------
+ arch/arm/boot/dts/r8a73a4.dtsi                     |    6 +++---
+ arch/arm/boot/dts/r8a7790.dtsi                     |    8 ++++----
+ arch/arm/boot/dts/sh73a0.dtsi                      |    6 +++---
+ drivers/mmc/host/sh_mobile_sdhi.c                  |   16 ++++++++--------
  5 files changed, 28 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt b/Documentation/devicetree/bindings/mmc/tmio_mmc.txt
-index df204e18..6a2a1160 100644
 --- a/Documentation/devicetree/bindings/mmc/tmio_mmc.txt
 +++ b/Documentation/devicetree/bindings/mmc/tmio_mmc.txt
-@@ -9,12 +9,15 @@ compulsory and any optional properties, common to all SD/MMC drivers, as
+@@ -9,12 +9,15 @@ compulsory and any optional properties,
  described in mmc.txt, can be used. Additionally the following tmio_mmc-specific
  optional bindings can be used.
  
@@ -52,8 +50,6 @@ index df204e18..6a2a1160 100644
 -"renesas,sh7372-sdhi":	(default) compatible with SH7372
 -"renesas,r8a7740-sdhi":	compatible with R8A7740: certain MMC/SD commands have to
 -			wait for the interface to become idle.
-diff --git a/arch/arm/boot/dts/r8a73a4.dtsi b/arch/arm/boot/dts/r8a73a4.dtsi
-index 6c26caa8..658fcc53 100644
 --- a/arch/arm/boot/dts/r8a73a4.dtsi
 +++ b/arch/arm/boot/dts/r8a73a4.dtsi
 @@ -193,7 +193,7 @@
@@ -83,8 +79,6 @@ index 6c26caa8..658fcc53 100644
  		reg = <0 0xee140000 0 0x100>;
  		interrupt-parent = <&gic>;
  		interrupts = <0 167 4>;
-diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
-index 98513984..413b4c29 100644
 --- a/arch/arm/boot/dts/r8a7790.dtsi
 +++ b/arch/arm/boot/dts/r8a7790.dtsi
 @@ -151,7 +151,7 @@
@@ -123,8 +117,6 @@ index 98513984..413b4c29 100644
  		reg = <0 0xee160000 0 0x100>;
  		interrupt-parent = <&gic>;
  		interrupts = <0 168 4>;
-diff --git a/arch/arm/boot/dts/sh73a0.dtsi b/arch/arm/boot/dts/sh73a0.dtsi
-index ba59a587..3955c760 100644
 --- a/arch/arm/boot/dts/sh73a0.dtsi
 +++ b/arch/arm/boot/dts/sh73a0.dtsi
 @@ -196,7 +196,7 @@
@@ -154,11 +146,9 @@ index ba59a587..3955c760 100644
  		reg = <0xee140000 0x100>;
  		interrupt-parent = <&gic>;
  		interrupts = <0 104 4
-diff --git a/drivers/mmc/host/sh_mobile_sdhi.c b/drivers/mmc/host/sh_mobile_sdhi.c
-index 87ed3fb5..f344659d 100644
 --- a/drivers/mmc/host/sh_mobile_sdhi.c
 +++ b/drivers/mmc/host/sh_mobile_sdhi.c
-@@ -113,14 +113,14 @@ static const struct sh_mobile_sdhi_ops sdhi_ops = {
+@@ -113,14 +113,14 @@ static const struct sh_mobile_sdhi_ops s
  };
  
  static const struct of_device_id sh_mobile_sdhi_of_match[] = {
@@ -181,6 +171,3 @@ index 87ed3fb5..f344659d 100644
  	{},
  };
  MODULE_DEVICE_TABLE(of, sh_mobile_sdhi_of_match);
--- 
-1.8.4.3.gca3854a
-
