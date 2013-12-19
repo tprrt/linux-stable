@@ -816,6 +816,7 @@ patches.misc/0015-irqchip-irqc-Add-DT-support.patch
 patches.misc/i2c-adding-support-for-intel-ismt-smbus-2.0-host-controller.patch
 patches.misc/i2c-fix-i2c-ismt.c-printk-format-warning.patch
 patches.misc/i2c-ismt-add-intel-avoton-deviceids.patch
+patches.misc/i2c-ismt-initialize-dma-buffer.patch
 
 
 #############################################################################
