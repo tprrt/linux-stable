@@ -29,6 +29,21 @@ patches.ltsi/ltsi-makefile-addition.patch
 patches.lttng/lttng-2.3.4.patch
 
 
+#############################################################################
+# Power efficient workqueues
+#
+patches.workqueues/0001-workqueues-Introduce-new-flag-WQ_POWER_EFFICIENT-for.patch
+patches.workqueues/0002-workqueue-Add-system-wide-power_efficient-workqueues.patch
+patches.workqueues/0003-PHYLIB-queue-work-on-system_power_efficient_wq.patch
+patches.workqueues/0004-block-queue-work-on-power-efficient-wq.patch
+patches.workqueues/0005-fbcon-queue-work-on-power-efficient-wq.patch
+patches.workqueues/0006-ASoC-pcm-Use-the-power-efficient-workqueue-for-delay.patch
+patches.workqueues/0007-regulator-core-Use-the-power-efficient-workqueue-for.patch
+patches.workqueues/0008-ASoC-jack-Use-power-efficient-workqueue.patch
+patches.workqueues/0009-extcon-gpio-Use-power-efficient-workqueue-for-deboun.patch
+patches.workqueues/0010-extcon-adc-jack-Use-power-efficient-workqueue.patch
+patches.workqueues/0011-ASoC-compress-Use-power-efficient-workqueue.patch
+
 
 #############################################################################
 # Renesas SOC patches
