@@ -75,19 +75,17 @@ Cc: stable@vger.kernel.org
 (cherry picked from commit de68bab4fa96014cfaa6fcbcdb9750e32969fb86)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/usb/core/driver.c   |   3 +
- drivers/usb/core/hub.c      |   1 +
- drivers/usb/core/sysfs.c    |   6 +-
- drivers/usb/host/xhci-mem.c |  10 ---
- drivers/usb/host/xhci.c     | 161 +++++---------------------------------------
- include/linux/usb.h         |   4 +-
+ drivers/usb/core/driver.c   |    3 
+ drivers/usb/core/hub.c      |    1 
+ drivers/usb/core/sysfs.c    |    6 +
+ drivers/usb/host/xhci-mem.c |   10 --
+ drivers/usb/host/xhci.c     |  161 ++++----------------------------------------
+ include/linux/usb.h         |    4 -
  6 files changed, 29 insertions(+), 156 deletions(-)
 
-diff --git a/drivers/usb/core/driver.c b/drivers/usb/core/driver.c
-index 6eab440e1542..bed14edd8ef5 100644
 --- a/drivers/usb/core/driver.c
 +++ b/drivers/usb/core/driver.c
-@@ -1773,6 +1773,9 @@ int usb_set_usb2_hardware_lpm(struct usb_device *udev, int enable)
+@@ -1773,6 +1773,9 @@ int usb_set_usb2_hardware_lpm(struct usb
  	struct usb_hcd *hcd = bus_to_hcd(udev->bus);
  	int ret = -EPERM;
  
@@ -97,11 +95,9 @@ index 6eab440e1542..bed14edd8ef5 100644
  	if (hcd->driver->set_usb2_hw_lpm) {
  		ret = hcd->driver->set_usb2_hw_lpm(hcd, udev, enable);
  		if (!ret)
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 1424a8988849..a5a1fcc09e9d 100644
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -5186,6 +5186,7 @@ static int usb_reset_and_verify_device(struct usb_device *udev)
+@@ -5187,6 +5187,7 @@ static int usb_reset_and_verify_device(s
  
  done:
  	/* Now that the alt settings are re-installed, enable LTM and LPM. */
@@ -109,11 +105,9 @@ index 1424a8988849..a5a1fcc09e9d 100644
  	usb_unlocked_enable_lpm(udev);
  	usb_enable_ltm(udev);
  	return 0;
-diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
-index d9284b998bd7..9e6f9a945026 100644
 --- a/drivers/usb/core/sysfs.c
 +++ b/drivers/usb/core/sysfs.c
-@@ -463,7 +463,7 @@ show_usb2_hardware_lpm(struct device *dev, struct device_attribute *attr,
+@@ -463,7 +463,7 @@ show_usb2_hardware_lpm(struct device *de
  	struct usb_device *udev = to_usb_device(dev);
  	const char *p;
  
@@ -122,7 +116,7 @@ index d9284b998bd7..9e6f9a945026 100644
  		p = "enabled";
  	else
  		p = "disabled";
-@@ -483,8 +483,10 @@ set_usb2_hardware_lpm(struct device *dev, struct device_attribute *attr,
+@@ -483,8 +483,10 @@ set_usb2_hardware_lpm(struct device *dev
  
  	ret = strtobool(buf, &value);
  
@@ -134,11 +128,9 @@ index d9284b998bd7..9e6f9a945026 100644
  
  	usb_unlock_device(udev);
  
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 0fc539dc1cb8..27062e6010c2 100644
 --- a/drivers/usb/host/xhci-mem.c
 +++ b/drivers/usb/host/xhci-mem.c
-@@ -1763,9 +1763,7 @@ void xhci_free_command(struct xhci_hcd *xhci,
+@@ -1763,9 +1763,7 @@ void xhci_free_command(struct xhci_hcd *
  void xhci_mem_cleanup(struct xhci_hcd *xhci)
  {
  	struct pci_dev	*pdev = to_pci_dev(xhci_to_hcd(xhci)->self.controller);
@@ -148,7 +140,7 @@ index 0fc539dc1cb8..27062e6010c2 100644
  	int size;
  	int i, j, num_ports;
  
-@@ -1824,13 +1822,6 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
+@@ -1824,13 +1822,6 @@ void xhci_mem_cleanup(struct xhci_hcd *x
  
  	scratchpad_free(xhci);
  
@@ -162,7 +154,7 @@ index 0fc539dc1cb8..27062e6010c2 100644
  	if (!xhci->rh_bw)
  		goto no_bw;
  
-@@ -2289,7 +2280,6 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+@@ -2289,7 +2280,6 @@ int xhci_mem_init(struct xhci_hcd *xhci,
  	u32 page_size, temp;
  	int i;
  
@@ -170,11 +162,9 @@ index 0fc539dc1cb8..27062e6010c2 100644
  	INIT_LIST_HEAD(&xhci->cancel_cmd_list);
  
  	page_size = xhci_readl(xhci, &xhci->op_regs->page_size);
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index a228b796c300..10b15d3aa117 100644
 --- a/drivers/usb/host/xhci.c
 +++ b/drivers/usb/host/xhci.c
-@@ -3940,133 +3940,6 @@ static int xhci_calculate_usb2_hw_lpm_params(struct usb_device *udev)
+@@ -3940,133 +3940,6 @@ static int xhci_calculate_usb2_hw_lpm_pa
  	return PORT_BESLD(besld) | PORT_L1_TIMEOUT(l1) | PORT_HIRDM(hirdm);
  }
  
@@ -308,7 +298,7 @@ index a228b796c300..10b15d3aa117 100644
  int xhci_set_usb2_hardware_lpm(struct usb_hcd *hcd,
  			struct usb_device *udev, int enable)
  {
-@@ -4194,24 +4067,26 @@ static int xhci_check_usb2_port_capability(struct xhci_hcd *xhci, int port,
+@@ -4194,24 +4067,26 @@ static int xhci_check_usb2_port_capabili
  int xhci_update_device(struct usb_hcd *hcd, struct usb_device *udev)
  {
  	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
@@ -351,8 +341,6 @@ index a228b796c300..10b15d3aa117 100644
  	}
  
  	return 0;
-diff --git a/include/linux/usb.h b/include/linux/usb.h
-index 1f7d63f3ab8b..0ffae80ab1e5 100644
 --- a/include/linux/usb.h
 +++ b/include/linux/usb.h
 @@ -485,7 +485,8 @@ struct usb3_lpm_parameters {
@@ -373,6 +361,3 @@ index 1f7d63f3ab8b..0ffae80ab1e5 100644
  	unsigned usb3_lpm_enabled:1;
  	int string_langid;
  
--- 
-1.8.5.rc3
-

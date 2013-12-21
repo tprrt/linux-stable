@@ -17,12 +17,10 @@ Signed-off-by: Kukjin Kim <kgene.kim@samsung.com>
 (cherry picked from commit 83978253d0c3e12bf81d4b5f419a0200d5cb19a6)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- arch/arm/mach-exynos/Kconfig | 9 ++++++---
- drivers/pinctrl/Kconfig      | 5 +++--
+ arch/arm/mach-exynos/Kconfig |    9 ++++++---
+ drivers/pinctrl/Kconfig      |    5 +++--
  2 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-exynos/Kconfig b/arch/arm/mach-exynos/Kconfig
-index ff18fc2ea46f..144fcc231074 100644
 --- a/arch/arm/mach-exynos/Kconfig
 +++ b/arch/arm/mach-exynos/Kconfig
 @@ -17,6 +17,7 @@ config ARCH_EXYNOS4
@@ -75,7 +73,7 @@ index ff18fc2ea46f..144fcc231074 100644
  	select S5P_SLEEP if PM
 @@ -78,7 +84,6 @@ config SOC_EXYNOS5440
  	select ARCH_HAS_OPP
- 	select ARM_ARCH_TIMER
+ 	select HAVE_ARM_ARCH_TIMER
  	select AUTO_ZRELADDR
 -	select PINCTRL
  	select PINCTRL_EXYNOS5440
@@ -90,8 +88,6 @@ index ff18fc2ea46f..144fcc231074 100644
  	select S5P_DEV_MFC
  	select USE_OF
  	help
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index adeb1fed04cc..6585b37bbdbc 100644
 --- a/drivers/pinctrl/Kconfig
 +++ b/drivers/pinctrl/Kconfig
 @@ -219,12 +219,13 @@ config PINCTRL_SAMSUNG
@@ -110,6 +106,3 @@ index adeb1fed04cc..6585b37bbdbc 100644
  	select PINMUX
  	select PINCONF
  
--- 
-1.8.5.rc3
-

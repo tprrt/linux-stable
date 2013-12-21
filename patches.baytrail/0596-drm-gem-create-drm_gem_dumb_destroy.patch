@@ -31,53 +31,51 @@ Conflicts:
 	(we don't have this driver in our tree)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/ast/ast_drv.c             |  2 +-
- drivers/gpu/drm/ast/ast_drv.h             |  3 ---
- drivers/gpu/drm/ast/ast_main.c            |  7 -------
- drivers/gpu/drm/cirrus/cirrus_drv.c       |  2 +-
- drivers/gpu/drm/cirrus/cirrus_drv.h       |  3 ---
- drivers/gpu/drm/cirrus/cirrus_main.c      |  7 -------
- drivers/gpu/drm/drm_gem.c                 | 14 ++++++++++++++
- drivers/gpu/drm/drm_gem_cma_helper.c      | 10 ----------
- drivers/gpu/drm/exynos/exynos_drm_drv.c   |  2 +-
- drivers/gpu/drm/exynos/exynos_drm_gem.c   | 22 ----------------------
- drivers/gpu/drm/exynos/exynos_drm_gem.h   |  9 ---------
- drivers/gpu/drm/gma500/gem.c              | 17 -----------------
- drivers/gpu/drm/gma500/psb_drv.c          |  2 +-
- drivers/gpu/drm/gma500/psb_drv.h          |  2 --
- drivers/gpu/drm/i915/i915_drv.c           |  2 +-
- drivers/gpu/drm/i915/i915_drv.h           |  2 --
- drivers/gpu/drm/i915/i915_gem.c           |  7 -------
- drivers/gpu/drm/mgag200/mgag200_drv.c     |  2 +-
- drivers/gpu/drm/mgag200/mgag200_drv.h     |  3 ---
- drivers/gpu/drm/mgag200/mgag200_main.c    |  7 -------
- drivers/gpu/drm/nouveau/nouveau_display.c |  7 -------
- drivers/gpu/drm/nouveau/nouveau_display.h |  2 --
- drivers/gpu/drm/nouveau/nouveau_drm.c     |  2 +-
- drivers/gpu/drm/omapdrm/omap_drv.c        |  2 +-
- drivers/gpu/drm/omapdrm/omap_drv.h        |  2 --
- drivers/gpu/drm/omapdrm/omap_gem.c        | 15 ---------------
- drivers/gpu/drm/qxl/qxl_drv.c             |  2 +-
- drivers/gpu/drm/qxl/qxl_drv.h             |  3 ---
- drivers/gpu/drm/qxl/qxl_dumb.c            |  7 -------
- drivers/gpu/drm/radeon/radeon.h           |  3 ---
- drivers/gpu/drm/radeon/radeon_drv.c       |  5 +----
- drivers/gpu/drm/radeon/radeon_gem.c       |  7 -------
- drivers/gpu/drm/shmobile/shmob_drm_drv.c  |  2 +-
- drivers/gpu/drm/tilcdc/tilcdc_drv.c       |  2 +-
- drivers/gpu/drm/udl/udl_drv.c             |  2 +-
- drivers/gpu/drm/udl/udl_drv.h             |  2 --
- drivers/gpu/drm/udl/udl_gem.c             |  6 ------
- drivers/gpu/host1x/drm/drm.c              |  2 +-
- drivers/gpu/host1x/drm/gem.c              |  6 ------
- drivers/gpu/host1x/drm/gem.h              |  2 --
- drivers/staging/imx-drm/imx-drm-core.c    |  2 +-
- include/drm/drmP.h                        |  3 +++
- include/drm/drm_gem_cma_helper.h          |  8 --------
+ drivers/gpu/drm/ast/ast_drv.c             |    2 +-
+ drivers/gpu/drm/ast/ast_drv.h             |    3 ---
+ drivers/gpu/drm/ast/ast_main.c            |    7 -------
+ drivers/gpu/drm/cirrus/cirrus_drv.c       |    2 +-
+ drivers/gpu/drm/cirrus/cirrus_drv.h       |    3 ---
+ drivers/gpu/drm/cirrus/cirrus_main.c      |    7 -------
+ drivers/gpu/drm/drm_gem.c                 |   14 ++++++++++++++
+ drivers/gpu/drm/drm_gem_cma_helper.c      |   10 ----------
+ drivers/gpu/drm/exynos/exynos_drm_drv.c   |    2 +-
+ drivers/gpu/drm/exynos/exynos_drm_gem.c   |   22 ----------------------
+ drivers/gpu/drm/exynos/exynos_drm_gem.h   |    9 ---------
+ drivers/gpu/drm/gma500/gem.c              |   17 -----------------
+ drivers/gpu/drm/gma500/psb_drv.c          |    2 +-
+ drivers/gpu/drm/gma500/psb_drv.h          |    2 --
+ drivers/gpu/drm/i915/i915_drv.c           |    2 +-
+ drivers/gpu/drm/i915/i915_drv.h           |    2 --
+ drivers/gpu/drm/i915/i915_gem.c           |    7 -------
+ drivers/gpu/drm/mgag200/mgag200_drv.c     |    2 +-
+ drivers/gpu/drm/mgag200/mgag200_drv.h     |    3 ---
+ drivers/gpu/drm/mgag200/mgag200_main.c    |    7 -------
+ drivers/gpu/drm/nouveau/nouveau_display.c |    7 -------
+ drivers/gpu/drm/nouveau/nouveau_display.h |    2 --
+ drivers/gpu/drm/nouveau/nouveau_drm.c     |    2 +-
+ drivers/gpu/drm/omapdrm/omap_drv.c        |    2 +-
+ drivers/gpu/drm/omapdrm/omap_drv.h        |    2 --
+ drivers/gpu/drm/omapdrm/omap_gem.c        |   15 ---------------
+ drivers/gpu/drm/qxl/qxl_drv.c             |    2 +-
+ drivers/gpu/drm/qxl/qxl_drv.h             |    3 ---
+ drivers/gpu/drm/qxl/qxl_dumb.c            |    7 -------
+ drivers/gpu/drm/radeon/radeon.h           |    3 ---
+ drivers/gpu/drm/radeon/radeon_drv.c       |    5 +----
+ drivers/gpu/drm/radeon/radeon_gem.c       |    7 -------
+ drivers/gpu/drm/shmobile/shmob_drm_drv.c  |    2 +-
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c       |    2 +-
+ drivers/gpu/drm/udl/udl_drv.c             |    2 +-
+ drivers/gpu/drm/udl/udl_drv.h             |    2 --
+ drivers/gpu/drm/udl/udl_gem.c             |    6 ------
+ drivers/gpu/host1x/drm/drm.c              |    2 +-
+ drivers/gpu/host1x/drm/gem.c              |    6 ------
+ drivers/gpu/host1x/drm/gem.h              |    2 --
+ drivers/staging/imx-drm/imx-drm-core.c    |    2 +-
+ include/drm/drmP.h                        |    3 +++
+ include/drm/drm_gem_cma_helper.h          |    8 --------
  43 files changed, 32 insertions(+), 187 deletions(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_drv.c b/drivers/gpu/drm/ast/ast_drv.c
-index df0d0a08097a..a144fb044852 100644
 --- a/drivers/gpu/drm/ast/ast_drv.c
 +++ b/drivers/gpu/drm/ast/ast_drv.c
 @@ -216,7 +216,7 @@ static struct drm_driver driver = {
@@ -89,8 +87,6 @@ index df0d0a08097a..a144fb044852 100644
  
  };
  
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index b6b7d70f2832..68e1d324005a 100644
 --- a/drivers/gpu/drm/ast/ast_drv.h
 +++ b/drivers/gpu/drm/ast/ast_drv.h
 @@ -322,9 +322,6 @@ ast_bo(struct ttm_buffer_object *bo)
@@ -103,11 +99,9 @@ index b6b7d70f2832..68e1d324005a 100644
  
  extern int ast_gem_init_object(struct drm_gem_object *obj);
  extern void ast_gem_free_object(struct drm_gem_object *obj);
-diff --git a/drivers/gpu/drm/ast/ast_main.c b/drivers/gpu/drm/ast/ast_main.c
-index c195dc2abc09..7f6152d374ca 100644
 --- a/drivers/gpu/drm/ast/ast_main.c
 +++ b/drivers/gpu/drm/ast/ast_main.c
-@@ -449,13 +449,6 @@ int ast_dumb_create(struct drm_file *file,
+@@ -449,13 +449,6 @@ int ast_dumb_create(struct drm_file *fil
  	return 0;
  }
  
@@ -121,8 +115,6 @@ index c195dc2abc09..7f6152d374ca 100644
  int ast_gem_init_object(struct drm_gem_object *obj)
  {
  	BUG();
-diff --git a/drivers/gpu/drm/cirrus/cirrus_drv.c b/drivers/gpu/drm/cirrus/cirrus_drv.c
-index 8ecb601152ef..d35d99c15f84 100644
 --- a/drivers/gpu/drm/cirrus/cirrus_drv.c
 +++ b/drivers/gpu/drm/cirrus/cirrus_drv.c
 @@ -102,7 +102,7 @@ static struct drm_driver driver = {
@@ -134,11 +126,9 @@ index 8ecb601152ef..d35d99c15f84 100644
  };
  
  static struct pci_driver cirrus_pci_driver = {
-diff --git a/drivers/gpu/drm/cirrus/cirrus_drv.h b/drivers/gpu/drm/cirrus/cirrus_drv.h
-index 7ca059596887..33a0f991b0fc 100644
 --- a/drivers/gpu/drm/cirrus/cirrus_drv.h
 +++ b/drivers/gpu/drm/cirrus/cirrus_drv.h
-@@ -203,9 +203,6 @@ int cirrus_gem_create(struct drm_device *dev,
+@@ -203,9 +203,6 @@ int cirrus_gem_create(struct drm_device
  int cirrus_dumb_create(struct drm_file *file,
  		    struct drm_device *dev,
  		       struct drm_mode_create_dumb *args);
@@ -148,11 +138,9 @@ index 7ca059596887..33a0f991b0fc 100644
  
  int cirrus_framebuffer_init(struct drm_device *dev,
  			   struct cirrus_framebuffer *gfb,
-diff --git a/drivers/gpu/drm/cirrus/cirrus_main.c b/drivers/gpu/drm/cirrus/cirrus_main.c
-index 3a7a0efe3675..f130a533a512 100644
 --- a/drivers/gpu/drm/cirrus/cirrus_main.c
 +++ b/drivers/gpu/drm/cirrus/cirrus_main.c
-@@ -255,13 +255,6 @@ int cirrus_dumb_create(struct drm_file *file,
+@@ -255,13 +255,6 @@ int cirrus_dumb_create(struct drm_file *
  	return 0;
  }
  
@@ -166,16 +154,14 @@ index 3a7a0efe3675..f130a533a512 100644
  int cirrus_gem_init_object(struct drm_gem_object *obj)
  {
  	BUG();
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index 2688795172f9..ee9ddc856710 100644
 --- a/drivers/gpu/drm/drm_gem.c
 +++ b/drivers/gpu/drm/drm_gem.c
-@@ -244,6 +244,20 @@ drm_gem_handle_delete(struct drm_file *filp, u32 handle)
+@@ -244,6 +244,20 @@ drm_gem_handle_delete(struct drm_file *f
  EXPORT_SYMBOL(drm_gem_handle_delete);
  
  /**
 + * drm_gem_dumb_destroy - dumb fb callback helper for gem based drivers
-+ * 
++ *
 + * This implements the ->dumb_destroy kms driver callback for drivers which use
 + * gem to manage their backing storage.
 + */
@@ -191,11 +177,9 @@ index 2688795172f9..ee9ddc856710 100644
   * Create a handle for this object. This adds a handle reference
   * to the object, which includes a regular reference count. Callers
   * will likely want to dereference the object afterwards.
-diff --git a/drivers/gpu/drm/drm_gem_cma_helper.c b/drivers/gpu/drm/drm_gem_cma_helper.c
-index 11b616ef9dc2..3ec218376734 100644
 --- a/drivers/gpu/drm/drm_gem_cma_helper.c
 +++ b/drivers/gpu/drm/drm_gem_cma_helper.c
-@@ -235,16 +235,6 @@ int drm_gem_cma_mmap(struct file *filp, struct vm_area_struct *vma)
+@@ -284,16 +284,6 @@ int drm_gem_cma_mmap(struct file *filp,
  }
  EXPORT_SYMBOL_GPL(drm_gem_cma_mmap);
  
@@ -212,11 +196,9 @@ index 11b616ef9dc2..3ec218376734 100644
  #ifdef CONFIG_DEBUG_FS
  void drm_gem_cma_describe(struct drm_gem_cma_object *cma_obj, struct seq_file *m)
  {
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-index ba6d995e4375..1ff89aca1fed 100644
 --- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
 +++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-@@ -276,7 +276,7 @@ static struct drm_driver exynos_drm_driver = {
+@@ -276,7 +276,7 @@ static struct drm_driver exynos_drm_driv
  	.gem_vm_ops		= &exynos_drm_gem_vm_ops,
  	.dumb_create		= exynos_drm_gem_dumb_create,
  	.dumb_map_offset	= exynos_drm_gem_dumb_map_offset,
@@ -225,8 +207,6 @@ index ba6d995e4375..1ff89aca1fed 100644
  	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
  	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
  	.gem_prime_export	= exynos_dmabuf_prime_export,
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.c b/drivers/gpu/drm/exynos/exynos_drm_gem.c
-index 408b71f4c95e..e83930fdf6c7 100644
 --- a/drivers/gpu/drm/exynos/exynos_drm_gem.c
 +++ b/drivers/gpu/drm/exynos/exynos_drm_gem.c
 @@ -735,28 +735,6 @@ unlock:
@@ -258,11 +238,9 @@ index 408b71f4c95e..e83930fdf6c7 100644
  int exynos_drm_gem_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
  {
  	struct drm_gem_object *obj = vma->vm_private_data;
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.h b/drivers/gpu/drm/exynos/exynos_drm_gem.h
-index 468766bee450..09555afdfe9c 100644
 --- a/drivers/gpu/drm/exynos/exynos_drm_gem.h
 +++ b/drivers/gpu/drm/exynos/exynos_drm_gem.h
-@@ -151,15 +151,6 @@ int exynos_drm_gem_dumb_map_offset(struct drm_file *file_priv,
+@@ -151,15 +151,6 @@ int exynos_drm_gem_dumb_map_offset(struc
  				   struct drm_device *dev, uint32_t handle,
  				   uint64_t *offset);
  
@@ -278,11 +256,9 @@ index 468766bee450..09555afdfe9c 100644
  /* page fault handler and mmap fault address(virtual) to physical memory. */
  int exynos_drm_gem_fault(struct vm_area_struct *vma, struct vm_fault *vmf);
  
-diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
-index 2f77bea30b11..10ae8c52d06f 100644
 --- a/drivers/gpu/drm/gma500/gem.c
 +++ b/drivers/gpu/drm/gma500/gem.c
-@@ -162,23 +162,6 @@ int psb_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
+@@ -162,23 +162,6 @@ int psb_gem_dumb_create(struct drm_file
  }
  
  /**
@@ -306,8 +282,6 @@ index 2f77bea30b11..10ae8c52d06f 100644
   *	psb_gem_fault		-	pagefault handler for GEM objects
   *	@vma: the VMA of the GEM object
   *	@vmf: fault detail
-diff --git a/drivers/gpu/drm/gma500/psb_drv.c b/drivers/gpu/drm/gma500/psb_drv.c
-index bddea5807442..ed06d5ce3757 100644
 --- a/drivers/gpu/drm/gma500/psb_drv.c
 +++ b/drivers/gpu/drm/gma500/psb_drv.c
 @@ -652,7 +652,7 @@ static struct drm_driver driver = {
@@ -319,11 +293,9 @@ index bddea5807442..ed06d5ce3757 100644
  	.fops = &psb_gem_fops,
  	.name = DRIVER_NAME,
  	.desc = DRIVER_DESC,
-diff --git a/drivers/gpu/drm/gma500/psb_drv.h b/drivers/gpu/drm/gma500/psb_drv.h
-index 6053b8abcd12..984cacfcbaf2 100644
 --- a/drivers/gpu/drm/gma500/psb_drv.h
 +++ b/drivers/gpu/drm/gma500/psb_drv.h
-@@ -838,8 +838,6 @@ extern int psb_gem_get_aperture(struct drm_device *dev, void *data,
+@@ -838,8 +838,6 @@ extern int psb_gem_get_aperture(struct d
  			struct drm_file *file);
  extern int psb_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
  			struct drm_mode_create_dumb *args);
@@ -332,8 +304,6 @@ index 6053b8abcd12..984cacfcbaf2 100644
  extern int psb_gem_dumb_map_gtt(struct drm_file *file, struct drm_device *dev,
  			uint32_t handle, uint64_t *offset);
  extern int psb_gem_fault(struct vm_area_struct *vma, struct vm_fault *vmf);
-diff --git a/drivers/gpu/drm/i915/i915_drv.c b/drivers/gpu/drm/i915/i915_drv.c
-index 01d63a0435fb..13457e3e9cad 100644
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
 @@ -1038,7 +1038,7 @@ static struct drm_driver driver = {
@@ -345,11 +315,9 @@ index 01d63a0435fb..13457e3e9cad 100644
  	.ioctls = i915_ioctls,
  	.fops = &i915_driver_fops,
  	.name = DRIVER_NAME,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 62ec760782f5..06c31752fcb2 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1775,8 +1775,6 @@ int i915_gem_dumb_create(struct drm_file *file_priv,
+@@ -1775,8 +1775,6 @@ int i915_gem_dumb_create(struct drm_file
  			 struct drm_mode_create_dumb *args);
  int i915_gem_mmap_gtt(struct drm_file *file_priv, struct drm_device *dev,
  		      uint32_t handle, uint64_t *offset);
@@ -358,11 +326,9 @@ index 62ec760782f5..06c31752fcb2 100644
  /**
   * Returns true if seq1 is later than seq2.
   */
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index d31e15dd173c..967fe650fa8b 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -245,13 +245,6 @@ i915_gem_dumb_create(struct drm_file *file,
+@@ -245,13 +245,6 @@ i915_gem_dumb_create(struct drm_file *fi
  			       args->size, &args->handle);
  }
  
@@ -376,8 +342,6 @@ index d31e15dd173c..967fe650fa8b 100644
  /**
   * Creates a new mm object and returns a handle to it.
   */
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.c b/drivers/gpu/drm/mgag200/mgag200_drv.c
-index 122b571ccc7c..bd9196478735 100644
 --- a/drivers/gpu/drm/mgag200/mgag200_drv.c
 +++ b/drivers/gpu/drm/mgag200/mgag200_drv.c
 @@ -104,7 +104,7 @@ static struct drm_driver driver = {
@@ -389,11 +353,9 @@ index 122b571ccc7c..bd9196478735 100644
  };
  
  static struct pci_driver mgag200_pci_driver = {
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-index 988911afcc8b..e61ce34910d6 100644
 --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
 +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-@@ -248,9 +248,6 @@ int mgag200_gem_init_object(struct drm_gem_object *obj);
+@@ -248,9 +248,6 @@ int mgag200_gem_init_object(struct drm_g
  int mgag200_dumb_create(struct drm_file *file,
  			struct drm_device *dev,
  			struct drm_mode_create_dumb *args);
@@ -403,11 +365,9 @@ index 988911afcc8b..e61ce34910d6 100644
  void mgag200_gem_free_object(struct drm_gem_object *obj);
  int
  mgag200_dumb_mmap_offset(struct drm_file *file,
-diff --git a/drivers/gpu/drm/mgag200/mgag200_main.c b/drivers/gpu/drm/mgag200/mgag200_main.c
-index 2d56e28d2b21..4529d4dd12c2 100644
 --- a/drivers/gpu/drm/mgag200/mgag200_main.c
 +++ b/drivers/gpu/drm/mgag200/mgag200_main.c
-@@ -291,13 +291,6 @@ int mgag200_dumb_create(struct drm_file *file,
+@@ -291,13 +291,6 @@ int mgag200_dumb_create(struct drm_file
  	return 0;
  }
  
@@ -421,11 +381,9 @@ index 2d56e28d2b21..4529d4dd12c2 100644
  int mgag200_gem_init_object(struct drm_gem_object *obj)
  {
  	BUG();
-diff --git a/drivers/gpu/drm/nouveau/nouveau_display.c b/drivers/gpu/drm/nouveau/nouveau_display.c
-index 52498de87a3b..05ae27277543 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_display.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_display.c
-@@ -689,13 +689,6 @@ nouveau_display_dumb_create(struct drm_file *file_priv, struct drm_device *dev,
+@@ -689,13 +689,6 @@ nouveau_display_dumb_create(struct drm_f
  }
  
  int
@@ -439,11 +397,9 @@ index 52498de87a3b..05ae27277543 100644
  nouveau_display_dumb_map_offset(struct drm_file *file_priv,
  				struct drm_device *dev,
  				uint32_t handle, uint64_t *poffset)
-diff --git a/drivers/gpu/drm/nouveau/nouveau_display.h b/drivers/gpu/drm/nouveau/nouveau_display.h
-index 1ea3e4734b62..185e74132a6d 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_display.h
 +++ b/drivers/gpu/drm/nouveau/nouveau_display.h
-@@ -68,8 +68,6 @@ int  nouveau_display_dumb_create(struct drm_file *, struct drm_device *,
+@@ -68,8 +68,6 @@ int  nouveau_display_dumb_create(struct
  				 struct drm_mode_create_dumb *args);
  int  nouveau_display_dumb_map_offset(struct drm_file *, struct drm_device *,
  				     u32 handle, u64 *offset);
@@ -452,8 +408,6 @@ index 1ea3e4734b62..185e74132a6d 100644
  
  void nouveau_hdmi_mode_set(struct drm_encoder *, struct drm_display_mode *);
  
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index 383f4e6ea9d1..b77bcb9237e0 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
 @@ -714,7 +714,7 @@ driver = {
@@ -465,11 +419,9 @@ index 383f4e6ea9d1..b77bcb9237e0 100644
  
  	.name = DRIVER_NAME,
  	.desc = DRIVER_DESC,
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-index 826586ffbe83..75886a3bf639 100644
 --- a/drivers/gpu/drm/omapdrm/omap_drv.c
 +++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -618,7 +618,7 @@ static struct drm_driver omap_drm_driver = {
+@@ -618,7 +618,7 @@ static struct drm_driver omap_drm_driver
  		.gem_vm_ops = &omap_gem_vm_ops,
  		.dumb_create = omap_gem_dumb_create,
  		.dumb_map_offset = omap_gem_dumb_map_offset,
@@ -478,11 +430,9 @@ index 826586ffbe83..75886a3bf639 100644
  		.ioctls = ioctls,
  		.num_ioctls = DRM_OMAP_NUM_IOCTLS,
  		.fops = &omapdriver_fops,
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.h b/drivers/gpu/drm/omapdrm/omap_drv.h
-index 215a20dd340c..fd13601ff6fb 100644
 --- a/drivers/gpu/drm/omapdrm/omap_drv.h
 +++ b/drivers/gpu/drm/omapdrm/omap_drv.h
-@@ -224,8 +224,6 @@ int omap_gem_init_object(struct drm_gem_object *obj);
+@@ -224,8 +224,6 @@ int omap_gem_init_object(struct drm_gem_
  void *omap_gem_vaddr(struct drm_gem_object *obj);
  int omap_gem_dumb_map_offset(struct drm_file *file, struct drm_device *dev,
  		uint32_t handle, uint64_t *offset);
@@ -491,11 +441,9 @@ index 215a20dd340c..fd13601ff6fb 100644
  int omap_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
  		struct drm_mode_create_dumb *args);
  int omap_gem_mmap(struct file *filp, struct vm_area_struct *vma);
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index f90531fc00c9..b1f19702550f 100644
 --- a/drivers/gpu/drm/omapdrm/omap_gem.c
 +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-@@ -629,21 +629,6 @@ int omap_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
+@@ -629,21 +629,6 @@ int omap_gem_dumb_create(struct drm_file
  }
  
  /**
@@ -517,8 +465,6 @@ index f90531fc00c9..b1f19702550f 100644
   * omap_gem_dumb_map	-	buffer mapping for dumb interface
   * @file: our drm client file
   * @dev: drm device
-diff --git a/drivers/gpu/drm/qxl/qxl_drv.c b/drivers/gpu/drm/qxl/qxl_drv.c
-index aa291d8a98a2..60cb159c4f7d 100644
 --- a/drivers/gpu/drm/qxl/qxl_drv.c
 +++ b/drivers/gpu/drm/qxl/qxl_drv.c
 @@ -99,7 +99,7 @@ static struct drm_driver qxl_driver = {
@@ -530,11 +476,9 @@ index aa291d8a98a2..60cb159c4f7d 100644
  #if defined(CONFIG_DEBUG_FS)
  	.debugfs_init = qxl_debugfs_init,
  	.debugfs_cleanup = qxl_debugfs_takedown,
-diff --git a/drivers/gpu/drm/qxl/qxl_drv.h b/drivers/gpu/drm/qxl/qxl_drv.h
-index 43d06ab28a21..089fd42802dd 100644
 --- a/drivers/gpu/drm/qxl/qxl_drv.h
 +++ b/drivers/gpu/drm/qxl/qxl_drv.h
-@@ -409,9 +409,6 @@ int qxl_bo_kmap(struct qxl_bo *bo, void **ptr);
+@@ -409,9 +409,6 @@ int qxl_bo_kmap(struct qxl_bo *bo, void
  int qxl_mode_dumb_create(struct drm_file *file_priv,
  			 struct drm_device *dev,
  			 struct drm_mode_create_dumb *args);
@@ -544,11 +488,9 @@ index 43d06ab28a21..089fd42802dd 100644
  int qxl_mode_dumb_mmap(struct drm_file *filp,
  		       struct drm_device *dev,
  		       uint32_t handle, uint64_t *offset_p);
-diff --git a/drivers/gpu/drm/qxl/qxl_dumb.c b/drivers/gpu/drm/qxl/qxl_dumb.c
-index 847c4ee798f7..d34bb4130ff0 100644
 --- a/drivers/gpu/drm/qxl/qxl_dumb.c
 +++ b/drivers/gpu/drm/qxl/qxl_dumb.c
-@@ -68,13 +68,6 @@ int qxl_mode_dumb_create(struct drm_file *file_priv,
+@@ -68,13 +68,6 @@ int qxl_mode_dumb_create(struct drm_file
  	return 0;
  }
  
@@ -562,11 +504,9 @@ index 847c4ee798f7..d34bb4130ff0 100644
  int qxl_mode_dumb_mmap(struct drm_file *file_priv,
  		       struct drm_device *dev,
  		       uint32_t handle, uint64_t *offset_p)
-diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
-index d4ff48ce1d8b..0fbc44e468da 100644
 --- a/drivers/gpu/drm/radeon/radeon.h
 +++ b/drivers/gpu/drm/radeon/radeon.h
-@@ -444,9 +444,6 @@ int radeon_mode_dumb_create(struct drm_file *file_priv,
+@@ -444,9 +444,6 @@ int radeon_mode_dumb_create(struct drm_f
  int radeon_mode_dumb_mmap(struct drm_file *filp,
  			  struct drm_device *dev,
  			  uint32_t handle, uint64_t *offset_p);
@@ -576,11 +516,9 @@ index d4ff48ce1d8b..0fbc44e468da 100644
  
  /*
   * Semaphores.
-diff --git a/drivers/gpu/drm/radeon/radeon_drv.c b/drivers/gpu/drm/radeon/radeon_drv.c
-index 094e7e5ea39e..bef72931ea08 100644
 --- a/drivers/gpu/drm/radeon/radeon_drv.c
 +++ b/drivers/gpu/drm/radeon/radeon_drv.c
-@@ -119,9 +119,6 @@ int radeon_mode_dumb_mmap(struct drm_file *filp,
+@@ -119,9 +119,6 @@ int radeon_mode_dumb_mmap(struct drm_fil
  int radeon_mode_dumb_create(struct drm_file *file_priv,
  			    struct drm_device *dev,
  			    struct drm_mode_create_dumb *args);
@@ -599,11 +537,9 @@ index 094e7e5ea39e..bef72931ea08 100644
  	.fops = &radeon_driver_kms_fops,
  
  	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
-diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
-index aa796031ab65..dce99c8a5835 100644
 --- a/drivers/gpu/drm/radeon/radeon_gem.c
 +++ b/drivers/gpu/drm/radeon/radeon_gem.c
-@@ -570,13 +570,6 @@ int radeon_mode_dumb_create(struct drm_file *file_priv,
+@@ -570,13 +570,6 @@ int radeon_mode_dumb_create(struct drm_f
  	return 0;
  }
  
@@ -617,11 +553,9 @@ index aa796031ab65..dce99c8a5835 100644
  #if defined(CONFIG_DEBUG_FS)
  static int radeon_debugfs_gem_info(struct seq_file *m, void *data)
  {
-diff --git a/drivers/gpu/drm/shmobile/shmob_drm_drv.c b/drivers/gpu/drm/shmobile/shmob_drm_drv.c
-index f6e0b5395051..946bd28bf5da 100644
 --- a/drivers/gpu/drm/shmobile/shmob_drm_drv.c
 +++ b/drivers/gpu/drm/shmobile/shmob_drm_drv.c
-@@ -285,7 +285,7 @@ static struct drm_driver shmob_drm_driver = {
+@@ -285,7 +285,7 @@ static struct drm_driver shmob_drm_drive
  	.gem_vm_ops		= &drm_gem_cma_vm_ops,
  	.dumb_create		= drm_gem_cma_dumb_create,
  	.dumb_map_offset	= drm_gem_cma_dumb_map_offset,
@@ -630,11 +564,9 @@ index f6e0b5395051..946bd28bf5da 100644
  	.fops			= &shmob_drm_fops,
  	.name			= "shmob-drm",
  	.desc			= "Renesas SH Mobile DRM",
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 2b5461bcd9fb..bba8daf9230c 100644
 --- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
 +++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -490,7 +490,7 @@ static struct drm_driver tilcdc_driver = {
+@@ -490,7 +490,7 @@ static struct drm_driver tilcdc_driver =
  	.gem_vm_ops         = &drm_gem_cma_vm_ops,
  	.dumb_create        = drm_gem_cma_dumb_create,
  	.dumb_map_offset    = drm_gem_cma_dumb_map_offset,
@@ -643,8 +575,6 @@ index 2b5461bcd9fb..bba8daf9230c 100644
  #ifdef CONFIG_DEBUG_FS
  	.debugfs_init       = tilcdc_debugfs_init,
  	.debugfs_cleanup    = tilcdc_debugfs_cleanup,
-diff --git a/drivers/gpu/drm/udl/udl_drv.c b/drivers/gpu/drm/udl/udl_drv.c
-index c0770dbba74a..bb0af58c769a 100644
 --- a/drivers/gpu/drm/udl/udl_drv.c
 +++ b/drivers/gpu/drm/udl/udl_drv.c
 @@ -84,7 +84,7 @@ static struct drm_driver driver = {
@@ -656,11 +586,9 @@ index c0770dbba74a..bb0af58c769a 100644
  	.fops = &udl_driver_fops,
  
  	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
-diff --git a/drivers/gpu/drm/udl/udl_drv.h b/drivers/gpu/drm/udl/udl_drv.h
-index cc6d90f28c71..56aec9409fa3 100644
 --- a/drivers/gpu/drm/udl/udl_drv.h
 +++ b/drivers/gpu/drm/udl/udl_drv.h
-@@ -114,8 +114,6 @@ int udl_dumb_create(struct drm_file *file_priv,
+@@ -114,8 +114,6 @@ int udl_dumb_create(struct drm_file *fil
  		    struct drm_mode_create_dumb *args);
  int udl_gem_mmap(struct drm_file *file_priv, struct drm_device *dev,
  		 uint32_t handle, uint64_t *offset);
@@ -669,11 +597,9 @@ index cc6d90f28c71..56aec9409fa3 100644
  
  int udl_gem_init_object(struct drm_gem_object *obj);
  void udl_gem_free_object(struct drm_gem_object *gem_obj);
-diff --git a/drivers/gpu/drm/udl/udl_gem.c b/drivers/gpu/drm/udl/udl_gem.c
-index 2a4cb2f83b36..b5e3b8038253 100644
 --- a/drivers/gpu/drm/udl/udl_gem.c
 +++ b/drivers/gpu/drm/udl/udl_gem.c
-@@ -66,12 +66,6 @@ int udl_dumb_create(struct drm_file *file,
+@@ -66,12 +66,6 @@ int udl_dumb_create(struct drm_file *fil
  			      args->size, &args->handle);
  }
  
@@ -686,8 +612,6 @@ index 2a4cb2f83b36..b5e3b8038253 100644
  int udl_drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
  {
  	int ret;
-diff --git a/drivers/gpu/host1x/drm/drm.c b/drivers/gpu/host1x/drm/drm.c
-index 2b561c9118c6..da15a6291bb9 100644
 --- a/drivers/gpu/host1x/drm/drm.c
 +++ b/drivers/gpu/host1x/drm/drm.c
 @@ -625,7 +625,7 @@ struct drm_driver tegra_drm_driver = {
@@ -699,11 +623,9 @@ index 2b561c9118c6..da15a6291bb9 100644
  
  	.ioctls = tegra_drm_ioctls,
  	.num_ioctls = ARRAY_SIZE(tegra_drm_ioctls),
-diff --git a/drivers/gpu/host1x/drm/gem.c b/drivers/gpu/host1x/drm/gem.c
-index bc323b3dbe4d..3c35622c9f15 100644
 --- a/drivers/gpu/host1x/drm/gem.c
 +++ b/drivers/gpu/host1x/drm/gem.c
-@@ -261,9 +261,3 @@ int tegra_drm_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -261,9 +261,3 @@ int tegra_drm_mmap(struct file *file, st
  
  	return ret;
  }
@@ -713,11 +635,9 @@ index bc323b3dbe4d..3c35622c9f15 100644
 -{
 -	return drm_gem_handle_delete(file, handle);
 -}
-diff --git a/drivers/gpu/host1x/drm/gem.h b/drivers/gpu/host1x/drm/gem.h
-index 34de2b486eb7..2e93b0379da8 100644
 --- a/drivers/gpu/host1x/drm/gem.h
 +++ b/drivers/gpu/host1x/drm/gem.h
-@@ -49,8 +49,6 @@ int tegra_bo_dumb_create(struct drm_file *file, struct drm_device *drm,
+@@ -49,8 +49,6 @@ int tegra_bo_dumb_create(struct drm_file
  			 struct drm_mode_create_dumb *args);
  int tegra_bo_dumb_map_offset(struct drm_file *file, struct drm_device *drm,
  			     uint32_t handle, uint64_t *offset);
@@ -726,11 +646,9 @@ index 34de2b486eb7..2e93b0379da8 100644
  
  int tegra_drm_mmap(struct file *file, struct vm_area_struct *vma);
  
-diff --git a/drivers/staging/imx-drm/imx-drm-core.c b/drivers/staging/imx-drm/imx-drm-core.c
-index a532ca568526..a18622570812 100644
 --- a/drivers/staging/imx-drm/imx-drm-core.c
 +++ b/drivers/staging/imx-drm/imx-drm-core.c
-@@ -801,7 +801,7 @@ static struct drm_driver imx_drm_driver = {
+@@ -801,7 +801,7 @@ static struct drm_driver imx_drm_driver
  	.gem_vm_ops		= &drm_gem_cma_vm_ops,
  	.dumb_create		= drm_gem_cma_dumb_create,
  	.dumb_map_offset	= drm_gem_cma_dumb_map_offset,
@@ -739,11 +657,9 @@ index a532ca568526..a18622570812 100644
  
  	.get_vblank_counter	= drm_vblank_count,
  	.enable_vblank		= imx_drm_enable_vblank,
-diff --git a/include/drm/drmP.h b/include/drm/drmP.h
-index bf677c0b4cae..9a8ea57e3b94 100644
 --- a/include/drm/drmP.h
 +++ b/include/drm/drmP.h
-@@ -1589,6 +1589,9 @@ extern int drm_prime_sg_to_page_addr_arrays(struct sg_table *sgt, struct page **
+@@ -1589,6 +1589,9 @@ extern int drm_prime_sg_to_page_addr_arr
  extern struct sg_table *drm_prime_pages_to_sg(struct page **pages, int nr_pages);
  extern void drm_prime_gem_destroy(struct drm_gem_object *obj, struct sg_table *sg);
  
@@ -753,11 +669,9 @@ index bf677c0b4cae..9a8ea57e3b94 100644
  
  void drm_prime_init_file_private(struct drm_prime_file_private *prime_fpriv);
  void drm_prime_destroy_file_private(struct drm_prime_file_private *prime_fpriv);
-diff --git a/include/drm/drm_gem_cma_helper.h b/include/drm/drm_gem_cma_helper.h
-index 63397ced9254..632a6c50fab7 100644
 --- a/include/drm/drm_gem_cma_helper.h
 +++ b/include/drm/drm_gem_cma_helper.h
-@@ -27,14 +27,6 @@ int drm_gem_cma_dumb_map_offset(struct drm_file *file_priv,
+@@ -30,14 +30,6 @@ int drm_gem_cma_dumb_map_offset(struct d
  /* set vm_flags and we can change the vm attribute to other one at here. */
  int drm_gem_cma_mmap(struct file *filp, struct vm_area_struct *vma);
  
@@ -772,6 +686,3 @@ index 63397ced9254..632a6c50fab7 100644
  /* allocate physical memory. */
  struct drm_gem_cma_object *drm_gem_cma_create(struct drm_device *drm,
  		unsigned int size);
--- 
-1.8.5.rc3
-

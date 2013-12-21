@@ -35,21 +35,19 @@ Signed-off-by: Dave Airlie <airlied@gmail.com>
 (cherry picked from commit 0de23977cfeb5b357ec884ba15417ae118ff9e9b)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_gem.c                  | 89 +++++-------------------------
- drivers/gpu/drm/drm_gem_cma_helper.c       | 16 ++----
- drivers/gpu/drm/exynos/exynos_drm_gem.c    | 14 ++---
- drivers/gpu/drm/gma500/gem.c               | 15 ++---
- drivers/gpu/drm/i915/i915_gem.c            | 10 ++--
- drivers/gpu/drm/omapdrm/omap_gem.c         | 28 +++++-----
- drivers/gpu/drm/omapdrm/omap_gem_helpers.c | 49 +---------------
- drivers/gpu/drm/udl/udl_gem.c              | 13 ++---
- drivers/gpu/host1x/drm/gem.c               |  5 +-
- include/drm/drmP.h                         |  7 +--
- include/uapi/drm/drm.h                     |  2 +-
+ drivers/gpu/drm/drm_gem.c                  |   89 ++++-------------------------
+ drivers/gpu/drm/drm_gem_cma_helper.c       |   16 +----
+ drivers/gpu/drm/exynos/exynos_drm_gem.c    |   14 +---
+ drivers/gpu/drm/gma500/gem.c               |   15 +---
+ drivers/gpu/drm/i915/i915_gem.c            |   10 +--
+ drivers/gpu/drm/omapdrm/omap_gem.c         |   28 ++++-----
+ drivers/gpu/drm/omapdrm/omap_gem_helpers.c |   49 ---------------
+ drivers/gpu/drm/udl/udl_gem.c              |   13 +---
+ drivers/gpu/host1x/drm/gem.c               |    5 -
+ include/drm/drmP.h                         |    7 --
+ include/uapi/drm/drm.h                     |    2 
  11 files changed, 62 insertions(+), 186 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index df6c89ec27ec..d1ba36512fe4 100644
 --- a/drivers/gpu/drm/drm_gem.c
 +++ b/drivers/gpu/drm/drm_gem.c
 @@ -37,6 +37,7 @@
@@ -88,7 +86,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
  	kfree(mm);
  	dev->mm_private = NULL;
  }
-@@ -302,12 +297,8 @@ drm_gem_free_mmap_offset(struct drm_gem_object *obj)
+@@ -302,12 +297,8 @@ drm_gem_free_mmap_offset(struct drm_gem_
  {
  	struct drm_device *dev = obj->dev;
  	struct drm_gem_mm *mm = dev->mm_private;
@@ -102,7 +100,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
  }
  EXPORT_SYMBOL(drm_gem_free_mmap_offset);
  
-@@ -327,54 +318,9 @@ drm_gem_create_mmap_offset(struct drm_gem_object *obj)
+@@ -327,54 +318,9 @@ drm_gem_create_mmap_offset(struct drm_ge
  {
  	struct drm_device *dev = obj->dev;
  	struct drm_gem_mm *mm = dev->mm_private;
@@ -130,7 +128,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
 -		ret = -ENOSPC;
 -		goto out_free_list;
 -	}
- 
+-
 -	list->file_offset_node = drm_mm_get_block(list->file_offset_node,
 -			obj->size / PAGE_SIZE, 0);
 -	if (!list->file_offset_node) {
@@ -146,7 +144,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
 -	}
 -
 -	return 0;
--
+ 
 -out_free_mm:
 -	drm_mm_put_block(list->file_offset_node);
 -out_free_list:
@@ -159,7 +157,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
  }
  EXPORT_SYMBOL(drm_gem_create_mmap_offset);
  
-@@ -699,8 +645,8 @@ int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
+@@ -699,8 +645,8 @@ int drm_gem_mmap(struct file *filp, stru
  	struct drm_file *priv = filp->private_data;
  	struct drm_device *dev = priv->minor->dev;
  	struct drm_gem_mm *mm = dev->mm_private;
@@ -170,7 +168,7 @@ index df6c89ec27ec..d1ba36512fe4 100644
  	int ret = 0;
  
  	if (drm_device_is_unplugged(dev))
-@@ -708,21 +654,16 @@ int drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
+@@ -708,21 +654,16 @@ int drm_gem_mmap(struct file *filp, stru
  
  	mutex_lock(&dev->struct_mutex);
  
@@ -197,11 +195,9 @@ index df6c89ec27ec..d1ba36512fe4 100644
  	mutex_unlock(&dev->struct_mutex);
  
  	return ret;
-diff --git a/drivers/gpu/drm/drm_gem_cma_helper.c b/drivers/gpu/drm/drm_gem_cma_helper.c
-index 0a7e011509bd..11b616ef9dc2 100644
 --- a/drivers/gpu/drm/drm_gem_cma_helper.c
 +++ b/drivers/gpu/drm/drm_gem_cma_helper.c
-@@ -26,11 +26,7 @@
+@@ -27,11 +27,7 @@
  #include <drm/drmP.h>
  #include <drm/drm.h>
  #include <drm/drm_gem_cma_helper.h>
@@ -212,9 +208,9 @@ index 0a7e011509bd..11b616ef9dc2 100644
 -}
 +#include <drm/drm_vma_manager.h>
  
- static void drm_gem_cma_buf_destroy(struct drm_device *drm,
- 		struct drm_gem_cma_object *cma_obj)
-@@ -140,8 +136,7 @@ void drm_gem_cma_free_object(struct drm_gem_object *gem_obj)
+ /*
+  * __drm_gem_cma_create - Create a GEM CMA object without allocating memory
+@@ -172,8 +168,7 @@ void drm_gem_cma_free_object(struct drm_
  {
  	struct drm_gem_cma_object *cma_obj;
  
@@ -222,9 +218,9 @@ index 0a7e011509bd..11b616ef9dc2 100644
 -		drm_gem_free_mmap_offset(gem_obj);
 +	drm_gem_free_mmap_offset(gem_obj);
  
- 	drm_gem_object_release(gem_obj);
+ 	cma_obj = to_drm_gem_cma_obj(gem_obj);
  
-@@ -199,7 +194,7 @@ int drm_gem_cma_dumb_map_offset(struct drm_file *file_priv,
+@@ -240,7 +235,7 @@ int drm_gem_cma_dumb_map_offset(struct d
  		return -EINVAL;
  	}
  
@@ -233,7 +229,7 @@ index 0a7e011509bd..11b616ef9dc2 100644
  
  	drm_gem_object_unreference(gem_obj);
  
-@@ -255,12 +250,11 @@ void drm_gem_cma_describe(struct drm_gem_cma_object *cma_obj, struct seq_file *m
+@@ -304,12 +299,11 @@ void drm_gem_cma_describe(struct drm_gem
  {
  	struct drm_gem_object *obj = &cma_obj->base;
  	struct drm_device *dev = obj->dev;
@@ -248,8 +244,6 @@ index 0a7e011509bd..11b616ef9dc2 100644
  
  	seq_printf(m, "%2d (%2d) %08llx %08Zx %p %d",
  			obj->name, obj->refcount.refcount.counter,
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.c b/drivers/gpu/drm/exynos/exynos_drm_gem.c
-index cf4543ffa079..408b71f4c95e 100644
 --- a/drivers/gpu/drm/exynos/exynos_drm_gem.c
 +++ b/drivers/gpu/drm/exynos/exynos_drm_gem.c
 @@ -10,6 +10,7 @@
@@ -270,7 +264,7 @@ index cf4543ffa079..408b71f4c95e 100644
  
  	/* release file pointer to gem object. */
  	drm_gem_object_release(obj);
-@@ -721,13 +721,11 @@ int exynos_drm_gem_dumb_map_offset(struct drm_file *file_priv,
+@@ -721,13 +721,11 @@ int exynos_drm_gem_dumb_map_offset(struc
  		goto unlock;
  	}
  
@@ -288,8 +282,6 @@ index cf4543ffa079..408b71f4c95e 100644
  	DRM_DEBUG_KMS("offset = 0x%lx\n", (unsigned long)*offset);
  
  out:
-diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
-index fe1d3320ce6a..2f77bea30b11 100644
 --- a/drivers/gpu/drm/gma500/gem.c
 +++ b/drivers/gpu/drm/gma500/gem.c
 @@ -26,6 +26,7 @@
@@ -300,7 +292,7 @@ index fe1d3320ce6a..2f77bea30b11 100644
  #include "psb_drv.h"
  
  int psb_gem_init_object(struct drm_gem_object *obj)
-@@ -38,8 +39,7 @@ void psb_gem_free_object(struct drm_gem_object *obj)
+@@ -38,8 +39,7 @@ void psb_gem_free_object(struct drm_gem_
  	struct gtt_range *gtt = container_of(obj, struct gtt_range, gem);
  
  	/* Remove the list map if one is present */
@@ -310,7 +302,7 @@ index fe1d3320ce6a..2f77bea30b11 100644
  	drm_gem_object_release(obj);
  
  	/* This must occur last as it frees up the memory of the GEM object */
-@@ -81,13 +81,10 @@ int psb_gem_dumb_map_gtt(struct drm_file *file, struct drm_device *dev,
+@@ -81,13 +81,10 @@ int psb_gem_dumb_map_gtt(struct drm_file
  	/* What validation is needed here ? */
  
  	/* Make it mmapable */
@@ -328,8 +320,6 @@ index fe1d3320ce6a..2f77bea30b11 100644
  out:
  	drm_gem_object_unreference(obj);
  unlock:
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 050eb9b92595..607dc675840e 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
 @@ -26,6 +26,7 @@
@@ -340,7 +330,7 @@ index 050eb9b92595..607dc675840e 100644
  #include <drm/i915_drm.h>
  #include "i915_drv.h"
  #include "i915_trace.h"
-@@ -1424,7 +1425,7 @@ i915_gem_release_mmap(struct drm_i915_gem_object *obj)
+@@ -1424,7 +1425,7 @@ i915_gem_release_mmap(struct drm_i915_ge
  
  	if (obj->base.dev->dev_mapping)
  		unmap_mapping_range(obj->base.dev->dev_mapping,
@@ -349,7 +339,7 @@ index 050eb9b92595..607dc675840e 100644
  				    obj->base.size, 1);
  
  	obj->fault_mappable = false;
-@@ -1482,7 +1483,7 @@ static int i915_gem_object_create_mmap_offset(struct drm_i915_gem_object *obj)
+@@ -1482,7 +1483,7 @@ static int i915_gem_object_create_mmap_o
  	struct drm_i915_private *dev_priv = obj->base.dev->dev_private;
  	int ret;
  
@@ -377,8 +367,6 @@ index 050eb9b92595..607dc675840e 100644
  
  out:
  	drm_gem_object_unreference(&obj->base);
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index cbcd71e6ed83..f90531fc00c9 100644
 --- a/drivers/gpu/drm/omapdrm/omap_gem.c
 +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
 @@ -20,6 +20,7 @@
@@ -389,7 +377,7 @@ index cbcd71e6ed83..f90531fc00c9 100644
  
  #include "omap_drv.h"
  #include "omap_dmm_tiler.h"
-@@ -308,21 +309,20 @@ uint32_t omap_gem_flags(struct drm_gem_object *obj)
+@@ -308,21 +309,20 @@ uint32_t omap_gem_flags(struct drm_gem_o
  static uint64_t mmap_offset(struct drm_gem_object *obj)
  {
  	struct drm_device *dev = obj->dev;
@@ -420,7 +408,7 @@ index cbcd71e6ed83..f90531fc00c9 100644
  }
  
  uint64_t omap_gem_mmap_offset(struct drm_gem_object *obj)
-@@ -997,12 +997,11 @@ void omap_gem_describe(struct drm_gem_object *obj, struct seq_file *m)
+@@ -997,12 +997,11 @@ void omap_gem_describe(struct drm_gem_ob
  {
  	struct drm_device *dev = obj->dev;
  	struct omap_gem_object *omap_obj = to_omap_bo(obj);
@@ -435,7 +423,7 @@ index cbcd71e6ed83..f90531fc00c9 100644
  
  	seq_printf(m, "%08x: %2d (%2d) %08llx %08Zx (%2d) %p %4d",
  			omap_obj->flags, obj->name, obj->refcount.refcount.counter,
-@@ -1309,8 +1308,7 @@ void omap_gem_free_object(struct drm_gem_object *obj)
+@@ -1309,8 +1308,7 @@ void omap_gem_free_object(struct drm_gem
  
  	list_del(&omap_obj->mm_list);
  
@@ -445,18 +433,16 @@ index cbcd71e6ed83..f90531fc00c9 100644
  
  	/* this means the object is still pinned.. which really should
  	 * not happen.  I think..
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem_helpers.c b/drivers/gpu/drm/omapdrm/omap_gem_helpers.c
-index f9eb679eb79b..dbb157542f8f 100644
 --- a/drivers/gpu/drm/omapdrm/omap_gem_helpers.c
 +++ b/drivers/gpu/drm/omapdrm/omap_gem_helpers.c
-@@ -118,52 +118,7 @@ _drm_gem_create_mmap_offset_size(struct drm_gem_object *obj, size_t size)
+@@ -118,52 +118,7 @@ _drm_gem_create_mmap_offset_size(struct
  {
  	struct drm_device *dev = obj->dev;
  	struct drm_gem_mm *mm = dev->mm_private;
 -	struct drm_map_list *list;
 -	struct drm_local_map *map;
 -	int ret = 0;
--
+ 
 -	/* Set the object up for mmap'ing */
 -	list = &obj->map_list;
 -	list->map = kzalloc(sizeof(struct drm_map_list), GFP_KERNEL);
@@ -499,16 +485,14 @@ index f9eb679eb79b..dbb157542f8f 100644
 -out_free_list:
 -	kfree(list->map);
 -	list->map = NULL;
- 
+-
 -	return ret;
 +	return drm_vma_offset_add(&mm->vma_manager, &obj->vma_node,
 +				  size / PAGE_SIZE);
  }
-diff --git a/drivers/gpu/drm/udl/udl_gem.c b/drivers/gpu/drm/udl/udl_gem.c
-index ef034fa3e6f5..2a4cb2f83b36 100644
 --- a/drivers/gpu/drm/udl/udl_gem.c
 +++ b/drivers/gpu/drm/udl/udl_gem.c
-@@ -223,8 +223,7 @@ void udl_gem_free_object(struct drm_gem_object *gem_obj)
+@@ -223,8 +223,7 @@ void udl_gem_free_object(struct drm_gem_
  	if (obj->pages)
  		udl_gem_put_pages(obj);
  
@@ -518,7 +502,7 @@ index ef034fa3e6f5..2a4cb2f83b36 100644
  }
  
  /* the dumb interface doesn't work with the GEM straight MMAP
-@@ -247,13 +246,11 @@ int udl_gem_mmap(struct drm_file *file, struct drm_device *dev,
+@@ -247,13 +246,11 @@ int udl_gem_mmap(struct drm_file *file,
  	ret = udl_gem_get_pages(gobj, GFP_KERNEL);
  	if (ret)
  		goto out;
@@ -536,11 +520,9 @@ index ef034fa3e6f5..2a4cb2f83b36 100644
  
  out:
  	drm_gem_object_unreference(&gobj->base);
-diff --git a/drivers/gpu/host1x/drm/gem.c b/drivers/gpu/host1x/drm/gem.c
-index c5e9a9b494c2..bc323b3dbe4d 100644
 --- a/drivers/gpu/host1x/drm/gem.c
 +++ b/drivers/gpu/host1x/drm/gem.c
-@@ -108,7 +108,7 @@ static void tegra_bo_destroy(struct drm_device *drm, struct tegra_bo *bo)
+@@ -108,7 +108,7 @@ static void tegra_bo_destroy(struct drm_
  
  unsigned int tegra_bo_get_mmap_offset(struct tegra_bo *bo)
  {
@@ -549,7 +531,7 @@ index c5e9a9b494c2..bc323b3dbe4d 100644
  }
  
  struct tegra_bo *tegra_bo_create(struct drm_device *drm, unsigned int size)
-@@ -182,8 +182,7 @@ void tegra_bo_free_object(struct drm_gem_object *gem)
+@@ -182,8 +182,7 @@ void tegra_bo_free_object(struct drm_gem
  {
  	struct tegra_bo *bo = to_tegra_bo(gem);
  
@@ -559,8 +541,6 @@ index c5e9a9b494c2..bc323b3dbe4d 100644
  
  	drm_gem_object_release(gem);
  	tegra_bo_destroy(gem->dev, bo);
-diff --git a/include/drm/drmP.h b/include/drm/drmP.h
-index 5ff88ad7b23c..bf677c0b4cae 100644
 --- a/include/drm/drmP.h
 +++ b/include/drm/drmP.h
 @@ -74,6 +74,7 @@
@@ -598,8 +578,6 @@ index 5ff88ad7b23c..bf677c0b4cae 100644
  
  	/**
  	 * Size of the object, in bytes.  Immutable over the object's
-diff --git a/include/uapi/drm/drm.h b/include/uapi/drm/drm.h
-index 5a57be68bab7..1d1c6f03021e 100644
 --- a/include/uapi/drm/drm.h
 +++ b/include/uapi/drm/drm.h
 @@ -181,7 +181,7 @@ enum drm_map_type {
@@ -611,6 +589,3 @@ index 5a57be68bab7..1d1c6f03021e 100644
  };
  
  /**
--- 
-1.8.5.rc3
-

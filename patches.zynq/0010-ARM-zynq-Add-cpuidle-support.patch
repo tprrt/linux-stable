@@ -12,18 +12,16 @@ Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Daniel Sangorrin <daniel.sangorrin@toshiba.co.jp>
 Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 ---
- MAINTAINERS                    |  1 +
- drivers/cpuidle/Kconfig        |  6 +++
- drivers/cpuidle/Makefile       |  1 +
- drivers/cpuidle/cpuidle-zynq.c | 83 ++++++++++++++++++++++++++++++++++++++++++
+ MAINTAINERS                    |    1 
+ drivers/cpuidle/Kconfig        |    6 ++
+ drivers/cpuidle/Makefile       |    1 
+ drivers/cpuidle/cpuidle-zynq.c |   83 +++++++++++++++++++++++++++++++++++++++++
  4 files changed, 91 insertions(+)
  create mode 100644 drivers/cpuidle/cpuidle-zynq.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 48c748080c96..30f6d87daadd 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1309,6 +1309,7 @@ W:	http://wiki.xilinx.com
+@@ -1310,6 +1310,7 @@ W:	http://wiki.xilinx.com
  T:	git git://git.xilinx.com/linux-xlnx.git
  S:	Supported
  F:	arch/arm/mach-zynq/
@@ -31,8 +29,6 @@ index 48c748080c96..30f6d87daadd 100644
  
  ARM64 PORT (AARCH64 ARCHITECTURE)
  M:	Catalin Marinas <catalin.marinas@arm.com>
-diff --git a/drivers/cpuidle/Kconfig b/drivers/cpuidle/Kconfig
-index c4cc27e5c8a5..8272a08b137b 100644
 --- a/drivers/cpuidle/Kconfig
 +++ b/drivers/cpuidle/Kconfig
 @@ -39,4 +39,10 @@ config CPU_IDLE_CALXEDA
@@ -46,18 +42,13 @@ index c4cc27e5c8a5..8272a08b137b 100644
 +	  Select this to enable cpuidle on Xilinx Zynq processors.
 +
  endif
-diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
-index 0d8bd55e776f..8767a7b3eb91 100644
 --- a/drivers/cpuidle/Makefile
 +++ b/drivers/cpuidle/Makefile
-@@ -7,3 +7,4 @@ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED) += coupled.o
+@@ -7,3 +7,4 @@ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED
  
  obj-$(CONFIG_CPU_IDLE_CALXEDA) += cpuidle-calxeda.o
  obj-$(CONFIG_ARCH_KIRKWOOD) += cpuidle-kirkwood.o
 +obj-$(CONFIG_CPU_IDLE_ZYNQ) += cpuidle-zynq.o
-diff --git a/drivers/cpuidle/cpuidle-zynq.c b/drivers/cpuidle/cpuidle-zynq.c
-new file mode 100644
-index 000000000000..38e03a183591
 --- /dev/null
 +++ b/drivers/cpuidle/cpuidle-zynq.c
 @@ -0,0 +1,83 @@
@@ -144,6 +135,3 @@ index 000000000000..38e03a183591
 +}
 +
 +device_initcall(zynq_cpuidle_init);
--- 
-1.8.5.rc3
-
