@@ -1,5 +1,8 @@
-Subject: LTTng 2.3.4 release
+From foo@baz Fri Dec 27 13:11:07 PST 2013
+Date: Mon, Dec 9 12:34:09 2013 -0800
+To: Greg KH <gregkh@linuxfoundation.org>
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: LTTng 2.3.4 release
 
 This was taken from the git://git.lttng.org/lttng-modules.git stable-2.3
 branch, and turned into a patch for the 3.10.y kernel by Greg.
