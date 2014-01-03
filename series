@@ -2080,6 +2080,57 @@ patches.baytrail/1193-PENDING-mmc-sdhci-pci-Fix-BYT-sd-card-getting-stuck-.patch
 
 
 #############################################################################
+# GMA500 patches
+#
+patches.gma500/0001-drm-gma500-Add-generic-code-for-clock-calculation.patch
+patches.gma500/0002-drm-gma500-cdv-Make-use-of-the-generic-clock-code.patch
+patches.gma500/0003-drm-gma500-Make-use-of-gma_pipe_has_type.patch
+patches.gma500/0004-drm-gma500-psb-Make-use-of-generic-clock-code.patch
+patches.gma500/0005-drm-gma500-Remove-the-unused-psb_intel_display.h.patch
+patches.gma500/0006-drm-gma500-Add-generic-pipe-crtc-functions.patch
+patches.gma500/0007-drm-gma500-cdv-Use-identical-generic-crtc-funcs.patch
+patches.gma500/0008-drm-gma500-Make-all-chips-use-gma_wait_for_vblank.patch
+patches.gma500/0009-drm-gma500-psb-Use-identical-generic-crtc-funcs.patch
+patches.gma500/0010-drm-gma500-cdv-Convert-to-gma_pipe_set_base.patch
+patches.gma500/0012-drm-gma500-cdv-Convert-to-gma_crtc_dpms.patch
+patches.gma500/0013-drm-gma500-cdv-Convert-to-generic-gamma-funcs.patch
+patches.gma500/0014-drm-gma500-psb-Convert-to-gma_pipe_set_base.patch
+patches.gma500/0015-drm-gma500-Convert-to-generic-gamma-funcs.patch
+patches.gma500/0016-drm-gma500-psb-Convert-to-gma_crtc_dpms.patch
+patches.gma500/0017-drm-gma500-oak-Use-identical-generic-crtc-funcs.patch
+patches.gma500/0018-drm-gma500-mdfld-Use-identical-generic-crtc-funcs.patch
+patches.gma500/0019-drm-gma500-psb-Convert-to-generic-crtc-destroy.patch
+patches.gma500/0020-drm-gma500-Add-generic-cursor-functions.patch
+patches.gma500/0021-drm-gma500-cdv-Convert-to-generic-cursor-funcs.patch
+patches.gma500/0022-drm-gma500-psb-Convert-to-generic-cursor-funcs.patch
+patches.gma500/0023-drm-gma500-Add-generic-encoder-functions.patch
+patches.gma500/0024-drm-gma500-Convert-to-generic-encoder-funcs.patch
+patches.gma500/0025-drm-gma500-Add-generic-crtc-save-restore-funcs.patch
+patches.gma500/0026-drm-gma500-psb-Convert-to-generic-save-restore.patch
+patches.gma500/0027-drm-gma500-cdv-Convert-to-generic-save-restore.patch
+patches.gma500/0028-drm-gma500-Add-generic-set_config-function.patch
+patches.gma500/0029-drm-gma500-psb-Convert-to-generic-set_config.patch
+patches.gma500/0030-drm-gma500-cdv-Convert-to-generic-set_config.patch
+patches.gma500/0031-drm-gma500-Rename-psb_intel_crtc-to-gma_crtc.patch
+patches.gma500/0032-drm-gma500-Rename-psb_intel_connector-to-gma_connect.patch
+patches.gma500/0033-drm-gma500-Rename-psb_intel_encoder-to-gma_encoder.patch
+patches.gma500/0034-drm-gma500-Add-Minnowboard-to-the-IS_MRST-macro.patch
+patches.gma500/0035-drm-gma500-Add-chip-specific-sdvo-masks.patch
+patches.gma500/0036-drm-gma500-Add-support-for-aux-pci-vdc-device.patch
+patches.gma500/0037-drm-gma500-Add-aux-device-support-for-gmbus.patch
+patches.gma500/0038-drm-gma500-mrst-Add-SDVO-clock-calculation.patch
+patches.gma500/0039-drm-gma500-mrst-Add-aux-register-writes-when-program.patch
+patches.gma500/0040-drm-gma500-mrst-Properly-route-oaktrail-hdmi-hooks.patch
+patches.gma500/0041-drm-gma500-mrst-Add-aux-register-writes-to-SDVO.patch
+patches.gma500/0042-drm-gma500-mrst-Replace-WMs-and-chickenbits-with-val.patch
+patches.gma500/0043-drm-gma500-mrst-Setup-GMBUS-for-oaktrail-mrst.patch
+patches.gma500/0044-drm-gma500-mrst-Don-t-blindly-guess-a-mode-for-LVDS.patch
+patches.gma500/0045-drm-gma500-mrst-Add-SDVO-to-output-init.patch
+patches.gma500/0046-drm-gma500-cdv-Add-and-hook-up-chip-op-for-watermark.patch
+patches.gma500/0047-drm-gma500-cdv-Add-and-hook-up-chip-op-for-disabling.patch
+
+
+#############################################################################
 # Zynq SOC patches
 #
 patches.zynq/0001-ARM-zynq-Remove-init_irq-declaration-in-machine-desc.patch
