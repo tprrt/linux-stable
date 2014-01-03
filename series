@@ -2241,6 +2241,18 @@ patches.zynq/0104-video-xilinxfb-Fix-for-Use-standard-variable-name-co.patch
 #patches.zynq/0106-i2c-move-OF-helpers-into-the-core.patch
 patches.zynq/0107-i2c-xiic-Remove-casting-the-return-value-which-is-a-.patch
 patches.zynq/0108-i2c-Include-linux-of.h-header.patch
+patches.zynq/0001-i2c-xilinx-merge-i2c-driver-from-Xilinx-repository-i.patch
+patches.zynq/0002-i2c-si570-merge-support-for-si570-clock-generator.patch
+patches.zynq/0003-mmc-arasan-add-a-driver-for-Arasan-s-SDHCI-controlle.patch
+patches.zynq/0004-net-ethernet-xilinx-Merge-driver-from-Xilinx-reposit.patch
+patches.zynq/0005-gpio-xilinx-merge-Xilinx-gpio-support-into-LTSI-3.10.patch
+patches.zynq/0006-spi-xilinx-merge-qspi-support-from-xilinx-repository.patch
+patches.zynq/0007-mtd-xilinx-merge-nand-flash-support-from-xilinx-repo.patch
+patches.zynq/0008-watchdog-xilinx-merge-support-for-xilinx-watchdog.patch
+patches.zynq/0009-usb-zynq-merge-usb-support-for-xilinx-zynq-soc.patch
+patches.zynq/0010-memory-zynq-merge-driver-for-Zynq-SMC.patch
+patches.zynq/0011-arm-dts-zynq-Merge-zynq-zc702.dts-with-Xilinx-reposi.patch
+patches.zynq/0012-defconfig-zynq-merge-xilinx-zynq-defconfig-from-xili.patch
 
 
 #############################################################################
