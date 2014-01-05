@@ -52,15 +52,13 @@ Signed-off-by: Mike Turquette <mturquette@linaro.org>
 Signed-off-by: Daniel Sangorrin <daniel.sangorrin@toshiba.co.jp>
 Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 ---
- drivers/clk/zynq/clkc.c      | 80 +++++++++++++++++++++++++-------------------
- include/linux/clk-provider.h |  1 +
+ drivers/clk/zynq/clkc.c      |   80 ++++++++++++++++++++++++-------------------
+ include/linux/clk-provider.h |    1 
  2 files changed, 47 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-index 089d3e30e221..6169d56fb6f1 100644
 --- a/drivers/clk/zynq/clkc.c
 +++ b/drivers/clk/zynq/clkc.c
-@@ -125,8 +125,9 @@ static void __init zynq_clk_register_fclk(enum zynq_clk fclk,
+@@ -125,8 +125,9 @@ static void __init zynq_clk_register_fcl
  	div0_name = kasprintf(GFP_KERNEL, "%s_div0", clk_name);
  	div1_name = kasprintf(GFP_KERNEL, "%s_div1", clk_name);
  
@@ -72,7 +70,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  
  	clk = clk_register_divider(NULL, div0_name, mux_name,
  			0, fclk_ctrl_reg, 8, 6, CLK_DIVIDER_ONE_BASED |
-@@ -168,8 +169,8 @@ static void __init zynq_clk_register_periph_clk(enum zynq_clk clk0,
+@@ -168,8 +169,8 @@ static void __init zynq_clk_register_per
  	mux_name = kasprintf(GFP_KERNEL, "%s_mux", clk_name0);
  	div_name = kasprintf(GFP_KERNEL, "%s_div", clk_name0);
  
@@ -83,7 +81,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  
  	clk = clk_register_divider(NULL, div_name, mux_name, 0, clk_ctrl, 8, 6,
  			CLK_DIVIDER_ONE_BASED | CLK_DIVIDER_ALLOW_ZERO, lock);
-@@ -236,25 +237,26 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -236,25 +237,26 @@ static void __init zynq_clk_setup(struct
  	clk = clk_register_zynq_pll("armpll_int", "ps_clk", SLCR_ARMPLL_CTRL,
  			SLCR_PLL_STATUS, 0, &armpll_lock);
  	clks[armpll] = clk_register_mux(NULL, clk_output_name[armpll],
@@ -118,7 +116,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  	clk = clk_register_divider(NULL, "cpu_div", "cpu_mux", 0,
  			SLCR_ARM_CLK_CTRL, 8, 6, CLK_DIVIDER_ONE_BASED |
  			CLK_DIVIDER_ALLOW_ZERO, &armclk_lock);
-@@ -293,8 +295,9 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -293,8 +295,9 @@ static void __init zynq_clk_setup(struct
  			swdt_ext_clk_mux_parents[i + 1] = dummy_nm;
  	}
  	clks[swdt] = clk_register_mux(NULL, clk_output_name[swdt],
@@ -130,7 +128,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  
  	/* DDR clocks */
  	clk = clk_register_divider(NULL, "ddr2x_div", "ddrpll", 0,
-@@ -356,8 +359,9 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -356,8 +359,9 @@ static void __init zynq_clk_setup(struct
  			gem0_mux_parents[i + 1] = of_clk_get_parent_name(np,
  					idx);
  	}
@@ -142,7 +140,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  	clk = clk_register_divider(NULL, "gem0_div0", "gem0_mux", 0,
  			SLCR_GEM0_CLK_CTRL, 8, 6, CLK_DIVIDER_ONE_BASED |
  			CLK_DIVIDER_ALLOW_ZERO, &gem0clk_lock);
-@@ -366,7 +370,7 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -366,7 +370,7 @@ static void __init zynq_clk_setup(struct
  			CLK_DIVIDER_ONE_BASED | CLK_DIVIDER_ALLOW_ZERO,
  			&gem0clk_lock);
  	clk = clk_register_mux(NULL, "gem0_emio_mux", gem0_mux_parents, 2,
@@ -151,7 +149,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  			&gem0clk_lock);
  	clks[gem0] = clk_register_gate(NULL, clk_output_name[gem0],
  			"gem0_emio_mux", CLK_SET_RATE_PARENT,
-@@ -379,8 +383,9 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -379,8 +383,9 @@ static void __init zynq_clk_setup(struct
  			gem1_mux_parents[i + 1] = of_clk_get_parent_name(np,
  					idx);
  	}
@@ -163,7 +161,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  	clk = clk_register_divider(NULL, "gem1_div0", "gem1_mux", 0,
  			SLCR_GEM1_CLK_CTRL, 8, 6, CLK_DIVIDER_ONE_BASED |
  			CLK_DIVIDER_ALLOW_ZERO, &gem1clk_lock);
-@@ -389,7 +394,7 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -389,7 +394,7 @@ static void __init zynq_clk_setup(struct
  			CLK_DIVIDER_ONE_BASED | CLK_DIVIDER_ALLOW_ZERO,
  			&gem1clk_lock);
  	clk = clk_register_mux(NULL, "gem1_emio_mux", gem1_mux_parents, 2,
@@ -172,7 +170,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  			&gem1clk_lock);
  	clks[gem1] = clk_register_gate(NULL, clk_output_name[gem1],
  			"gem1_emio_mux", CLK_SET_RATE_PARENT,
-@@ -409,8 +414,9 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -409,8 +414,9 @@ static void __init zynq_clk_setup(struct
  			can_mio_mux_parents[i] = dummy_nm;
  	}
  	kfree(clk_name);
@@ -184,7 +182,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  	clk = clk_register_divider(NULL, "can_div0", "can_mux", 0,
  			SLCR_CAN_CLK_CTRL, 8, 6, CLK_DIVIDER_ONE_BASED |
  			CLK_DIVIDER_ALLOW_ZERO, &canclk_lock);
-@@ -425,17 +431,21 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -425,17 +431,21 @@ static void __init zynq_clk_setup(struct
  			CLK_SET_RATE_PARENT, SLCR_CAN_CLK_CTRL, 1, 0,
  			&canclk_lock);
  	clk = clk_register_mux(NULL, "can0_mio_mux",
@@ -214,7 +212,7 @@ index 089d3e30e221..6169d56fb6f1 100644
  
  	for (i = 0; i < ARRAY_SIZE(dbgtrc_emio_input_names); i++) {
  		int idx = of_property_match_string(np, "clock-names",
-@@ -444,13 +454,15 @@ static void __init zynq_clk_setup(struct device_node *np)
+@@ -444,13 +454,15 @@ static void __init zynq_clk_setup(struct
  			dbg_emio_mux_parents[i + 1] = of_clk_get_parent_name(np,
  					idx);
  	}
@@ -234,11 +232,9 @@ index 089d3e30e221..6169d56fb6f1 100644
  	clks[dbg_trc] = clk_register_gate(NULL, clk_output_name[dbg_trc],
  			"dbg_emio_mux", CLK_SET_RATE_PARENT, SLCR_DBG_CLK_CTRL,
  			0, 0, &dbgclk_lock);
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index 11860985fecb..de4c2fc08c35 100644
 --- a/include/linux/clk-provider.h
 +++ b/include/linux/clk-provider.h
-@@ -27,6 +27,7 @@
+@@ -28,6 +28,7 @@
  #define CLK_IS_ROOT		BIT(4) /* root clk, has no parent */
  #define CLK_IS_BASIC		BIT(5) /* Basic clk, can't do a to_clk_foo() */
  #define CLK_GET_RATE_NOCACHE	BIT(6) /* do not use the cached clk rate */
@@ -246,6 +242,3 @@ index 11860985fecb..de4c2fc08c35 100644
  
  struct clk_hw;
  
--- 
-1.8.5.rc3
-
