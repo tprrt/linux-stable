@@ -20,7 +20,7 @@ Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -216,7 +216,8 @@ dtb-$(CONFIG_ARCH_VT8500) += vt8500-bv07
+@@ -219,7 +219,8 @@ dtb-$(CONFIG_ARCH_VT8500) += vt8500-bv07
  	wm8505-ref.dtb \
  	wm8650-mid.dtb \
  	wm8850-w70v2.dtb
