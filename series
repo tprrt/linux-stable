@@ -2537,6 +2537,8 @@ patches.zynq/0009-usb-zynq-merge-usb-support-for-xilinx-zynq-soc.patch
 patches.zynq/0010-memory-zynq-merge-driver-for-Zynq-SMC.patch
 patches.zynq/0011-arm-dts-zynq-Merge-zynq-zc702.dts-with-Xilinx-reposi.patch
 patches.zynq/0012-defconfig-zynq-merge-xilinx-zynq-defconfig-from-xili.patch
+patches.zynq/of-remove-ifdef-from-linux-of_platform.h.patch
+patches.zynq/i2c-si570-merge-support-for-si570-clock-generator.patch
 
 
 #############################################################################
