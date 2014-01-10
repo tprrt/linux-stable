@@ -21,17 +21,15 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit edc3d8848dc9fe2a470316363dab8ef211d77e01)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c  | 242 ++++++++++++++++++++++++++---------
- drivers/gpu/drm/i915/i915_drv.h      |  16 ++-
- drivers/gpu/drm/i915/intel_display.c |  54 ++++----
- drivers/gpu/drm/i915/intel_overlay.c |  13 +-
- 4 files changed, 232 insertions(+), 93 deletions(-)
+ drivers/gpu/drm/i915/i915_debugfs.c  |  242 ++++++++++++++++++++++++++---------
+ drivers/gpu/drm/i915/i915_drv.h      |   16 ++
+ drivers/gpu/drm/i915/intel_display.c |   52 +++----
+ drivers/gpu/drm/i915/intel_overlay.c |   13 +
+ 4 files changed, 231 insertions(+), 92 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index a55630a80f83..3a8409a31266 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -604,15 +604,80 @@ static const char *purgeable_flag(int purgeable)
+@@ -604,15 +604,80 @@ static const char *purgeable_flag(int pu
  	return purgeable ? " purgeable" : "";
  }
  
@@ -115,7 +113,7 @@ index a55630a80f83..3a8409a31266 100644
  			   err->gtt_offset,
  			   err->size,
  			   err->read_domains,
-@@ -627,50 +692,50 @@ static void print_error_buffers(struct seq_file *m,
+@@ -627,50 +692,50 @@ static void print_error_buffers(struct s
  			   cache_level_str(err->cache_level));
  
  		if (err->name)
@@ -204,7 +202,7 @@ index a55630a80f83..3a8409a31266 100644
  	struct drm_device *dev = error_priv->dev;
  	drm_i915_private_t *dev_priv = dev->dev_private;
  	struct drm_i915_error_state *error = error_priv->error;
-@@ -688,34 +755,35 @@ static int i915_error_state(struct seq_file *m, void *unused)
+@@ -688,34 +755,35 @@ static int i915_error_state(struct seq_f
  	int i, j, page, offset, elt;
  
  	if (!error) {
@@ -255,7 +253,7 @@ index a55630a80f83..3a8409a31266 100644
  
  	for_each_ring(ring, dev_priv, i)
  		i915_ring_error_state(m, dev, error, i);
-@@ -734,24 +802,25 @@ static int i915_error_state(struct seq_file *m, void *unused)
+@@ -734,24 +802,25 @@ static int i915_error_state(struct seq_f
  		struct drm_i915_error_object *obj;
  
  		if ((obj = error->ring[i].batchbuffer)) {
@@ -285,7 +283,7 @@ index a55630a80f83..3a8409a31266 100644
  					   error->ring[i].requests[j].seqno,
  					   error->ring[i].requests[j].jiffies,
  					   error->ring[i].requests[j].tail);
-@@ -759,13 +828,13 @@ static int i915_error_state(struct seq_file *m, void *unused)
+@@ -759,13 +828,13 @@ static int i915_error_state(struct seq_f
  		}
  
  		if ((obj = error->ring[i].ringbuffer)) {
@@ -301,7 +299,7 @@ index a55630a80f83..3a8409a31266 100644
  						   offset,
  						   obj->pages[page][elt]);
  					offset += 4;
-@@ -775,12 +844,12 @@ static int i915_error_state(struct seq_file *m, void *unused)
+@@ -775,12 +844,12 @@ static int i915_error_state(struct seq_f
  
  		obj = error->ring[i].ctx;
  		if (obj) {
@@ -316,7 +314,7 @@ index a55630a80f83..3a8409a31266 100644
  					   offset,
  					   obj->pages[0][elt],
  					   obj->pages[0][elt+1],
-@@ -806,8 +875,7 @@ i915_error_state_write(struct file *filp,
+@@ -806,8 +875,7 @@ i915_error_state_write(struct file *filp
  		       size_t cnt,
  		       loff_t *ppos)
  {
@@ -326,7 +324,7 @@ index a55630a80f83..3a8409a31266 100644
  	struct drm_device *dev = error_priv->dev;
  	int ret;
  
-@@ -842,25 +910,81 @@ static int i915_error_state_open(struct inode *inode, struct file *file)
+@@ -842,25 +910,81 @@ static int i915_error_state_open(struct
  		kref_get(&error_priv->error->ref);
  	spin_unlock_irqrestore(&dev_priv->gpu_error.lock, flags);
  
@@ -413,8 +411,6 @@ index a55630a80f83..3a8409a31266 100644
  	.write = i915_error_state_write,
  	.llseek = default_llseek,
  	.release = i915_error_state_release,
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 4ab1e4266da0..e8c1ffbc9db3 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -827,6 +827,15 @@ struct i915_gem_mm {
@@ -433,7 +429,7 @@ index 4ab1e4266da0..e8c1ffbc9db3 100644
  struct i915_gpu_error {
  	/* For hangcheck timer */
  #define DRM_I915_HANGCHECK_PERIOD 1500 /* in ms */
-@@ -1822,6 +1831,8 @@ void i915_gem_dump_object(struct drm_i915_gem_object *obj, int len,
+@@ -1822,6 +1831,8 @@ void i915_gem_dump_object(struct drm_i91
  /* i915_debugfs.c */
  int i915_debugfs_init(struct drm_minor *minor);
  void i915_debugfs_cleanup(struct drm_minor *minor);
@@ -442,7 +438,7 @@ index 4ab1e4266da0..e8c1ffbc9db3 100644
  
  /* i915_suspend.c */
  extern int i915_save_state(struct drm_device *dev);
-@@ -1903,10 +1914,11 @@ int i915_reg_read_ioctl(struct drm_device *dev, void *data,
+@@ -1903,10 +1914,11 @@ int i915_reg_read_ioctl(struct drm_devic
  /* overlay */
  #ifdef CONFIG_DEBUG_FS
  extern struct intel_overlay_error_state *intel_overlay_capture_error_state(struct drm_device *dev);
@@ -456,11 +452,9 @@ index 4ab1e4266da0..e8c1ffbc9db3 100644
  					    struct drm_device *dev,
  					    struct intel_display_error_state *error);
  #endif
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index e62a9770cf71..121fc5d31c7d 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -9905,48 +9905,50 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -9908,48 +9908,50 @@ intel_display_capture_error_state(struct
  	return error;
  }
  
@@ -494,10 +488,6 @@ index e62a9770cf71..121fc5d31c7d 100644
 -		seq_printf(m, "  VTOTAL: %08x\n", error->pipe[i].vtotal);
 -		seq_printf(m, "  VBLANK: %08x\n", error->pipe[i].vblank);
 -		seq_printf(m, "  VSYNC: %08x\n", error->pipe[i].vsync);
--
--		seq_printf(m, "Plane [%d]:\n", i);
--		seq_printf(m, "  CNTR: %08x\n", error->plane[i].control);
--		seq_printf(m, "  STRIDE: %08x\n", error->plane[i].stride);
 +		err_printf(m, "  CONF: %08x\n", error->pipe[i].conf);
 +		err_printf(m, "  SRC: %08x\n", error->pipe[i].source);
 +		err_printf(m, "  HTOTAL: %08x\n", error->pipe[i].htotal);
@@ -506,7 +496,10 @@ index e62a9770cf71..121fc5d31c7d 100644
 +		err_printf(m, "  VTOTAL: %08x\n", error->pipe[i].vtotal);
 +		err_printf(m, "  VBLANK: %08x\n", error->pipe[i].vblank);
 +		err_printf(m, "  VSYNC: %08x\n", error->pipe[i].vsync);
-+
+ 
+-		seq_printf(m, "Plane [%d]:\n", i);
+-		seq_printf(m, "  CNTR: %08x\n", error->plane[i].control);
+-		seq_printf(m, "  STRIDE: %08x\n", error->plane[i].stride);
 +		err_printf(m, "Plane [%d]:\n", i);
 +		err_printf(m, "  CNTR: %08x\n", error->plane[i].control);
 +		err_printf(m, "  STRIDE: %08x\n", error->plane[i].stride);
@@ -537,8 +530,6 @@ index e62a9770cf71..121fc5d31c7d 100644
  	}
  }
  #endif
-diff --git a/drivers/gpu/drm/i915/intel_overlay.c b/drivers/gpu/drm/i915/intel_overlay.c
-index 67a2501d519d..836794b68fc6 100644
 --- a/drivers/gpu/drm/i915/intel_overlay.c
 +++ b/drivers/gpu/drm/i915/intel_overlay.c
 @@ -1485,14 +1485,15 @@ err:
@@ -563,6 +554,3 @@ index 67a2501d519d..836794b68fc6 100644
  	P(OBUF_0Y);
  	P(OBUF_1Y);
  	P(OBUF_0U);
--- 
-1.8.5.rc3
-

@@ -42,15 +42,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c0321e2c5acaaff7ed41d46d97cee71ad9238481)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_gem.c         |  1 -
- drivers/gpu/drm/i915/i915_gem_context.c | 12 +-----------
+ drivers/gpu/drm/i915/i915_gem.c         |    1 -
+ drivers/gpu/drm/i915/i915_gem_context.c |   12 +-----------
  2 files changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 80342c8f02e6..22be39feadc0 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -2045,7 +2045,6 @@ int __i915_add_request(struct intel_ring_buffer *ring,
+@@ -2045,7 +2045,6 @@ int __i915_add_request(struct intel_ring
  	if (request == NULL)
  		return -ENOMEM;
  
@@ -58,11 +56,9 @@ index 80342c8f02e6..22be39feadc0 100644
  	/* Record the position of the start of the request so that
  	 * should we detect the updated seqno part-way through the
  	 * GPU processing the request, we never over-estimate the
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 403309c2a7d6..b6da70b51aea 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -451,17 +451,7 @@ static int do_switch(struct i915_hw_context *to)
+@@ -449,17 +449,7 @@ static int do_switch(struct i915_hw_cont
  		from->obj->dirty = 1;
  		BUG_ON(from->obj->ring != ring);
  
@@ -81,6 +77,3 @@ index 403309c2a7d6..b6da70b51aea 100644
  		i915_gem_object_unpin(from->obj);
  		i915_gem_context_unreference(from);
  	}
--- 
-1.8.5.rc3
-

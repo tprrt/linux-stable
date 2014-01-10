@@ -20,17 +20,15 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit e2d05a8b1e4a7f6feae89a59543b1edbece1bda3)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_drv.h            | 5 ++---
- drivers/gpu/drm/i915/i915_gem.c            | 9 ++++++++-
- drivers/gpu/drm/i915/i915_gem_context.c    | 5 +----
- drivers/gpu/drm/i915/i915_gem_execbuffer.c | 3 +--
+ drivers/gpu/drm/i915/i915_drv.h            |    5 ++---
+ drivers/gpu/drm/i915/i915_gem.c            |    9 ++++++++-
+ drivers/gpu/drm/i915/i915_gem_context.c    |    5 +----
+ drivers/gpu/drm/i915/i915_gem_execbuffer.c |    3 +--
  4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index a3d43b25e1d9..7ccb0cd35474 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1905,9 +1905,8 @@ static inline void i915_gem_object_unpin_pages(struct drm_i915_gem_object *obj)
+@@ -1905,9 +1905,8 @@ static inline void i915_gem_object_unpin
  int __must_check i915_mutex_lock_interruptible(struct drm_device *dev);
  int i915_gem_object_sync(struct drm_i915_gem_object *obj,
  			 struct intel_ring_buffer *to);
@@ -42,11 +40,9 @@ index a3d43b25e1d9..7ccb0cd35474 100644
  int i915_gem_dumb_create(struct drm_file *file_priv,
  			 struct drm_device *dev,
  			 struct drm_mode_create_dumb *args);
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 6b134f08c93e..f6c8b0ed056c 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1910,7 +1910,7 @@ i915_gem_object_get_pages(struct drm_i915_gem_object *obj)
+@@ -1910,7 +1910,7 @@ i915_gem_object_get_pages(struct drm_i91
  	return 0;
  }
  
@@ -55,7 +51,7 @@ index 6b134f08c93e..f6c8b0ed056c 100644
  i915_gem_object_move_to_active(struct drm_i915_gem_object *obj,
  			       struct intel_ring_buffer *ring)
  {
-@@ -1949,6 +1949,13 @@ i915_gem_object_move_to_active(struct drm_i915_gem_object *obj,
+@@ -1949,6 +1949,13 @@ i915_gem_object_move_to_active(struct dr
  	}
  }
  
@@ -69,11 +65,9 @@ index 6b134f08c93e..f6c8b0ed056c 100644
  static void
  i915_gem_object_move_to_inactive(struct drm_i915_gem_object *obj)
  {
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 9af3fe7e42b0..1a877a547290 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -453,11 +453,8 @@ static int do_switch(struct i915_hw_context *to)
+@@ -451,11 +451,8 @@ static int do_switch(struct i915_hw_cont
  	 * MI_SET_CONTEXT instead of when the next seqno has completed.
  	 */
  	if (from != NULL) {
@@ -86,11 +80,9 @@ index 9af3fe7e42b0..1a877a547290 100644
  		/* As long as MI_SET_CONTEXT is serializing, ie. it flushes the
  		 * whole damn pipeline, we don't need to explicitly mark the
  		 * object dirty. The only exception is that the context must be
-diff --git a/drivers/gpu/drm/i915/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-index da23cfe3902b..0ce0d47e4b0f 100644
 --- a/drivers/gpu/drm/i915/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-@@ -872,8 +872,7 @@ i915_gem_execbuffer_move_to_active(struct list_head *vmas,
+@@ -872,8 +872,7 @@ i915_gem_execbuffer_move_to_active(struc
  		obj->base.read_domains = obj->base.pending_read_domains;
  		obj->fenced_gpu_access = obj->pending_fenced_gpu_access;
  
@@ -100,6 +92,3 @@ index da23cfe3902b..0ce0d47e4b0f 100644
  		if (obj->base.write_domain) {
  			obj->dirty = 1;
  			obj->last_write_seqno = intel_ring_get_seqno(ring);
--- 
-1.8.5.rc3
-

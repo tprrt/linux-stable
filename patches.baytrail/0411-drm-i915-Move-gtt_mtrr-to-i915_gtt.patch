@@ -13,15 +13,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from drm-intel-next-queued)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 8 ++++----
- drivers/gpu/drm/i915/i915_drv.h | 4 ++--
+ drivers/gpu/drm/i915/i915_dma.c |    8 ++++----
+ drivers/gpu/drm/i915/i915_drv.h |    4 ++--
  2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index f4669802a0fb..6995baca9b62 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1567,8 +1567,8 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1575,8 +1575,8 @@ int i915_driver_load(struct drm_device *
  		goto out_rmmap;
  	}
  
@@ -32,7 +30,7 @@ index f4669802a0fb..6995baca9b62 100644
  
  	/* The i915 workqueue is primarily used for batched retirement of
  	 * requests (and thus managing bo) once the task has been completed
-@@ -1669,7 +1669,7 @@ out_gem_unload:
+@@ -1677,7 +1677,7 @@ out_gem_unload:
  	intel_teardown_mchbar(dev);
  	destroy_workqueue(dev_priv->wq);
  out_mtrrfree:
@@ -41,7 +39,7 @@ index f4669802a0fb..6995baca9b62 100644
  	io_mapping_free(dev_priv->gtt.mappable);
  	dev_priv->gtt.gtt_remove(dev);
  out_rmmap:
-@@ -1707,7 +1707,7 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1715,7 +1715,7 @@ int i915_driver_unload(struct drm_device
  	cancel_delayed_work_sync(&dev_priv->mm.retire_work);
  
  	io_mapping_free(dev_priv->gtt.mappable);
@@ -50,8 +48,6 @@ index f4669802a0fb..6995baca9b62 100644
  
  	acpi_video_unregister();
  
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 4bd72bf26049..cd31abf92e1d 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -470,6 +470,8 @@ struct i915_gtt {
@@ -72,6 +68,3 @@ index 4bd72bf26049..cd31abf92e1d 100644
  	/** PPGTT used for aliasing the PPGTT with the GTT */
  	struct i915_hw_ppgtt *aliasing_ppgtt;
  
--- 
-1.8.5.rc3
-

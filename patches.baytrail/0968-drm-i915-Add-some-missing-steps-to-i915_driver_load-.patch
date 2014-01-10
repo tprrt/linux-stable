@@ -13,14 +13,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit cbb47d179fb345c579cd8cd884693903fceed26a)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 19 +++++++++++++++----
+ drivers/gpu/drm/i915/i915_dma.c |   19 +++++++++++++++----
  1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 1ef50e154f7c..901fda3e4dfd 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1561,7 +1561,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1569,7 +1569,7 @@ int i915_driver_load(struct drm_device *
  
  	ret = i915_gem_gtt_init(dev);
  	if (ret)
@@ -29,7 +27,7 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  
  	if (drm_core_check_feature(dev, DRIVER_MODESET))
  		i915_kick_out_firmware_fb(dev_priv);
-@@ -1590,7 +1590,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1598,7 +1598,7 @@ int i915_driver_load(struct drm_device *
  				     aperture_size);
  	if (dev_priv->gtt.mappable == NULL) {
  		ret = -EIO;
@@ -38,7 +36,7 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  	}
  
  	dev_priv->gtt.mtrr = arch_phys_wc_add(dev_priv->gtt.mappable_base,
-@@ -1664,7 +1664,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1672,7 +1672,7 @@ int i915_driver_load(struct drm_device *
  		ret = i915_load_modeset_init(dev);
  		if (ret < 0) {
  			DRM_ERROR("failed to init modeset\n");
@@ -47,7 +45,7 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  		}
  	} else {
  		/* Start out suspended in ums mode. */
-@@ -1684,6 +1684,10 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1692,6 +1692,10 @@ int i915_driver_load(struct drm_device *
  
  	return 0;
  
@@ -58,7 +56,7 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  out_gem_unload:
  	if (dev_priv->mm.inactive_shrinker.shrink)
  		unregister_shrinker(&dev_priv->mm.inactive_shrinker);
-@@ -1697,12 +1701,17 @@ out_gem_unload:
+@@ -1705,12 +1709,17 @@ out_gem_unload:
  out_mtrrfree:
  	arch_phys_wc_del(dev_priv->gtt.mtrr);
  	io_mapping_free(dev_priv->gtt.mappable);
@@ -77,7 +75,7 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  	kfree(dev_priv);
  	return ret;
  }
-@@ -1793,6 +1802,8 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1801,6 +1810,8 @@ int i915_driver_unload(struct drm_device
  	WARN_ON(!list_empty(&dev_priv->vm_list));
  	drm_mm_takedown(&dev_priv->gtt.base.mm);
  
@@ -86,6 +84,3 @@ index 1ef50e154f7c..901fda3e4dfd 100644
  	intel_teardown_gmbus(dev);
  	intel_teardown_mchbar(dev);
  
--- 
-1.8.5.rc3
-

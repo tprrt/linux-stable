@@ -14,15 +14,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit bf02db99384929a12eff0cf1205b4547e41e881b)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c        | 3 +++
- drivers/gpu/drm/i915/intel_hdmi.c | 3 ---
+ drivers/gpu/drm/drm_edid.c        |    3 +++
+ drivers/gpu/drm/i915/intel_hdmi.c |    3 ---
  2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 97c6c8c95a95..9d4d21f46a8a 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -3123,6 +3123,9 @@ drm_hdmi_avi_infoframe_from_display_mode(struct hdmi_avi_infoframe *frame,
+@@ -3131,6 +3131,9 @@ drm_hdmi_avi_infoframe_from_display_mode
  	if (err < 0)
  		return err;
  
@@ -32,11 +30,9 @@ index 97c6c8c95a95..9d4d21f46a8a 100644
  	frame->video_code = drm_match_cea_mode(mode);
  	if (!frame->video_code)
  		return 0;
-diff --git a/drivers/gpu/drm/i915/intel_hdmi.c b/drivers/gpu/drm/i915/intel_hdmi.c
-index ba742b8e16dc..0a4a81447a03 100644
 --- a/drivers/gpu/drm/i915/intel_hdmi.c
 +++ b/drivers/gpu/drm/i915/intel_hdmi.c
-@@ -364,9 +364,6 @@ static void intel_hdmi_set_avi_infoframe(struct drm_encoder *encoder,
+@@ -364,9 +364,6 @@ static void intel_hdmi_set_avi_infoframe
  		return;
  	}
  
@@ -46,6 +42,3 @@ index ba742b8e16dc..0a4a81447a03 100644
  	if (intel_hdmi->rgb_quant_range_selectable) {
  		if (intel_crtc->config.limited_color_range)
  			frame.avi.quantization_range =
--- 
-1.8.5.rc3
-

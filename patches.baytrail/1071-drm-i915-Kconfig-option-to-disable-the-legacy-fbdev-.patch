@@ -36,19 +36,17 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 4520f53a159fb81b8c27afe52428a0959aff259c)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/Kconfig              | 60 +-------------------------------
- drivers/gpu/drm/i915/Kconfig         | 67 ++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/i915/Makefile        |  3 +-
- drivers/gpu/drm/i915/i915_debugfs.c  |  9 ++---
- drivers/gpu/drm/i915/i915_dma.c      |  6 ++++
- drivers/gpu/drm/i915/i915_drv.h      |  2 ++
- drivers/gpu/drm/i915/intel_display.c | 10 ++++++
- drivers/gpu/drm/i915/intel_drv.h     | 36 +++++++++++++++----
+ drivers/gpu/drm/Kconfig              |   60 -------------------------------
+ drivers/gpu/drm/i915/Kconfig         |   67 +++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/i915/Makefile        |    3 +
+ drivers/gpu/drm/i915/i915_debugfs.c  |    9 ++--
+ drivers/gpu/drm/i915/i915_dma.c      |    6 +++
+ drivers/gpu/drm/i915/i915_drv.h      |    2 +
+ drivers/gpu/drm/i915/intel_display.c |   10 +++++
+ drivers/gpu/drm/i915/intel_drv.h     |   36 +++++++++++++++---
  8 files changed, 122 insertions(+), 71 deletions(-)
  create mode 100644 drivers/gpu/drm/i915/Kconfig
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 8847e1e90533..1b51494b76dd 100644
 --- a/drivers/gpu/drm/Kconfig
 +++ b/drivers/gpu/drm/Kconfig
 @@ -128,65 +128,7 @@ config DRM_I810
@@ -118,9 +116,6 @@ index 8847e1e90533..1b51494b76dd 100644
  
  config DRM_MGA
  	tristate "Matrox g200/g400"
-diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
-new file mode 100644
-index 000000000000..6199d0b5b958
 --- /dev/null
 +++ b/drivers/gpu/drm/i915/Kconfig
 @@ -0,0 +1,67 @@
@@ -191,11 +186,9 @@ index 000000000000..6199d0b5b958
 +	  option changes the default for that module option.
 +
 +	  If in doubt, say "N".
-diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
-index 65e60d26891b..45e14a8db2f3 100644
 --- a/drivers/gpu/drm/i915/Makefile
 +++ b/drivers/gpu/drm/i915/Makefile
-@@ -33,7 +33,6 @@ i915-y := i915_drv.o i915_dma.o i915_irq.o \
+@@ -33,7 +33,6 @@ i915-y := i915_drv.o i915_dma.o i915_irq
  	  intel_panel.o \
  	  intel_pm.o \
  	  intel_i2c.o \
@@ -212,11 +205,9 @@ index 65e60d26891b..45e14a8db2f3 100644
  obj-$(CONFIG_DRM_I915)  += i915.o
  
  CFLAGS_i915_trace_points.o := -I$(src)
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index a569597125db..72d04588eccb 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -1403,12 +1403,12 @@ static int i915_gem_framebuffer_info(struct seq_file *m, void *data)
+@@ -1403,12 +1403,12 @@ static int i915_gem_framebuffer_info(str
  {
  	struct drm_info_node *node = (struct drm_info_node *) m->private;
  	struct drm_device *dev = node->minor->dev;
@@ -233,7 +224,7 @@ index a569597125db..72d04588eccb 100644
  	if (ret)
  		return ret;
  
-@@ -1424,6 +1424,7 @@ static int i915_gem_framebuffer_info(struct seq_file *m, void *data)
+@@ -1424,6 +1424,7 @@ static int i915_gem_framebuffer_info(str
  	describe_obj(m, fb->obj);
  	seq_putc(m, '\n');
  	mutex_unlock(&dev->mode_config.mutex);
@@ -241,11 +232,9 @@ index a569597125db..72d04588eccb 100644
  
  	mutex_lock(&dev->mode_config.fb_lock);
  	list_for_each_entry(fb, &dev->mode_config.fb_list, base.head) {
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index aa70c8d292d8..8294e86744f9 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1416,6 +1416,7 @@ void i915_master_destroy(struct drm_device *dev, struct drm_master *master)
+@@ -1424,6 +1424,7 @@ void i915_master_destroy(struct drm_devi
  	master->driver_priv = NULL;
  }
  
@@ -253,7 +242,7 @@ index aa70c8d292d8..8294e86744f9 100644
  static void i915_kick_out_firmware_fb(struct drm_i915_private *dev_priv)
  {
  	struct apertures_struct *ap;
-@@ -1436,6 +1437,11 @@ static void i915_kick_out_firmware_fb(struct drm_i915_private *dev_priv)
+@@ -1444,6 +1445,11 @@ static void i915_kick_out_firmware_fb(st
  
  	kfree(ap);
  }
@@ -265,8 +254,6 @@ index aa70c8d292d8..8294e86744f9 100644
  
  static void i915_dump_device_info(struct drm_i915_private *dev_priv)
  {
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index bdedebed44dd..6ef70e23de9c 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -1368,8 +1368,10 @@ typedef struct drm_i915_private {
@@ -280,8 +267,6 @@ index bdedebed44dd..6ef70e23de9c 100644
  
  	/*
  	 * The console may be contended at resume, but we don't
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 575c154dbd2a..34b1008a41c0 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
 @@ -7335,6 +7335,7 @@ static struct drm_framebuffer *
@@ -292,7 +277,7 @@ index 575c154dbd2a..34b1008a41c0 100644
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	struct drm_i915_gem_object *obj;
  	struct drm_framebuffer *fb;
-@@ -7355,6 +7356,9 @@ mode_fits_in_fbdev(struct drm_device *dev,
+@@ -7355,6 +7356,9 @@ mode_fits_in_fbdev(struct drm_device *de
  		return NULL;
  
  	return fb;
@@ -302,7 +287,7 @@ index 575c154dbd2a..34b1008a41c0 100644
  }
  
  bool intel_get_load_detect_pipe(struct drm_connector *connector,
-@@ -10101,6 +10105,12 @@ intel_user_framebuffer_create(struct drm_device *dev,
+@@ -10101,6 +10105,12 @@ intel_user_framebuffer_create(struct drm
  	return intel_framebuffer_create(dev, mode_cmd, obj);
  }
  
@@ -315,11 +300,9 @@ index 575c154dbd2a..34b1008a41c0 100644
  static const struct drm_mode_config_funcs intel_mode_funcs = {
  	.fb_create = intel_user_framebuffer_create,
  	.output_poll_changed = intel_fb_output_poll_changed,
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index b497a96af082..0f8402bc4222 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -713,14 +713,36 @@ bool intel_dsi_init(struct drm_device *dev);
+@@ -713,14 +713,36 @@ bool intel_dsi_init(struct drm_device *d
  void intel_dvo_init(struct drm_device *dev);
  
  
@@ -363,6 +346,3 @@ index b497a96af082..0f8402bc4222 100644
  
  /* intel_hdmi.c */
  void intel_hdmi_init(struct drm_device *dev, int hdmi_reg, enum port port);
--- 
-1.8.5.rc3
-

@@ -16,15 +16,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 112522f6789581824903f6f72082b5b841a7f0f9)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_gem_context.c | 37 +++++++++++++++++++++------------
- drivers/gpu/drm/i915/intel_ringbuffer.h |  2 +-
+ drivers/gpu/drm/i915/i915_gem_context.c |   37 ++++++++++++++++++++------------
+ drivers/gpu/drm/i915/intel_ringbuffer.h |    2 -
  2 files changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index fa7d4a74af22..0407e0a39987 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -361,13 +361,13 @@ mi_set_context(struct intel_ring_buffer *ring,
+@@ -359,13 +359,13 @@ mi_set_context(struct intel_ring_buffer
  static int do_switch(struct i915_hw_context *to)
  {
  	struct intel_ring_buffer *ring = to->ring;
@@ -41,7 +39,7 @@ index fa7d4a74af22..0407e0a39987 100644
  		return 0;
  
  	ret = i915_gem_object_pin(to->obj, CONTEXT_ALIGN, false, false);
-@@ -390,7 +390,7 @@ static int do_switch(struct i915_hw_context *to)
+@@ -388,7 +388,7 @@ static int do_switch(struct i915_hw_cont
  
  	if (!to->is_initialized || is_default_context(to))
  		hw_flags |= MI_RESTORE_INHIBIT;
@@ -50,7 +48,7 @@ index fa7d4a74af22..0407e0a39987 100644
  		hw_flags |= MI_FORCE_RESTORE;
  
  	ret = mi_set_context(ring, to, hw_flags);
-@@ -405,9 +405,9 @@ static int do_switch(struct i915_hw_context *to)
+@@ -403,9 +403,9 @@ static int do_switch(struct i915_hw_cont
  	 * is a bit suboptimal because the retiring can occur simply after the
  	 * MI_SET_CONTEXT instead of when the next seqno has completed.
  	 */
@@ -63,7 +61,7 @@ index fa7d4a74af22..0407e0a39987 100644
  		/* As long as MI_SET_CONTEXT is serializing, ie. it flushes the
  		 * whole damn pipeline, we don't need to explicitly mark the
  		 * object dirty. The only exception is that the context must be
-@@ -415,15 +415,26 @@ static int do_switch(struct i915_hw_context *to)
+@@ -413,15 +413,26 @@ static int do_switch(struct i915_hw_cont
  		 * able to defer doing this until we know the object would be
  		 * swapped, but there is no way to do that yet.
  		 */
@@ -72,7 +70,8 @@ index fa7d4a74af22..0407e0a39987 100644
 -		i915_gem_object_unpin(from_obj);
 +		from->obj->dirty = 1;
 +		BUG_ON(from->obj->ring != ring);
-+
+ 
+-		drm_gem_object_unreference(&from_obj->base);
 +		ret = i915_add_request(ring, NULL, NULL);
 +		if (ret) {
 +			/* Too late, we've already scheduled a context switch.
@@ -83,8 +82,7 @@ index fa7d4a74af22..0407e0a39987 100644
 +			WARN_ON(mi_set_context(ring, from, MI_RESTORE_INHIBIT));
 +			return ret;
 +		}
- 
--		drm_gem_object_unreference(&from_obj->base);
++
 +		i915_gem_object_unpin(from->obj);
 +		i915_gem_context_unreference(from);
  	}
@@ -96,8 +94,6 @@ index fa7d4a74af22..0407e0a39987 100644
  	to->is_initialized = true;
  
  	return 0;
-diff --git a/drivers/gpu/drm/i915/intel_ringbuffer.h b/drivers/gpu/drm/i915/intel_ringbuffer.h
-index d66208c2c48b..dac1614a1bca 100644
 --- a/drivers/gpu/drm/i915/intel_ringbuffer.h
 +++ b/drivers/gpu/drm/i915/intel_ringbuffer.h
 @@ -135,7 +135,7 @@ struct  intel_ring_buffer {
@@ -109,6 +105,3 @@ index d66208c2c48b..dac1614a1bca 100644
  
  	void *private;
  };
--- 
-1.8.5.rc3
-

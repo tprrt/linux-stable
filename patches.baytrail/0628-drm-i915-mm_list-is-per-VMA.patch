@@ -39,21 +39,19 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit ca191b1313e733e47a9fb37c26b44aa6cdd9b1b1)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c        | 54 +++++++++++++++++++-----------
- drivers/gpu/drm/i915/i915_drv.h            |  5 +--
- drivers/gpu/drm/i915/i915_gem.c            | 28 +++++++++-------
- drivers/gpu/drm/i915/i915_gem_context.c    |  3 ++
- drivers/gpu/drm/i915/i915_gem_evict.c      | 14 ++++----
- drivers/gpu/drm/i915/i915_gem_execbuffer.c |  2 ++
- drivers/gpu/drm/i915/i915_gem_stolen.c     |  2 +-
- drivers/gpu/drm/i915/i915_gpu_error.c      | 37 +++++++++++---------
- 8 files changed, 86 insertions(+), 59 deletions(-)
+ drivers/gpu/drm/i915/i915_debugfs.c        |   54 ++++++++++++++++++-----------
+ drivers/gpu/drm/i915/i915_drv.h            |    5 +-
+ drivers/gpu/drm/i915/i915_gem.c            |   28 ++++++++-------
+ drivers/gpu/drm/i915/i915_gem_context.c    |    3 +
+ drivers/gpu/drm/i915/i915_gem_evict.c      |   14 +++----
+ drivers/gpu/drm/i915/i915_gem_execbuffer.c |    2 +
+ drivers/gpu/drm/i915/i915_gem_stolen.c     |    2 -
+ drivers/gpu/drm/i915/i915_gpu_error.c      |   43 ++++++++++++-----------
+ 8 files changed, 89 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index 5d52a23d5662..a1f4c91fb112 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -149,7 +149,7 @@ static int i915_gem_object_list_info(struct seq_file *m, void *data)
+@@ -149,7 +149,7 @@ static int i915_gem_object_list_info(str
  	struct drm_device *dev = node->minor->dev;
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	struct i915_address_space *vm = &dev_priv->gtt.base;
@@ -62,7 +60,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  	size_t total_obj_size, total_gtt_size;
  	int count, ret;
  
-@@ -157,6 +157,7 @@ static int i915_gem_object_list_info(struct seq_file *m, void *data)
+@@ -157,6 +157,7 @@ static int i915_gem_object_list_info(str
  	if (ret)
  		return ret;
  
@@ -70,7 +68,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  	switch (list) {
  	case ACTIVE_LIST:
  		seq_puts(m, "Active:\n");
-@@ -172,12 +173,12 @@ static int i915_gem_object_list_info(struct seq_file *m, void *data)
+@@ -172,12 +173,12 @@ static int i915_gem_object_list_info(str
  	}
  
  	total_obj_size = total_gtt_size = count = 0;
@@ -89,7 +87,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  		count++;
  	}
  	mutex_unlock(&dev->struct_mutex);
-@@ -224,7 +225,18 @@ static int per_file_stats(int id, void *ptr, void *data)
+@@ -224,7 +225,18 @@ static int per_file_stats(int id, void *
  	return 0;
  }
  
@@ -109,7 +107,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  {
  	struct drm_info_node *node = (struct drm_info_node *) m->private;
  	struct drm_device *dev = node->minor->dev;
-@@ -234,6 +246,7 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
+@@ -234,6 +246,7 @@ static int i915_gem_object_info(struct s
  	struct drm_i915_gem_object *obj;
  	struct i915_address_space *vm = &dev_priv->gtt.base;
  	struct drm_file *file;
@@ -117,7 +115,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  	int ret;
  
  	ret = mutex_lock_interruptible(&dev->struct_mutex);
-@@ -250,12 +263,12 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
+@@ -250,12 +263,12 @@ static int i915_gem_object_info(struct s
  		   count, mappable_count, size, mappable_size);
  
  	size = count = mappable_size = mappable_count = 0;
@@ -132,7 +130,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  	seq_printf(m, "  %u [%u] inactive objects, %zu [%zu] bytes\n",
  		   count, mappable_count, size, mappable_size);
  
-@@ -1774,7 +1787,8 @@ i915_drop_caches_set(void *data, u64 val)
+@@ -1774,7 +1787,8 @@ i915_drop_caches_set(void *data, u64 val
  	struct drm_device *dev = data;
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	struct drm_i915_gem_object *obj, *next;
@@ -142,7 +140,7 @@ index 5d52a23d5662..a1f4c91fb112 100644
  	int ret;
  
  	DRM_DEBUG_DRIVER("Dropping caches: 0x%08llx\n", val);
-@@ -1795,14 +1809,16 @@ i915_drop_caches_set(void *data, u64 val)
+@@ -1795,14 +1809,16 @@ i915_drop_caches_set(void *data, u64 val
  		i915_gem_retire_requests(dev);
  
  	if (val & DROP_BOUND) {
@@ -167,8 +165,6 @@ index 5d52a23d5662..a1f4c91fb112 100644
  		}
  	}
  
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 1a3dc5317eec..cd5d4f591e2d 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -558,6 +558,9 @@ struct i915_vma {
@@ -191,11 +187,9 @@ index 1a3dc5317eec..cd5d4f591e2d 100644
  	/** This object's place in the batchbuffer or on the eviction list */
  	struct list_head exec_list;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 103815bedba4..093781a28080 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -1873,7 +1873,6 @@ i915_gem_object_move_to_active(struct drm_i915_gem_object *obj,
+@@ -1873,7 +1873,6 @@ i915_gem_object_move_to_active(struct dr
  {
  	struct drm_device *dev = obj->base.dev;
  	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -203,7 +197,7 @@ index 103815bedba4..093781a28080 100644
  	u32 seqno = intel_ring_get_seqno(ring);
  
  	BUG_ON(ring == NULL);
-@@ -1889,8 +1888,6 @@ i915_gem_object_move_to_active(struct drm_i915_gem_object *obj,
+@@ -1889,8 +1888,6 @@ i915_gem_object_move_to_active(struct dr
  		obj->active = 1;
  	}
  
@@ -212,7 +206,7 @@ index 103815bedba4..093781a28080 100644
  	list_move_tail(&obj->ring_list, &ring->active_list);
  
  	obj->last_read_seqno = seqno;
-@@ -1912,14 +1909,14 @@ i915_gem_object_move_to_active(struct drm_i915_gem_object *obj,
+@@ -1912,14 +1909,14 @@ i915_gem_object_move_to_active(struct dr
  static void
  i915_gem_object_move_to_inactive(struct drm_i915_gem_object *obj)
  {
@@ -231,7 +225,7 @@ index 103815bedba4..093781a28080 100644
  
  	list_del_init(&obj->ring_list);
  	obj->ring = NULL;
-@@ -2627,7 +2624,7 @@ int i915_vma_unbind(struct i915_vma *vma)
+@@ -2627,7 +2624,7 @@ int i915_vma_unbind(struct i915_vma *vma
  	i915_gem_gtt_finish_object(obj);
  	i915_gem_object_unpin_pages(obj);
  
@@ -249,7 +243,7 @@ index 103815bedba4..093781a28080 100644
  
  	/* Keep GGTT vmas first to make debug easier */
  	if (i915_is_ggtt(vm))
-@@ -3340,9 +3337,14 @@ i915_gem_object_set_to_gtt_domain(struct drm_i915_gem_object *obj, bool write)
+@@ -3340,9 +3337,14 @@ i915_gem_object_set_to_gtt_domain(struct
  					    old_write_domain);
  
  	/* And bump the LRU for this access */
@@ -275,7 +269,7 @@ index 103815bedba4..093781a28080 100644
  	INIT_LIST_HEAD(&obj->global_list);
  	INIT_LIST_HEAD(&obj->ring_list);
  	INIT_LIST_HEAD(&obj->exec_list);
-@@ -4057,6 +4058,7 @@ struct i915_vma *i915_gem_vma_create(struct drm_i915_gem_object *obj,
+@@ -4057,6 +4058,7 @@ struct i915_vma *i915_gem_vma_create(str
  		return ERR_PTR(-ENOMEM);
  
  	INIT_LIST_HEAD(&vma->vma_link);
@@ -283,11 +277,9 @@ index 103815bedba4..093781a28080 100644
  	vma->vm = vm;
  	vma->obj = obj;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 7273a729a039..403309c2a7d6 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -436,7 +436,10 @@ static int do_switch(struct i915_hw_context *to)
+@@ -434,7 +434,10 @@ static int do_switch(struct i915_hw_cont
  	 * MI_SET_CONTEXT instead of when the next seqno has completed.
  	 */
  	if (from != NULL) {
@@ -298,11 +290,9 @@ index 7273a729a039..403309c2a7d6 100644
  		i915_gem_object_move_to_active(from->obj, ring);
  		/* As long as MI_SET_CONTEXT is serializing, ie. it flushes the
  		 * whole damn pipeline, we don't need to explicitly mark the
-diff --git a/drivers/gpu/drm/i915/i915_gem_evict.c b/drivers/gpu/drm/i915/i915_gem_evict.c
-index 61bf5e20e5e0..425939b7d343 100644
 --- a/drivers/gpu/drm/i915/i915_gem_evict.c
 +++ b/drivers/gpu/drm/i915/i915_gem_evict.c
-@@ -87,8 +87,7 @@ i915_gem_evict_something(struct drm_device *dev, struct i915_address_space *vm,
+@@ -87,8 +87,7 @@ i915_gem_evict_something(struct drm_devi
  		drm_mm_init_scan(&vm->mm, min_size, alignment, cache_level);
  
  	/* First see if there is a large enough contiguous idle region... */
@@ -312,7 +302,7 @@ index 61bf5e20e5e0..425939b7d343 100644
  		if (mark_free(vma, &unwind_list))
  			goto found;
  	}
-@@ -97,8 +96,7 @@ i915_gem_evict_something(struct drm_device *dev, struct i915_address_space *vm,
+@@ -97,8 +96,7 @@ i915_gem_evict_something(struct drm_devi
  		goto none;
  
  	/* Now merge in the soon-to-be-expired objects... */
@@ -322,7 +312,7 @@ index 61bf5e20e5e0..425939b7d343 100644
  		if (mark_free(vma, &unwind_list))
  			goto found;
  	}
-@@ -159,7 +157,7 @@ i915_gem_evict_everything(struct drm_device *dev)
+@@ -159,7 +157,7 @@ i915_gem_evict_everything(struct drm_dev
  {
  	drm_i915_private_t *dev_priv = dev->dev_private;
  	struct i915_address_space *vm;
@@ -331,7 +321,7 @@ index 61bf5e20e5e0..425939b7d343 100644
  	bool lists_empty = true;
  	int ret;
  
-@@ -187,9 +185,9 @@ i915_gem_evict_everything(struct drm_device *dev)
+@@ -187,9 +185,9 @@ i915_gem_evict_everything(struct drm_dev
  
  	/* Having flushed everything, unbind() should never raise an error */
  	list_for_each_entry(vm, &dev_priv->vm_list, global_link) {
@@ -344,11 +334,9 @@ index 61bf5e20e5e0..425939b7d343 100644
  	}
  
  	return 0;
-diff --git a/drivers/gpu/drm/i915/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-index aa3fa9425cae..8ccc29ac9629 100644
 --- a/drivers/gpu/drm/i915/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-@@ -801,6 +801,8 @@ i915_gem_execbuffer_move_to_active(struct list_head *objects,
+@@ -801,6 +801,8 @@ i915_gem_execbuffer_move_to_active(struc
  		obj->base.read_domains = obj->base.pending_read_domains;
  		obj->fenced_gpu_access = obj->pending_fenced_gpu_access;
  
@@ -357,11 +345,9 @@ index aa3fa9425cae..8ccc29ac9629 100644
  		i915_gem_object_move_to_active(obj, ring);
  		if (obj->base.write_domain) {
  			obj->dirty = 1;
-diff --git a/drivers/gpu/drm/i915/i915_gem_stolen.c b/drivers/gpu/drm/i915/i915_gem_stolen.c
-index ba4dabca83c2..8912f489f53a 100644
 --- a/drivers/gpu/drm/i915/i915_gem_stolen.c
 +++ b/drivers/gpu/drm/i915/i915_gem_stolen.c
-@@ -418,7 +418,7 @@ i915_gem_object_create_stolen_for_preallocated(struct drm_device *dev,
+@@ -418,7 +418,7 @@ i915_gem_object_create_stolen_for_preall
  	obj->has_global_gtt_mapping = 1;
  
  	list_add_tail(&obj->global_list, &dev_priv->mm.bound_list);
@@ -370,11 +356,9 @@ index ba4dabca83c2..8912f489f53a 100644
  
  	return obj;
  
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
-index 8091485e7e88..fad48b2bb870 100644
 --- a/drivers/gpu/drm/i915/i915_gpu_error.c
 +++ b/drivers/gpu/drm/i915/i915_gpu_error.c
-@@ -556,11 +556,11 @@ static void capture_bo(struct drm_i915_error_buffer *err,
+@@ -556,11 +556,11 @@ static void capture_bo(struct drm_i915_e
  static u32 capture_active_bo(struct drm_i915_error_buffer *err,
  			     int count, struct list_head *head)
  {
@@ -399,33 +383,36 @@ index 8091485e7e88..fad48b2bb870 100644
  	struct drm_i915_gem_object *obj;
  	u32 seqno;
  
-@@ -642,20 +643,23 @@ i915_error_first_batchbuffer(struct drm_i915_private *dev_priv,
+@@ -642,20 +643,23 @@ i915_error_first_batchbuffer(struct drm_
  	}
  
  	seqno = ring->get_seqno(ring, false);
 -	list_for_each_entry(obj, &vm->active_list, mm_list) {
 -		if (obj->ring != ring)
 -			continue;
+-
+-		if (i915_seqno_passed(seqno, obj->last_read_seqno))
+-			continue;
+-
+-		if ((obj->base.read_domains & I915_GEM_DOMAIN_COMMAND) == 0)
+-			continue;
+-
+-		/* We need to copy these to an anonymous buffer as the simplest
+-		 * method to avoid being overwritten by userspace.
+-		 */
+-		return i915_error_object_create(dev_priv, obj);
 +	list_for_each_entry(vm, &dev_priv->vm_list, global_link) {
 +		list_for_each_entry(vma, &vm->active_list, mm_list) {
 +			obj = vma->obj;
 +			if (obj->ring != ring)
 +				continue;
- 
--		if (i915_seqno_passed(seqno, obj->last_read_seqno))
--			continue;
++
 +			if (i915_seqno_passed(seqno, obj->last_read_seqno))
 +				continue;
- 
--		if ((obj->base.read_domains & I915_GEM_DOMAIN_COMMAND) == 0)
--			continue;
++
 +			if ((obj->base.read_domains & I915_GEM_DOMAIN_COMMAND) == 0)
 +				continue;
- 
--		/* We need to copy these to an anonymous buffer as the simplest
--		 * method to avoid being overwritten by userspace.
--		 */
--		return i915_error_object_create(dev_priv, obj);
++
 +			/* We need to copy these to an anonymous buffer as the simplest
 +			 * method to avoid being overwritten by userspace.
 +			 */
@@ -434,7 +421,7 @@ index 8091485e7e88..fad48b2bb870 100644
  	}
  
  	return NULL;
-@@ -775,11 +779,12 @@ static void i915_gem_capture_buffers(struct drm_i915_private *dev_priv,
+@@ -775,11 +779,12 @@ static void i915_gem_capture_buffers(str
  				     struct drm_i915_error_state *error)
  {
  	struct i915_address_space *vm = &dev_priv->gtt.base;
@@ -448,6 +435,3 @@ index 8091485e7e88..fad48b2bb870 100644
  		i++;
  	error->active_bo_count = i;
  	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_list)
--- 
-1.8.5.rc3
-

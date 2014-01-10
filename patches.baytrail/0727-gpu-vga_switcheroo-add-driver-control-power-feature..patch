@@ -29,18 +29,16 @@ Signed-off-by: Dave Airlie <airlied@redhat.com>
 (cherry picked from commit 0d69704ae348c03bc216b01e32a0e9a2372be419)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c        |   2 +-
- drivers/gpu/drm/nouveau/nouveau_vga.c  |   2 +-
- drivers/gpu/drm/radeon/radeon_device.c |   2 +-
- drivers/gpu/vga/vga_switcheroo.c       | 147 +++++++++++++++++++++++++++++++--
- include/linux/vga_switcheroo.h         |  13 ++-
+ drivers/gpu/drm/i915/i915_dma.c        |    2 
+ drivers/gpu/drm/nouveau/nouveau_vga.c  |    2 
+ drivers/gpu/drm/radeon/radeon_device.c |    2 
+ drivers/gpu/vga/vga_switcheroo.c       |  147 +++++++++++++++++++++++++++++++--
+ include/linux/vga_switcheroo.h         |   13 ++
  5 files changed, 156 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 4c7669f3f586..3e4e6073d171 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1296,7 +1296,7 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1304,7 +1304,7 @@ static int i915_load_modeset_init(struct
  
  	intel_register_dsm_handler();
  
@@ -49,11 +47,9 @@ index 4c7669f3f586..3e4e6073d171 100644
  	if (ret)
  		goto cleanup_vga_client;
  
-diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouveau/nouveau_vga.c
-index 25d3495725eb..40a09f11a600 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
-@@ -79,7 +79,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
+@@ -79,7 +79,7 @@ nouveau_vga_init(struct nouveau_drm *drm
  {
  	struct drm_device *dev = drm->dev;
  	vga_client_register(dev->pdev, dev, NULL, nouveau_vga_set_decode);
@@ -62,11 +58,9 @@ index 25d3495725eb..40a09f11a600 100644
  }
  
  void
-diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-index 8df1525f71d2..6ea7983790d7 100644
 --- a/drivers/gpu/drm/radeon/radeon_device.c
 +++ b/drivers/gpu/drm/radeon/radeon_device.c
-@@ -1169,7 +1169,7 @@ int radeon_device_init(struct radeon_device *rdev,
+@@ -1169,7 +1169,7 @@ int radeon_device_init(struct radeon_dev
  	/* this will fail for cards that aren't VGA class devices, just
  	 * ignore it */
  	vga_client_register(rdev->pdev, rdev, NULL, radeon_vga_set_decode);
@@ -75,8 +69,6 @@ index 8df1525f71d2..6ea7983790d7 100644
  
  	r = radeon_init(rdev);
  	if (r)
-diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
-index cf787e1d9322..ec0ae2d1686a 100644
 --- a/drivers/gpu/vga/vga_switcheroo.c
 +++ b/drivers/gpu/vga/vga_switcheroo.c
 @@ -27,6 +27,7 @@
@@ -95,7 +87,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  	struct list_head list;
  };
  
-@@ -132,7 +134,7 @@ EXPORT_SYMBOL(vga_switcheroo_unregister_handler);
+@@ -132,7 +134,7 @@ EXPORT_SYMBOL(vga_switcheroo_unregister_
  
  static int register_client(struct pci_dev *pdev,
  			   const struct vga_switcheroo_client_ops *ops,
@@ -104,7 +96,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  {
  	struct vga_switcheroo_client *client;
  
-@@ -145,6 +147,7 @@ static int register_client(struct pci_dev *pdev,
+@@ -145,6 +147,7 @@ static int register_client(struct pci_de
  	client->ops = ops;
  	client->id = id;
  	client->active = active;
@@ -112,7 +104,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  
  	mutex_lock(&vgasr_mutex);
  	list_add_tail(&client->list, &vgasr_priv.clients);
-@@ -160,10 +163,11 @@ static int register_client(struct pci_dev *pdev,
+@@ -160,10 +163,11 @@ static int register_client(struct pci_de
  }
  
  int vga_switcheroo_register_client(struct pci_dev *pdev,
@@ -126,7 +118,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  }
  EXPORT_SYMBOL(vga_switcheroo_register_client);
  
-@@ -171,7 +175,7 @@ int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
+@@ -171,7 +175,7 @@ int vga_switcheroo_register_audio_client
  					 const struct vga_switcheroo_client_ops *ops,
  					 int id, bool active)
  {
@@ -135,7 +127,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  }
  EXPORT_SYMBOL(vga_switcheroo_register_audio_client);
  
-@@ -258,10 +262,11 @@ static int vga_switcheroo_show(struct seq_file *m, void *v)
+@@ -258,10 +262,11 @@ static int vga_switcheroo_show(struct se
  	int i = 0;
  	mutex_lock(&vgasr_mutex);
  	list_for_each_entry(client, &vgasr_priv.clients, list) {
@@ -148,7 +140,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  			   client->pwr_state ? "Pwr" : "Off",
  			   pci_name(client->pdev));
  		i++;
-@@ -277,6 +282,8 @@ static int vga_switcheroo_debugfs_open(struct inode *inode, struct file *file)
+@@ -277,6 +282,8 @@ static int vga_switcheroo_debugfs_open(s
  
  static int vga_switchon(struct vga_switcheroo_client *client)
  {
@@ -157,7 +149,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  	if (vgasr_priv.handler->power_state)
  		vgasr_priv.handler->power_state(client->id, VGA_SWITCHEROO_ON);
  	/* call the driver callback to turn on device */
-@@ -287,6 +294,8 @@ static int vga_switchon(struct vga_switcheroo_client *client)
+@@ -287,6 +294,8 @@ static int vga_switchon(struct vga_switc
  
  static int vga_switchoff(struct vga_switcheroo_client *client)
  {
@@ -166,7 +158,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  	/* call the driver callback to turn off device */
  	client->ops->set_gpu_state(client->pdev, VGA_SWITCHEROO_OFF);
  	if (vgasr_priv.handler->power_state)
-@@ -402,6 +411,8 @@ vga_switcheroo_debugfs_write(struct file *filp, const char __user *ubuf,
+@@ -402,6 +411,8 @@ vga_switcheroo_debugfs_write(struct file
  		list_for_each_entry(client, &vgasr_priv.clients, list) {
  			if (client->active || client_is_audio(client))
  				continue;
@@ -175,7 +167,7 @@ index cf787e1d9322..ec0ae2d1686a 100644
  			set_audio_state(client->id, VGA_SWITCHEROO_OFF);
  			if (client->pwr_state == VGA_SWITCHEROO_ON)
  				vga_switchoff(client);
-@@ -413,6 +424,8 @@ vga_switcheroo_debugfs_write(struct file *filp, const char __user *ubuf,
+@@ -413,6 +424,8 @@ vga_switcheroo_debugfs_write(struct file
  		list_for_each_entry(client, &vgasr_priv.clients, list) {
  			if (client->active || client_is_audio(client))
  				continue;
@@ -312,8 +304,6 @@ index cf787e1d9322..ec0ae2d1686a 100644
 +	return -EINVAL;
 +}
 +EXPORT_SYMBOL(vga_switcheroo_init_domain_pm_optimus_hdmi_audio);
-diff --git a/include/linux/vga_switcheroo.h b/include/linux/vga_switcheroo.h
-index ddb419cf4530..502073a53dd3 100644
 --- a/include/linux/vga_switcheroo.h
 +++ b/include/linux/vga_switcheroo.h
 @@ -45,7 +45,8 @@ struct vga_switcheroo_client_ops {
@@ -326,7 +316,7 @@ index ddb419cf4530..502073a53dd3 100644
  int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
  					 const struct vga_switcheroo_client_ops *ops,
  					 int id, bool active);
-@@ -60,11 +61,15 @@ int vga_switcheroo_process_delayed_switch(void);
+@@ -60,11 +61,15 @@ int vga_switcheroo_process_delayed_switc
  
  int vga_switcheroo_get_client_state(struct pci_dev *dev);
  
@@ -343,7 +333,7 @@ index ddb419cf4530..502073a53dd3 100644
  static inline void vga_switcheroo_client_fb_set(struct pci_dev *dev, struct fb_info *info) {}
  static inline int vga_switcheroo_register_handler(struct vga_switcheroo_handler *handler) { return 0; }
  static inline int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
-@@ -74,6 +79,10 @@ static inline void vga_switcheroo_unregister_handler(void) {}
+@@ -74,6 +79,10 @@ static inline void vga_switcheroo_unregi
  static inline int vga_switcheroo_process_delayed_switch(void) { return 0; }
  static inline int vga_switcheroo_get_client_state(struct pci_dev *dev) { return VGA_SWITCHEROO_ON; }
  
@@ -354,6 +344,3 @@ index ddb419cf4530..502073a53dd3 100644
  
  #endif
  #endif /* _LINUX_VGA_SWITCHEROO_H_ */
--- 
-1.8.5.rc3
-

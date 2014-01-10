@@ -12,15 +12,13 @@ Signed-off-by: James Ausmus <james.ausmus@intel.com>
  chromeos-3.10, e362220fa6a86569cf3c2dfa47ce24935da661d6)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 2 +-
- drivers/gpu/drm/i915/i915_gem.c | 2 +-
+ drivers/gpu/drm/i915/i915_dma.c |    2 +-
+ drivers/gpu/drm/i915/i915_gem.c |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 3bbf8ef0f984..d71e765b814d 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1492,8 +1492,8 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1500,8 +1500,8 @@ int i915_driver_load(struct drm_device *
  
  	spin_lock_init(&dev_priv->irq_lock);
  	spin_lock_init(&dev_priv->gpu_error.lock);
@@ -30,11 +28,9 @@ index 3bbf8ef0f984..d71e765b814d 100644
  	mutex_init(&dev_priv->dpio_lock);
  	mutex_init(&dev_priv->rps.hw_lock);
  	mutex_init(&dev_priv->modeset_restore_lock);
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 7221793239c3..73521ed14eeb 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -4643,7 +4643,7 @@ i915_gem_inactive_shrink(struct shrinker *shrinker, struct shrink_control *sc)
+@@ -4643,7 +4643,7 @@ i915_gem_inactive_shrink(struct shrinker
  	list_for_each_entry(obj, &dev_priv->mm.unbound_list, global_list)
  		if (obj->pages_pin_count == 0)
  			cnt += obj->base.size >> PAGE_SHIFT;
@@ -43,6 +39,3 @@ index 7221793239c3..73521ed14eeb 100644
  		if (obj->pin_count == 0 && obj->pages_pin_count == 0)
  			cnt += obj->base.size >> PAGE_SHIFT;
  
--- 
-1.8.5.rc3
-

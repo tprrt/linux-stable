@@ -36,22 +36,20 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit d9255d57147e1dbcebdf6670409c2fa0ac3609e6)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_crt.c     | 1 -
- drivers/gpu/drm/i915/intel_display.c | 5 +++++
- drivers/gpu/drm/i915/intel_dp.c      | 1 -
- drivers/gpu/drm/i915/intel_dsi.c     | 1 -
- drivers/gpu/drm/i915/intel_dvo.c     | 1 -
- drivers/gpu/drm/i915/intel_hdmi.c    | 1 -
- drivers/gpu/drm/i915/intel_lvds.c    | 1 -
- drivers/gpu/drm/i915/intel_sdvo.c    | 7 +++++--
- drivers/gpu/drm/i915/intel_tv.c      | 1 -
+ drivers/gpu/drm/i915/intel_crt.c     |    1 -
+ drivers/gpu/drm/i915/intel_display.c |    5 +++++
+ drivers/gpu/drm/i915/intel_dp.c      |    1 -
+ drivers/gpu/drm/i915/intel_dsi.c     |    1 -
+ drivers/gpu/drm/i915/intel_dvo.c     |    1 -
+ drivers/gpu/drm/i915/intel_hdmi.c    |    1 -
+ drivers/gpu/drm/i915/intel_lvds.c    |    1 -
+ drivers/gpu/drm/i915/intel_sdvo.c    |    7 +++++--
+ drivers/gpu/drm/i915/intel_tv.c      |    1 -
  9 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_crt.c b/drivers/gpu/drm/i915/intel_crt.c
-index 0263629332d0..942b9acb0d8e 100644
 --- a/drivers/gpu/drm/i915/intel_crt.c
 +++ b/drivers/gpu/drm/i915/intel_crt.c
-@@ -677,7 +677,6 @@ intel_crt_detect(struct drm_connector *connector, bool force)
+@@ -677,7 +677,6 @@ intel_crt_detect(struct drm_connector *c
  
  static void intel_crt_destroy(struct drm_connector *connector)
  {
@@ -59,11 +57,9 @@ index 0263629332d0..942b9acb0d8e 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 925d69044878..c1a51399b9ec 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -10727,6 +10727,7 @@ void intel_modeset_cleanup(struct drm_device *dev)
+@@ -10729,6 +10729,7 @@ void intel_modeset_cleanup(struct drm_de
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	struct drm_crtc *crtc;
@@ -71,7 +67,7 @@ index 925d69044878..c1a51399b9ec 100644
  
  	/*
  	 * Interrupts and polling as the first thing to avoid creating havoc.
-@@ -10769,6 +10770,10 @@ void intel_modeset_cleanup(struct drm_device *dev)
+@@ -10771,6 +10772,10 @@ void intel_modeset_cleanup(struct drm_de
  	/* destroy backlight, if any, before the connectors */
  	intel_panel_destroy_backlight(dev);
  
@@ -82,11 +78,9 @@ index 925d69044878..c1a51399b9ec 100644
  	drm_mode_config_cleanup(dev);
  
  	intel_cleanup_overlay(dev);
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index d1ba44294f3a..8dff9b1c919e 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -3197,7 +3197,6 @@ intel_dp_connector_destroy(struct drm_connector *connector)
+@@ -3197,7 +3197,6 @@ intel_dp_connector_destroy(struct drm_co
  	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
  		intel_panel_fini(&intel_connector->panel);
  
@@ -94,11 +88,9 @@ index d1ba44294f3a..8dff9b1c919e 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_dsi.c b/drivers/gpu/drm/i915/intel_dsi.c
-index 674fd4989b45..9a2fdd2a7e34 100644
 --- a/drivers/gpu/drm/i915/intel_dsi.c
 +++ b/drivers/gpu/drm/i915/intel_dsi.c
-@@ -504,7 +504,6 @@ static void intel_dsi_destroy(struct drm_connector *connector)
+@@ -504,7 +504,6 @@ static void intel_dsi_destroy(struct drm
  
  	DRM_DEBUG_KMS("\n");
  	intel_panel_fini(&intel_connector->panel);
@@ -106,11 +98,9 @@ index 674fd4989b45..9a2fdd2a7e34 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_dvo.c b/drivers/gpu/drm/i915/intel_dvo.c
-index 91287d1d3059..1b64145c669a 100644
 --- a/drivers/gpu/drm/i915/intel_dvo.c
 +++ b/drivers/gpu/drm/i915/intel_dvo.c
-@@ -367,7 +367,6 @@ static int intel_dvo_get_modes(struct drm_connector *connector)
+@@ -367,7 +367,6 @@ static int intel_dvo_get_modes(struct dr
  
  static void intel_dvo_destroy(struct drm_connector *connector)
  {
@@ -118,11 +108,9 @@ index 91287d1d3059..1b64145c669a 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_hdmi.c b/drivers/gpu/drm/i915/intel_hdmi.c
-index 6004f9c549aa..4f4d346db8f0 100644
 --- a/drivers/gpu/drm/i915/intel_hdmi.c
 +++ b/drivers/gpu/drm/i915/intel_hdmi.c
-@@ -1181,7 +1181,6 @@ static void intel_hdmi_post_disable(struct intel_encoder *encoder)
+@@ -1181,7 +1181,6 @@ static void intel_hdmi_post_disable(stru
  
  static void intel_hdmi_destroy(struct drm_connector *connector)
  {
@@ -130,11 +118,9 @@ index 6004f9c549aa..4f4d346db8f0 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_lvds.c b/drivers/gpu/drm/i915/intel_lvds.c
-index 4986aff3827d..b0ef55833087 100644
 --- a/drivers/gpu/drm/i915/intel_lvds.c
 +++ b/drivers/gpu/drm/i915/intel_lvds.c
-@@ -474,7 +474,6 @@ static void intel_lvds_destroy(struct drm_connector *connector)
+@@ -474,7 +474,6 @@ static void intel_lvds_destroy(struct dr
  
  	intel_panel_fini(&lvds_connector->base.panel);
  
@@ -142,11 +128,9 @@ index 4986aff3827d..b0ef55833087 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
-diff --git a/drivers/gpu/drm/i915/intel_sdvo.c b/drivers/gpu/drm/i915/intel_sdvo.c
-index 5e59d64cfd95..a583e8f718a7 100644
 --- a/drivers/gpu/drm/i915/intel_sdvo.c
 +++ b/drivers/gpu/drm/i915/intel_sdvo.c
-@@ -2009,7 +2009,6 @@ static void intel_sdvo_destroy(struct drm_connector *connector)
+@@ -2009,7 +2009,6 @@ static void intel_sdvo_destroy(struct dr
  				     intel_sdvo_connector->tv_format);
  
  	intel_sdvo_destroy_enhance_property(connector);
@@ -154,7 +138,7 @@ index 5e59d64cfd95..a583e8f718a7 100644
  	drm_connector_cleanup(connector);
  	kfree(intel_sdvo_connector);
  }
-@@ -2482,6 +2481,7 @@ intel_sdvo_tv_init(struct intel_sdvo *intel_sdvo, int type)
+@@ -2482,6 +2481,7 @@ intel_sdvo_tv_init(struct intel_sdvo *in
  	return true;
  
  err:
@@ -162,7 +146,7 @@ index 5e59d64cfd95..a583e8f718a7 100644
  	intel_sdvo_destroy(connector);
  	return false;
  }
-@@ -2553,6 +2553,7 @@ intel_sdvo_lvds_init(struct intel_sdvo *intel_sdvo, int device)
+@@ -2553,6 +2553,7 @@ intel_sdvo_lvds_init(struct intel_sdvo *
  	return true;
  
  err:
@@ -170,7 +154,7 @@ index 5e59d64cfd95..a583e8f718a7 100644
  	intel_sdvo_destroy(connector);
  	return false;
  }
-@@ -2624,8 +2625,10 @@ static void intel_sdvo_output_cleanup(struct intel_sdvo *intel_sdvo)
+@@ -2624,8 +2625,10 @@ static void intel_sdvo_output_cleanup(st
  
  	list_for_each_entry_safe(connector, tmp,
  				 &dev->mode_config.connector_list, head) {
@@ -182,11 +166,9 @@ index 5e59d64cfd95..a583e8f718a7 100644
  	}
  }
  
-diff --git a/drivers/gpu/drm/i915/intel_tv.c b/drivers/gpu/drm/i915/intel_tv.c
-index 75925a1ab351..92895f92a738 100644
 --- a/drivers/gpu/drm/i915/intel_tv.c
 +++ b/drivers/gpu/drm/i915/intel_tv.c
-@@ -1433,7 +1433,6 @@ intel_tv_get_modes(struct drm_connector *connector)
+@@ -1433,7 +1433,6 @@ intel_tv_get_modes(struct drm_connector
  static void
  intel_tv_destroy(struct drm_connector *connector)
  {
@@ -194,6 +176,3 @@ index 75925a1ab351..92895f92a738 100644
  	drm_connector_cleanup(connector);
  	kfree(connector);
  }
--- 
-1.8.5.rc3
-

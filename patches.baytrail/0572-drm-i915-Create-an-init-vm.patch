@@ -13,15 +13,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit fc8c067eee712b274e554be5cc87c79366cc5ad2)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c |  4 ----
- drivers/gpu/drm/i915/i915_gem.c | 15 +++++++++++++--
+ drivers/gpu/drm/i915/i915_dma.c |    4 ----
+ drivers/gpu/drm/i915/i915_gem.c |   15 +++++++++++++--
  2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index de611f64bb16..e4e98dfb7f25 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1485,10 +1485,6 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1493,10 +1493,6 @@ int i915_driver_load(struct drm_device *
  
  	i915_dump_device_info(dev_priv);
  
@@ -32,11 +30,9 @@ index de611f64bb16..e4e98dfb7f25 100644
  	if (i915_get_bridge_dev(dev)) {
  		ret = -EIO;
  		goto free_priv;
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 3a5d4baa4c53..8f9ee89ed971 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -4334,6 +4334,16 @@ init_ring_lists(struct intel_ring_buffer *ring)
+@@ -4334,6 +4334,16 @@ init_ring_lists(struct intel_ring_buffer
  	INIT_LIST_HEAD(&ring->request_list);
  }
  
@@ -65,6 +61,3 @@ index 3a5d4baa4c53..8f9ee89ed971 100644
  	INIT_LIST_HEAD(&dev_priv->mm.unbound_list);
  	INIT_LIST_HEAD(&dev_priv->mm.bound_list);
  	INIT_LIST_HEAD(&dev_priv->mm.fence_list);
--- 
-1.8.5.rc3
-

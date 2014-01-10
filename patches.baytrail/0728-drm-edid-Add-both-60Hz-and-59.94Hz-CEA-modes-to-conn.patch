@@ -28,14 +28,12 @@ Signed-off-by: Dave Airlie <airlied@redhat.com>
 (cherry picked from commit e6e792092e816bea0797995c886fb057c91d4546)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c | 102 ++++++++++++++++++++++++++++++++++++++-------
+ drivers/gpu/drm/drm_edid.c |  102 ++++++++++++++++++++++++++++++++++++++-------
  1 file changed, 88 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 9d4d21f46a8a..298e1052fcc3 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -2353,6 +2353,31 @@ u8 *drm_find_cea_extension(struct edid *edid)
+@@ -2358,6 +2358,31 @@ u8 *drm_find_cea_extension(struct edid *
  }
  EXPORT_SYMBOL(drm_find_cea_extension);
  
@@ -67,7 +65,7 @@ index 9d4d21f46a8a..298e1052fcc3 100644
  /**
   * drm_match_cea_mode - look for a CEA mode matching given mode
   * @to_match: display mode
-@@ -2371,21 +2396,9 @@ u8 drm_match_cea_mode(const struct drm_display_mode *to_match)
+@@ -2376,21 +2401,9 @@ u8 drm_match_cea_mode(const struct drm_d
  		const struct drm_display_mode *cea_mode = &edid_cea_modes[mode];
  		unsigned int clock1, clock2;
  
@@ -91,7 +89,7 @@ index 9d4d21f46a8a..298e1052fcc3 100644
  
  		if ((KHZ2PICOS(to_match->clock) == KHZ2PICOS(clock1) ||
  		     KHZ2PICOS(to_match->clock) == KHZ2PICOS(clock2)) &&
-@@ -2396,6 +2409,66 @@ u8 drm_match_cea_mode(const struct drm_display_mode *to_match)
+@@ -2401,6 +2414,66 @@ u8 drm_match_cea_mode(const struct drm_d
  }
  EXPORT_SYMBOL(drm_match_cea_mode);
  
@@ -158,7 +156,7 @@ index 9d4d21f46a8a..298e1052fcc3 100644
  
  static int
  do_cea_modes(struct drm_connector *connector, const u8 *db, u8 len)
-@@ -3044,6 +3117,7 @@ int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid)
+@@ -3049,6 +3122,7 @@ int drm_add_edid_modes(struct drm_connec
  	if (edid->features & DRM_EDID_FEATURE_DEFAULT_GTF)
  		num_modes += add_inferred_modes(connector, edid);
  	num_modes += add_cea_modes(connector, edid);
@@ -166,6 +164,3 @@ index 9d4d21f46a8a..298e1052fcc3 100644
  
  	if (quirks & (EDID_QUIRK_PREFER_LARGE_60 | EDID_QUIRK_PREFER_LARGE_75))
  		edid_fixup_preferred(connector, quirks);
--- 
-1.8.5.rc3
-

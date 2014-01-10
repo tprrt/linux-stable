@@ -13,15 +13,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit a1f2cc73c762868435ae6ec9126bb2240337c61c)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 3 +++
- include/uapi/drm/i915_drm.h     | 2 +-
+ drivers/gpu/drm/i915/i915_dma.c |    3 +++
+ include/uapi/drm/i915_drm.h     |    2 +-
  2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 0a61f6f6948d..d392d8fb146e 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -955,6 +955,9 @@ static int i915_getparam(struct drm_device *dev, void *data,
+@@ -963,6 +963,9 @@ static int i915_getparam(struct drm_devi
  	case I915_PARAM_HAS_BLT:
  		value = intel_ring_initialized(&dev_priv->ring[BCS]);
  		break;
@@ -31,8 +29,6 @@ index 0a61f6f6948d..d392d8fb146e 100644
  	case I915_PARAM_HAS_RELAXED_FENCING:
  		value = 1;
  		break;
-diff --git a/include/uapi/drm/i915_drm.h b/include/uapi/drm/i915_drm.h
-index 81b99817198e..923ed7fe5775 100644
 --- a/include/uapi/drm/i915_drm.h
 +++ b/include/uapi/drm/i915_drm.h
 @@ -305,7 +305,7 @@ typedef struct drm_i915_irq_wait {
@@ -44,6 +40,3 @@ index 81b99817198e..923ed7fe5775 100644
  #define I915_PARAM_HAS_SECURE_BATCHES	 23
  #define I915_PARAM_HAS_PINNED_BATCHES	 24
  #define I915_PARAM_HAS_EXEC_NO_RELOC	 25
--- 
-1.8.5.rc3
-

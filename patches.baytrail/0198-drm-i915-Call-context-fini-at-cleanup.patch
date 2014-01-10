@@ -16,14 +16,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 55d23285745b1be7bd25a2a4ba5ba79e05ab843a)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 1 +
+ drivers/gpu/drm/i915/i915_dma.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index d9ee7e82a4a1..57198f4bdf2c 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1358,6 +1358,7 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1366,6 +1366,7 @@ static int i915_load_modeset_init(struct
  cleanup_gem:
  	mutex_lock(&dev->struct_mutex);
  	i915_gem_cleanup_ringbuffer(dev);
@@ -31,6 +29,3 @@ index d9ee7e82a4a1..57198f4bdf2c 100644
  	mutex_unlock(&dev->struct_mutex);
  	i915_gem_cleanup_aliasing_ppgtt(dev);
  	drm_mm_takedown(&dev_priv->mm.gtt_space);
--- 
-1.8.5.rc3
-

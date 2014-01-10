@@ -24,14 +24,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c858cfcae6dd3829e8708a48d009c2f676b79d4d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c | 110 ++++++++++++++++++++++++++++++++++++++++++---
+ drivers/gpu/drm/drm_edid.c |  110 ++++++++++++++++++++++++++++++++++++++++++---
  1 file changed, 103 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 63c50ce3934f..41a5f3428e93 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -2551,13 +2551,95 @@ do_cea_modes(struct drm_connector *connector, const u8 *db, u8 len)
+@@ -2556,13 +2556,95 @@ do_cea_modes(struct drm_connector *conne
  	return modes;
  }
  
@@ -128,7 +126,7 @@ index 63c50ce3934f..41a5f3428e93 100644
   */
  static int
  do_hdmi_vsdb_modes(struct drm_connector *connector, const u8 *db, u8 len)
-@@ -2583,10 +2665,15 @@ do_hdmi_vsdb_modes(struct drm_connector *connector, const u8 *db, u8 len)
+@@ -2588,10 +2670,15 @@ do_hdmi_vsdb_modes(struct drm_connector
  
  	/* the declared length is not long enough for the 2 first bytes
  	 * of additional video format capabilities */
@@ -146,7 +144,7 @@ index 63c50ce3934f..41a5f3428e93 100644
  	vic_len = db[8 + offset] >> 5;
  
  	for (i = 0; i < vic_len && len >= (9 + offset + i); i++) {
-@@ -2666,8 +2753,8 @@ static int
+@@ -2671,8 +2758,8 @@ static int
  add_cea_modes(struct drm_connector *connector, struct edid *edid)
  {
  	const u8 *cea = drm_find_cea_extension(edid);
@@ -157,7 +155,7 @@ index 63c50ce3934f..41a5f3428e93 100644
  	int modes = 0;
  
  	if (cea && cea_revision(cea) >= 3) {
-@@ -2682,11 +2769,20 @@ add_cea_modes(struct drm_connector *connector, struct edid *edid)
+@@ -2687,11 +2774,20 @@ add_cea_modes(struct drm_connector *conn
  
  			if (cea_db_tag(db) == VIDEO_BLOCK)
  				modes += do_cea_modes(connector, db + 1, dbl);
@@ -180,6 +178,3 @@ index 63c50ce3934f..41a5f3428e93 100644
  	return modes;
  }
  
--- 
-1.8.5.rc3
-

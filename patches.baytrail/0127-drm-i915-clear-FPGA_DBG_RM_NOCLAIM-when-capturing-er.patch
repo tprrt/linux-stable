@@ -19,14 +19,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 12d217c795071bfee483158e1397c57e8dc3cb76)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_display.c | 7 +++++++
+ drivers/gpu/drm/i915/intel_display.c |    7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 35fc69351889..7e3b4663e51d 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -9897,6 +9897,13 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -9900,6 +9900,13 @@ intel_display_capture_error_state(struct
  		error->pipe[i].vsync = I915_READ(VSYNC(cpu_transcoder));
  	}
  
@@ -40,6 +38,3 @@ index 35fc69351889..7e3b4663e51d 100644
  	return error;
  }
  
--- 
-1.8.5.rc3
-

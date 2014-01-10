@@ -24,14 +24,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit f64e29227d80cc15c37c7dbf7030ffc8c415cbd4)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 2 +-
+ drivers/gpu/drm/i915/i915_dma.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 29bb1303e662..09233f9c5640 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1407,7 +1407,7 @@ static void i915_kick_out_firmware_fb(struct drm_i915_private *dev_priv)
+@@ -1415,7 +1415,7 @@ static void i915_kick_out_firmware_fb(st
  		return;
  
  	ap->ranges[0].base = dev_priv->gtt.mappable_base;
@@ -40,6 +38,3 @@ index 29bb1303e662..09233f9c5640 100644
  
  	primary =
  		pdev->resource[PCI_ROM_RESOURCE].flags & IORESOURCE_ROM_SHADOW;
--- 
-1.8.5.rc3
-

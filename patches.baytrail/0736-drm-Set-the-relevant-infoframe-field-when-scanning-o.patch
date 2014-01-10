@@ -18,14 +18,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 4eed4a0a4ac31830b4c328739cabb69721584bfc)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ drivers/gpu/drm/drm_edid.c |   40 ++++++++++++++++++++++++++++++++++++++--
  1 file changed, 38 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 802daf1dfa60..61fdd6b532fc 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -3352,6 +3352,33 @@ drm_hdmi_avi_infoframe_from_display_mode(struct hdmi_avi_infoframe *frame,
+@@ -3360,6 +3360,33 @@ drm_hdmi_avi_infoframe_from_display_mode
  }
  EXPORT_SYMBOL(drm_hdmi_avi_infoframe_from_display_mode);
  
@@ -59,7 +57,7 @@ index 802daf1dfa60..61fdd6b532fc 100644
  /**
   * drm_hdmi_vendor_infoframe_from_display_mode() - fill an HDMI infoframe with
   * data from a DRM display mode
-@@ -3369,20 +3396,29 @@ drm_hdmi_vendor_infoframe_from_display_mode(struct hdmi_vendor_infoframe *frame,
+@@ -3377,20 +3404,29 @@ drm_hdmi_vendor_infoframe_from_display_m
  					    const struct drm_display_mode *mode)
  {
  	int err;
@@ -91,6 +89,3 @@ index 802daf1dfa60..61fdd6b532fc 100644
  
  	return 0;
  }
--- 
-1.8.5.rc3
-

@@ -19,14 +19,12 @@ Signed-off-by: Dave Airlie <airlied@gmail.com>
 (cherry picked from commit 13ac3f5593cf0964cdb239864829e57cc6981dac)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c | 12 +++++++-----
+ drivers/gpu/drm/drm_edid.c |   12 +++++++-----
  1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 388039be229d..8b5b7aee73cb 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -2368,10 +2368,11 @@ EXPORT_SYMBOL(drm_match_cea_mode);
+@@ -2373,10 +2373,11 @@ EXPORT_SYMBOL(drm_match_cea_mode);
  
  
  static int
@@ -40,7 +38,7 @@ index 388039be229d..8b5b7aee73cb 100644
  	int modes = 0;
  
  	for (mode = db; mode < db + len; mode++) {
-@@ -2428,8 +2429,9 @@ cea_db_offsets(const u8 *cea, int *start, int *end)
+@@ -2433,8 +2434,9 @@ cea_db_offsets(const u8 *cea, int *start
  static int
  add_cea_modes(struct drm_connector *connector, struct edid *edid)
  {
@@ -52,7 +50,7 @@ index 388039be229d..8b5b7aee73cb 100644
  	int modes = 0;
  
  	if (cea && cea_revision(cea) >= 3) {
-@@ -2443,7 +2445,7 @@ add_cea_modes(struct drm_connector *connector, struct edid *edid)
+@@ -2448,7 +2450,7 @@ add_cea_modes(struct drm_connector *conn
  			dbl = cea_db_payload_len(db);
  
  			if (cea_db_tag(db) == VIDEO_BLOCK)
@@ -61,6 +59,3 @@ index 388039be229d..8b5b7aee73cb 100644
  		}
  	}
  
--- 
-1.8.5.rc3
-

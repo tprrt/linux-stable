@@ -51,14 +51,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 63b66e5ba54b15a6592be00555d762db6db739ce)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_display.c | 86 ++++++++++++++++++++++++------------
+ drivers/gpu/drm/i915/intel_display.c |   86 +++++++++++++++++++++++------------
  1 file changed, 57 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index f0701147a68a..bde6a5547568 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -10046,6 +10046,8 @@ struct intel_display_error_state {
+@@ -10049,6 +10049,8 @@ struct intel_display_error_state {
  
  	u32 power_well_driver;
  
@@ -67,7 +65,7 @@ index f0701147a68a..bde6a5547568 100644
  	struct intel_cursor_error_state {
  		u32 control;
  		u32 position;
-@@ -10054,16 +10056,7 @@ struct intel_display_error_state {
+@@ -10057,16 +10059,7 @@ struct intel_display_error_state {
  	} cursor[I915_MAX_PIPES];
  
  	struct intel_pipe_error_state {
@@ -84,7 +82,7 @@ index f0701147a68a..bde6a5547568 100644
  	} pipe[I915_MAX_PIPES];
  
  	struct intel_plane_error_state {
-@@ -10075,6 +10068,19 @@ struct intel_display_error_state {
+@@ -10078,6 +10071,19 @@ struct intel_display_error_state {
  		u32 surface;
  		u32 tile_offset;
  	} plane[I915_MAX_PIPES];
@@ -104,7 +102,7 @@ index f0701147a68a..bde6a5547568 100644
  };
  
  struct intel_display_error_state *
-@@ -10082,9 +10088,17 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -10085,9 +10091,17 @@ intel_display_capture_error_state(struct
  {
  	drm_i915_private_t *dev_priv = dev->dev_private;
  	struct intel_display_error_state *error;
@@ -123,7 +121,7 @@ index f0701147a68a..bde6a5547568 100644
  	error = kmalloc(sizeof(*error), GFP_ATOMIC);
  	if (error == NULL)
  		return NULL;
-@@ -10093,9 +10107,6 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -10096,9 +10110,6 @@ intel_display_capture_error_state(struct
  		error->power_well_driver = I915_READ(HSW_PWR_WELL_DRIVER);
  
  	for_each_pipe(i) {
@@ -133,7 +131,7 @@ index f0701147a68a..bde6a5547568 100644
  		if (INTEL_INFO(dev)->gen <= 6 || IS_VALLEYVIEW(dev)) {
  			error->cursor[i].control = I915_READ(CURCNTR(i));
  			error->cursor[i].position = I915_READ(CURPOS(i));
-@@ -10119,14 +10130,25 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -10122,14 +10133,25 @@ intel_display_capture_error_state(struct
  			error->plane[i].tile_offset = I915_READ(DSPTILEOFF(i));
  		}
  
@@ -166,7 +164,7 @@ index f0701147a68a..bde6a5547568 100644
  	}
  
  	/* In the code above we read the registers without checking if the power
-@@ -10148,22 +10170,16 @@ intel_display_print_error_state(struct drm_i915_error_state_buf *m,
+@@ -10151,22 +10173,16 @@ intel_display_print_error_state(struct d
  {
  	int i;
  
@@ -192,7 +190,7 @@ index f0701147a68a..bde6a5547568 100644
  
  		err_printf(m, "Plane [%d]:\n", i);
  		err_printf(m, "  CNTR: %08x\n", error->plane[i].control);
-@@ -10184,5 +10200,17 @@ intel_display_print_error_state(struct drm_i915_error_state_buf *m,
+@@ -10187,5 +10203,17 @@ intel_display_print_error_state(struct d
  		err_printf(m, "  POS: %08x\n", error->cursor[i].position);
  		err_printf(m, "  BASE: %08x\n", error->cursor[i].base);
  	}
@@ -210,6 +208,3 @@ index f0701147a68a..bde6a5547568 100644
 +	}
  }
  #endif
--- 
-1.8.5.rc3
-

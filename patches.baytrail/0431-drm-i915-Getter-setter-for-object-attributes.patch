@@ -33,28 +33,26 @@ Conflicts:
 	e13af9a8340685cfe25d0c9f708da7121e0f51dd)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c        | 26 +++++----
- drivers/gpu/drm/i915/i915_drv.h            | 31 +++++++++++
- drivers/gpu/drm/i915/i915_gem.c            | 89 +++++++++++++++---------------
- drivers/gpu/drm/i915/i915_gem_context.c    |  2 +-
- drivers/gpu/drm/i915/i915_gem_execbuffer.c | 19 ++++---
- drivers/gpu/drm/i915/i915_gem_gtt.c        |  8 +--
- drivers/gpu/drm/i915/i915_gem_tiling.c     | 14 ++---
- drivers/gpu/drm/i915/i915_irq.c            | 15 +++--
- drivers/gpu/drm/i915/i915_trace.h          |  8 +--
- drivers/gpu/drm/i915/intel_display.c       | 28 +++++-----
- drivers/gpu/drm/i915/intel_fb.c            |  8 +--
- drivers/gpu/drm/i915/intel_overlay.c       | 14 ++---
- drivers/gpu/drm/i915/intel_pm.c            |  8 +--
- drivers/gpu/drm/i915/intel_ringbuffer.c    | 12 ++--
- drivers/gpu/drm/i915/intel_sprite.c        |  8 ++-
+ drivers/gpu/drm/i915/i915_debugfs.c        |   26 ++++----
+ drivers/gpu/drm/i915/i915_drv.h            |   31 ++++++++++
+ drivers/gpu/drm/i915/i915_gem.c            |   89 ++++++++++++++---------------
+ drivers/gpu/drm/i915/i915_gem_context.c    |    2 
+ drivers/gpu/drm/i915/i915_gem_execbuffer.c |   19 +++---
+ drivers/gpu/drm/i915/i915_gem_gtt.c        |    8 +-
+ drivers/gpu/drm/i915/i915_gem_tiling.c     |   14 ++--
+ drivers/gpu/drm/i915/i915_irq.c            |   15 ++--
+ drivers/gpu/drm/i915/i915_trace.h          |    8 +-
+ drivers/gpu/drm/i915/intel_display.c       |   28 ++++-----
+ drivers/gpu/drm/i915/intel_fb.c            |    8 +-
+ drivers/gpu/drm/i915/intel_overlay.c       |   14 ++--
+ drivers/gpu/drm/i915/intel_pm.c            |    8 +-
+ drivers/gpu/drm/i915/intel_ringbuffer.c    |   12 +--
+ drivers/gpu/drm/i915/intel_sprite.c        |    8 +-
  15 files changed, 164 insertions(+), 126 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index 3e36756d0439..396387ed207a 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -122,9 +122,9 @@ describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
+@@ -122,9 +122,9 @@ describe_obj(struct seq_file *m, struct
  		seq_printf(m, " (pinned x %d)", obj->pin_count);
  	if (obj->fence_reg != I915_FENCE_REG_NONE)
  		seq_printf(m, " (fence: %d)", obj->fence_reg);
@@ -67,7 +65,7 @@ index 3e36756d0439..396387ed207a 100644
  	if (obj->stolen)
  		seq_printf(m, " (stolen: %08lx)", obj->stolen->start);
  	if (obj->pin_mappable || obj->fault_mappable) {
-@@ -175,7 +175,7 @@ static int i915_gem_object_list_info(struct seq_file *m, void *data)
+@@ -175,7 +175,7 @@ static int i915_gem_object_list_info(str
  		describe_obj(m, obj);
  		seq_putc(m, '\n');
  		total_obj_size += obj->base.size;
@@ -76,7 +74,7 @@ index 3e36756d0439..396387ed207a 100644
  		count++;
  	}
  	mutex_unlock(&dev->struct_mutex);
-@@ -187,10 +187,10 @@ static int i915_gem_object_list_info(struct seq_file *m, void *data)
+@@ -187,10 +187,10 @@ static int i915_gem_object_list_info(str
  
  #define count_objects(list, member) do { \
  	list_for_each_entry(obj, list, member) { \
@@ -89,7 +87,7 @@ index 3e36756d0439..396387ed207a 100644
  			++mappable_count; \
  		} \
  	} \
-@@ -209,7 +209,7 @@ static int per_file_stats(int id, void *ptr, void *data)
+@@ -209,7 +209,7 @@ static int per_file_stats(int id, void *
  	stats->count++;
  	stats->total += obj->base.size;
  
@@ -98,7 +96,7 @@ index 3e36756d0439..396387ed207a 100644
  		if (!list_empty(&obj->ring_list))
  			stats->active += obj->base.size;
  		else
-@@ -267,11 +267,11 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
+@@ -267,11 +267,11 @@ static int i915_gem_object_info(struct s
  	size = count = mappable_size = mappable_count = 0;
  	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_list) {
  		if (obj->fault_mappable) {
@@ -112,7 +110,7 @@ index 3e36756d0439..396387ed207a 100644
  			++mappable_count;
  		}
  		if (obj->madv == I915_MADV_DONTNEED) {
-@@ -333,7 +333,7 @@ static int i915_gem_gtt_info(struct seq_file *m, void *data)
+@@ -333,7 +333,7 @@ static int i915_gem_gtt_info(struct seq_
  		describe_obj(m, obj);
  		seq_putc(m, '\n');
  		total_obj_size += obj->base.size;
@@ -121,7 +119,7 @@ index 3e36756d0439..396387ed207a 100644
  		count++;
  	}
  
-@@ -379,12 +379,14 @@ static int i915_gem_pageflip_info(struct seq_file *m, void *data)
+@@ -379,12 +379,14 @@ static int i915_gem_pageflip_info(struct
  			if (work->old_fb_obj) {
  				struct drm_i915_gem_object *obj = work->old_fb_obj;
  				if (obj)
@@ -138,8 +136,6 @@ index 3e36756d0439..396387ed207a 100644
  			}
  		}
  		spin_unlock_irqrestore(&dev->event_lock, flags);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 8e40123f6a12..ccf9bfa54c08 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -1362,6 +1362,37 @@ struct drm_i915_gem_object {
@@ -180,11 +176,9 @@ index 8e40123f6a12..ccf9bfa54c08 100644
  /**
   * Request queue structure.
   *
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index d9e2208cfe98..e43a35dcff63 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -135,7 +135,7 @@ int i915_mutex_lock_interruptible(struct drm_device *dev)
+@@ -135,7 +135,7 @@ int i915_mutex_lock_interruptible(struct
  static inline bool
  i915_gem_object_is_inactive(struct drm_i915_gem_object *obj)
  {
@@ -193,7 +187,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  }
  
  int
-@@ -178,7 +178,7 @@ i915_gem_get_aperture_ioctl(struct drm_device *dev, void *data,
+@@ -178,7 +178,7 @@ i915_gem_get_aperture_ioctl(struct drm_d
  	mutex_lock(&dev->struct_mutex);
  	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_list)
  		if (obj->pin_count)
@@ -202,7 +196,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  	mutex_unlock(&dev->struct_mutex);
  
  	args->aper_size = dev_priv->gtt.total;
-@@ -422,7 +422,7 @@ i915_gem_shmem_pread(struct drm_device *dev,
+@@ -422,7 +422,7 @@ i915_gem_shmem_pread(struct drm_device *
  		 * anyway again before the next pread happens. */
  		if (obj->cache_level == I915_CACHE_NONE)
  			needs_clflush = 1;
@@ -211,7 +205,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  			ret = i915_gem_object_set_to_gtt_domain(obj, false);
  			if (ret)
  				return ret;
-@@ -609,7 +609,7 @@ i915_gem_gtt_pwrite_fast(struct drm_device *dev,
+@@ -609,7 +609,7 @@ i915_gem_gtt_pwrite_fast(struct drm_devi
  	user_data = to_user_ptr(args->data_ptr);
  	remain = args->size;
  
@@ -220,7 +214,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  	while (remain > 0) {
  		/* Operation in this page
-@@ -739,7 +739,7 @@ i915_gem_shmem_pwrite(struct drm_device *dev,
+@@ -739,7 +739,7 @@ i915_gem_shmem_pwrite(struct drm_device
  		 * right away and we therefore have to clflush anyway. */
  		if (obj->cache_level == I915_CACHE_NONE)
  			needs_clflush_after = 1;
@@ -229,7 +223,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  			ret = i915_gem_object_set_to_gtt_domain(obj, true);
  			if (ret)
  				return ret;
-@@ -1360,8 +1360,9 @@ int i915_gem_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
+@@ -1360,8 +1360,9 @@ int i915_gem_fault(struct vm_area_struct
  
  	obj->fault_mappable = true;
  
@@ -241,7 +235,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  	/* Finally, remap it using the new GTT offset */
  	ret = vm_insert_pfn(vma, (unsigned long)vmf->virtual_address, pfn);
-@@ -1667,7 +1668,7 @@ i915_gem_object_put_pages(struct drm_i915_gem_object *obj)
+@@ -1667,7 +1668,7 @@ i915_gem_object_put_pages(struct drm_i91
  	if (obj->pages == NULL)
  		return 0;
  
@@ -250,7 +244,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  	if (obj->pages_pin_count)
  		return -EBUSY;
-@@ -2121,8 +2122,8 @@ i915_gem_request_remove_from_client(struct drm_i915_gem_request *request)
+@@ -2121,8 +2122,8 @@ i915_gem_request_remove_from_client(stru
  
  static bool i915_head_inside_object(u32 acthd, struct drm_i915_gem_object *obj)
  {
@@ -261,7 +255,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		return true;
  
  	return false;
-@@ -2180,11 +2181,11 @@ static void i915_set_reset_status(struct intel_ring_buffer *ring,
+@@ -2180,11 +2181,11 @@ static void i915_set_reset_status(struct
  
  	if (ring->hangcheck.action != wait &&
  	    i915_request_guilty(request, acthd, &inside)) {
@@ -275,7 +269,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  			  request->ctx ? request->ctx->id : 0,
  			  acthd);
  
-@@ -2595,7 +2596,7 @@ i915_gem_object_unbind(struct drm_i915_gem_object *obj)
+@@ -2595,7 +2596,7 @@ i915_gem_object_unbind(struct drm_i915_g
  	drm_i915_private_t *dev_priv = obj->base.dev->dev_private;
  	int ret;
  
@@ -284,7 +278,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		return 0;
  
  	if (obj->pin_count)
-@@ -2691,12 +2692,12 @@ static void i965_write_fence_reg(struct drm_device *dev, int reg,
+@@ -2691,12 +2692,12 @@ static void i965_write_fence_reg(struct
  	POSTING_READ(fence_reg);
  
  	if (obj) {
@@ -300,7 +294,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		val |= (uint64_t)((obj->stride / 128) - 1) << fence_pitch_shift;
  		if (obj->tiling_mode == I915_TILING_Y)
  			val |= 1 << I965_FENCE_TILING_Y_SHIFT;
-@@ -2720,15 +2721,15 @@ static void i915_write_fence_reg(struct drm_device *dev, int reg,
+@@ -2720,15 +2721,15 @@ static void i915_write_fence_reg(struct
  	u32 val;
  
  	if (obj) {
@@ -321,7 +315,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  		if (obj->tiling_mode == I915_TILING_Y && HAS_128_BYTE_Y_TILING(dev))
  			tile_width = 128;
-@@ -2739,7 +2740,7 @@ static void i915_write_fence_reg(struct drm_device *dev, int reg,
+@@ -2739,7 +2740,7 @@ static void i915_write_fence_reg(struct
  		pitch_val = obj->stride / tile_width;
  		pitch_val = ffs(pitch_val) - 1;
  
@@ -330,7 +324,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		if (obj->tiling_mode == I915_TILING_Y)
  			val |= 1 << I830_FENCE_TILING_Y_SHIFT;
  		val |= I915_FENCE_SIZE_BITS(size);
-@@ -2764,19 +2765,19 @@ static void i830_write_fence_reg(struct drm_device *dev, int reg,
+@@ -2764,19 +2765,19 @@ static void i830_write_fence_reg(struct
  	uint32_t val;
  
  	if (obj) {
@@ -356,7 +350,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		if (obj->tiling_mode == I915_TILING_Y)
  			val |= 1 << I830_FENCE_TILING_Y_SHIFT;
  		val |= I830_FENCE_SIZE_BITS(size);
-@@ -3030,8 +3031,8 @@ static void i915_gem_verify_gtt(struct drm_device *dev)
+@@ -3030,8 +3031,8 @@ static void i915_gem_verify_gtt(struct d
  
  		if (obj->cache_level != obj->gtt_space->color) {
  			printk(KERN_ERR "object reserved space [%08lx, %08lx] with wrong color, cache_level=%x, color=%lx\n",
@@ -367,7 +361,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  			       obj->cache_level,
  			       obj->gtt_space->color);
  			err++;
-@@ -3042,8 +3043,8 @@ static void i915_gem_verify_gtt(struct drm_device *dev)
+@@ -3042,8 +3043,8 @@ static void i915_gem_verify_gtt(struct d
  					      obj->gtt_space,
  					      obj->cache_level)) {
  			printk(KERN_ERR "invalid GTT space found at [%08lx, %08lx] - color=%x\n",
@@ -389,7 +383,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  	obj->map_and_fenceable = mappable && fenceable;
  
-@@ -3258,7 +3259,7 @@ i915_gem_object_set_to_gtt_domain(struct drm_i915_gem_object *obj, bool write)
+@@ -3258,7 +3259,7 @@ i915_gem_object_set_to_gtt_domain(struct
  	int ret;
  
  	/* Not valid to be called on unbound objects. */
@@ -398,7 +392,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		return -EINVAL;
  
  	if (obj->base.write_domain == I915_GEM_DOMAIN_GTT)
-@@ -3323,7 +3324,7 @@ int i915_gem_object_set_cache_level(struct drm_i915_gem_object *obj,
+@@ -3323,7 +3324,7 @@ int i915_gem_object_set_cache_level(stru
  			return ret;
  	}
  
@@ -407,7 +401,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  		ret = i915_gem_object_finish_gpu(obj);
  		if (ret)
  			return ret;
-@@ -3346,7 +3347,7 @@ int i915_gem_object_set_cache_level(struct drm_i915_gem_object *obj,
+@@ -3346,7 +3347,7 @@ int i915_gem_object_set_cache_level(stru
  			i915_ppgtt_bind_object(dev_priv->mm.aliasing_ppgtt,
  					       obj, cache_level);
  
@@ -416,7 +410,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  	}
  
  	if (cache_level == I915_CACHE_NONE) {
-@@ -3627,14 +3628,14 @@ i915_gem_object_pin(struct drm_i915_gem_object *obj,
+@@ -3627,14 +3628,14 @@ i915_gem_object_pin(struct drm_i915_gem_
  	if (WARN_ON(obj->pin_count == DRM_I915_GEM_OBJECT_MAX_PIN_COUNT))
  		return -EBUSY;
  
@@ -435,7 +429,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  			     map_and_fenceable,
  			     obj->map_and_fenceable);
  			ret = i915_gem_object_unbind(obj);
-@@ -3643,7 +3644,7 @@ i915_gem_object_pin(struct drm_i915_gem_object *obj,
+@@ -3643,7 +3644,7 @@ i915_gem_object_pin(struct drm_i915_gem_
  		}
  	}
  
@@ -453,7 +447,7 @@ index d9e2208cfe98..e43a35dcff63 100644
  
  	if (--obj->pin_count == 0)
  		obj->pin_mappable = false;
-@@ -3719,7 +3720,7 @@ i915_gem_pin_ioctl(struct drm_device *dev, void *data,
+@@ -3719,7 +3720,7 @@ i915_gem_pin_ioctl(struct drm_device *de
  	 * as the X server doesn't manage domains yet
  	 */
  	i915_gem_object_flush_cpu_write_domain(obj);
@@ -462,11 +456,9 @@ index d9e2208cfe98..e43a35dcff63 100644
  out:
  	drm_gem_object_unreference(&obj->base);
  unlock:
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 51b7a2171cae..2074544682cf 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -377,7 +377,7 @@ mi_set_context(struct intel_ring_buffer *ring,
+@@ -375,7 +375,7 @@ mi_set_context(struct intel_ring_buffer
  
  	intel_ring_emit(ring, MI_NOOP);
  	intel_ring_emit(ring, MI_SET_CONTEXT);
@@ -475,11 +467,9 @@ index 51b7a2171cae..2074544682cf 100644
  			MI_MM_SPACE_GTT |
  			MI_SAVE_EXT_STATE_EN |
  			MI_RESTORE_EXT_STATE_EN |
-diff --git a/drivers/gpu/drm/i915/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-index 87a3227e5179..5aeb447ead6b 100644
 --- a/drivers/gpu/drm/i915/i915_gem_execbuffer.c
 +++ b/drivers/gpu/drm/i915/i915_gem_execbuffer.c
-@@ -188,7 +188,7 @@ i915_gem_execbuffer_relocate_entry(struct drm_i915_gem_object *obj,
+@@ -188,7 +188,7 @@ i915_gem_execbuffer_relocate_entry(struc
  		return -ENOENT;
  
  	target_i915_obj = to_intel_bo(target_obj);
@@ -488,7 +478,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  
  	/* Sandybridge PPGTT errata: We need a global gtt mapping for MI and
  	 * pipe_control writes because the gpu doesn't properly redirect them
-@@ -280,7 +280,7 @@ i915_gem_execbuffer_relocate_entry(struct drm_i915_gem_object *obj,
+@@ -280,7 +280,7 @@ i915_gem_execbuffer_relocate_entry(struc
  			return ret;
  
  		/* Map the page containing the relocation we're going to perform.  */
@@ -497,7 +487,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  		reloc_page = io_mapping_map_atomic_wc(dev_priv->gtt.mappable,
  						      reloc->offset & PAGE_MASK);
  		reloc_entry = (uint32_t __iomem *)
-@@ -436,8 +436,8 @@ i915_gem_execbuffer_reserve_object(struct drm_i915_gem_object *obj,
+@@ -436,8 +436,8 @@ i915_gem_execbuffer_reserve_object(struc
  		obj->has_aliasing_ppgtt_mapping = 1;
  	}
  
@@ -508,7 +498,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  		*need_reloc = true;
  	}
  
-@@ -458,7 +458,7 @@ i915_gem_execbuffer_unreserve_object(struct drm_i915_gem_object *obj)
+@@ -458,7 +458,7 @@ i915_gem_execbuffer_unreserve_object(str
  {
  	struct drm_i915_gem_exec_object2 *entry;
  
@@ -517,7 +507,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  		return;
  
  	entry = obj->exec_entry;
-@@ -530,7 +530,7 @@ i915_gem_execbuffer_reserve(struct intel_ring_buffer *ring,
+@@ -530,7 +530,7 @@ i915_gem_execbuffer_reserve(struct intel
  			struct drm_i915_gem_exec_object2 *entry = obj->exec_entry;
  			bool need_fence, need_mappable;
  
@@ -526,7 +516,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  				continue;
  
  			need_fence =
-@@ -539,7 +539,8 @@ i915_gem_execbuffer_reserve(struct intel_ring_buffer *ring,
+@@ -539,7 +539,8 @@ i915_gem_execbuffer_reserve(struct intel
  				obj->tiling_mode != I915_TILING_NONE;
  			need_mappable = need_fence || need_reloc_mappable(obj);
  
@@ -536,7 +526,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  			    (need_mappable && !obj->map_and_fenceable))
  				ret = i915_gem_object_unbind(obj);
  			else
-@@ -550,7 +551,7 @@ i915_gem_execbuffer_reserve(struct intel_ring_buffer *ring,
+@@ -550,7 +551,7 @@ i915_gem_execbuffer_reserve(struct intel
  
  		/* Bind fresh objects */
  		list_for_each_entry(obj, objects, exec_list) {
@@ -545,7 +535,7 @@ index 87a3227e5179..5aeb447ead6b 100644
  				continue;
  
  			ret = i915_gem_execbuffer_reserve_object(obj, ring, need_relocs);
-@@ -1058,7 +1059,7 @@ i915_gem_do_execbuffer(struct drm_device *dev, void *data,
+@@ -1058,7 +1059,7 @@ i915_gem_do_execbuffer(struct drm_device
  			goto err;
  	}
  
@@ -554,11 +544,9 @@ index 87a3227e5179..5aeb447ead6b 100644
  	exec_len = args->batch_len;
  	if (cliprects) {
  		for (i = 0; i < args->num_cliprects; i++) {
-diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
-index afba7e5e7739..6f0a4c09e26a 100644
 --- a/drivers/gpu/drm/i915/i915_gem_gtt.c
 +++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
-@@ -378,7 +378,7 @@ void i915_ppgtt_bind_object(struct i915_hw_ppgtt *ppgtt,
+@@ -378,7 +378,7 @@ void i915_ppgtt_bind_object(struct i915_
  			    enum i915_cache_level cache_level)
  {
  	ppgtt->insert_entries(ppgtt, obj->pages,
@@ -567,7 +555,7 @@ index afba7e5e7739..6f0a4c09e26a 100644
  			      cache_level);
  }
  
-@@ -386,7 +386,7 @@ void i915_ppgtt_unbind_object(struct i915_hw_ppgtt *ppgtt,
+@@ -386,7 +386,7 @@ void i915_ppgtt_unbind_object(struct i91
  			      struct drm_i915_gem_object *obj)
  {
  	ppgtt->clear_range(ppgtt,
@@ -576,7 +564,7 @@ index afba7e5e7739..6f0a4c09e26a 100644
  			   obj->base.size >> PAGE_SHIFT);
  }
  
-@@ -551,7 +551,7 @@ void i915_gem_gtt_bind_object(struct drm_i915_gem_object *obj,
+@@ -551,7 +551,7 @@ void i915_gem_gtt_bind_object(struct drm
  	struct drm_i915_private *dev_priv = dev->dev_private;
  
  	dev_priv->gtt.gtt_insert_entries(dev, obj->pages,
@@ -585,7 +573,7 @@ index afba7e5e7739..6f0a4c09e26a 100644
  					 cache_level);
  
  	obj->has_global_gtt_mapping = 1;
-@@ -563,7 +563,7 @@ void i915_gem_gtt_unbind_object(struct drm_i915_gem_object *obj)
+@@ -563,7 +563,7 @@ void i915_gem_gtt_unbind_object(struct d
  	struct drm_i915_private *dev_priv = dev->dev_private;
  
  	dev_priv->gtt.gtt_clear_range(obj->base.dev,
@@ -594,11 +582,9 @@ index afba7e5e7739..6f0a4c09e26a 100644
  				      obj->base.size >> PAGE_SHIFT);
  
  	obj->has_global_gtt_mapping = 0;
-diff --git a/drivers/gpu/drm/i915/i915_gem_tiling.c b/drivers/gpu/drm/i915/i915_gem_tiling.c
-index 537545be69db..92a8d279ca39 100644
 --- a/drivers/gpu/drm/i915/i915_gem_tiling.c
 +++ b/drivers/gpu/drm/i915/i915_gem_tiling.c
-@@ -268,18 +268,18 @@ i915_gem_object_fence_ok(struct drm_i915_gem_object *obj, int tiling_mode)
+@@ -268,18 +268,18 @@ i915_gem_object_fence_ok(struct drm_i915
  		return true;
  
  	if (INTEL_INFO(obj->base.dev)->gen == 3) {
@@ -621,7 +607,7 @@ index 537545be69db..92a8d279ca39 100644
  		return false;
  
  	return true;
-@@ -359,8 +359,8 @@ i915_gem_set_tiling(struct drm_device *dev, void *data,
+@@ -359,8 +359,8 @@ i915_gem_set_tiling(struct drm_device *d
  		 */
  
  		obj->map_and_fenceable =
@@ -632,7 +618,7 @@ index 537545be69db..92a8d279ca39 100644
  			 i915_gem_object_fence_ok(obj, args->tiling_mode));
  
  		/* Rebind if we need a change of alignment */
-@@ -369,7 +369,7 @@ i915_gem_set_tiling(struct drm_device *dev, void *data,
+@@ -369,7 +369,7 @@ i915_gem_set_tiling(struct drm_device *d
  				i915_gem_get_gtt_alignment(dev, obj->base.size,
  							    args->tiling_mode,
  							    false);
@@ -641,11 +627,9 @@ index 537545be69db..92a8d279ca39 100644
  				ret = i915_gem_object_unbind(obj);
  		}
  
-diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
-index 4a98600c6f41..eaa8c1eda17f 100644
 --- a/drivers/gpu/drm/i915/i915_irq.c
 +++ b/drivers/gpu/drm/i915/i915_irq.c
-@@ -1554,7 +1554,7 @@ i915_error_object_create_sized(struct drm_i915_private *dev_priv,
+@@ -1554,7 +1554,7 @@ i915_error_object_create_sized(struct dr
  	if (dst == NULL)
  		return NULL;
  
@@ -654,7 +638,7 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  	for (i = 0; i < num_pages; i++) {
  		unsigned long flags;
  		void *d;
-@@ -1606,7 +1606,6 @@ i915_error_object_create_sized(struct drm_i915_private *dev_priv,
+@@ -1606,7 +1606,6 @@ i915_error_object_create_sized(struct dr
  		reloc_offset += PAGE_SIZE;
  	}
  	dst->page_count = num_pages;
@@ -662,7 +646,7 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  
  	return dst;
  
-@@ -1660,7 +1659,7 @@ static void capture_bo(struct drm_i915_error_buffer *err,
+@@ -1660,7 +1659,7 @@ static void capture_bo(struct drm_i915_e
  	err->name = obj->base.name;
  	err->rseqno = obj->last_read_seqno;
  	err->wseqno = obj->last_write_seqno;
@@ -671,7 +655,7 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  	err->read_domains = obj->base.read_domains;
  	err->write_domain = obj->base.write_domain;
  	err->fence_reg = obj->fence_reg;
-@@ -1758,8 +1757,8 @@ i915_error_first_batchbuffer(struct drm_i915_private *dev_priv,
+@@ -1758,8 +1757,8 @@ i915_error_first_batchbuffer(struct drm_
  			return NULL;
  
  		obj = ring->private;
@@ -682,7 +666,7 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  			return i915_error_object_create(dev_priv, obj);
  	}
  
-@@ -1840,7 +1839,7 @@ static void i915_gem_record_active_context(struct intel_ring_buffer *ring,
+@@ -1840,7 +1839,7 @@ static void i915_gem_record_active_conte
  		return;
  
  	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_list) {
@@ -691,7 +675,7 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  			ering->ctx = i915_error_object_create_sized(dev_priv,
  								    obj, 1);
  			break;
-@@ -2206,10 +2205,10 @@ static void __always_unused i915_pageflip_stall_check(struct drm_device *dev, in
+@@ -2206,10 +2205,10 @@ static void __always_unused i915_pagefli
  	if (INTEL_INFO(dev)->gen >= 4) {
  		int dspsurf = DSPSURF(intel_crtc->plane);
  		stall_detected = I915_HI_DISPBASE(I915_READ(dspsurf)) ==
@@ -704,8 +688,6 @@ index 4a98600c6f41..eaa8c1eda17f 100644
  							crtc->y * crtc->fb->pitches[0] +
  							crtc->x * crtc->fb->bits_per_pixel/8);
  	}
-diff --git a/drivers/gpu/drm/i915/i915_trace.h b/drivers/gpu/drm/i915/i915_trace.h
-index 3db4a6817713..7d283b5fcbf9 100644
 --- a/drivers/gpu/drm/i915/i915_trace.h
 +++ b/drivers/gpu/drm/i915/i915_trace.h
 @@ -46,8 +46,8 @@ TRACE_EVENT(i915_gem_object_bind,
@@ -730,11 +712,9 @@ index 3db4a6817713..7d283b5fcbf9 100644
  			   ),
  
  	    TP_printk("obj=%p, offset=%08x size=%x",
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 9733f275454d..3886db95a688 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -1980,16 +1980,17 @@ static int i9xx_update_plane(struct drm_crtc *crtc, struct drm_framebuffer *fb,
+@@ -1980,16 +1980,17 @@ static int i9xx_update_plane(struct drm_
  		intel_crtc->dspaddr_offset = linear_offset;
  	}
  
@@ -756,7 +736,7 @@ index 9733f275454d..3886db95a688 100644
  	POSTING_READ(reg);
  
  	return 0;
-@@ -2069,11 +2070,12 @@ static int ironlake_update_plane(struct drm_crtc *crtc,
+@@ -2069,11 +2070,12 @@ static int ironlake_update_plane(struct
  					       fb->pitches[0]);
  	linear_offset -= intel_crtc->dspaddr_offset;
  
@@ -772,7 +752,7 @@ index 9733f275454d..3886db95a688 100644
  	if (IS_HASWELL(dev)) {
  		I915_WRITE(DSPOFFSET(plane), (y << 16) | x);
  	} else {
-@@ -6568,7 +6570,7 @@ static int intel_crtc_cursor_set(struct drm_crtc *crtc,
+@@ -6568,7 +6570,7 @@ static int intel_crtc_cursor_set(struct
  			goto fail_unpin;
  		}
  
@@ -781,7 +761,7 @@ index 9733f275454d..3886db95a688 100644
  	} else {
  		int align = IS_I830(dev) ? 16 * 1024 : 256;
  		ret = i915_gem_attach_phys_object(dev, obj,
-@@ -7340,7 +7342,7 @@ static int intel_gen2_queue_flip(struct drm_device *dev,
+@@ -7340,7 +7342,7 @@ static int intel_gen2_queue_flip(struct
  	intel_ring_emit(ring, MI_DISPLAY_FLIP |
  			MI_DISPLAY_FLIP_PLANE(intel_crtc->plane));
  	intel_ring_emit(ring, fb->pitches[0]);
@@ -790,7 +770,7 @@ index 9733f275454d..3886db95a688 100644
  	intel_ring_emit(ring, 0); /* aux display base address, unused */
  
  	intel_mark_page_flip_active(intel_crtc);
-@@ -7381,7 +7383,7 @@ static int intel_gen3_queue_flip(struct drm_device *dev,
+@@ -7381,7 +7383,7 @@ static int intel_gen3_queue_flip(struct
  	intel_ring_emit(ring, MI_DISPLAY_FLIP_I915 |
  			MI_DISPLAY_FLIP_PLANE(intel_crtc->plane));
  	intel_ring_emit(ring, fb->pitches[0]);
@@ -799,7 +779,7 @@ index 9733f275454d..3886db95a688 100644
  	intel_ring_emit(ring, MI_NOOP);
  
  	intel_mark_page_flip_active(intel_crtc);
-@@ -7421,7 +7423,7 @@ static int intel_gen4_queue_flip(struct drm_device *dev,
+@@ -7421,7 +7423,7 @@ static int intel_gen4_queue_flip(struct
  			MI_DISPLAY_FLIP_PLANE(intel_crtc->plane));
  	intel_ring_emit(ring, fb->pitches[0]);
  	intel_ring_emit(ring,
@@ -808,7 +788,7 @@ index 9733f275454d..3886db95a688 100644
  			obj->tiling_mode);
  
  	/* XXX Enabling the panel-fitter across page-flip is so far
-@@ -7464,7 +7466,7 @@ static int intel_gen6_queue_flip(struct drm_device *dev,
+@@ -7464,7 +7466,7 @@ static int intel_gen6_queue_flip(struct
  	intel_ring_emit(ring, MI_DISPLAY_FLIP |
  			MI_DISPLAY_FLIP_PLANE(intel_crtc->plane));
  	intel_ring_emit(ring, fb->pitches[0] | obj->tiling_mode);
@@ -817,7 +797,7 @@ index 9733f275454d..3886db95a688 100644
  
  	/* Contrary to the suggestions in the documentation,
  	 * "Enable Panel Fitter" does not seem to be required when page
-@@ -7529,7 +7531,7 @@ static int intel_gen7_queue_flip(struct drm_device *dev,
+@@ -7529,7 +7531,7 @@ static int intel_gen7_queue_flip(struct
  
  	intel_ring_emit(ring, MI_DISPLAY_FLIP_I915 | plane_bit);
  	intel_ring_emit(ring, (fb->pitches[0] | obj->tiling_mode));
@@ -826,11 +806,9 @@ index 9733f275454d..3886db95a688 100644
  	intel_ring_emit(ring, (MI_NOOP));
  
  	intel_mark_page_flip_active(intel_crtc);
-diff --git a/drivers/gpu/drm/i915/intel_fb.c b/drivers/gpu/drm/i915/intel_fb.c
-index dff669e2387f..f3c97e05b0d8 100644
 --- a/drivers/gpu/drm/i915/intel_fb.c
 +++ b/drivers/gpu/drm/i915/intel_fb.c
-@@ -139,11 +139,11 @@ static int intelfb_create(struct drm_fb_helper *helper,
+@@ -139,11 +139,11 @@ static int intelfb_create(struct drm_fb_
  	info->apertures->ranges[0].base = dev->mode_config.fb_base;
  	info->apertures->ranges[0].size = dev_priv->gtt.mappable_end;
  
@@ -844,7 +822,7 @@ index dff669e2387f..f3c97e05b0d8 100644
  			   size);
  	if (!info->screen_base) {
  		ret = -ENOSPC;
-@@ -166,9 +166,9 @@ static int intelfb_create(struct drm_fb_helper *helper,
+@@ -166,9 +166,9 @@ static int intelfb_create(struct drm_fb_
  
  	/* Use default scratch pixmap (info->pixmap.flags = FB_PIXMAP_SYSTEM) */
  
@@ -856,11 +834,9 @@ index dff669e2387f..f3c97e05b0d8 100644
  
  
  	mutex_unlock(&dev->struct_mutex);
-diff --git a/drivers/gpu/drm/i915/intel_overlay.c b/drivers/gpu/drm/i915/intel_overlay.c
-index a3698812e9c7..81c3ca14fa92 100644
 --- a/drivers/gpu/drm/i915/intel_overlay.c
 +++ b/drivers/gpu/drm/i915/intel_overlay.c
-@@ -196,7 +196,7 @@ intel_overlay_map_regs(struct intel_overlay *overlay)
+@@ -196,7 +196,7 @@ intel_overlay_map_regs(struct intel_over
  		regs = (struct overlay_registers __iomem *)overlay->reg_bo->phys_obj->handle->vaddr;
  	else
  		regs = io_mapping_map_wc(dev_priv->gtt.mappable,
@@ -869,7 +845,7 @@ index a3698812e9c7..81c3ca14fa92 100644
  
  	return regs;
  }
-@@ -740,7 +740,7 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
+@@ -740,7 +740,7 @@ static int intel_overlay_do_put_image(st
  	swidth = params->src_w;
  	swidthsw = calc_swidthsw(overlay->dev, params->offset_Y, tmp_width);
  	sheight = params->src_h;
@@ -878,7 +854,7 @@ index a3698812e9c7..81c3ca14fa92 100644
  	ostride = params->stride_Y;
  
  	if (params->format & I915_OVERLAY_YUV_PLANAR) {
-@@ -754,8 +754,8 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
+@@ -754,8 +754,8 @@ static int intel_overlay_do_put_image(st
  				      params->src_w/uv_hscale);
  		swidthsw |= max_t(u32, tmp_U, tmp_V) << 16;
  		sheight |= (params->src_h/uv_vscale) << 16;
@@ -889,7 +865,7 @@ index a3698812e9c7..81c3ca14fa92 100644
  		ostride |= params->stride_UV << 16;
  	}
  
-@@ -1355,7 +1355,7 @@ void intel_setup_overlay(struct drm_device *dev)
+@@ -1355,7 +1355,7 @@ void intel_setup_overlay(struct drm_devi
  			DRM_ERROR("failed to pin overlay register bo\n");
  			goto out_free_bo;
  		}
@@ -898,7 +874,7 @@ index a3698812e9c7..81c3ca14fa92 100644
  
  		ret = i915_gem_object_set_to_gtt_domain(reg_bo, true);
  		if (ret) {
-@@ -1435,7 +1435,7 @@ intel_overlay_map_regs_atomic(struct intel_overlay *overlay)
+@@ -1435,7 +1435,7 @@ intel_overlay_map_regs_atomic(struct int
  			overlay->reg_bo->phys_obj->handle->vaddr;
  	else
  		regs = io_mapping_map_atomic_wc(dev_priv->gtt.mappable,
@@ -907,7 +883,7 @@ index a3698812e9c7..81c3ca14fa92 100644
  
  	return regs;
  }
-@@ -1468,7 +1468,7 @@ intel_overlay_capture_error_state(struct drm_device *dev)
+@@ -1468,7 +1468,7 @@ intel_overlay_capture_error_state(struct
  	if (OVERLAY_NEEDS_PHYSICAL(overlay->dev))
  		error->base = (__force long)overlay->reg_bo->phys_obj->handle->vaddr;
  	else
@@ -916,11 +892,9 @@ index a3698812e9c7..81c3ca14fa92 100644
  
  	regs = intel_overlay_map_regs_atomic(overlay);
  	if (!regs)
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index f9d0afd4bd6c..613923a75abe 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -218,7 +218,7 @@ static void ironlake_enable_fbc(struct drm_crtc *crtc, unsigned long interval)
+@@ -218,7 +218,7 @@ static void ironlake_enable_fbc(struct d
  		   (stall_watermark << DPFC_RECOMP_STALL_WM_SHIFT) |
  		   (interval << DPFC_RECOMP_TIMER_COUNT_SHIFT));
  	I915_WRITE(ILK_DPFC_FENCE_YOFF, crtc->y);
@@ -929,7 +903,7 @@ index f9d0afd4bd6c..613923a75abe 100644
  	/* enable it... */
  	I915_WRITE(ILK_DPFC_CONTROL, dpfc_ctl | DPFC_CTL_EN);
  
-@@ -275,7 +275,7 @@ static void gen7_enable_fbc(struct drm_crtc *crtc, unsigned long interval)
+@@ -275,7 +275,7 @@ static void gen7_enable_fbc(struct drm_c
  	struct drm_i915_gem_object *obj = intel_fb->obj;
  	struct intel_crtc *intel_crtc = to_intel_crtc(crtc);
  
@@ -938,7 +912,7 @@ index f9d0afd4bd6c..613923a75abe 100644
  
  	I915_WRITE(ILK_DPFC_CONTROL, DPFC_CTL_EN | DPFC_CTL_LIMIT_1X |
  		   IVB_DPFC_CTL_FENCE_EN |
-@@ -3700,7 +3700,7 @@ static void ironlake_enable_rc6(struct drm_device *dev)
+@@ -3700,7 +3700,7 @@ static void ironlake_enable_rc6(struct d
  
  	intel_ring_emit(ring, MI_SUSPEND_FLUSH | MI_SUSPEND_FLUSH_EN);
  	intel_ring_emit(ring, MI_SET_CONTEXT);
@@ -947,7 +921,7 @@ index f9d0afd4bd6c..613923a75abe 100644
  			MI_MM_SPACE_GTT |
  			MI_SAVE_EXT_STATE_EN |
  			MI_RESTORE_EXT_STATE_EN |
-@@ -3723,7 +3723,7 @@ static void ironlake_enable_rc6(struct drm_device *dev)
+@@ -3723,7 +3723,7 @@ static void ironlake_enable_rc6(struct d
  		return;
  	}
  
@@ -956,11 +930,9 @@ index f9d0afd4bd6c..613923a75abe 100644
  	I915_WRITE(RSTDBYCTL, I915_READ(RSTDBYCTL) & ~RCX_SW_EXIT);
  }
  
-diff --git a/drivers/gpu/drm/i915/intel_ringbuffer.c b/drivers/gpu/drm/i915/intel_ringbuffer.c
-index 079ef0129e74..ea6aef5e6fea 100644
 --- a/drivers/gpu/drm/i915/intel_ringbuffer.c
 +++ b/drivers/gpu/drm/i915/intel_ringbuffer.c
-@@ -440,14 +440,14 @@ static int init_ring_common(struct intel_ring_buffer *ring)
+@@ -440,14 +440,14 @@ static int init_ring_common(struct intel
  	 * registers with the above sequence (the readback of the HEAD registers
  	 * also enforces ordering), otherwise the hw might lose the new ring
  	 * register values. */
@@ -977,7 +949,7 @@ index 079ef0129e74..ea6aef5e6fea 100644
  		     (I915_READ_HEAD(ring) & HEAD_ADDR) == 0, 50)) {
  		DRM_ERROR("%s initialization failed "
  				"ctl %08x head %08x tail %08x start %08x\n",
-@@ -505,7 +505,7 @@ init_pipe_control(struct intel_ring_buffer *ring)
+@@ -505,7 +505,7 @@ init_pipe_control(struct intel_ring_buff
  	if (ret)
  		goto err_unref;
  
@@ -986,7 +958,7 @@ index 079ef0129e74..ea6aef5e6fea 100644
  	pc->cpu_page = kmap(sg_page(obj->pages->sgl));
  	if (pc->cpu_page == NULL) {
  		ret = -ENOMEM;
-@@ -1156,7 +1156,7 @@ i830_dispatch_execbuffer(struct intel_ring_buffer *ring,
+@@ -1156,7 +1156,7 @@ i830_dispatch_execbuffer(struct intel_ri
  		intel_ring_advance(ring);
  	} else {
  		struct drm_i915_gem_object *obj = ring->private;
@@ -995,7 +967,7 @@ index 079ef0129e74..ea6aef5e6fea 100644
  
  		if (len > I830_BATCH_LIMIT)
  			return -ENOSPC;
-@@ -1241,7 +1241,7 @@ static int init_status_page(struct intel_ring_buffer *ring)
+@@ -1241,7 +1241,7 @@ static int init_status_page(struct intel
  		goto err_unref;
  	}
  
@@ -1004,7 +976,7 @@ index 079ef0129e74..ea6aef5e6fea 100644
  	ring->status_page.page_addr = kmap(sg_page(obj->pages->sgl));
  	if (ring->status_page.page_addr == NULL) {
  		ret = -ENOMEM;
-@@ -1328,7 +1328,7 @@ static int intel_init_ring_buffer(struct drm_device *dev,
+@@ -1328,7 +1328,7 @@ static int intel_init_ring_buffer(struct
  		goto err_unpin;
  
  	ring->virtual_start =
@@ -1013,11 +985,9 @@ index 079ef0129e74..ea6aef5e6fea 100644
  			   ring->size);
  	if (ring->virtual_start == NULL) {
  		DRM_ERROR("Failed to map ringbuffer.\n");
-diff --git a/drivers/gpu/drm/i915/intel_sprite.c b/drivers/gpu/drm/i915/intel_sprite.c
-index 1fa5612a4572..55bdf70b548b 100644
 --- a/drivers/gpu/drm/i915/intel_sprite.c
 +++ b/drivers/gpu/drm/i915/intel_sprite.c
-@@ -133,7 +133,7 @@ vlv_update_plane(struct drm_plane *dplane, struct drm_framebuffer *fb,
+@@ -133,7 +133,7 @@ vlv_update_plane(struct drm_plane *dplan
  
  	I915_WRITE(SPSIZE(pipe, plane), (crtc_h << 16) | crtc_w);
  	I915_WRITE(SPCNTR(pipe, plane), sprctl);
@@ -1026,7 +996,7 @@ index 1fa5612a4572..55bdf70b548b 100644
  			     sprsurf_offset);
  	POSTING_READ(SPSURF(pipe, plane));
  }
-@@ -308,7 +308,8 @@ ivb_update_plane(struct drm_plane *plane, struct drm_framebuffer *fb,
+@@ -308,7 +308,8 @@ ivb_update_plane(struct drm_plane *plane
  	if (intel_plane->can_scale)
  		I915_WRITE(SPRSCALE(pipe), sprscale);
  	I915_WRITE(SPRCTL(pipe), sprctl);
@@ -1036,7 +1006,7 @@ index 1fa5612a4572..55bdf70b548b 100644
  	POSTING_READ(SPRSURF(pipe));
  
  	/* potentially re-enable LP watermarks */
-@@ -478,7 +479,8 @@ ilk_update_plane(struct drm_plane *plane, struct drm_framebuffer *fb,
+@@ -478,7 +479,8 @@ ilk_update_plane(struct drm_plane *plane
  	I915_WRITE(DVSSIZE(pipe), (crtc_h << 16) | crtc_w);
  	I915_WRITE(DVSSCALE(pipe), dvsscale);
  	I915_WRITE(DVSCNTR(pipe), dvscntr);
@@ -1046,6 +1016,3 @@ index 1fa5612a4572..55bdf70b548b 100644
  	POSTING_READ(DVSSURF(pipe));
  }
  
--- 
-1.8.5.rc3
-

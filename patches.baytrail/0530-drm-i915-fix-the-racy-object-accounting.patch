@@ -17,16 +17,14 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c20e835586c0e4d08f891362b3c829d45ef45f9d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 1 +
- drivers/gpu/drm/i915/i915_drv.h | 1 +
- drivers/gpu/drm/i915/i915_gem.c | 4 ++++
+ drivers/gpu/drm/i915/i915_dma.c |    1 +
+ drivers/gpu/drm/i915/i915_drv.h |    1 +
+ drivers/gpu/drm/i915/i915_gem.c |    4 ++++
  3 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index dcc44597ea14..de611f64bb16 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1478,6 +1478,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1486,6 +1486,7 @@ int i915_driver_load(struct drm_device *
  	spin_lock_init(&dev_priv->gpu_error.lock);
  	spin_lock_init(&dev_priv->backlight.lock);
  	spin_lock_init(&dev_priv->uncore.lock);
@@ -34,8 +32,6 @@ index dcc44597ea14..de611f64bb16 100644
  	mutex_init(&dev_priv->dpio_lock);
  	mutex_init(&dev_priv->rps.hw_lock);
  	mutex_init(&dev_priv->modeset_restore_lock);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 2f8699b03722..f31a1b0adbda 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -935,6 +935,7 @@ struct i915_gem_mm {
@@ -46,11 +42,9 @@ index 2f8699b03722..f31a1b0adbda 100644
  	size_t object_memory;
  	u32 object_count;
  };
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 73521ed14eeb..3a5d4baa4c53 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -76,15 +76,19 @@ static inline void i915_gem_object_fence_lost(struct drm_i915_gem_object *obj)
+@@ -76,15 +76,19 @@ static inline void i915_gem_object_fence
  static void i915_gem_info_add_obj(struct drm_i915_private *dev_priv,
  				  size_t size)
  {
@@ -70,6 +64,3 @@ index 73521ed14eeb..3a5d4baa4c53 100644
  }
  
  static int
--- 
-1.8.5.rc3
-

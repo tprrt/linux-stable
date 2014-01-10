@@ -16,15 +16,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit e59ec13de40ed1edd19940322ebd009423fd716d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c |  2 +-
- drivers/gpu/drm/i915/i915_drv.h | 10 ++++++++++
+ drivers/gpu/drm/i915/i915_dma.c |    2 +-
+ drivers/gpu/drm/i915/i915_drv.h |   10 ++++++++++
  2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 628f797358bb..f4669802a0fb 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1782,7 +1782,7 @@ int i915_driver_open(struct drm_device *dev, struct drm_file *file)
+@@ -1790,7 +1790,7 @@ int i915_driver_open(struct drm_device *
  	struct drm_i915_file_private *file_priv;
  
  	DRM_DEBUG_DRIVER("\n");
@@ -33,8 +31,6 @@ index 628f797358bb..f4669802a0fb 100644
  	if (!file_priv)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 0b7d8fd1685b..95b19a53aa26 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -508,6 +508,13 @@ struct i915_hw_ppgtt {
@@ -68,6 +64,3 @@ index 0b7d8fd1685b..95b19a53aa26 100644
  };
  
  #define INTEL_INFO(dev)	(((struct drm_i915_private *) (dev)->dev_private)->info)
--- 
-1.8.5.rc3
-

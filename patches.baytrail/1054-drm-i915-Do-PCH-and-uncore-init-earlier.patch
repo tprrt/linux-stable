@@ -17,14 +17,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c3d685a7a5cd9f18865a717468d2b02092dcefdd)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 10 ++++++----
+ drivers/gpu/drm/i915/i915_dma.c |   10 ++++++----
  1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 3e2d9b512a1b..1319816a087b 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1542,6 +1542,11 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1550,6 +1550,11 @@ int i915_driver_load(struct drm_device *
  
  	intel_uncore_early_sanitize(dev);
  
@@ -36,7 +34,7 @@ index 3e2d9b512a1b..1319816a087b 100644
  	ret = i915_gem_gtt_init(dev);
  	if (ret)
  		goto out_regs;
-@@ -1599,12 +1604,8 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1607,12 +1612,8 @@ int i915_driver_load(struct drm_device *
  		goto out_mtrrfree;
  	}
  
@@ -49,7 +47,7 @@ index 3e2d9b512a1b..1319816a087b 100644
  	intel_uncore_sanitize(dev);
  
  	/* Try to make sure MCHBAR is enabled before poking at it */
-@@ -1689,6 +1690,7 @@ out_gtt:
+@@ -1697,6 +1698,7 @@ out_gtt:
  	drm_mm_takedown(&dev_priv->gtt.base.mm);
  	dev_priv->gtt.base.cleanup(&dev_priv->gtt.base);
  out_regs:
@@ -57,6 +55,3 @@ index 3e2d9b512a1b..1319816a087b 100644
  	pci_iounmap(dev->pdev, dev_priv->regs);
  put_bridge:
  	pci_dev_put(dev_priv->bridge_dev);
--- 
-1.8.5.rc3
-

@@ -13,15 +13,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 18ce39943eb82e457e4c46dc86b1975d79b30aa7)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c     | 10 ----------
- drivers/gpu/drm/i915/intel_uncore.c | 11 +++++++++++
+ drivers/gpu/drm/i915/i915_dma.c     |   10 ----------
+ drivers/gpu/drm/i915/intel_uncore.c |   11 +++++++++++
  2 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 6291dce899e6..3e2d9b512a1b 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1542,16 +1542,6 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1550,16 +1550,6 @@ int i915_driver_load(struct drm_device *
  
  	intel_uncore_early_sanitize(dev);
  
@@ -38,11 +36,9 @@ index 6291dce899e6..3e2d9b512a1b 100644
  	ret = i915_gem_gtt_init(dev);
  	if (ret)
  		goto out_regs;
-diff --git a/drivers/gpu/drm/i915/intel_uncore.c b/drivers/gpu/drm/i915/intel_uncore.c
-index bfc1a65fcd90..2d16590d5478 100644
 --- a/drivers/gpu/drm/i915/intel_uncore.c
 +++ b/drivers/gpu/drm/i915/intel_uncore.c
-@@ -222,6 +222,17 @@ void intel_uncore_early_sanitize(struct drm_device *dev)
+@@ -222,6 +222,17 @@ void intel_uncore_early_sanitize(struct
  
  	if (HAS_FPGA_DBG_UNCLAIMED(dev))
  		__raw_i915_write32(dev_priv, FPGA_DBG, FPGA_DBG_RM_NOCLAIM);
@@ -60,6 +56,3 @@ index bfc1a65fcd90..2d16590d5478 100644
  }
  
  void intel_uncore_init(struct drm_device *dev)
--- 
-1.8.5.rc3
-

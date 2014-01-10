@@ -32,16 +32,14 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 59124506ba5297e48410e410c3bce83784fddf58)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 10 ++++++++++
- drivers/gpu/drm/i915/i915_drv.h |  3 +++
- drivers/gpu/drm/i915/i915_gem.c |  2 +-
+ drivers/gpu/drm/i915/i915_dma.c |   10 ++++++++++
+ drivers/gpu/drm/i915/i915_drv.h |    3 +++
+ drivers/gpu/drm/i915/i915_gem.c |    2 +-
  3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index b290daba28cf..db56ee7f27d5 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1527,6 +1527,16 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1535,6 +1535,16 @@ int i915_driver_load(struct drm_device *
  
  	intel_early_sanitize_regs(dev);
  
@@ -58,8 +56,6 @@ index b290daba28cf..db56ee7f27d5 100644
  	ret = i915_gem_gtt_init(dev);
  	if (ret)
  		goto put_bridge;
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index a7fbefaa1c4a..7adf2b45b185 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -1152,6 +1152,9 @@ typedef struct drm_i915_private {
@@ -72,8 +68,6 @@ index a7fbefaa1c4a..7adf2b45b185 100644
  	/* gen6+ rps state */
  	struct intel_gen6_power_mgmt rps;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index a7039e69395b..791c238a6b01 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
 @@ -4131,7 +4131,7 @@ i915_gem_init_hw(struct drm_device *dev)
@@ -85,6 +79,3 @@ index a7039e69395b..791c238a6b01 100644
  		I915_WRITE(HSW_IDICR, I915_READ(HSW_IDICR) | IDIHASHMSK(0xf));
  
  	if (HAS_PCH_NOP(dev)) {
--- 
-1.8.5.rc3
-

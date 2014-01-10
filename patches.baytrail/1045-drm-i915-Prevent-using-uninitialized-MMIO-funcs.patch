@@ -22,14 +22,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 78511f2a6fc6960c8917d9655fffb687822a0225)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 2 +-
+ drivers/gpu/drm/i915/i915_dma.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 44b883a4147d..6291dce899e6 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1614,8 +1614,8 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1622,8 +1622,8 @@ int i915_driver_load(struct drm_device *
  
  	intel_irq_init(dev);
  	intel_pm_init(dev);
@@ -39,6 +37,3 @@ index 44b883a4147d..6291dce899e6 100644
  
  	/* Try to make sure MCHBAR is enabled before poking at it */
  	intel_setup_mchbar(dev);
--- 
-1.8.5.rc3
-

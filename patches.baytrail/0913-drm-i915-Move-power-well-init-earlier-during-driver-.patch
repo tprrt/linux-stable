@@ -16,14 +16,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit a14853206517b0c8102accbc77401805a0dbdb9e)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 15 ++++++++-------
+ drivers/gpu/drm/i915/i915_dma.c |   15 ++++++++-------
  1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 954ea301047d..b435414f85a4 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1314,21 +1314,21 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1322,21 +1322,21 @@ static int i915_load_modeset_init(struct
  	if (ret)
  		goto cleanup_gem_stolen;
  
@@ -51,7 +49,7 @@ index 954ea301047d..b435414f85a4 100644
  	intel_modeset_gem_init(dev);
  
  	/* Always safe in the mode setting case. */
-@@ -1379,7 +1379,8 @@ cleanup_gem:
+@@ -1387,7 +1387,8 @@ cleanup_gem:
  	mutex_unlock(&dev->struct_mutex);
  	i915_gem_cleanup_aliasing_ppgtt(dev);
  	drm_mm_takedown(&dev_priv->gtt.base.mm);
@@ -61,6 +59,3 @@ index 954ea301047d..b435414f85a4 100644
  	drm_irq_uninstall(dev);
  cleanup_gem_stolen:
  	i915_gem_cleanup_stolen(dev);
--- 
-1.8.5.rc3
-

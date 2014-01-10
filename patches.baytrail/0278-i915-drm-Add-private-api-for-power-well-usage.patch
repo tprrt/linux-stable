@@ -16,19 +16,17 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit a38911a3fede294e2adfd2deea8104dfbbd760c5)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c  |  6 +++
- drivers/gpu/drm/i915/i915_drv.h  | 12 ++++++
- drivers/gpu/drm/i915/intel_drv.h |  4 ++
- drivers/gpu/drm/i915/intel_pm.c  | 81 ++++++++++++++++++++++++++++++++++++----
- include/drm/i915_powerwell.h     | 36 ++++++++++++++++++
+ drivers/gpu/drm/i915/i915_dma.c  |    6 ++
+ drivers/gpu/drm/i915/i915_drv.h  |   12 +++++
+ drivers/gpu/drm/i915/intel_drv.h |    4 +
+ drivers/gpu/drm/i915/intel_pm.c  |   81 +++++++++++++++++++++++++++++++++++----
+ include/drm/i915_powerwell.h     |   36 +++++++++++++++++
  5 files changed, 132 insertions(+), 7 deletions(-)
  create mode 100644 include/drm/i915_powerwell.h
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index cd2a5f3f7db6..628f797358bb 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1634,6 +1634,9 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1642,6 +1642,9 @@ int i915_driver_load(struct drm_device *
  	/* Start out suspended */
  	dev_priv->mm.suspended = 1;
  
@@ -38,7 +36,7 @@ index cd2a5f3f7db6..628f797358bb 100644
  	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
  		ret = i915_load_modeset_init(dev);
  		if (ret < 0) {
-@@ -1685,6 +1688,9 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1693,6 +1696,9 @@ int i915_driver_unload(struct drm_device
  
  	intel_gpu_ips_teardown();
  
@@ -48,8 +46,6 @@ index cd2a5f3f7db6..628f797358bb 100644
  	i915_teardown_sysfs(dev);
  
  	if (dev_priv->mm.inactive_shrinker.shrink)
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 5297b1fe3a2c..fec0c8f56e05 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -741,6 +741,15 @@ struct intel_ilk_power_mgmt {
@@ -78,11 +74,9 @@ index 5297b1fe3a2c..fec0c8f56e05 100644
  	enum no_fbc_reason no_fbc_reason;
  
  	struct drm_mm_node *compressed_fb;
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index 915d2693e1a0..0e5897cb8d48 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -768,6 +768,10 @@ extern void intel_update_fbc(struct drm_device *dev);
+@@ -768,6 +768,10 @@ extern void intel_update_fbc(struct drm_
  extern void intel_gpu_ips_init(struct drm_i915_private *dev_priv);
  extern void intel_gpu_ips_teardown(void);
  
@@ -93,11 +87,9 @@ index 915d2693e1a0..0e5897cb8d48 100644
  extern bool intel_display_power_enabled(struct drm_device *dev,
  					enum intel_display_power_domain domain);
  extern void intel_init_power_well(struct drm_device *dev);
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index da49e46062e1..e3aa054417d6 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -5024,18 +5024,12 @@ bool intel_display_power_enabled(struct drm_device *dev,
+@@ -5024,18 +5024,12 @@ bool intel_display_power_enabled(struct
  	}
  }
  
@@ -117,7 +109,7 @@ index da49e46062e1..e3aa054417d6 100644
  	tmp = I915_READ(HSW_PWR_WELL_DRIVER);
  	is_enabled = tmp & HSW_PWR_WELL_STATE;
  	enable_requested = tmp & HSW_PWR_WELL_ENABLE;
-@@ -5058,6 +5052,79 @@ void intel_set_power_well(struct drm_device *dev, bool enable)
+@@ -5058,6 +5052,79 @@ void intel_set_power_well(struct drm_dev
  	}
  }
  
@@ -197,9 +189,6 @@ index da49e46062e1..e3aa054417d6 100644
  /*
   * Starting with Haswell, we have a "Power Down Well" that can be turned off
   * when not needed anymore. We have 4 registers that can request the power well
-diff --git a/include/drm/i915_powerwell.h b/include/drm/i915_powerwell.h
-new file mode 100644
-index 000000000000..cfdc884405b7
 --- /dev/null
 +++ b/include/drm/i915_powerwell.h
 @@ -0,0 +1,36 @@
@@ -239,6 +228,3 @@ index 000000000000..cfdc884405b7
 +extern void i915_release_power_well(void);
 +
 +#endif				/* _I915_POWERWELL_H_ */
--- 
-1.8.5.rc3
-

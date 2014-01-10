@@ -30,18 +30,16 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 853ba5d2231619e1c7f7de1269e135174ec8e3cb)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c |   4 +-
- drivers/gpu/drm/i915/i915_dma.c     |   4 +-
- drivers/gpu/drm/i915/i915_drv.h     |  57 ++++++-------
- drivers/gpu/drm/i915/i915_gem.c     |   4 +-
- drivers/gpu/drm/i915/i915_gem_gtt.c | 165 ++++++++++++++++++++----------------
+ drivers/gpu/drm/i915/i915_debugfs.c |    4 
+ drivers/gpu/drm/i915/i915_dma.c     |    4 
+ drivers/gpu/drm/i915/i915_drv.h     |   57 +++++-------
+ drivers/gpu/drm/i915/i915_gem.c     |    4 
+ drivers/gpu/drm/i915/i915_gem_gtt.c |  165 +++++++++++++++++++-----------------
  5 files changed, 123 insertions(+), 111 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index 8819f851e996..1c697c0ab7e5 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -276,8 +276,8 @@ static int i915_gem_object_info(struct seq_file *m, void *data)
+@@ -276,8 +276,8 @@ static int i915_gem_object_info(struct s
  		   count, size);
  
  	seq_printf(m, "%zu [%lu] gtt total\n",
@@ -52,11 +50,9 @@ index 8819f851e996..1c697c0ab7e5 100644
  
  	seq_putc(m, '\n');
  	list_for_each_entry_reverse(file, &dev->filelist, lhead) {
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index db56ee7f27d5..146890cacabe 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1675,7 +1675,7 @@ out_gem_unload:
+@@ -1683,7 +1683,7 @@ out_gem_unload:
  out_mtrrfree:
  	arch_phys_wc_del(dev_priv->gtt.mtrr);
  	io_mapping_free(dev_priv->gtt.mappable);
@@ -65,7 +61,7 @@ index db56ee7f27d5..146890cacabe 100644
  out_rmmap:
  	pci_iounmap(dev->pdev, dev_priv->regs);
  put_bridge:
-@@ -1770,7 +1770,7 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1778,7 +1778,7 @@ int i915_driver_unload(struct drm_device
  	destroy_workqueue(dev_priv->wq);
  	pm_qos_remove_request(&dev_priv->pm_qos);
  
@@ -74,8 +70,6 @@ index db56ee7f27d5..146890cacabe 100644
  
  	if (dev_priv->slab)
  		kmem_cache_destroy(dev_priv->slab);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index fc7b1105b47a..3ce73b4041ef 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -446,6 +446,29 @@ enum i915_cache_level {
@@ -179,11 +173,9 @@ index fc7b1105b47a..3ce73b4041ef 100644
  
  	struct i915_gem_mm mm;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index e2370a2ef1ae..cc336bc8d8fe 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -181,7 +181,7 @@ i915_gem_get_aperture_ioctl(struct drm_device *dev, void *data,
+@@ -181,7 +181,7 @@ i915_gem_get_aperture_ioctl(struct drm_d
  			pinned += i915_gem_obj_ggtt_size(obj);
  	mutex_unlock(&dev->struct_mutex);
  
@@ -192,7 +184,7 @@ index e2370a2ef1ae..cc336bc8d8fe 100644
  	args->aper_available_size = args->aper_size - pinned;
  
  	return 0;
-@@ -3065,7 +3065,7 @@ i915_gem_object_bind_to_gtt(struct drm_i915_gem_object *obj,
+@@ -3065,7 +3065,7 @@ i915_gem_object_bind_to_gtt(struct drm_i
  	u32 size, fence_size, fence_alignment, unfenced_alignment;
  	bool mappable, fenceable;
  	size_t gtt_max = map_and_fenceable ?
@@ -201,11 +193,9 @@ index e2370a2ef1ae..cc336bc8d8fe 100644
  	int ret;
  
  	fence_size = i915_gem_get_gtt_size(dev,
-diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
-index 422273328302..f982bf0de157 100644
 --- a/drivers/gpu/drm/i915/i915_gem_gtt.c
 +++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
-@@ -124,7 +124,7 @@ static gen6_gtt_pte_t iris_pte_encode(dma_addr_t addr,
+@@ -124,7 +124,7 @@ static gen6_gtt_pte_t iris_pte_encode(dm
  
  static void gen6_write_pdes(struct i915_hw_ppgtt *ppgtt)
  {
@@ -214,7 +204,7 @@ index 422273328302..f982bf0de157 100644
  	gen6_gtt_pte_t __iomem *pd_addr;
  	uint32_t pd_entry;
  	int i;
-@@ -203,18 +203,18 @@ static int gen6_ppgtt_enable(struct drm_device *dev)
+@@ -203,18 +203,18 @@ static int gen6_ppgtt_enable(struct drm_
  }
  
  /* PPGTT support for Sandybdrige/Gen6 and later */
@@ -237,7 +227,7 @@ index 422273328302..f982bf0de157 100644
  
  	while (num_entries) {
  		last_pte = first_pte + num_entries;
-@@ -234,11 +234,13 @@ static void gen6_ppgtt_clear_range(struct i915_hw_ppgtt *ppgtt,
+@@ -234,11 +234,13 @@ static void gen6_ppgtt_clear_range(struc
  	}
  }
  
@@ -252,7 +242,7 @@ index 422273328302..f982bf0de157 100644
  	gen6_gtt_pte_t *pt_vaddr;
  	unsigned act_pt = first_entry / I915_PPGTT_PT_ENTRIES;
  	unsigned act_pte = first_entry % I915_PPGTT_PT_ENTRIES;
-@@ -249,7 +251,7 @@ static void gen6_ppgtt_insert_entries(struct i915_hw_ppgtt *ppgtt,
+@@ -249,7 +251,7 @@ static void gen6_ppgtt_insert_entries(st
  		dma_addr_t page_addr;
  
  		page_addr = sg_page_iter_dma_address(&sg_iter);
@@ -261,7 +251,7 @@ index 422273328302..f982bf0de157 100644
  		if (++act_pte == I915_PPGTT_PT_ENTRIES) {
  			kunmap_atomic(pt_vaddr);
  			act_pt++;
-@@ -261,13 +263,15 @@ static void gen6_ppgtt_insert_entries(struct i915_hw_ppgtt *ppgtt,
+@@ -261,13 +263,15 @@ static void gen6_ppgtt_insert_entries(st
  	kunmap_atomic(pt_vaddr);
  }
  
@@ -279,7 +269,7 @@ index 422273328302..f982bf0de157 100644
  				       ppgtt->pt_dma_addr[i],
  				       4096, PCI_DMA_BIDIRECTIONAL);
  	}
-@@ -281,7 +285,7 @@ static void gen6_ppgtt_cleanup(struct i915_hw_ppgtt *ppgtt)
+@@ -281,7 +285,7 @@ static void gen6_ppgtt_cleanup(struct i9
  
  static int gen6_ppgtt_init(struct i915_hw_ppgtt *ppgtt)
  {
@@ -288,7 +278,7 @@ index 422273328302..f982bf0de157 100644
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	unsigned first_pd_entry_in_global_pt;
  	int i;
-@@ -293,17 +297,18 @@ static int gen6_ppgtt_init(struct i915_hw_ppgtt *ppgtt)
+@@ -293,17 +297,18 @@ static int gen6_ppgtt_init(struct i915_h
  	first_pd_entry_in_global_pt = gtt_total_entries(dev_priv->gtt);
  
  	if (IS_HASWELL(dev)) {
@@ -313,7 +303,7 @@ index 422273328302..f982bf0de157 100644
  	ppgtt->pt_pages = kzalloc(sizeof(struct page *)*ppgtt->num_pd_entries,
  				  GFP_KERNEL);
  	if (!ppgtt->pt_pages)
-@@ -334,8 +339,8 @@ static int gen6_ppgtt_init(struct i915_hw_ppgtt *ppgtt)
+@@ -334,8 +339,8 @@ static int gen6_ppgtt_init(struct i915_h
  		ppgtt->pt_dma_addr[i] = pt_addr;
  	}
  
@@ -324,7 +314,7 @@ index 422273328302..f982bf0de157 100644
  
  	ppgtt->pd_offset = first_pd_entry_in_global_pt * sizeof(gen6_gtt_pte_t);
  
-@@ -368,7 +373,7 @@ static int i915_gem_init_aliasing_ppgtt(struct drm_device *dev)
+@@ -368,7 +373,7 @@ static int i915_gem_init_aliasing_ppgtt(
  	if (!ppgtt)
  		return -ENOMEM;
  
@@ -333,7 +323,7 @@ index 422273328302..f982bf0de157 100644
  
  	if (INTEL_INFO(dev)->gen < 8)
  		ret = gen6_ppgtt_init(ppgtt);
-@@ -391,7 +396,7 @@ void i915_gem_cleanup_aliasing_ppgtt(struct drm_device *dev)
+@@ -391,7 +396,7 @@ void i915_gem_cleanup_aliasing_ppgtt(str
  	if (!ppgtt)
  		return;
  
@@ -342,7 +332,7 @@ index 422273328302..f982bf0de157 100644
  	dev_priv->mm.aliasing_ppgtt = NULL;
  }
  
-@@ -399,17 +404,17 @@ void i915_ppgtt_bind_object(struct i915_hw_ppgtt *ppgtt,
+@@ -399,17 +404,17 @@ void i915_ppgtt_bind_object(struct i915_
  			    struct drm_i915_gem_object *obj,
  			    enum i915_cache_level cache_level)
  {
@@ -366,7 +356,7 @@ index 422273328302..f982bf0de157 100644
  }
  
  extern int intel_iommu_gfx_mapped;
-@@ -456,8 +461,9 @@ void i915_gem_restore_gtt_mappings(struct drm_device *dev)
+@@ -456,8 +461,9 @@ void i915_gem_restore_gtt_mappings(struc
  	struct drm_i915_gem_object *obj;
  
  	/* First fill our portion of the GTT with scratch pages */
@@ -378,7 +368,7 @@ index 422273328302..f982bf0de157 100644
  
  	list_for_each_entry(obj, &dev_priv->mm.bound_list, global_list) {
  		i915_gem_clflush_object(obj);
-@@ -486,12 +492,12 @@ int i915_gem_gtt_prepare_object(struct drm_i915_gem_object *obj)
+@@ -486,12 +492,12 @@ int i915_gem_gtt_prepare_object(struct d
   * within the global GTT as well as accessible by the GPU through the GMADR
   * mapped BAR (dev_priv->mm.gtt->gtt).
   */
@@ -393,7 +383,7 @@ index 422273328302..f982bf0de157 100644
  	gen6_gtt_pte_t __iomem *gtt_entries =
  		(gen6_gtt_pte_t __iomem *)dev_priv->gtt.gsm + first_entry;
  	int i = 0;
-@@ -500,8 +506,7 @@ static void gen6_ggtt_insert_entries(struct drm_device *dev,
+@@ -500,8 +506,7 @@ static void gen6_ggtt_insert_entries(str
  
  	for_each_sg_page(st->sgl, &sg_iter, st->nents, 0) {
  		addr = sg_page_iter_dma_address(&sg_iter);
@@ -403,7 +393,7 @@ index 422273328302..f982bf0de157 100644
  		i++;
  	}
  
-@@ -512,8 +517,8 @@ static void gen6_ggtt_insert_entries(struct drm_device *dev,
+@@ -512,8 +517,8 @@ static void gen6_ggtt_insert_entries(str
  	 * hardware should work, we must keep this posting read for paranoia.
  	 */
  	if (i != 0)
@@ -414,7 +404,7 @@ index 422273328302..f982bf0de157 100644
  
  	/* This next bit makes the above posting read even more important. We
  	 * want to flush the TLBs only after we're certain all the PTE updates
-@@ -523,11 +528,11 @@ static void gen6_ggtt_insert_entries(struct drm_device *dev,
+@@ -523,11 +528,11 @@ static void gen6_ggtt_insert_entries(str
  	POSTING_READ(GFX_FLSH_CNTL_GEN6);
  }
  
@@ -428,7 +418,7 @@ index 422273328302..f982bf0de157 100644
  	gen6_gtt_pte_t scratch_pte, __iomem *gtt_base =
  		(gen6_gtt_pte_t __iomem *) dev_priv->gtt.gsm + first_entry;
  	const int max_entries = gtt_total_entries(dev_priv->gtt) - first_entry;
-@@ -538,15 +543,14 @@ static void gen6_ggtt_clear_range(struct drm_device *dev,
+@@ -538,15 +543,14 @@ static void gen6_ggtt_clear_range(struct
  		 first_entry, num_entries, max_entries))
  		num_entries = max_entries;
  
@@ -446,7 +436,7 @@ index 422273328302..f982bf0de157 100644
  				     struct sg_table *st,
  				     unsigned int pg_start,
  				     enum i915_cache_level cache_level)
-@@ -558,7 +562,7 @@ static void i915_ggtt_insert_entries(struct drm_device *dev,
+@@ -558,7 +562,7 @@ static void i915_ggtt_insert_entries(str
  
  }
  
@@ -455,7 +445,7 @@ index 422273328302..f982bf0de157 100644
  				  unsigned int first_entry,
  				  unsigned int num_entries)
  {
-@@ -571,10 +575,11 @@ void i915_gem_gtt_bind_object(struct drm_i915_gem_object *obj,
+@@ -571,10 +575,11 @@ void i915_gem_gtt_bind_object(struct drm
  {
  	struct drm_device *dev = obj->base.dev;
  	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -470,7 +460,7 @@ index 422273328302..f982bf0de157 100644
  
  	obj->has_global_gtt_mapping = 1;
  }
-@@ -583,10 +588,11 @@ void i915_gem_gtt_unbind_object(struct drm_i915_gem_object *obj)
+@@ -583,10 +588,11 @@ void i915_gem_gtt_unbind_object(struct d
  {
  	struct drm_device *dev = obj->base.dev;
  	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -485,7 +475,7 @@ index 422273328302..f982bf0de157 100644
  
  	obj->has_global_gtt_mapping = 0;
  }
-@@ -663,20 +669,23 @@ void i915_gem_setup_global_gtt(struct drm_device *dev,
+@@ -663,20 +669,23 @@ void i915_gem_setup_global_gtt(struct dr
  		obj->has_global_gtt_mapping = 1;
  	}
  
@@ -514,7 +504,7 @@ index 422273328302..f982bf0de157 100644
  }
  
  static bool
-@@ -699,7 +708,7 @@ void i915_gem_init_global_gtt(struct drm_device *dev)
+@@ -699,7 +708,7 @@ void i915_gem_init_global_gtt(struct drm
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	unsigned long gtt_size, mappable_size;
  
@@ -523,7 +513,7 @@ index 422273328302..f982bf0de157 100644
  	mappable_size = dev_priv->gtt.mappable_end;
  
  	if (intel_enable_ppgtt(dev) && HAS_ALIASING_PPGTT(dev)) {
-@@ -744,8 +753,8 @@ static int setup_scratch_page(struct drm_device *dev)
+@@ -744,8 +753,8 @@ static int setup_scratch_page(struct drm
  #else
  	dma_addr = page_to_phys(page);
  #endif
@@ -534,7 +524,7 @@ index 422273328302..f982bf0de157 100644
  
  	return 0;
  }
-@@ -753,11 +762,13 @@ static int setup_scratch_page(struct drm_device *dev)
+@@ -753,11 +762,13 @@ static int setup_scratch_page(struct drm
  static void teardown_scratch_page(struct drm_device *dev)
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -552,7 +542,7 @@ index 422273328302..f982bf0de157 100644
  }
  
  static inline unsigned int gen6_get_total_gtt_size(u16 snb_gmch_ctl)
-@@ -820,17 +831,18 @@ static int gen6_gmch_probe(struct drm_device *dev,
+@@ -820,17 +831,18 @@ static int gen6_gmch_probe(struct drm_de
  	if (ret)
  		DRM_ERROR("Scratch setup failed\n");
  
@@ -577,7 +567,7 @@ index 422273328302..f982bf0de157 100644
  }
  
  static int i915_gmch_probe(struct drm_device *dev,
-@@ -851,13 +863,13 @@ static int i915_gmch_probe(struct drm_device *dev,
+@@ -851,13 +863,13 @@ static int i915_gmch_probe(struct drm_de
  	intel_gtt_get(gtt_total, stolen, mappable_base, mappable_end);
  
  	dev_priv->gtt.do_idle_maps = needs_idle_maps(dev_priv->dev);
@@ -594,7 +584,7 @@ index 422273328302..f982bf0de157 100644
  {
  	intel_gmch_remove();
  }
-@@ -870,27 +882,30 @@ int i915_gem_gtt_init(struct drm_device *dev)
+@@ -870,27 +882,30 @@ int i915_gem_gtt_init(struct drm_device
  
  	if (INTEL_INFO(dev)->gen <= 5) {
  		gtt->gtt_probe = i915_gmch_probe;
@@ -633,6 +623,3 @@ index 422273328302..f982bf0de157 100644
  	DRM_DEBUG_DRIVER("GMADR size = %ldM\n", gtt->mappable_end >> 20);
  	DRM_DEBUG_DRIVER("GTT stolen size = %zdM\n", gtt->stolen_size >> 20);
  
--- 
-1.8.5.rc3
-

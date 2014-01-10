@@ -18,15 +18,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit a7bbbd63e79a89b3e7b77eb734f2773ad69a2a43)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 6 ++++++
- drivers/gpu/drm/i915/i915_drv.h | 2 ++
+ drivers/gpu/drm/i915/i915_dma.c |    6 ++++++
+ drivers/gpu/drm/i915/i915_drv.h |    2 ++
  2 files changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index c6d3105516ca..3bbf8ef0f984 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1500,6 +1500,10 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1508,6 +1508,10 @@ int i915_driver_load(struct drm_device *
  
  	i915_dump_device_info(dev_priv);
  
@@ -37,7 +35,7 @@ index c6d3105516ca..3bbf8ef0f984 100644
  	if (i915_get_bridge_dev(dev)) {
  		ret = -EIO;
  		goto free_priv;
-@@ -1760,6 +1764,8 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1768,6 +1772,8 @@ int i915_driver_unload(struct drm_device
  			i915_free_hws(dev);
  	}
  
@@ -46,8 +44,6 @@ index c6d3105516ca..3bbf8ef0f984 100644
  	drm_mm_takedown(&dev_priv->gtt.base.mm);
  	if (dev_priv->regs != NULL)
  		pci_iounmap(dev->pdev, dev_priv->regs);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index a6497f520578..bcfcc1086d5b 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -449,6 +449,7 @@ typedef uint32_t gen6_gtt_pte_t;
@@ -66,6 +62,3 @@ index a6497f520578..bcfcc1086d5b 100644
  	struct i915_gtt gtt; /* VMA representing the global address space */
  
  	struct i915_gem_mm mm;
--- 
-1.8.5.rc3
-

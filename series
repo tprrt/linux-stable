@@ -61,7 +61,6 @@ patches.renesas/0010-drivers-irq-chip-irq-gic-introduce-gic_cpu_if_down.patch
 patches.renesas/0011-irqchip-renesas-intc-irqpin-DT-binding-for-sense-bit.patch
 patches.renesas/0012-ARM-shmobile-irqpin-add-a-DT-property-to-enable-mask.patch
 patches.renesas/0013-irqchip-renesas-irqc-Fix-irqc_probe-error-handling.patch
-patches.renesas/0014-clocksource-arch_timer-use-virtual-counters.patch
 patches.renesas/0015-clocksource-arch_timer-Make-register-accessors-less-.patch
 patches.renesas/0016-clocksource-arch_timer-Push-the-read-write-wrappers-.patch
 patches.renesas/0017-clocksource-em_sti-Convert-to-devm_-managed-helpers.patch

@@ -19,14 +19,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 186507e9e8e89d5920305fdffd8cbba6366da795)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_gem_context.c | 2 ++
+ drivers/gpu/drm/i915/i915_gem_context.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 0407e0a39987..604ecd3e3a7f 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -463,6 +463,8 @@ int i915_switch_context(struct intel_ring_buffer *ring,
+@@ -461,6 +461,8 @@ int i915_switch_context(struct intel_rin
  	if (dev_priv->hw_contexts_disabled)
  		return 0;
  
@@ -35,6 +33,3 @@ index 0407e0a39987..604ecd3e3a7f 100644
  	if (ring != &dev_priv->ring[RCS])
  		return 0;
  
--- 
-1.8.5.rc3
-

@@ -30,18 +30,16 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 651d794fae9b79237aae1c97f8a9d9f3817bd31d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c     |  3 +++
- drivers/gpu/drm/i915/i915_drv.h     |  4 +++-
- drivers/gpu/drm/i915/i915_gem.c     | 14 ++++++++++++--
- drivers/gpu/drm/i915/i915_gem_gtt.c | 11 ++++++++++-
- include/uapi/drm/i915_drm.h         |  1 +
+ drivers/gpu/drm/i915/i915_dma.c     |    3 +++
+ drivers/gpu/drm/i915/i915_drv.h     |    4 +++-
+ drivers/gpu/drm/i915/i915_gem.c     |   14 ++++++++++++--
+ drivers/gpu/drm/i915/i915_gem_gtt.c |   11 ++++++++++-
+ include/uapi/drm/i915_drm.h         |    1 +
  5 files changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 0adfe4000871..45c262b9cb40 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -976,6 +976,9 @@ static int i915_getparam(struct drm_device *dev, void *data,
+@@ -984,6 +984,9 @@ static int i915_getparam(struct drm_devi
  	case I915_PARAM_HAS_LLC:
  		value = HAS_LLC(dev);
  		break;
@@ -51,8 +49,6 @@ index 0adfe4000871..45c262b9cb40 100644
  	case I915_PARAM_HAS_ALIASING_PPGTT:
  		value = dev_priv->mm.aliasing_ppgtt ? 1 : 0;
  		break;
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index cccd6084b236..dcae809eafe8 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -454,6 +454,7 @@ enum i915_cache_level {
@@ -80,11 +76,9 @@ index cccd6084b236..dcae809eafe8 100644
  #define I915_NEED_GFX_HWS(dev)	(INTEL_INFO(dev)->need_gfx_hws)
  
  #define HAS_HW_CONTEXTS(dev)	(INTEL_INFO(dev)->gen >= 6)
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 66136cd88ed5..8e41b2c6eb1d 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -3459,7 +3459,16 @@ int i915_gem_get_caching_ioctl(struct drm_device *dev, void *data,
+@@ -3459,7 +3459,16 @@ int i915_gem_get_caching_ioctl(struct dr
  		goto unlock;
  	}
  
@@ -102,7 +96,7 @@ index 66136cd88ed5..8e41b2c6eb1d 100644
  
  	drm_gem_object_unreference(&obj->base);
  unlock:
-@@ -3553,7 +3562,8 @@ i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
+@@ -3553,7 +3562,8 @@ i915_gem_object_pin_to_display_plane(str
  	 * of uncaching, which would allow us to flush all the LLC-cached data
  	 * with that bit in the PTE to main memory with just one PIPE_CONTROL.
  	 */
@@ -112,8 +106,6 @@ index 66136cd88ed5..8e41b2c6eb1d 100644
  	if (ret)
  		goto err_unpin_display;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
-index c9420c280cf0..212f6d8c35ec 100644
 --- a/drivers/gpu/drm/i915/i915_gem_gtt.c
 +++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
 @@ -55,6 +55,7 @@
@@ -124,7 +116,7 @@ index c9420c280cf0..212f6d8c35ec 100644
  
  static gen6_gtt_pte_t snb_pte_encode(dma_addr_t addr,
  				     enum i915_cache_level level)
-@@ -138,8 +139,16 @@ static gen6_gtt_pte_t iris_pte_encode(dma_addr_t addr,
+@@ -138,8 +139,16 @@ static gen6_gtt_pte_t iris_pte_encode(dm
  	gen6_gtt_pte_t pte = GEN6_PTE_VALID;
  	pte |= HSW_PTE_ADDR_ENCODE(addr);
  
@@ -142,8 +134,6 @@ index c9420c280cf0..212f6d8c35ec 100644
  
  	return pte;
  }
-diff --git a/include/uapi/drm/i915_drm.h b/include/uapi/drm/i915_drm.h
-index 0bb3e5524382..55bb5729bd78 100644
 --- a/include/uapi/drm/i915_drm.h
 +++ b/include/uapi/drm/i915_drm.h
 @@ -334,6 +334,7 @@ typedef struct drm_i915_irq_wait {
@@ -154,6 +144,3 @@ index 0bb3e5524382..55bb5729bd78 100644
  
  typedef struct drm_i915_getparam {
  	int param;
--- 
-1.8.5.rc3
-

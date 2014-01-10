@@ -51,14 +51,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit ce352550327b394f3072a07c9cd9d27af9276f15)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 8 +++++++-
+ drivers/gpu/drm/i915/i915_dma.c |    8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index b387c6b2af75..954ea301047d 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1326,13 +1326,18 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1334,13 +1334,18 @@ static int i915_load_modeset_init(struct
  
  	intel_init_power_well(dev);
  
@@ -78,7 +76,7 @@ index b387c6b2af75..954ea301047d 100644
  
  	ret = intel_fbdev_init(dev);
  	if (ret)
-@@ -1358,6 +1363,7 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1366,6 +1371,7 @@ static int i915_load_modeset_init(struct
  	 * vgacon_save_screen() works during the handover.
  	 */
  	i915_disable_vga_mem(dev);
@@ -86,6 +84,3 @@ index b387c6b2af75..954ea301047d 100644
  
  	/* Only enable hotplug handling once the fbdev is fully set up. */
  	dev_priv->enable_hotplug_processing = true;
--- 
-1.8.5.rc3
-

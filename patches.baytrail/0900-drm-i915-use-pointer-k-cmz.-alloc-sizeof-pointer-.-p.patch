@@ -14,29 +14,27 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit b14c5679dd2c87b5bd14c49c5bdd1962be2ab209)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c  |  2 +-
- drivers/gpu/drm/i915/i915_dma.c      |  6 +++---
- drivers/gpu/drm/i915/i915_gem.c      |  2 +-
- drivers/gpu/drm/i915/intel_crt.c     |  2 +-
- drivers/gpu/drm/i915/intel_ddi.c     |  6 +++---
- drivers/gpu/drm/i915/intel_display.c |  2 +-
- drivers/gpu/drm/i915/intel_dp.c      |  4 ++--
- drivers/gpu/drm/i915/intel_dvo.c     |  4 ++--
- drivers/gpu/drm/i915/intel_fb.c      |  2 +-
- drivers/gpu/drm/i915/intel_hdmi.c    |  4 ++--
- drivers/gpu/drm/i915/intel_lvds.c    |  4 ++--
- drivers/gpu/drm/i915/intel_overlay.c |  4 ++--
- drivers/gpu/drm/i915/intel_pm.c      |  2 +-
- drivers/gpu/drm/i915/intel_sdvo.c    | 10 +++++-----
- drivers/gpu/drm/i915/intel_sprite.c  |  2 +-
- drivers/gpu/drm/i915/intel_tv.c      |  4 ++--
+ drivers/gpu/drm/i915/i915_debugfs.c  |    2 +-
+ drivers/gpu/drm/i915/i915_dma.c      |    6 +++---
+ drivers/gpu/drm/i915/i915_gem.c      |    2 +-
+ drivers/gpu/drm/i915/intel_crt.c     |    2 +-
+ drivers/gpu/drm/i915/intel_ddi.c     |    6 +++---
+ drivers/gpu/drm/i915/intel_display.c |    2 +-
+ drivers/gpu/drm/i915/intel_dp.c      |    4 ++--
+ drivers/gpu/drm/i915/intel_dvo.c     |    4 ++--
+ drivers/gpu/drm/i915/intel_fb.c      |    2 +-
+ drivers/gpu/drm/i915/intel_hdmi.c    |    4 ++--
+ drivers/gpu/drm/i915/intel_lvds.c    |    4 ++--
+ drivers/gpu/drm/i915/intel_overlay.c |    4 ++--
+ drivers/gpu/drm/i915/intel_pm.c      |    2 +-
+ drivers/gpu/drm/i915/intel_sdvo.c    |   10 +++++-----
+ drivers/gpu/drm/i915/intel_sprite.c  |    2 +-
+ drivers/gpu/drm/i915/intel_tv.c      |    4 ++--
  16 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index 80bed69fe5b7..09c93d7989f1 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -2156,7 +2156,7 @@ drm_add_fake_info_node(struct drm_minor *minor,
+@@ -2156,7 +2156,7 @@ drm_add_fake_info_node(struct drm_minor
  {
  	struct drm_info_node *node;
  
@@ -45,11 +43,9 @@ index 80bed69fe5b7..09c93d7989f1 100644
  	if (node == NULL) {
  		debugfs_remove(ent);
  		return -ENOMEM;
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 553586eae991..b387c6b2af75 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -641,7 +641,7 @@ static int i915_batchbuffer(struct drm_device *dev, void *data,
+@@ -649,7 +649,7 @@ static int i915_batchbuffer(struct drm_d
  
  	if (batch->num_cliprects) {
  		cliprects = kcalloc(batch->num_cliprects,
@@ -58,7 +54,7 @@ index 553586eae991..b387c6b2af75 100644
  				    GFP_KERNEL);
  		if (cliprects == NULL)
  			return -ENOMEM;
-@@ -703,7 +703,7 @@ static int i915_cmdbuffer(struct drm_device *dev, void *data,
+@@ -711,7 +711,7 @@ static int i915_cmdbuffer(struct drm_dev
  
  	if (cmdbuf->num_cliprects) {
  		cliprects = kcalloc(cmdbuf->num_cliprects,
@@ -67,7 +63,7 @@ index 553586eae991..b387c6b2af75 100644
  		if (cliprects == NULL) {
  			ret = -ENOMEM;
  			goto fail_batch_free;
-@@ -1480,7 +1480,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1488,7 +1488,7 @@ int i915_driver_load(struct drm_device *
  	dev->types[8] = _DRM_STAT_SECONDARY;
  	dev->types[9] = _DRM_STAT_DMA;
  
@@ -76,11 +72,9 @@ index 553586eae991..b387c6b2af75 100644
  	if (dev_priv == NULL)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index c12f44abb69a..08bff16a0b72 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -4630,7 +4630,7 @@ static int i915_gem_init_phys_object(struct drm_device *dev,
+@@ -4630,7 +4630,7 @@ static int i915_gem_init_phys_object(str
  	if (dev_priv->mm.phys_objs[id - 1] || !size)
  		return 0;
  
@@ -89,11 +83,9 @@ index c12f44abb69a..08bff16a0b72 100644
  	if (!phys_obj)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/intel_crt.c b/drivers/gpu/drm/i915/intel_crt.c
-index 6f101d5620e4..f9a5f3d1f0cd 100644
 --- a/drivers/gpu/drm/i915/intel_crt.c
 +++ b/drivers/gpu/drm/i915/intel_crt.c
-@@ -764,7 +764,7 @@ void intel_crt_init(struct drm_device *dev)
+@@ -764,7 +764,7 @@ void intel_crt_init(struct drm_device *d
  	if (!crt)
  		return;
  
@@ -102,11 +94,9 @@ index 6f101d5620e4..f9a5f3d1f0cd 100644
  	if (!intel_connector) {
  		kfree(crt);
  		return;
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 04f68804834d..351e21a0be07 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1337,11 +1337,11 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1337,11 +1337,11 @@ void intel_ddi_init(struct drm_device *d
  	struct intel_connector *hdmi_connector = NULL;
  	struct intel_connector *dp_connector = NULL;
  
@@ -120,7 +110,7 @@ index 04f68804834d..351e21a0be07 100644
  	if (!dp_connector) {
  		kfree(intel_dig_port);
  		return;
-@@ -1381,7 +1381,7 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1381,7 +1381,7 @@ void intel_ddi_init(struct drm_device *d
  	}
  
  	if (intel_encoder->type != INTEL_OUTPUT_EDP) {
@@ -129,11 +119,9 @@ index 04f68804834d..351e21a0be07 100644
  					 GFP_KERNEL);
  		if (!hdmi_connector) {
  			return;
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 12595a514074..f0b18c342dee 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -8097,7 +8097,7 @@ static int intel_crtc_page_flip(struct drm_crtc *crtc,
+@@ -8097,7 +8097,7 @@ static int intel_crtc_page_flip(struct d
  	     fb->pitches[0] != crtc->fb->pitches[0]))
  		return -EINVAL;
  
@@ -142,11 +130,9 @@ index 12595a514074..f0b18c342dee 100644
  	if (work == NULL)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index 605908df95d8..2f3d67f12a88 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -3633,11 +3633,11 @@ intel_dp_init(struct drm_device *dev, int output_reg, enum port port)
+@@ -3633,11 +3633,11 @@ intel_dp_init(struct drm_device *dev, in
  	struct drm_encoder *encoder;
  	struct intel_connector *intel_connector;
  
@@ -160,11 +146,9 @@ index 605908df95d8..2f3d67f12a88 100644
  	if (!intel_connector) {
  		kfree(intel_dig_port);
  		return;
-diff --git a/drivers/gpu/drm/i915/intel_dvo.c b/drivers/gpu/drm/i915/intel_dvo.c
-index ff86c366218c..6305433797ac 100644
 --- a/drivers/gpu/drm/i915/intel_dvo.c
 +++ b/drivers/gpu/drm/i915/intel_dvo.c
-@@ -448,11 +448,11 @@ void intel_dvo_init(struct drm_device *dev)
+@@ -448,11 +448,11 @@ void intel_dvo_init(struct drm_device *d
  	int i;
  	int encoder_type = DRM_MODE_ENCODER_NONE;
  
@@ -178,11 +162,9 @@ index ff86c366218c..6305433797ac 100644
  	if (!intel_connector) {
  		kfree(intel_dvo);
  		return;
-diff --git a/drivers/gpu/drm/i915/intel_fb.c b/drivers/gpu/drm/i915/intel_fb.c
-index bc2100007b21..6aa66aaceaef 100644
 --- a/drivers/gpu/drm/i915/intel_fb.c
 +++ b/drivers/gpu/drm/i915/intel_fb.c
-@@ -216,7 +216,7 @@ int intel_fbdev_init(struct drm_device *dev)
+@@ -216,7 +216,7 @@ int intel_fbdev_init(struct drm_device *
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	int ret;
  
@@ -191,11 +173,9 @@ index bc2100007b21..6aa66aaceaef 100644
  	if (!ifbdev)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/intel_hdmi.c b/drivers/gpu/drm/i915/intel_hdmi.c
-index 79582f912414..a6310ca444cf 100644
 --- a/drivers/gpu/drm/i915/intel_hdmi.c
 +++ b/drivers/gpu/drm/i915/intel_hdmi.c
-@@ -1292,11 +1292,11 @@ void intel_hdmi_init(struct drm_device *dev, int hdmi_reg, enum port port)
+@@ -1292,11 +1292,11 @@ void intel_hdmi_init(struct drm_device *
  	struct intel_encoder *intel_encoder;
  	struct intel_connector *intel_connector;
  
@@ -209,11 +189,9 @@ index 79582f912414..a6310ca444cf 100644
  	if (!intel_connector) {
  		kfree(intel_dig_port);
  		return;
-diff --git a/drivers/gpu/drm/i915/intel_lvds.c b/drivers/gpu/drm/i915/intel_lvds.c
-index 1ba9998add08..87d5a769b3ae 100644
 --- a/drivers/gpu/drm/i915/intel_lvds.c
 +++ b/drivers/gpu/drm/i915/intel_lvds.c
-@@ -964,11 +964,11 @@ void intel_lvds_init(struct drm_device *dev)
+@@ -964,11 +964,11 @@ void intel_lvds_init(struct drm_device *
  		}
  	}
  
@@ -227,11 +205,9 @@ index 1ba9998add08..87d5a769b3ae 100644
  	if (!lvds_connector) {
  		kfree(lvds_encoder);
  		return;
-diff --git a/drivers/gpu/drm/i915/intel_overlay.c b/drivers/gpu/drm/i915/intel_overlay.c
-index 8d6d0a1bf5bf..a98a990fbab3 100644
 --- a/drivers/gpu/drm/i915/intel_overlay.c
 +++ b/drivers/gpu/drm/i915/intel_overlay.c
-@@ -1053,7 +1053,7 @@ int intel_overlay_put_image(struct drm_device *dev, void *data,
+@@ -1053,7 +1053,7 @@ int intel_overlay_put_image(struct drm_d
  		return ret;
  	}
  
@@ -240,7 +216,7 @@ index 8d6d0a1bf5bf..a98a990fbab3 100644
  	if (!params)
  		return -ENOMEM;
  
-@@ -1320,7 +1320,7 @@ void intel_setup_overlay(struct drm_device *dev)
+@@ -1320,7 +1320,7 @@ void intel_setup_overlay(struct drm_devi
  	if (!HAS_OVERLAY(dev))
  		return;
  
@@ -249,11 +225,9 @@ index 8d6d0a1bf5bf..a98a990fbab3 100644
  	if (!overlay)
  		return;
  
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index 4692f8cb7724..d27eda661548 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -370,7 +370,7 @@ static void intel_enable_fbc(struct drm_crtc *crtc, unsigned long interval)
+@@ -370,7 +370,7 @@ static void intel_enable_fbc(struct drm_
  
  	intel_cancel_fbc_work(dev_priv);
  
@@ -262,11 +236,9 @@ index 4692f8cb7724..d27eda661548 100644
  	if (work == NULL) {
  		DRM_ERROR("Failed to allocate FBC work structure\n");
  		dev_priv->display.enable_fbc(crtc, interval);
-diff --git a/drivers/gpu/drm/i915/intel_sdvo.c b/drivers/gpu/drm/i915/intel_sdvo.c
-index 91aea9e1ab6f..d8040e8a68b5 100644
 --- a/drivers/gpu/drm/i915/intel_sdvo.c
 +++ b/drivers/gpu/drm/i915/intel_sdvo.c
-@@ -2397,7 +2397,7 @@ intel_sdvo_dvi_init(struct intel_sdvo *intel_sdvo, int device)
+@@ -2397,7 +2397,7 @@ intel_sdvo_dvi_init(struct intel_sdvo *i
  	struct intel_connector *intel_connector;
  	struct intel_sdvo_connector *intel_sdvo_connector;
  
@@ -275,7 +247,7 @@ index 91aea9e1ab6f..d8040e8a68b5 100644
  	if (!intel_sdvo_connector)
  		return false;
  
-@@ -2445,7 +2445,7 @@ intel_sdvo_tv_init(struct intel_sdvo *intel_sdvo, int type)
+@@ -2445,7 +2445,7 @@ intel_sdvo_tv_init(struct intel_sdvo *in
  	struct intel_connector *intel_connector;
  	struct intel_sdvo_connector *intel_sdvo_connector;
  
@@ -284,7 +256,7 @@ index 91aea9e1ab6f..d8040e8a68b5 100644
  	if (!intel_sdvo_connector)
  		return false;
  
-@@ -2482,7 +2482,7 @@ intel_sdvo_analog_init(struct intel_sdvo *intel_sdvo, int device)
+@@ -2482,7 +2482,7 @@ intel_sdvo_analog_init(struct intel_sdvo
  	struct intel_connector *intel_connector;
  	struct intel_sdvo_connector *intel_sdvo_connector;
  
@@ -293,7 +265,7 @@ index 91aea9e1ab6f..d8040e8a68b5 100644
  	if (!intel_sdvo_connector)
  		return false;
  
-@@ -2513,7 +2513,7 @@ intel_sdvo_lvds_init(struct intel_sdvo *intel_sdvo, int device)
+@@ -2513,7 +2513,7 @@ intel_sdvo_lvds_init(struct intel_sdvo *
  	struct intel_connector *intel_connector;
  	struct intel_sdvo_connector *intel_sdvo_connector;
  
@@ -302,7 +274,7 @@ index 91aea9e1ab6f..d8040e8a68b5 100644
  	if (!intel_sdvo_connector)
  		return false;
  
-@@ -2879,7 +2879,7 @@ bool intel_sdvo_init(struct drm_device *dev, uint32_t sdvo_reg, bool is_sdvob)
+@@ -2879,7 +2879,7 @@ bool intel_sdvo_init(struct drm_device *
  	struct intel_encoder *intel_encoder;
  	struct intel_sdvo *intel_sdvo;
  	int i;
@@ -311,11 +283,9 @@ index 91aea9e1ab6f..d8040e8a68b5 100644
  	if (!intel_sdvo)
  		return false;
  
-diff --git a/drivers/gpu/drm/i915/intel_sprite.c b/drivers/gpu/drm/i915/intel_sprite.c
-index 231b289e8e57..cae10bc746d0 100644
 --- a/drivers/gpu/drm/i915/intel_sprite.c
 +++ b/drivers/gpu/drm/i915/intel_sprite.c
-@@ -1034,7 +1034,7 @@ intel_plane_init(struct drm_device *dev, enum pipe pipe, int plane)
+@@ -1034,7 +1034,7 @@ intel_plane_init(struct drm_device *dev,
  	if (INTEL_INFO(dev)->gen < 5)
  		return -ENODEV;
  
@@ -324,8 +294,6 @@ index 231b289e8e57..cae10bc746d0 100644
  	if (!intel_plane)
  		return -ENOMEM;
  
-diff --git a/drivers/gpu/drm/i915/intel_tv.c b/drivers/gpu/drm/i915/intel_tv.c
-index dd6f84bf6c22..e6e93ce34f7b 100644
 --- a/drivers/gpu/drm/i915/intel_tv.c
 +++ b/drivers/gpu/drm/i915/intel_tv.c
 @@ -1590,12 +1590,12 @@ intel_tv_init(struct drm_device *dev)
@@ -343,6 +311,3 @@ index dd6f84bf6c22..e6e93ce34f7b 100644
  	if (!intel_connector) {
  		kfree(intel_tv);
  		return;
--- 
-1.8.5.rc3
-

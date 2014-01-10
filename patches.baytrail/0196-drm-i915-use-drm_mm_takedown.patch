@@ -11,14 +11,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit dd62eabd1d54336a2d5d3758ab4393cd13254102)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 2 ++
+ drivers/gpu/drm/i915/i915_dma.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 09233f9c5640..d9ee7e82a4a1 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1360,6 +1360,7 @@ cleanup_gem:
+@@ -1368,6 +1368,7 @@ cleanup_gem:
  	i915_gem_cleanup_ringbuffer(dev);
  	mutex_unlock(&dev->struct_mutex);
  	i915_gem_cleanup_aliasing_ppgtt(dev);
@@ -26,7 +24,7 @@ index 09233f9c5640..d9ee7e82a4a1 100644
  cleanup_irq:
  	drm_irq_uninstall(dev);
  cleanup_gem_stolen:
-@@ -1746,6 +1747,7 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1754,6 +1755,7 @@ int i915_driver_unload(struct drm_device
  			i915_free_hws(dev);
  	}
  
@@ -34,6 +32,3 @@ index 09233f9c5640..d9ee7e82a4a1 100644
  	if (dev_priv->regs != NULL)
  		pci_iounmap(dev->pdev, dev_priv->regs);
  
--- 
-1.8.5.rc3
-

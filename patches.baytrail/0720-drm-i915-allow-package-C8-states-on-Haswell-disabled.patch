@@ -44,23 +44,21 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c67a470b1db781c54be07a87217cff35a91f564e)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c      |  10 +++
- drivers/gpu/drm/i915/i915_drv.c      |  11 +++
- drivers/gpu/drm/i915/i915_drv.h      |  72 +++++++++++++++
- drivers/gpu/drm/i915/i915_gem.c      |   2 +
- drivers/gpu/drm/i915/i915_irq.c      | 101 +++++++++++++++++++++
- drivers/gpu/drm/i915/intel_display.c | 170 ++++++++++++++++++++++++++++++++++-
- drivers/gpu/drm/i915/intel_dp.c      |   3 +
- drivers/gpu/drm/i915/intel_drv.h     |   8 ++
- drivers/gpu/drm/i915/intel_i2c.c     |   2 +
- drivers/gpu/drm/i915/intel_pm.c      |  13 ++-
+ drivers/gpu/drm/i915/i915_dma.c      |   10 ++
+ drivers/gpu/drm/i915/i915_drv.c      |   11 ++
+ drivers/gpu/drm/i915/i915_drv.h      |   72 ++++++++++++++
+ drivers/gpu/drm/i915/i915_gem.c      |    2 
+ drivers/gpu/drm/i915/i915_irq.c      |  101 ++++++++++++++++++++
+ drivers/gpu/drm/i915/intel_display.c |  170 ++++++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/i915/intel_dp.c      |    3 
+ drivers/gpu/drm/i915/intel_drv.h     |    8 +
+ drivers/gpu/drm/i915/intel_i2c.c     |    2 
+ drivers/gpu/drm/i915/intel_pm.c      |   13 ++
  10 files changed, 390 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index d2dc02b67512..4c7669f3f586 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1486,6 +1486,14 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1494,6 +1494,14 @@ int i915_driver_load(struct drm_device *
  	mutex_init(&dev_priv->rps.hw_lock);
  	mutex_init(&dev_priv->modeset_restore_lock);
  
@@ -75,7 +73,7 @@ index d2dc02b67512..4c7669f3f586 100644
  	i915_dump_device_info(dev_priv);
  
  	/* Not all pre-production machines fall into this category, only the
-@@ -1740,6 +1748,8 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1748,6 +1756,8 @@ int i915_driver_unload(struct drm_device
  	cancel_work_sync(&dev_priv->gpu_error.work);
  	i915_destroy_error_state(dev);
  
@@ -84,11 +82,9 @@ index d2dc02b67512..4c7669f3f586 100644
  	if (dev->pdev->msi_enabled)
  		pci_disable_msi(dev->pdev);
  
-diff --git a/drivers/gpu/drm/i915/i915_drv.c b/drivers/gpu/drm/i915/i915_drv.c
-index a9c8f18e26fc..f19736208214 100644
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -141,6 +141,10 @@ module_param_named(fastboot, i915_fastboot, bool, 0600);
+@@ -141,6 +141,10 @@ module_param_named(fastboot, i915_fastbo
  MODULE_PARM_DESC(fastboot, "Try to skip unnecessary mode sets at boot time "
  		 "(default: false)");
  
@@ -99,7 +95,7 @@ index a9c8f18e26fc..f19736208214 100644
  bool i915_prefault_disable __read_mostly;
  module_param_named(prefault_disable, i915_prefault_disable, bool, 0600);
  MODULE_PARM_DESC(prefault_disable,
-@@ -557,6 +561,9 @@ static int i915_drm_freeze(struct drm_device *dev)
+@@ -557,6 +561,9 @@ static int i915_drm_freeze(struct drm_de
  	dev_priv->modeset_restore = MODESET_SUSPENDED;
  	mutex_unlock(&dev_priv->modeset_restore_lock);
  
@@ -109,7 +105,7 @@ index a9c8f18e26fc..f19736208214 100644
  	intel_set_power_well(dev, true);
  
  	drm_kms_helper_poll_disable(dev);
-@@ -713,6 +720,10 @@ static int __i915_drm_thaw(struct drm_device *dev)
+@@ -713,6 +720,10 @@ static int __i915_drm_thaw(struct drm_de
  		schedule_work(&dev_priv->console_resume_work);
  	}
  
@@ -120,8 +116,6 @@ index a9c8f18e26fc..f19736208214 100644
  	mutex_lock(&dev_priv->modeset_restore_lock);
  	dev_priv->modeset_restore = MODESET_DONE;
  	mutex_unlock(&dev_priv->modeset_restore_lock);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 5cc71ac04beb..85a352860a83 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -1076,6 +1076,75 @@ struct intel_wm_level {
@@ -209,7 +203,7 @@ index 5cc71ac04beb..85a352860a83 100644
  	/* Old dri1 support infrastructure, beware the dragons ya fools entering
  	 * here! */
  	struct i915_dri1_state dri1;
-@@ -1635,6 +1706,7 @@ extern unsigned int i915_preliminary_hw_support __read_mostly;
+@@ -1635,6 +1706,7 @@ extern unsigned int i915_preliminary_hw_
  extern int i915_disable_power_well __read_mostly;
  extern int i915_enable_ips __read_mostly;
  extern bool i915_fastboot __read_mostly;
@@ -217,11 +211,9 @@ index 5cc71ac04beb..85a352860a83 100644
  extern bool i915_prefault_disable __read_mostly;
  
  extern int i915_suspend(struct drm_device *dev, pm_message_t state);
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 199107e734fb..2d1cb10d846f 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -999,6 +999,8 @@ static int __wait_seqno(struct intel_ring_buffer *ring, u32 seqno,
+@@ -999,6 +999,8 @@ static int __wait_seqno(struct intel_rin
  	bool wait_forever = true;
  	int ret;
  
@@ -230,11 +222,9 @@ index 199107e734fb..2d1cb10d846f 100644
  	if (i915_seqno_passed(ring->get_seqno(ring, true), seqno))
  		return 0;
  
-diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
-index 9e2ea5b16233..0eac036fb833 100644
 --- a/drivers/gpu/drm/i915/i915_irq.c
 +++ b/drivers/gpu/drm/i915/i915_irq.c
-@@ -85,6 +85,12 @@ ironlake_enable_display_irq(drm_i915_private_t *dev_priv, u32 mask)
+@@ -85,6 +85,12 @@ ironlake_enable_display_irq(drm_i915_pri
  {
  	assert_spin_locked(&dev_priv->irq_lock);
  
@@ -247,7 +237,7 @@ index 9e2ea5b16233..0eac036fb833 100644
  	if ((dev_priv->irq_mask & mask) != 0) {
  		dev_priv->irq_mask &= ~mask;
  		I915_WRITE(DEIMR, dev_priv->irq_mask);
-@@ -97,6 +103,12 @@ ironlake_disable_display_irq(drm_i915_private_t *dev_priv, u32 mask)
+@@ -97,6 +103,12 @@ ironlake_disable_display_irq(drm_i915_pr
  {
  	assert_spin_locked(&dev_priv->irq_lock);
  
@@ -260,7 +250,7 @@ index 9e2ea5b16233..0eac036fb833 100644
  	if ((dev_priv->irq_mask & mask) != mask) {
  		dev_priv->irq_mask |= mask;
  		I915_WRITE(DEIMR, dev_priv->irq_mask);
-@@ -116,6 +128,14 @@ static void ilk_update_gt_irq(struct drm_i915_private *dev_priv,
+@@ -116,6 +128,14 @@ static void ilk_update_gt_irq(struct drm
  {
  	assert_spin_locked(&dev_priv->irq_lock);
  
@@ -275,7 +265,7 @@ index 9e2ea5b16233..0eac036fb833 100644
  	dev_priv->gt_irq_mask &= ~interrupt_mask;
  	dev_priv->gt_irq_mask |= (~enabled_irq_mask & interrupt_mask);
  	I915_WRITE(GTIMR, dev_priv->gt_irq_mask);
-@@ -146,6 +166,14 @@ static void snb_update_pm_irq(struct drm_i915_private *dev_priv,
+@@ -146,6 +166,14 @@ static void snb_update_pm_irq(struct drm
  
  	assert_spin_locked(&dev_priv->irq_lock);
  
@@ -290,7 +280,7 @@ index 9e2ea5b16233..0eac036fb833 100644
  	new_val = dev_priv->pm_irq_mask;
  	new_val &= ~interrupt_mask;
  	new_val |= (~enabled_irq_mask & interrupt_mask);
-@@ -257,6 +285,15 @@ static void ibx_display_interrupt_update(struct drm_i915_private *dev_priv,
+@@ -257,6 +285,15 @@ static void ibx_display_interrupt_update
  
  	assert_spin_locked(&dev_priv->irq_lock);
  
@@ -306,7 +296,7 @@ index 9e2ea5b16233..0eac036fb833 100644
  	I915_WRITE(SDEIMR, sdeimr);
  	POSTING_READ(SDEIMR);
  }
-@@ -3159,3 +3196,67 @@ void intel_hpd_init(struct drm_device *dev)
+@@ -3159,3 +3196,67 @@ void intel_hpd_init(struct drm_device *d
  		dev_priv->display.hpd_irq_setup(dev);
  	spin_unlock_irqrestore(&dev_priv->irq_lock, irqflags);
  }
@@ -374,11 +364,9 @@ index 9e2ea5b16233..0eac036fb833 100644
 +
 +	spin_unlock_irqrestore(&dev_priv->irq_lock, irqflags);
 +}
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 29e43b2cf908..6cf35357afad 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -6064,6 +6064,166 @@ void hsw_restore_lcpll(struct drm_i915_private *dev_priv)
+@@ -6064,6 +6064,166 @@ void hsw_restore_lcpll(struct drm_i915_p
  	dev_priv->uncore.funcs.force_wake_put(dev_priv);
  }
  
@@ -545,7 +533,7 @@ index 29e43b2cf908..6cf35357afad 100644
  static void haswell_modeset_global_resources(struct drm_device *dev)
  {
  	bool enable = false;
-@@ -6079,6 +6239,8 @@ static void haswell_modeset_global_resources(struct drm_device *dev)
+@@ -6079,6 +6239,8 @@ static void haswell_modeset_global_resou
  	}
  
  	intel_set_power_well(dev, enable);
@@ -554,7 +542,7 @@ index 29e43b2cf908..6cf35357afad 100644
  }
  
  static int haswell_crtc_mode_set(struct drm_crtc *crtc,
-@@ -7314,13 +7476,19 @@ static void intel_decrease_pllclock(struct drm_crtc *crtc)
+@@ -7314,13 +7476,19 @@ static void intel_decrease_pllclock(stru
  
  void intel_mark_busy(struct drm_device *dev)
  {
@@ -575,11 +563,9 @@ index 29e43b2cf908..6cf35357afad 100644
  	if (!i915_powersave)
  		return;
  
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index 46f3e674210d..79c14e298ba6 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -344,6 +344,8 @@ intel_dp_aux_ch(struct intel_dp *intel_dp,
+@@ -344,6 +344,8 @@ intel_dp_aux_ch(struct intel_dp *intel_d
  	else
  		precharge = 5;
  
@@ -588,7 +574,7 @@ index 46f3e674210d..79c14e298ba6 100644
  	/* Try to wait for any previous AUX channel activity */
  	for (try = 0; try < 3; try++) {
  		status = I915_READ_NOTRACE(ch_ctl);
-@@ -434,6 +436,7 @@ intel_dp_aux_ch(struct intel_dp *intel_dp,
+@@ -434,6 +436,7 @@ intel_dp_aux_ch(struct intel_dp *intel_d
  	ret = recv_bytes;
  out:
  	pm_qos_update_request(&dev_priv->pm_qos, PM_QOS_DEFAULT_VALUE);
@@ -596,11 +582,9 @@ index 46f3e674210d..79c14e298ba6 100644
  
  	return ret;
  }
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index 8222f2426b47..176080822a74 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -745,6 +745,7 @@ extern void intel_set_power_well(struct drm_device *dev, bool enable);
+@@ -745,6 +745,7 @@ extern void intel_set_power_well(struct
  extern void intel_enable_gt_powersave(struct drm_device *dev);
  extern void intel_disable_gt_powersave(struct drm_device *dev);
  extern void ironlake_teardown_rc6(struct drm_device *dev);
@@ -608,7 +592,7 @@ index 8222f2426b47..176080822a74 100644
  
  extern bool intel_ddi_get_hw_state(struct intel_encoder *encoder,
  				   enum pipe *pipe);
-@@ -784,5 +785,12 @@ extern void ilk_disable_gt_irq(struct drm_i915_private *dev_priv,
+@@ -784,5 +785,12 @@ extern void ilk_disable_gt_irq(struct dr
  extern void snb_enable_pm_irq(struct drm_i915_private *dev_priv, uint32_t mask);
  extern void snb_disable_pm_irq(struct drm_i915_private *dev_priv,
  			       uint32_t mask);
@@ -621,8 +605,6 @@ index 8222f2426b47..176080822a74 100644
 +extern void intel_aux_display_runtime_put(struct drm_i915_private *dev_priv);
  
  #endif /* __INTEL_DRV_H__ */
-diff --git a/drivers/gpu/drm/i915/intel_i2c.c b/drivers/gpu/drm/i915/intel_i2c.c
-index 639fe192997c..d1c1e0f7f262 100644
 --- a/drivers/gpu/drm/i915/intel_i2c.c
 +++ b/drivers/gpu/drm/i915/intel_i2c.c
 @@ -398,6 +398,7 @@ gmbus_xfer(struct i2c_adapter *adapter,
@@ -641,11 +623,9 @@ index 639fe192997c..d1c1e0f7f262 100644
  	return ret;
  }
  
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index 178da3ec31b4..46056820d1d2 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -3607,7 +3607,7 @@ static void gen6_enable_rps(struct drm_device *dev)
+@@ -3607,7 +3607,7 @@ static void gen6_enable_rps(struct drm_d
  	gen6_gt_force_wake_put(dev_priv);
  }
  
@@ -654,7 +634,7 @@ index 178da3ec31b4..46056820d1d2 100644
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	int min_freq = 15;
-@@ -5416,6 +5416,17 @@ void intel_init_power_well(struct drm_device *dev)
+@@ -5416,6 +5416,17 @@ void intel_init_power_well(struct drm_de
  		I915_WRITE(HSW_PWR_WELL_BIOS, 0);
  }
  
@@ -672,6 +652,3 @@ index 178da3ec31b4..46056820d1d2 100644
  /* Set up chip specific power management-related functions */
  void intel_init_pm(struct drm_device *dev)
  {
--- 
-1.8.5.rc3
-

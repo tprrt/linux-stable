@@ -11,14 +11,12 @@ Signed-off-by: Takashi Iwai <tiwai@suse.de>
 (cherry picked from commit e44007e0f97fdae45b73cf61e9962493ddcc6114)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- sound/pci/hda/hda_intel.c | 3 +++
+ sound/pci/hda/hda_intel.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 624e6c044a44..26338818f2d4 100644
 --- a/sound/pci/hda/hda_intel.c
 +++ b/sound/pci/hda/hda_intel.c
-@@ -3879,6 +3879,9 @@ static DEFINE_PCI_DEVICE_TABLE(azx_ids) = {
+@@ -3883,6 +3883,9 @@ static DEFINE_PCI_DEVICE_TABLE(azx_ids)
  	/* Oaktrail */
  	{ PCI_DEVICE(0x8086, 0x080a),
  	  .driver_data = AZX_DRIVER_SCH | AZX_DCAPS_INTEL_PCH_NOPM },
@@ -28,6 +26,3 @@ index 624e6c044a44..26338818f2d4 100644
  	/* ICH */
  	{ PCI_DEVICE(0x8086, 0x2668),
  	  .driver_data = AZX_DRIVER_ICH | AZX_DCAPS_OLD_SSYNC |
--- 
-1.8.5.rc3
-

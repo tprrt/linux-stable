@@ -41,17 +41,15 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 3ccfd19dea7c5c85aa4b1f929a97a02b026ab356)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c     |  8 +++++++
- drivers/gpu/drm/i915/i915_drv.h         |  1 +
- drivers/gpu/drm/i915/i915_gem_context.c | 22 ++++++++++++++++----
- drivers/gpu/drm/i915/i915_sysfs.c       | 37 +++++++++++++--------------------
+ drivers/gpu/drm/i915/i915_debugfs.c     |    8 ++++++
+ drivers/gpu/drm/i915/i915_drv.h         |    1 
+ drivers/gpu/drm/i915/i915_gem_context.c |   22 +++++++++++++++----
+ drivers/gpu/drm/i915/i915_sysfs.c       |   37 ++++++++++++--------------------
  4 files changed, 41 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index ada095023dad..80bed69fe5b7 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -145,6 +145,13 @@ describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
+@@ -145,6 +145,13 @@ describe_obj(struct seq_file *m, struct
  		seq_printf(m, " (%s)", obj->ring->name);
  }
  
@@ -65,7 +63,7 @@ index ada095023dad..80bed69fe5b7 100644
  static int i915_gem_object_list_info(struct seq_file *m, void *data)
  {
  	struct drm_info_node *node = (struct drm_info_node *) m->private;
-@@ -1463,6 +1470,7 @@ static int i915_context_status(struct seq_file *m, void *unused)
+@@ -1463,6 +1470,7 @@ static int i915_context_status(struct se
  
  	list_for_each_entry(ctx, &dev_priv->context_list, link) {
  		seq_puts(m, "HW context ");
@@ -73,8 +71,6 @@ index ada095023dad..80bed69fe5b7 100644
  		for_each_ring(ring, dev_priv, i)
  			if (ring->default_context == ctx)
  				seq_printf(m, "(default context %s) ", ring->name);
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 179592762537..015df5264dcc 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -601,6 +601,7 @@ struct i915_hw_context {
@@ -85,11 +81,9 @@ index 179592762537..015df5264dcc 100644
  	struct drm_i915_file_private *file_priv;
  	struct intel_ring_buffer *ring;
  	struct drm_i915_gem_object *obj;
-diff --git a/drivers/gpu/drm/i915/i915_gem_context.c b/drivers/gpu/drm/i915/i915_gem_context.c
-index 2bbdce821ac3..9af3fe7e42b0 100644
 --- a/drivers/gpu/drm/i915/i915_gem_context.c
 +++ b/drivers/gpu/drm/i915/i915_gem_context.c
-@@ -181,6 +181,10 @@ create_hw_context(struct drm_device *dev,
+@@ -181,6 +181,10 @@ create_hw_context(struct drm_device *dev
  
  	ctx->file_priv = file_priv;
  	ctx->id = ret;
@@ -100,7 +94,7 @@ index 2bbdce821ac3..9af3fe7e42b0 100644
  
  	return ctx;
  
-@@ -396,11 +400,11 @@ static int do_switch(struct i915_hw_context *to)
+@@ -394,11 +398,11 @@ static int do_switch(struct i915_hw_cont
  	struct intel_ring_buffer *ring = to->ring;
  	struct i915_hw_context *from = ring->last_context;
  	u32 hw_flags = 0;
@@ -114,7 +108,7 @@ index 2bbdce821ac3..9af3fe7e42b0 100644
  		return 0;
  
  	ret = i915_gem_obj_ggtt_pin(to->obj, CONTEXT_ALIGN, false, false);
-@@ -423,8 +427,6 @@ static int do_switch(struct i915_hw_context *to)
+@@ -421,8 +425,6 @@ static int do_switch(struct i915_hw_cont
  
  	if (!to->is_initialized || is_default_context(to))
  		hw_flags |= MI_RESTORE_INHIBIT;
@@ -123,7 +117,7 @@ index 2bbdce821ac3..9af3fe7e42b0 100644
  
  	ret = mi_set_context(ring, to, hw_flags);
  	if (ret) {
-@@ -432,6 +434,18 @@ static int do_switch(struct i915_hw_context *to)
+@@ -430,6 +432,18 @@ static int do_switch(struct i915_hw_cont
  		return ret;
  	}
  
@@ -142,11 +136,9 @@ index 2bbdce821ac3..9af3fe7e42b0 100644
  	/* The backing object for the context is done after switching to the
  	 * *next* context. Therefore we cannot retire the previous context until
  	 * the next context has already started running. In fact, the below code
-diff --git a/drivers/gpu/drm/i915/i915_sysfs.c b/drivers/gpu/drm/i915/i915_sysfs.c
-index b07bdfb8892d..deb8787308d6 100644
 --- a/drivers/gpu/drm/i915/i915_sysfs.c
 +++ b/drivers/gpu/drm/i915/i915_sysfs.c
-@@ -118,9 +118,8 @@ i915_l3_read(struct file *filp, struct kobject *kobj,
+@@ -118,9 +118,8 @@ i915_l3_read(struct file *filp, struct k
  	struct drm_minor *dminor = container_of(dev, struct drm_minor, kdev);
  	struct drm_device *drm_dev = dminor->dev;
  	struct drm_i915_private *dev_priv = drm_dev->dev_private;
@@ -157,7 +149,7 @@ index b07bdfb8892d..deb8787308d6 100644
  
  	count = round_down(count, 4);
  
-@@ -134,26 +133,13 @@ i915_l3_read(struct file *filp, struct kobject *kobj,
+@@ -134,26 +133,13 @@ i915_l3_read(struct file *filp, struct k
  	if (ret)
  		return ret;
  
@@ -174,11 +166,6 @@ index b07bdfb8892d..deb8787308d6 100644
 -
 -	misccpctl = I915_READ(GEN7_MISCCPCTL);
 -	I915_WRITE(GEN7_MISCCPCTL, misccpctl & ~GEN7_DOP_CLOCK_GATE_ENABLE);
--
--	for (i = 0; i < count; i += 4)
--		*((uint32_t *)(&buf[i])) = I915_READ(GEN7_L3LOG_BASE + offset + i);
--
--	I915_WRITE(GEN7_MISCCPCTL, misccpctl);
 +	if (dev_priv->l3_parity.remap_info[slice])
 +		memcpy(buf,
 +		       dev_priv->l3_parity.remap_info[slice] + (offset/4),
@@ -186,11 +173,16 @@ index b07bdfb8892d..deb8787308d6 100644
 +	else
 +		memset(buf, 0, count);
  
+-	for (i = 0; i < count; i += 4)
+-		*((uint32_t *)(&buf[i])) = I915_READ(GEN7_L3LOG_BASE + offset + i);
+-
+-	I915_WRITE(GEN7_MISCCPCTL, misccpctl);
+-
 -out:
  	mutex_unlock(&drm_dev->struct_mutex);
  
  	return count;
-@@ -168,6 +154,7 @@ i915_l3_write(struct file *filp, struct kobject *kobj,
+@@ -168,6 +154,7 @@ i915_l3_write(struct file *filp, struct
  	struct drm_minor *dminor = container_of(dev, struct drm_minor, kdev);
  	struct drm_device *drm_dev = dminor->dev;
  	struct drm_i915_private *dev_priv = drm_dev->dev_private;
@@ -198,7 +190,7 @@ index b07bdfb8892d..deb8787308d6 100644
  	u32 *temp = NULL; /* Just here to make handling failures easy */
  	int slice = (int)(uintptr_t)attr->private;
  	int ret;
-@@ -176,6 +163,9 @@ i915_l3_write(struct file *filp, struct kobject *kobj,
+@@ -176,6 +163,9 @@ i915_l3_write(struct file *filp, struct
  	if (ret)
  		return ret;
  
@@ -208,7 +200,7 @@ index b07bdfb8892d..deb8787308d6 100644
  	ret = i915_mutex_lock_interruptible(drm_dev);
  	if (ret)
  		return ret;
-@@ -204,8 +194,9 @@ i915_l3_write(struct file *filp, struct kobject *kobj,
+@@ -204,8 +194,9 @@ i915_l3_write(struct file *filp, struct
  
  	memcpy(dev_priv->l3_parity.remap_info[slice] + (offset/4), buf, count);
  
@@ -220,6 +212,3 @@ index b07bdfb8892d..deb8787308d6 100644
  
  	mutex_unlock(&drm_dev->struct_mutex);
  
--- 
-1.8.5.rc3
-

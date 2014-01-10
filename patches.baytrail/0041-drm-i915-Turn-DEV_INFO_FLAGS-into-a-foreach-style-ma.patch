@@ -22,16 +22,14 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 79fc46dfd0c7cc68442554a428e03a3b7e0d44aa)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_debugfs.c | 10 ++++----
- drivers/gpu/drm/i915/i915_dma.c     | 10 ++++----
- drivers/gpu/drm/i915/i915_drv.h     | 50 ++++++++++++++++++-------------------
+ drivers/gpu/drm/i915/i915_debugfs.c |   10 +++----
+ drivers/gpu/drm/i915/i915_dma.c     |   10 +++----
+ drivers/gpu/drm/i915/i915_drv.h     |   50 ++++++++++++++++++------------------
  3 files changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index d195d097cbb7..a55630a80f83 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -61,11 +61,11 @@ static int i915_capabilities(struct seq_file *m, void *data)
+@@ -61,11 +61,11 @@ static int i915_capabilities(struct seq_
  
  	seq_printf(m, "gen: %d\n", info->gen);
  	seq_printf(m, "pch: %d\n", INTEL_PCH_TYPE(dev));
@@ -48,11 +46,9 @@ index d195d097cbb7..a55630a80f83 100644
  
  	return 0;
  }
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 17d9b0b6afc5..120e1fc4890f 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1445,15 +1445,15 @@ static void i915_dump_device_info(struct drm_i915_private *dev_priv)
+@@ -1453,15 +1453,15 @@ static void i915_dump_device_info(struct
  {
  	const struct intel_device_info *info = dev_priv->info;
  
@@ -73,8 +69,6 @@ index 17d9b0b6afc5..120e1fc4890f 100644
  }
  
  /**
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 698da6dbdb32..c6179c8bea21 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -333,31 +333,31 @@ struct drm_i915_gt_funcs {
@@ -134,6 +128,3 @@ index 698da6dbdb32..c6179c8bea21 100644
  
  struct intel_device_info {
  	u32 display_mmio_offset;
--- 
-1.8.5.rc3
-

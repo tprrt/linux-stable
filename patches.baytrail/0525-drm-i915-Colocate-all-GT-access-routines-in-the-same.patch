@@ -34,24 +34,22 @@ Conflicts:
 	(context changes)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/Makefile        |   1 +
- drivers/gpu/drm/i915/i915_debugfs.c  |  12 +-
- drivers/gpu/drm/i915/i915_dma.c      |  24 +-
- drivers/gpu/drm/i915/i915_drv.c      | 271 +----------------
- drivers/gpu/drm/i915/i915_drv.h      |  31 +-
- drivers/gpu/drm/i915/i915_irq.c      |   6 +-
- drivers/gpu/drm/i915/intel_display.c |   3 +-
- drivers/gpu/drm/i915/intel_drv.h     |   1 -
- drivers/gpu/drm/i915/intel_pm.c      | 264 +---------------
- drivers/gpu/drm/i915/intel_uncore.c  | 571 +++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/i915/Makefile        |    1 
+ drivers/gpu/drm/i915/i915_debugfs.c  |   12 
+ drivers/gpu/drm/i915/i915_dma.c      |   24 -
+ drivers/gpu/drm/i915/i915_drv.c      |  271 ----------------
+ drivers/gpu/drm/i915/i915_drv.h      |   31 +
+ drivers/gpu/drm/i915/i915_irq.c      |    6 
+ drivers/gpu/drm/i915/intel_display.c |    3 
+ drivers/gpu/drm/i915/intel_drv.h     |    1 
+ drivers/gpu/drm/i915/intel_pm.c      |  264 ----------------
+ drivers/gpu/drm/i915/intel_uncore.c  |  571 +++++++++++++++++++++++++++++++++++
  10 files changed, 613 insertions(+), 571 deletions(-)
  create mode 100644 drivers/gpu/drm/i915/intel_uncore.c
 
-diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
-index 9d1da7cceb21..b8449a84a0dc 100644
 --- a/drivers/gpu/drm/i915/Makefile
 +++ b/drivers/gpu/drm/i915/Makefile
-@@ -38,6 +38,7 @@ i915-y := i915_drv.o i915_dma.o i915_irq.o \
+@@ -38,6 +38,7 @@ i915-y := i915_drv.o i915_dma.o i915_irq
  	  intel_sprite.o \
  	  intel_opregion.o \
  	  intel_sideband.o \
@@ -59,11 +57,9 @@ index 9d1da7cceb21..b8449a84a0dc 100644
  	  dvo_ch7xxx.o \
  	  dvo_ch7017.o \
  	  dvo_ivch.o \
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index 9d871c7eeaee..0e904986f3e9 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
-@@ -989,9 +989,9 @@ static int gen6_drpc_info(struct seq_file *m)
+@@ -989,9 +989,9 @@ static int gen6_drpc_info(struct seq_fil
  	if (ret)
  		return ret;
  
@@ -76,7 +72,7 @@ index 9d871c7eeaee..0e904986f3e9 100644
  
  	if (forcewake_count) {
  		seq_puts(m, "RC information inaccurate because somebody "
-@@ -1375,9 +1375,9 @@ static int i915_gen6_forcewake_count_info(struct seq_file *m, void *data)
+@@ -1375,9 +1375,9 @@ static int i915_gen6_forcewake_count_inf
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	unsigned forcewake_count;
  
@@ -89,11 +85,9 @@ index 9d871c7eeaee..0e904986f3e9 100644
  
  	seq_printf(m, "forcewake count = %u\n", forcewake_count);
  
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index d71e765b814d..dcc44597ea14 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1436,22 +1436,6 @@ static void i915_dump_device_info(struct drm_i915_private *dev_priv)
+@@ -1444,22 +1444,6 @@ static void i915_dump_device_info(struct
  }
  
  /**
@@ -116,7 +110,7 @@ index d71e765b814d..dcc44597ea14 100644
   * i915_driver_load - setup chip and create an initial config
   * @dev: DRM device
   * @flags: startup flags
-@@ -1493,7 +1477,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1501,7 +1485,7 @@ int i915_driver_load(struct drm_device *
  	spin_lock_init(&dev_priv->irq_lock);
  	spin_lock_init(&dev_priv->gpu_error.lock);
  	spin_lock_init(&dev_priv->backlight.lock);
@@ -125,7 +119,7 @@ index d71e765b814d..dcc44597ea14 100644
  	mutex_init(&dev_priv->dpio_lock);
  	mutex_init(&dev_priv->rps.hw_lock);
  	mutex_init(&dev_priv->modeset_restore_lock);
-@@ -1529,7 +1513,7 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1537,7 +1521,7 @@ int i915_driver_load(struct drm_device *
  		goto put_bridge;
  	}
  
@@ -134,7 +128,7 @@ index d71e765b814d..dcc44597ea14 100644
  
  	if (IS_HASWELL(dev) && (I915_READ(HSW_EDRAM_PRESENT) == 1)) {
  		/* The docs do not explain exactly how the calculation can be
-@@ -1603,8 +1587,8 @@ int i915_driver_load(struct drm_device *dev, unsigned long flags)
+@@ -1611,8 +1595,8 @@ int i915_driver_load(struct drm_device *
  
  	intel_irq_init(dev);
  	intel_pm_init(dev);
@@ -145,11 +139,9 @@ index d71e765b814d..dcc44597ea14 100644
  
  	/* Try to make sure MCHBAR is enabled before poking at it */
  	intel_setup_mchbar(dev);
-diff --git a/drivers/gpu/drm/i915/i915_drv.c b/drivers/gpu/drm/i915/i915_drv.c
-index 5849b0a91b4e..01d63a0435fb 100644
 --- a/drivers/gpu/drm/i915/i915_drv.c
 +++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -723,7 +723,7 @@ static int i915_drm_thaw(struct drm_device *dev)
+@@ -723,7 +723,7 @@ static int i915_drm_thaw(struct drm_devi
  {
  	int error = 0;
  
@@ -445,8 +437,6 @@ index 5849b0a91b4e..01d63a0435fb 100644
 -
 -	return 0;
 -}
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 452b2ae84c4e..928a7309b7c3 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -391,11 +391,20 @@ struct drm_i915_display_funcs {
@@ -487,7 +477,7 @@ index 452b2ae84c4e..928a7309b7c3 100644
  
  	struct intel_gmbus gmbus[GMBUS_NUM_PORTS];
  
-@@ -1671,8 +1673,14 @@ void i915_handle_error(struct drm_device *dev, bool wedged);
+@@ -1671,8 +1673,14 @@ void i915_handle_error(struct drm_device
  extern void intel_irq_init(struct drm_device *dev);
  extern void intel_pm_init(struct drm_device *dev);
  extern void intel_hpd_init(struct drm_device *dev);
@@ -504,7 +494,7 @@ index 452b2ae84c4e..928a7309b7c3 100644
  
  void
  i915_enable_pipestat(drm_i915_private_t *dev_priv, int pipe, u32 mask);
-@@ -2108,7 +2116,6 @@ extern void intel_display_print_error_state(struct drm_i915_error_state_buf *e,
+@@ -2108,7 +2116,6 @@ extern void intel_display_print_error_st
   */
  void gen6_gt_force_wake_get(struct drm_i915_private *dev_priv);
  void gen6_gt_force_wake_put(struct drm_i915_private *dev_priv);
@@ -512,11 +502,9 @@ index 452b2ae84c4e..928a7309b7c3 100644
  
  int sandybridge_pcode_read(struct drm_i915_private *dev_priv, u8 mbox, u32 *val);
  int sandybridge_pcode_write(struct drm_i915_private *dev_priv, u8 mbox, u32 val);
-diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
-index 52a43470e125..a588cd5745aa 100644
 --- a/drivers/gpu/drm/i915/i915_irq.c
 +++ b/drivers/gpu/drm/i915/i915_irq.c
-@@ -1307,11 +1307,7 @@ static irqreturn_t ironlake_irq_handler(int irq, void *arg)
+@@ -1307,11 +1307,7 @@ static irqreturn_t ironlake_irq_handler(
  
  	/* We get interrupts on unclaimed registers, so check for this before we
  	 * do any I915_{READ,WRITE}. */
@@ -529,11 +517,9 @@ index 52a43470e125..a588cd5745aa 100644
  
  	/* disable master interrupt before clearing iir  */
  	de_ier = I915_READ(DEIER);
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 73965dfbf149..afac090a4f3d 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -10481,8 +10481,7 @@ intel_display_capture_error_state(struct drm_device *dev)
+@@ -10484,8 +10484,7 @@ intel_display_capture_error_state(struct
  	 * well was on, so here we have to clear the FPGA_DBG_RM_NOCLAIM bit to
  	 * prevent the next I915_WRITE from detecting it and printing an error
  	 * message. */
@@ -543,11 +529,9 @@ index 73965dfbf149..afac090a4f3d 100644
  
  	return error;
  }
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index 3fbe80bc36bb..d9f50e368fe9 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -806,7 +806,6 @@ extern void intel_init_power_well(struct drm_device *dev);
+@@ -806,7 +806,6 @@ extern void intel_init_power_well(struct
  extern void intel_set_power_well(struct drm_device *dev, bool enable);
  extern void intel_enable_gt_powersave(struct drm_device *dev);
  extern void intel_disable_gt_powersave(struct drm_device *dev);
@@ -555,8 +539,6 @@ index 3fbe80bc36bb..d9f50e368fe9 100644
  extern void ironlake_teardown_rc6(struct drm_device *dev);
  
  extern bool intel_ddi_get_hw_state(struct intel_encoder *encoder,
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index 948c171d7f73..5d7d0e76da7f 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
 @@ -32,8 +32,6 @@
@@ -568,7 +550,7 @@ index 948c171d7f73..5d7d0e76da7f 100644
  /* FBC, or Frame Buffer Compression, is a technique employed to compress the
   * framebuffer contents in-memory, aiming at reducing the required bandwidth
   * during in-memory transfers and, therefore, reduce the power packet.
-@@ -5307,260 +5305,6 @@ void intel_init_pm(struct drm_device *dev)
+@@ -5307,260 +5305,6 @@ void intel_init_pm(struct drm_device *de
  	}
  }
  
@@ -829,7 +811,7 @@ index 948c171d7f73..5d7d0e76da7f 100644
  int sandybridge_pcode_read(struct drm_i915_private *dev_priv, u8 mbox, u32 *val)
  {
  	WARN_ON(!mutex_is_locked(&dev_priv->rps.hw_lock));
-@@ -5663,3 +5407,11 @@ int vlv_freq_opcode(int ddr_freq, int val)
+@@ -5663,3 +5407,11 @@ int vlv_freq_opcode(int ddr_freq, int va
  	return val;
  }
  
@@ -841,9 +823,6 @@ index 948c171d7f73..5d7d0e76da7f 100644
 +			  intel_gen6_powersave_work);
 +}
 +
-diff --git a/drivers/gpu/drm/i915/intel_uncore.c b/drivers/gpu/drm/i915/intel_uncore.c
-new file mode 100644
-index 000000000000..97e8b1b86476
 --- /dev/null
 +++ b/drivers/gpu/drm/i915/intel_uncore.c
 @@ -0,0 +1,571 @@
@@ -1418,6 +1397,3 @@ index 000000000000..97e8b1b86476
 +		I915_WRITE_NOTRACE(FPGA_DBG, FPGA_DBG_RM_NOCLAIM);
 +	}
 +}
--- 
-1.8.5.rc3
-

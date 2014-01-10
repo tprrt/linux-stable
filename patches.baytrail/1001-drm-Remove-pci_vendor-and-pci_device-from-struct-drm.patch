@@ -16,29 +16,27 @@ Signed-off-by: Dave Airlie <airlied@redhat.com>
 (cherry picked from commit ffbab09bf939975b62ec233c426bf7df0dd4cea8)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_pci.c                   |  3 ---
- drivers/gpu/drm/gma500/psb_drv.h            |  8 +++----
- drivers/gpu/drm/i915/i915_dma.c             |  2 +-
- drivers/gpu/drm/i915/i915_drv.h             | 36 ++++++++++++++---------------
- drivers/gpu/drm/i915/i915_gpu_error.c       |  2 +-
- drivers/gpu/drm/i915/intel_tv.c             |  2 +-
- drivers/gpu/drm/nouveau/dispnv04/arb.c      |  8 +++----
- drivers/gpu/drm/nouveau/dispnv04/dfp.c      |  4 ++--
- drivers/gpu/drm/nouveau/dispnv04/disp.h     |  6 ++---
- drivers/gpu/drm/nouveau/dispnv04/hw.c       |  4 ++--
- drivers/gpu/drm/nouveau/nouveau_abi16.c     |  4 ++--
- drivers/gpu/drm/nouveau/nouveau_bios.c      |  4 ++--
- drivers/gpu/drm/nouveau/nouveau_connector.c |  4 ++--
- drivers/gpu/drm/radeon/radeon_bios.c        |  6 ++---
- drivers/gpu/drm/radeon/radeon_kms.c         |  2 +-
- include/drm/drmP.h                          |  2 --
+ drivers/gpu/drm/drm_pci.c                   |    3 --
+ drivers/gpu/drm/gma500/psb_drv.h            |    8 +++---
+ drivers/gpu/drm/i915/i915_dma.c             |    2 -
+ drivers/gpu/drm/i915/i915_drv.h             |   36 ++++++++++++++--------------
+ drivers/gpu/drm/i915/i915_gpu_error.c       |    2 -
+ drivers/gpu/drm/i915/intel_tv.c             |    2 -
+ drivers/gpu/drm/nouveau/dispnv04/arb.c      |    8 +++---
+ drivers/gpu/drm/nouveau/dispnv04/dfp.c      |    4 +--
+ drivers/gpu/drm/nouveau/dispnv04/disp.h     |    6 ++--
+ drivers/gpu/drm/nouveau/dispnv04/hw.c       |    4 +--
+ drivers/gpu/drm/nouveau/nouveau_abi16.c     |    4 +--
+ drivers/gpu/drm/nouveau/nouveau_bios.c      |    4 +--
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    4 +--
+ drivers/gpu/drm/radeon/radeon_bios.c        |    6 ++--
+ drivers/gpu/drm/radeon/radeon_kms.c         |    2 -
+ include/drm/drmP.h                          |    2 -
  16 files changed, 46 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_pci.c b/drivers/gpu/drm/drm_pci.c
-index efcbc3dbf21a..21c2419a5156 100644
 --- a/drivers/gpu/drm/drm_pci.c
 +++ b/drivers/gpu/drm/drm_pci.c
-@@ -335,9 +335,6 @@ int drm_get_pci_dev(struct pci_dev *pdev, const struct pci_device_id *ent,
+@@ -335,9 +335,6 @@ int drm_get_pci_dev(struct pci_dev *pdev
  		goto err_g1;
  
  	dev->pdev = pdev;
@@ -48,8 +46,6 @@ index efcbc3dbf21a..21c2419a5156 100644
  #ifdef __alpha__
  	dev->hose = pdev->sysdata;
  #endif
-diff --git a/drivers/gpu/drm/gma500/psb_drv.h b/drivers/gpu/drm/gma500/psb_drv.h
-index 5a608c0c2396..0081064e6efd 100644
 --- a/drivers/gpu/drm/gma500/psb_drv.h
 +++ b/drivers/gpu/drm/gma500/psb_drv.h
 @@ -43,10 +43,10 @@ enum {
@@ -67,11 +63,9 @@ index 5a608c0c2396..0081064e6efd 100644
  
  /*
   * Driver definitions
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 0ac796a8d0f9..a6b170cc35ea 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -931,7 +931,7 @@ static int i915_getparam(struct drm_device *dev, void *data,
+@@ -939,7 +939,7 @@ static int i915_getparam(struct drm_devi
  		value = READ_BREADCRUMB(dev_priv);
  		break;
  	case I915_PARAM_CHIPSET_ID:
@@ -80,8 +74,6 @@ index 0ac796a8d0f9..a6b170cc35ea 100644
  		break;
  	case I915_PARAM_HAS_GEM:
  		value = 1;
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index ed8653fd97ad..2792540fa5af 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -1615,39 +1615,39 @@ struct drm_i915_file_private {
@@ -142,11 +134,9 @@ index ed8653fd97ad..2792540fa5af 100644
  #define IS_PRELIMINARY_HW(intel_info) ((intel_info)->is_preliminary)
  
  /*
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
-index da1022a328e3..915c8ca08969 100644
 --- a/drivers/gpu/drm/i915/i915_gpu_error.c
 +++ b/drivers/gpu/drm/i915/i915_gpu_error.c
-@@ -304,7 +304,7 @@ int i915_error_state_to_str(struct drm_i915_error_state_buf *m,
+@@ -304,7 +304,7 @@ int i915_error_state_to_str(struct drm_i
  	err_printf(m, "Time: %ld s %ld us\n", error->time.tv_sec,
  		   error->time.tv_usec);
  	err_printf(m, "Kernel: " UTS_RELEASE "\n");
@@ -155,11 +145,9 @@ index da1022a328e3..915c8ca08969 100644
  	err_printf(m, "EIR: 0x%08x\n", error->eir);
  	err_printf(m, "IER: 0x%08x\n", error->ier);
  	err_printf(m, "PGTBL_ER: 0x%08x\n", error->pgtbl_er);
-diff --git a/drivers/gpu/drm/i915/intel_tv.c b/drivers/gpu/drm/i915/intel_tv.c
-index 92895f92a738..d61aec23a523 100644
 --- a/drivers/gpu/drm/i915/intel_tv.c
 +++ b/drivers/gpu/drm/i915/intel_tv.c
-@@ -1044,7 +1044,7 @@ static void intel_tv_mode_set(struct intel_encoder *encoder)
+@@ -1044,7 +1044,7 @@ static void intel_tv_mode_set(struct int
  		tv_mode->dda3_inc << TV_SCDDA3_INC_SHIFT;
  
  	/* Enable two fixes for the chips that need them. */
@@ -168,11 +156,9 @@ index 92895f92a738..d61aec23a523 100644
  		tv_ctl |= TV_ENC_C0_FIX | TV_ENC_SDP_FIX;
  
  	I915_WRITE(TV_H_CTL_1, hctl1);
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/arb.c b/drivers/gpu/drm/nouveau/dispnv04/arb.c
-index 2e70462883e8..2a15b98b4d2b 100644
 --- a/drivers/gpu/drm/nouveau/dispnv04/arb.c
 +++ b/drivers/gpu/drm/nouveau/dispnv04/arb.c
-@@ -210,8 +210,8 @@ nv04_update_arb(struct drm_device *dev, int VClk, int bpp,
+@@ -210,8 +210,8 @@ nv04_update_arb(struct drm_device *dev,
  	sim_data.nvclk_khz = NVClk;
  	sim_data.bpp = bpp;
  	sim_data.two_heads = nv_two_heads(dev);
@@ -183,7 +169,7 @@ index 2e70462883e8..2a15b98b4d2b 100644
  		uint32_t type;
  
  		pci_read_config_dword(pci_get_bus_and_slot(0, 1), 0x7c, &type);
-@@ -256,8 +256,8 @@ nouveau_calc_arb(struct drm_device *dev, int vclk, int bpp, int *burst, int *lwm
+@@ -256,8 +256,8 @@ nouveau_calc_arb(struct drm_device *dev,
  
  	if (nv_device(drm->device)->card_type < NV_20)
  		nv04_update_arb(dev, vclk, bpp, burst, lwm);
@@ -194,11 +180,9 @@ index 2e70462883e8..2a15b98b4d2b 100644
  		*burst = 128;
  		*lwm = 0x0480;
  	} else
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/dfp.c b/drivers/gpu/drm/nouveau/dispnv04/dfp.c
-index 93dd23ff0093..59d1c040b84f 100644
 --- a/drivers/gpu/drm/nouveau/dispnv04/dfp.c
 +++ b/drivers/gpu/drm/nouveau/dispnv04/dfp.c
-@@ -490,8 +490,8 @@ static void nv04_dfp_update_backlight(struct drm_encoder *encoder, int mode)
+@@ -490,8 +490,8 @@ static void nv04_dfp_update_backlight(st
  	/* BIOS scripts usually take care of the backlight, thanks
  	 * Apple for your consistency.
  	 */
@@ -209,8 +193,6 @@ index 93dd23ff0093..59d1c040b84f 100644
  		if (mode == DRM_MODE_DPMS_ON) {
  			nv_mask(device, NV_PBUS_DEBUG_DUALHEAD_CTL, 0, 1 << 31);
  			nv_mask(device, NV_PCRTC_GPIO_EXT, 3, 1);
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/disp.h b/drivers/gpu/drm/nouveau/dispnv04/disp.h
-index a0a031dad13f..fcbc3fdcac21 100644
 --- a/drivers/gpu/drm/nouveau/dispnv04/disp.h
 +++ b/drivers/gpu/drm/nouveau/dispnv04/disp.h
 @@ -126,7 +126,7 @@ static inline bool
@@ -239,11 +221,9 @@ index a0a031dad13f..fcbc3fdcac21 100644
  
  	if (impl == 0x0310 || impl == 0x0340 || nv_device(drm->device)->card_type >= NV_40)
  		return true;
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/hw.c b/drivers/gpu/drm/nouveau/dispnv04/hw.c
-index 973056b86207..f8dee834527f 100644
 --- a/drivers/gpu/drm/nouveau/dispnv04/hw.c
 +++ b/drivers/gpu/drm/nouveau/dispnv04/hw.c
-@@ -220,7 +220,7 @@ nouveau_hw_get_clock(struct drm_device *dev, enum nvbios_pll_type plltype)
+@@ -220,7 +220,7 @@ nouveau_hw_get_clock(struct drm_device *
  	int ret;
  
  	if (plltype == PLL_MEMORY &&
@@ -252,7 +232,7 @@ index 973056b86207..f8dee834527f 100644
  		uint32_t mpllP;
  
  		pci_read_config_dword(pci_get_bus_and_slot(0, 3), 0x6c, &mpllP);
-@@ -230,7 +230,7 @@ nouveau_hw_get_clock(struct drm_device *dev, enum nvbios_pll_type plltype)
+@@ -230,7 +230,7 @@ nouveau_hw_get_clock(struct drm_device *
  		return 400000 / mpllP;
  	} else
  	if (plltype == PLL_MEMORY &&
@@ -261,11 +241,9 @@ index 973056b86207..f8dee834527f 100644
  		uint32_t clock;
  
  		pci_read_config_dword(pci_get_bus_and_slot(0, 5), 0x4c, &clock);
-diff --git a/drivers/gpu/drm/nouveau/nouveau_abi16.c b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-index 1c4c6c9161ac..2f093f6c7a3c 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_abi16.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_abi16.c
-@@ -177,10 +177,10 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL_ARGS)
+@@ -177,10 +177,10 @@ nouveau_abi16_ioctl_getparam(ABI16_IOCTL
  		getparam->value = device->chipset;
  		break;
  	case NOUVEAU_GETPARAM_PCI_VENDOR:
@@ -278,11 +256,9 @@ index 1c4c6c9161ac..2f093f6c7a3c 100644
  		break;
  	case NOUVEAU_GETPARAM_BUS_TYPE:
  		if (drm_pci_device_is_agp(dev))
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bios.c b/drivers/gpu/drm/nouveau/nouveau_bios.c
-index 6aa2137e093a..fd55c99ba565 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_bios.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_bios.c
-@@ -127,8 +127,8 @@ static int call_lvds_manufacturer_script(struct drm_device *dev, struct dcb_outp
+@@ -127,8 +127,8 @@ static int call_lvds_manufacturer_script
  #ifdef __powerpc__
  	/* Powerbook specific quirks */
  	if (script == LVDS_RESET &&
@@ -293,11 +269,9 @@ index 6aa2137e093a..fd55c99ba565 100644
  		nv_write_tmds(dev, dcbent->or, 0, 0x02, 0x72);
  #endif
  
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 4da776f344d7..63b94f30f13d 100644
 --- a/drivers/gpu/drm/nouveau/nouveau_connector.c
 +++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -213,8 +213,8 @@ nouveau_connector_set_encoder(struct drm_connector *connector,
+@@ -213,8 +213,8 @@ nouveau_connector_set_encoder(struct drm
  		connector->doublescan_allowed = true;
  		if (nv_device(drm->device)->card_type == NV_20 ||
  		   (nv_device(drm->device)->card_type == NV_10 &&
@@ -308,11 +282,9 @@ index 4da776f344d7..63b94f30f13d 100644
  			/* HW is broken */
  			connector->interlace_allowed = false;
  		else
-diff --git a/drivers/gpu/drm/radeon/radeon_bios.c b/drivers/gpu/drm/radeon/radeon_bios.c
-index 061b227dae0c..c155d6f3fa68 100644
 --- a/drivers/gpu/drm/radeon/radeon_bios.c
 +++ b/drivers/gpu/drm/radeon/radeon_bios.c
-@@ -499,7 +499,7 @@ static bool legacy_read_disabled_bios(struct radeon_device *rdev)
+@@ -499,7 +499,7 @@ static bool legacy_read_disabled_bios(st
  	crtc_ext_cntl = RREG32(RADEON_CRTC_EXT_CNTL);
  	fp2_gen_cntl = 0;
  
@@ -321,7 +293,7 @@ index 061b227dae0c..c155d6f3fa68 100644
  		fp2_gen_cntl = RREG32(RADEON_FP2_GEN_CNTL);
  	}
  
-@@ -536,7 +536,7 @@ static bool legacy_read_disabled_bios(struct radeon_device *rdev)
+@@ -536,7 +536,7 @@ static bool legacy_read_disabled_bios(st
  		(RADEON_CRTC_SYNC_TRISTAT |
  		 RADEON_CRTC_DISPLAY_DIS)));
  
@@ -330,7 +302,7 @@ index 061b227dae0c..c155d6f3fa68 100644
  		WREG32(RADEON_FP2_GEN_CNTL, (fp2_gen_cntl & ~RADEON_FP2_ON));
  	}
  
-@@ -554,7 +554,7 @@ static bool legacy_read_disabled_bios(struct radeon_device *rdev)
+@@ -554,7 +554,7 @@ static bool legacy_read_disabled_bios(st
  		WREG32(RADEON_CRTC2_GEN_CNTL, crtc2_gen_cntl);
  	}
  	WREG32(RADEON_CRTC_EXT_CNTL, crtc_ext_cntl);
@@ -339,11 +311,9 @@ index 061b227dae0c..c155d6f3fa68 100644
  		WREG32(RADEON_FP2_GEN_CNTL, fp2_gen_cntl);
  	}
  	return r;
-diff --git a/drivers/gpu/drm/radeon/radeon_kms.c b/drivers/gpu/drm/radeon/radeon_kms.c
-index 100d10930da5..69c8157eff74 100644
 --- a/drivers/gpu/drm/radeon/radeon_kms.c
 +++ b/drivers/gpu/drm/radeon/radeon_kms.c
-@@ -191,7 +191,7 @@ int radeon_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+@@ -191,7 +191,7 @@ int radeon_info_ioctl(struct drm_device
  
  	switch (info->request) {
  	case RADEON_INFO_DEVICE_ID:
@@ -352,8 +322,6 @@ index 100d10930da5..69c8157eff74 100644
  		break;
  	case RADEON_INFO_NUM_GB_PIPES:
  		*value = rdev->num_gb_pipes;
-diff --git a/include/drm/drmP.h b/include/drm/drmP.h
-index 32019d82882e..6b091e5ba4e5 100644
 --- a/include/drm/drmP.h
 +++ b/include/drm/drmP.h
 @@ -1191,8 +1191,6 @@ struct drm_device {
@@ -365,6 +333,3 @@ index 32019d82882e..6b091e5ba4e5 100644
  #ifdef __alpha__
  	struct pci_controller *hose;
  #endif
--- 
-1.8.5.rc3
-

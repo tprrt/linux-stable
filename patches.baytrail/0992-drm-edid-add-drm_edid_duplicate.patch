@@ -10,15 +10,13 @@ Signed-off-by: Dave Airlie <airlied@redhat.com>
 (cherry picked from commit 51f8da5916f85c18b696f74f97970e5a7330147e)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/drm_edid.c | 12 ++++++++++++
- include/drm/drm_crtc.h     |  1 +
+ drivers/gpu/drm/drm_edid.c |   12 ++++++++++++
+ include/drm/drm_crtc.h     |    1 +
  2 files changed, 13 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 61fdd6b532fc..9494e596d99c 100644
 --- a/drivers/gpu/drm/drm_edid.c
 +++ b/drivers/gpu/drm/drm_edid.c
-@@ -1261,6 +1261,18 @@ struct edid *drm_get_edid(struct drm_connector *connector,
+@@ -1266,6 +1266,18 @@ struct edid *drm_get_edid(struct drm_con
  }
  EXPORT_SYMBOL(drm_get_edid);
  
@@ -37,11 +35,9 @@ index 61fdd6b532fc..9494e596d99c 100644
  /*** EDID parsing ***/
  
  /**
-diff --git a/include/drm/drm_crtc.h b/include/drm/drm_crtc.h
-index 2743dad5fe88..b3cdbf6fc20b 100644
 --- a/include/drm/drm_crtc.h
 +++ b/include/drm/drm_crtc.h
-@@ -919,6 +919,7 @@ extern int drm_mode_group_init_legacy_group(struct drm_device *dev, struct drm_m
+@@ -919,6 +919,7 @@ extern int drm_mode_group_init_legacy_gr
  extern bool drm_probe_ddc(struct i2c_adapter *adapter);
  extern struct edid *drm_get_edid(struct drm_connector *connector,
  				 struct i2c_adapter *adapter);
@@ -49,6 +45,3 @@ index 2743dad5fe88..b3cdbf6fc20b 100644
  extern int drm_add_edid_modes(struct drm_connector *connector, struct edid *edid);
  extern void drm_mode_probed_add(struct drm_connector *connector, struct drm_display_mode *mode);
  extern void drm_mode_remove(struct drm_connector *connector, struct drm_display_mode *mode);
--- 
-1.8.5.rc3
-

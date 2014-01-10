@@ -15,14 +15,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit e2a5800a14abcf861b9d6565de2a22bd6e9ae0ef)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 6 +++++-
+ drivers/gpu/drm/i915/i915_dma.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 120e1fc4890f..579654d89ac3 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1445,13 +1445,17 @@ static void i915_dump_device_info(struct drm_i915_private *dev_priv)
+@@ -1453,13 +1453,17 @@ static void i915_dump_device_info(struct
  {
  	const struct intel_device_info *info = dev_priv->info;
  
@@ -41,6 +39,3 @@ index 120e1fc4890f..579654d89ac3 100644
  #undef PRINT_FLAG
  #undef SEP_COMMA
  }
--- 
-1.8.5.rc3
-

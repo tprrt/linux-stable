@@ -29,14 +29,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 79f8dea13391f8220470997f9a5213ab5aa9f1c7)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c | 7 ++++++-
+ drivers/gpu/drm/i915/i915_dma.c |    7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index b30404d00757..d2dc02b67512 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1688,8 +1688,13 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1696,8 +1696,13 @@ int i915_driver_unload(struct drm_device
  
  	intel_gpu_ips_teardown();
  
@@ -51,6 +49,3 @@ index b30404d00757..d2dc02b67512 100644
  
  	i915_teardown_sysfs(dev);
  
--- 
-1.8.5.rc3
-

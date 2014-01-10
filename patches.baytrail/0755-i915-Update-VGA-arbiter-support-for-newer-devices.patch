@@ -37,16 +37,14 @@ fixup 2
 (cherry picked from commit 81b5c7bc8de3e6f63419139c2fc91bf81dea8a7d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c      |  9 ++++++---
- drivers/gpu/drm/i915/intel_display.c | 25 +++++++++++++++++++++++++
- include/linux/vgaarb.h               |  7 +++++++
+ drivers/gpu/drm/i915/i915_dma.c      |    9 ++++++---
+ drivers/gpu/drm/i915/intel_display.c |   25 +++++++++++++++++++++++++
+ include/linux/vgaarb.h               |    7 +++++++
  3 files changed, 38 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index fdaa0915ce56..3de60503378e 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1290,9 +1290,12 @@ static int i915_load_modeset_init(struct drm_device *dev)
+@@ -1298,9 +1298,12 @@ static int i915_load_modeset_init(struct
  	 * then we do not take part in VGA arbitration and the
  	 * vga_client_register() fails with -ENODEV.
  	 */
@@ -62,11 +60,9 @@ index fdaa0915ce56..3de60503378e 100644
  
  	intel_register_dsm_handler();
  
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 2fd611ac91ba..369fdb452125 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -10045,6 +10045,15 @@ static void i915_disable_vga(struct drm_device *dev)
+@@ -10045,6 +10045,15 @@ static void i915_disable_vga(struct drm_
  	outb(SR01, VGA_SR_INDEX);
  	sr1 = inb(VGA_SR_DATA);
  	outb(sr1 | 1<<5, VGA_SR_DATA);
@@ -82,7 +78,7 @@ index 2fd611ac91ba..369fdb452125 100644
  	vga_put(dev->pdev, VGA_RSRC_LEGACY_IO);
  	udelay(300);
  
-@@ -10052,6 +10061,20 @@ static void i915_disable_vga(struct drm_device *dev)
+@@ -10052,6 +10061,20 @@ static void i915_disable_vga(struct drm_
  	POSTING_READ(vga_reg);
  }
  
@@ -103,7 +99,7 @@ index 2fd611ac91ba..369fdb452125 100644
  void intel_modeset_init_hw(struct drm_device *dev)
  {
  	intel_init_power_well(dev);
-@@ -10543,6 +10566,8 @@ void intel_modeset_cleanup(struct drm_device *dev)
+@@ -10545,6 +10568,8 @@ void intel_modeset_cleanup(struct drm_de
  
  	intel_disable_fbc(dev);
  
@@ -112,8 +108,6 @@ index 2fd611ac91ba..369fdb452125 100644
  	intel_disable_gt_powersave(dev);
  
  	ironlake_teardown_rc6(dev);
-diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
-index 2c02f3a8d2ba..80cf8173a65b 100644
 --- a/include/linux/vgaarb.h
 +++ b/include/linux/vgaarb.h
 @@ -65,8 +65,15 @@ struct pci_dev;
@@ -132,6 +126,3 @@ index 2c02f3a8d2ba..80cf8173a65b 100644
  
  /**
   *     vga_get         - acquire & locks VGA resources
--- 
-1.8.5.rc3
-

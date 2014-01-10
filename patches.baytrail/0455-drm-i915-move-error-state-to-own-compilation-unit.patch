@@ -22,18 +22,16 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 84734a049d0ef2f6f5fb0a1fe060cd51480dd855)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/Makefile         |   1 +
- drivers/gpu/drm/i915/i915_debugfs.c   | 415 +--------------
- drivers/gpu/drm/i915/i915_drv.h       |  24 +-
- drivers/gpu/drm/i915/i915_gpu_error.c | 971 ++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/i915/i915_irq.c       | 529 ------------------
- drivers/gpu/drm/i915/intel_display.c  |   4 -
- drivers/gpu/drm/i915/intel_overlay.c  |   4 -
+ drivers/gpu/drm/i915/Makefile         |    1 
+ drivers/gpu/drm/i915/i915_debugfs.c   |  415 --------------
+ drivers/gpu/drm/i915/i915_drv.h       |   24 
+ drivers/gpu/drm/i915/i915_gpu_error.c |  971 ++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/i915/i915_irq.c       |  529 ------------------
+ drivers/gpu/drm/i915/intel_display.c  |    4 
+ drivers/gpu/drm/i915/intel_overlay.c  |    4 
  7 files changed, 983 insertions(+), 965 deletions(-)
  create mode 100644 drivers/gpu/drm/i915/i915_gpu_error.c
 
-diff --git a/drivers/gpu/drm/i915/Makefile b/drivers/gpu/drm/i915/Makefile
-index 40034ecefd3b..9d1da7cceb21 100644
 --- a/drivers/gpu/drm/i915/Makefile
 +++ b/drivers/gpu/drm/i915/Makefile
 @@ -5,6 +5,7 @@
@@ -44,8 +42,6 @@ index 40034ecefd3b..9d1da7cceb21 100644
            i915_suspend.o \
  	  i915_gem.o \
  	  i915_gem_context.o \
-diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
-index d4138124d993..86379799dab8 100644
 --- a/drivers/gpu/drm/i915/i915_debugfs.c
 +++ b/drivers/gpu/drm/i915/i915_debugfs.c
 @@ -30,7 +30,6 @@
@@ -56,7 +52,7 @@ index d4138124d993..86379799dab8 100644
  #include <drm/drmP.h>
  #include "intel_drv.h"
  #include "intel_ringbuffer.h"
-@@ -90,16 +89,6 @@ static const char *get_tiling_flag(struct drm_i915_gem_object *obj)
+@@ -90,16 +89,6 @@ static const char *get_tiling_flag(struc
  	}
  }
  
@@ -73,7 +69,7 @@ index d4138124d993..86379799dab8 100644
  static void
  describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
  {
-@@ -113,7 +102,7 @@ describe_obj(struct seq_file *m, struct drm_i915_gem_object *obj)
+@@ -113,7 +102,7 @@ describe_obj(struct seq_file *m, struct
  		   obj->last_read_seqno,
  		   obj->last_write_seqno,
  		   obj->last_fenced_seqno,
@@ -82,7 +78,7 @@ index d4138124d993..86379799dab8 100644
  		   obj->dirty ? " dirty" : "",
  		   obj->madv == I915_MADV_DONTNEED ? " purgeable" : "");
  	if (obj->base.name)
-@@ -608,358 +597,6 @@ static int i915_hws_info(struct seq_file *m, void *data)
+@@ -608,358 +597,6 @@ static int i915_hws_info(struct seq_file
  	return 0;
  }
  
@@ -441,7 +437,7 @@ index d4138124d993..86379799dab8 100644
  static ssize_t
  i915_error_state_write(struct file *filp,
  		       const char __user *ubuf,
-@@ -982,26 +619,6 @@ i915_error_state_write(struct file *filp,
+@@ -982,26 +619,6 @@ i915_error_state_write(struct file *filp
  	return cnt;
  }
  
@@ -468,10 +464,11 @@ index d4138124d993..86379799dab8 100644
  static int i915_error_state_open(struct inode *inode, struct file *file)
  {
  	struct drm_device *dev = inode->i_private;
-@@ -1030,36 +647,6 @@ static int i915_error_state_release(struct inode *inode, struct file *file)
+@@ -1029,36 +646,6 @@ static int i915_error_state_release(stru
+ 
  	return 0;
  }
- 
+-
 -int i915_error_state_buf_init(struct drm_i915_error_state_buf *ebuf,
 -			      size_t count, loff_t pos)
 -{
@@ -501,15 +498,12 @@ index d4138124d993..86379799dab8 100644
 -
 -	return 0;
 -}
--
+ 
  static ssize_t i915_error_state_read(struct file *file, char __user *userbuf,
  				     size_t count, loff_t *pos)
- {
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 380d5799146c..a7fbefaa1c4a 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1629,21 +1629,12 @@ extern void intel_hpd_init(struct drm_device *dev);
+@@ -1629,21 +1629,12 @@ extern void intel_hpd_init(struct drm_de
  extern void intel_gt_init(struct drm_device *dev);
  extern void intel_gt_sanitize(struct drm_device *dev);
  
@@ -531,7 +525,7 @@ index 380d5799146c..a7fbefaa1c4a 100644
  /* i915_gem.c */
  int i915_gem_init_ioctl(struct drm_device *dev, void *data,
  			struct drm_file *file_priv);
-@@ -1954,13 +1945,12 @@ void i915_gem_dump_object(struct drm_i915_gem_object *obj, int len,
+@@ -1954,13 +1945,12 @@ void i915_gem_dump_object(struct drm_i91
  /* i915_debugfs.c */
  int i915_debugfs_init(struct drm_minor *minor);
  void i915_debugfs_cleanup(struct drm_minor *minor);
@@ -547,7 +541,7 @@ index 380d5799146c..a7fbefaa1c4a 100644
  int i915_error_state_buf_init(struct drm_i915_error_state_buf *eb,
  			      size_t count, loff_t pos);
  static inline void i915_error_state_buf_release(
-@@ -1968,6 +1958,14 @@ static inline void i915_error_state_buf_release(
+@@ -1968,6 +1958,14 @@ static inline void i915_error_state_buf_
  {
  	kfree(eb->buf);
  }
@@ -562,7 +556,7 @@ index 380d5799146c..a7fbefaa1c4a 100644
  
  /* i915_suspend.c */
  extern int i915_save_state(struct drm_device *dev);
-@@ -2047,7 +2045,6 @@ int i915_reg_read_ioctl(struct drm_device *dev, void *data,
+@@ -2047,7 +2045,6 @@ int i915_reg_read_ioctl(struct drm_devic
  			struct drm_file *file);
  
  /* overlay */
@@ -570,7 +564,7 @@ index 380d5799146c..a7fbefaa1c4a 100644
  extern struct intel_overlay_error_state *intel_overlay_capture_error_state(struct drm_device *dev);
  extern void intel_overlay_print_error_state(struct drm_i915_error_state_buf *e,
  					    struct intel_overlay_error_state *error);
-@@ -2056,7 +2053,6 @@ extern struct intel_display_error_state *intel_display_capture_error_state(struc
+@@ -2056,7 +2053,6 @@ extern struct intel_display_error_state
  extern void intel_display_print_error_state(struct drm_i915_error_state_buf *e,
  					    struct drm_device *dev,
  					    struct intel_display_error_state *error);
@@ -578,9 +572,6 @@ index 380d5799146c..a7fbefaa1c4a 100644
  
  /* On SNB platform, before reading ring registers forcewake bit
   * must be set to prevent GT core from power down and stale values being
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
-new file mode 100644
-index 000000000000..58386cebb865
 --- /dev/null
 +++ b/drivers/gpu/drm/i915/i915_gpu_error.c
 @@ -0,0 +1,971 @@
@@ -1555,11 +1546,9 @@ index 000000000000..58386cebb865
 +		break;
 +	}
 +}
-diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
-index f77e87365480..a710ec29781b 100644
 --- a/drivers/gpu/drm/i915/i915_irq.c
 +++ b/drivers/gpu/drm/i915/i915_irq.c
-@@ -1527,535 +1527,6 @@ static void i915_error_work_func(struct work_struct *work)
+@@ -1527,535 +1527,6 @@ static void i915_error_work_func(struct
  	}
  }
  
@@ -2095,11 +2084,9 @@ index f77e87365480..a710ec29781b 100644
  static void i915_report_and_clear_eir(struct drm_device *dev)
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 861dcc5d4ebf..7b52eaab0dc4 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -10213,9 +10213,6 @@ int intel_modeset_vga_set_state(struct drm_device *dev, bool state)
+@@ -10216,9 +10216,6 @@ int intel_modeset_vga_set_state(struct d
  	return 0;
  }
  
@@ -2109,16 +2096,14 @@ index 861dcc5d4ebf..7b52eaab0dc4 100644
  struct intel_display_error_state {
  
  	u32 power_well_driver;
-@@ -10387,4 +10384,3 @@ intel_display_print_error_state(struct drm_i915_error_state_buf *m,
+@@ -10390,4 +10387,3 @@ intel_display_print_error_state(struct d
  		err_printf(m, "  VSYNC: %08x\n", error->transcoder[i].vsync);
  	}
  }
 -#endif
-diff --git a/drivers/gpu/drm/i915/intel_overlay.c b/drivers/gpu/drm/i915/intel_overlay.c
-index 81c3ca14fa92..2abb53e6f1e0 100644
 --- a/drivers/gpu/drm/i915/intel_overlay.c
 +++ b/drivers/gpu/drm/i915/intel_overlay.c
-@@ -1412,9 +1412,6 @@ void intel_cleanup_overlay(struct drm_device *dev)
+@@ -1412,9 +1412,6 @@ void intel_cleanup_overlay(struct drm_de
  	kfree(dev_priv->overlay);
  }
  
@@ -2128,11 +2113,8 @@ index 81c3ca14fa92..2abb53e6f1e0 100644
  struct intel_overlay_error_state {
  	struct overlay_registers regs;
  	unsigned long base;
-@@ -1537,4 +1534,3 @@ intel_overlay_print_error_state(struct drm_i915_error_state_buf *m,
+@@ -1537,4 +1534,3 @@ intel_overlay_print_error_state(struct d
  	P(UVSCALEV);
  #undef P
  }
 -#endif
--- 
-1.8.5.rc3
-

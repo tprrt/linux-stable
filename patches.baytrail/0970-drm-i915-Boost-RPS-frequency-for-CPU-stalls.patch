@@ -72,25 +72,24 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit b29c19b645287f7062e17d70fa4e9781a01a5d88)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/i915_dma.c      |  16 ++---
- drivers/gpu/drm/i915/i915_drv.h      |  19 +++--
- drivers/gpu/drm/i915/i915_gem.c      | 135 ++++++++++++++++++++++++-----------
- drivers/gpu/drm/i915/i915_irq.c      |  11 ---
- drivers/gpu/drm/i915/intel_display.c |   3 +
- drivers/gpu/drm/i915/intel_drv.h     |   3 +
- drivers/gpu/drm/i915/intel_pm.c      |  42 ++++++-----
+ drivers/gpu/drm/i915/i915_dma.c      |   16 +---
+ drivers/gpu/drm/i915/i915_drv.h      |   19 +++-
+ drivers/gpu/drm/i915/i915_gem.c      |  135 ++++++++++++++++++++++++-----------
+ drivers/gpu/drm/i915/i915_irq.c      |   11 --
+ drivers/gpu/drm/i915/intel_display.c |    3 
+ drivers/gpu/drm/i915/intel_drv.h     |    3 
+ drivers/gpu/drm/i915/intel_pm.c      |   42 +++++-----
  7 files changed, 138 insertions(+), 91 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_dma.c b/drivers/gpu/drm/i915/i915_dma.c
-index 901fda3e4dfd..513a4feb3137 100644
 --- a/drivers/gpu/drm/i915/i915_dma.c
 +++ b/drivers/gpu/drm/i915/i915_dma.c
-@@ -1827,19 +1827,11 @@ int i915_driver_unload(struct drm_device *dev)
+@@ -1835,19 +1835,11 @@ int i915_driver_unload(struct drm_device
  
  int i915_driver_open(struct drm_device *dev, struct drm_file *file)
  {
 -	struct drm_i915_file_private *file_priv;
--
++	int ret;
+ 
 -	DRM_DEBUG_DRIVER("\n");
 -	file_priv = kzalloc(sizeof(*file_priv), GFP_KERNEL);
 -	if (!file_priv)
@@ -100,8 +99,7 @@ index 901fda3e4dfd..513a4feb3137 100644
 -
 -	spin_lock_init(&file_priv->mm.lock);
 -	INIT_LIST_HEAD(&file_priv->mm.request_list);
-+	int ret;
- 
+-
 -	idr_init(&file_priv->context_idr);
 +	ret = i915_gem_open(dev, file);
 +	if (ret)
@@ -109,8 +107,6 @@ index 901fda3e4dfd..513a4feb3137 100644
  
  	return 0;
  }
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 79bbcf925e4a..d1c6b92edae0 100644
 --- a/drivers/gpu/drm/i915/i915_drv.h
 +++ b/drivers/gpu/drm/i915/i915_drv.h
 @@ -844,9 +844,6 @@ struct intel_gen6_power_mgmt {
@@ -157,7 +153,7 @@ index 79bbcf925e4a..d1c6b92edae0 100644
  };
  
  #define INTEL_INFO(dev)	(to_i915(dev)->info)
-@@ -1953,7 +1963,7 @@ i915_gem_object_unpin_fence(struct drm_i915_gem_object *obj)
+@@ -1953,7 +1963,7 @@ i915_gem_object_unpin_fence(struct drm_i
  	}
  }
  
@@ -166,7 +162,7 @@ index 79bbcf925e4a..d1c6b92edae0 100644
  void i915_gem_retire_requests_ring(struct intel_ring_buffer *ring);
  int __must_check i915_gem_check_wedge(struct i915_gpu_error *error,
  				      bool interruptible);
-@@ -2004,6 +2014,7 @@ int i915_gem_attach_phys_object(struct drm_device *dev,
+@@ -2004,6 +2014,7 @@ int i915_gem_attach_phys_object(struct d
  void i915_gem_detach_phys_object(struct drm_device *dev,
  				 struct drm_i915_gem_object *obj);
  void i915_gem_free_all_phys_object(struct drm_device *dev);
@@ -174,11 +170,9 @@ index 79bbcf925e4a..d1c6b92edae0 100644
  void i915_gem_release(struct drm_device *dev, struct drm_file *file);
  
  uint32_t
-diff --git a/drivers/gpu/drm/i915/i915_gem.c b/drivers/gpu/drm/i915/i915_gem.c
-index 6ee80f4e80ce..052280840f99 100644
 --- a/drivers/gpu/drm/i915/i915_gem.c
 +++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -980,6 +980,14 @@ static bool missed_irq(struct drm_i915_private *dev_priv,
+@@ -980,6 +980,14 @@ static bool missed_irq(struct drm_i915_p
  	return test_bit(ring->id, &dev_priv->gpu_error.missed_irq_rings);
  }
  
@@ -193,7 +187,7 @@ index 6ee80f4e80ce..052280840f99 100644
  /**
   * __wait_seqno - wait until execution of seqno has finished
   * @ring: the ring expected to report seqno
-@@ -1000,7 +1008,9 @@ static bool missed_irq(struct drm_i915_private *dev_priv,
+@@ -1000,7 +1008,9 @@ static bool missed_irq(struct drm_i915_p
   */
  static int __wait_seqno(struct intel_ring_buffer *ring, u32 seqno,
  			unsigned reset_counter,
@@ -204,7 +198,7 @@ index 6ee80f4e80ce..052280840f99 100644
  {
  	drm_i915_private_t *dev_priv = ring->dev->dev_private;
  	struct timespec before, now;
-@@ -1015,6 +1025,14 @@ static int __wait_seqno(struct intel_ring_buffer *ring, u32 seqno,
+@@ -1015,6 +1025,14 @@ static int __wait_seqno(struct intel_rin
  
  	timeout_jiffies = timeout ? timespec_to_jiffies_timeout(timeout) : 1;
  
@@ -219,7 +213,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	if (!(dev_priv->gpu_error.test_irq_rings & intel_ring_flag(ring)) &&
  	    WARN_ON(!ring->irq_get(ring)))
  		return -ENODEV;
-@@ -1114,7 +1132,7 @@ i915_wait_seqno(struct intel_ring_buffer *ring, uint32_t seqno)
+@@ -1114,7 +1132,7 @@ i915_wait_seqno(struct intel_ring_buffer
  
  	return __wait_seqno(ring, seqno,
  			    atomic_read(&dev_priv->gpu_error.reset_counter),
@@ -228,7 +222,7 @@ index 6ee80f4e80ce..052280840f99 100644
  }
  
  static int
-@@ -1164,6 +1182,7 @@ i915_gem_object_wait_rendering(struct drm_i915_gem_object *obj,
+@@ -1164,6 +1182,7 @@ i915_gem_object_wait_rendering(struct dr
   */
  static __must_check int
  i915_gem_object_wait_rendering__nonblocking(struct drm_i915_gem_object *obj,
@@ -236,7 +230,7 @@ index 6ee80f4e80ce..052280840f99 100644
  					    bool readonly)
  {
  	struct drm_device *dev = obj->base.dev;
-@@ -1190,7 +1209,7 @@ i915_gem_object_wait_rendering__nonblocking(struct drm_i915_gem_object *obj,
+@@ -1190,7 +1209,7 @@ i915_gem_object_wait_rendering__nonblock
  
  	reset_counter = atomic_read(&dev_priv->gpu_error.reset_counter);
  	mutex_unlock(&dev->struct_mutex);
@@ -245,7 +239,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	mutex_lock(&dev->struct_mutex);
  	if (ret)
  		return ret;
-@@ -1239,7 +1258,7 @@ i915_gem_set_domain_ioctl(struct drm_device *dev, void *data,
+@@ -1239,7 +1258,7 @@ i915_gem_set_domain_ioctl(struct drm_dev
  	 * We will repeat the flush holding the lock in the normal manner
  	 * to catch cases where we are gazumped.
  	 */
@@ -254,7 +248,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	if (ret)
  		goto unref;
  
-@@ -2155,6 +2174,7 @@ int __i915_add_request(struct intel_ring_buffer *ring,
+@@ -2155,6 +2174,7 @@ int __i915_add_request(struct intel_ring
  		i915_queue_hangcheck(ring->dev);
  
  		if (was_empty) {
@@ -262,7 +256,7 @@ index 6ee80f4e80ce..052280840f99 100644
  			queue_delayed_work(dev_priv->wq,
  					   &dev_priv->mm.retire_work,
  					   round_jiffies_up_relative(HZ));
-@@ -2176,10 +2196,8 @@ i915_gem_request_remove_from_client(struct drm_i915_gem_request *request)
+@@ -2176,10 +2196,8 @@ i915_gem_request_remove_from_client(stru
  		return;
  
  	spin_lock(&file_priv->mm.lock);
@@ -275,7 +269,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	spin_unlock(&file_priv->mm.lock);
  }
  
-@@ -2443,57 +2461,53 @@ i915_gem_retire_requests_ring(struct intel_ring_buffer *ring)
+@@ -2443,57 +2461,53 @@ i915_gem_retire_requests_ring(struct int
  	WARN_ON(i915_verify_lists(ring->dev));
  }
  
@@ -361,7 +355,7 @@ index 6ee80f4e80ce..052280840f99 100644
  }
  
  /**
-@@ -2591,7 +2605,7 @@ i915_gem_wait_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+@@ -2591,7 +2605,7 @@ i915_gem_wait_ioctl(struct drm_device *d
  	reset_counter = atomic_read(&dev_priv->gpu_error.reset_counter);
  	mutex_unlock(&dev->struct_mutex);
  
@@ -370,7 +364,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	if (timeout)
  		args->timeout_ns = timespec_to_ns(timeout);
  	return ret;
-@@ -3802,7 +3816,7 @@ i915_gem_ring_throttle(struct drm_device *dev, struct drm_file *file)
+@@ -3802,7 +3816,7 @@ i915_gem_ring_throttle(struct drm_device
  	if (seqno == 0)
  		return 0;
  
@@ -396,7 +390,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	init_waitqueue_head(&dev_priv->gpu_error.reset_queue);
  
  	/* On GEN3 we really need to make sure the ARB C3 LP bit is set */
-@@ -4828,6 +4845,8 @@ void i915_gem_release(struct drm_device *dev, struct drm_file *file)
+@@ -4828,6 +4845,8 @@ void i915_gem_release(struct drm_device
  {
  	struct drm_i915_file_private *file_priv = file->driver_priv;
  
@@ -405,7 +399,7 @@ index 6ee80f4e80ce..052280840f99 100644
  	/* Clean up our request list when the client is going away, so that
  	 * later retire_requests won't dereference our soon-to-be-gone
  	 * file_priv.
-@@ -4845,6 +4864,38 @@ void i915_gem_release(struct drm_device *dev, struct drm_file *file)
+@@ -4845,6 +4864,38 @@ void i915_gem_release(struct drm_device
  	spin_unlock(&file_priv->mm.lock);
  }
  
@@ -444,11 +438,9 @@ index 6ee80f4e80ce..052280840f99 100644
  static bool mutex_is_locked_by(struct mutex *mutex, struct task_struct *task)
  {
  	if (!mutex_is_locked(mutex))
-diff --git a/drivers/gpu/drm/i915/i915_irq.c b/drivers/gpu/drm/i915/i915_irq.c
-index 05c05a6a4360..6ee557280e11 100644
 --- a/drivers/gpu/drm/i915/i915_irq.c
 +++ b/drivers/gpu/drm/i915/i915_irq.c
-@@ -859,17 +859,6 @@ static void gen6_pm_rps_work(struct work_struct *work)
+@@ -859,17 +859,6 @@ static void gen6_pm_rps_work(struct work
  			gen6_set_rps(dev_priv->dev, new_delay);
  	}
  
@@ -466,11 +458,9 @@ index 05c05a6a4360..6ee557280e11 100644
  	mutex_unlock(&dev_priv->rps.hw_lock);
  }
  
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 3e2c6a464b91..b41c1592ffda 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -7726,6 +7726,9 @@ void intel_mark_idle(struct drm_device *dev)
+@@ -7726,6 +7726,9 @@ void intel_mark_idle(struct drm_device *
  
  		intel_decrease_pllclock(crtc);
  	}
@@ -480,11 +470,9 @@ index 3e2c6a464b91..b41c1592ffda 100644
  }
  
  void intel_mark_fb_busy(struct drm_i915_gem_object *obj,
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index e6db0c67e0be..922c5d752cc3 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -825,4 +825,7 @@ int intel_sprite_get_colorkey(struct drm_device *dev, void *data,
+@@ -825,4 +825,7 @@ int intel_sprite_get_colorkey(struct drm
  /* intel_tv.c */
  void intel_tv_init(struct drm_device *dev);
  
@@ -492,11 +480,9 @@ index e6db0c67e0be..922c5d752cc3 100644
 +void gen6_rps_boost(struct drm_i915_private *dev_priv);
 +
  #endif /* __INTEL_DRV_H__ */
-diff --git a/drivers/gpu/drm/i915/intel_pm.c b/drivers/gpu/drm/i915/intel_pm.c
-index 9753bd9591eb..ca063c25ad32 100644
 --- a/drivers/gpu/drm/i915/intel_pm.c
 +++ b/drivers/gpu/drm/i915/intel_pm.c
-@@ -3345,6 +3345,26 @@ void gen6_set_rps(struct drm_device *dev, u8 val)
+@@ -3345,6 +3345,26 @@ void gen6_set_rps(struct drm_device *dev
  	trace_intel_gpu_freq_change(val * 50);
  }
  
@@ -523,7 +509,7 @@ index 9753bd9591eb..ca063c25ad32 100644
  /*
   * Wait until the previous freq change has completed,
   * or the timeout elapsed, and then update our notion
-@@ -3734,24 +3754,6 @@ int valleyview_rps_min_freq(struct drm_i915_private *dev_priv)
+@@ -3734,24 +3754,6 @@ int valleyview_rps_min_freq(struct drm_i
  	return vlv_punit_read(dev_priv, PUNIT_REG_GPU_LFM) & 0xff;
  }
  
@@ -548,7 +534,7 @@ index 9753bd9591eb..ca063c25ad32 100644
  static void valleyview_setup_pctx(struct drm_device *dev)
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
-@@ -3894,8 +3896,6 @@ static void valleyview_enable_rps(struct drm_device *dev)
+@@ -3894,8 +3896,6 @@ static void valleyview_enable_rps(struct
  				      dev_priv->rps.rpe_delay),
  			 dev_priv->rps.rpe_delay);
  
@@ -557,7 +543,7 @@ index 9753bd9591eb..ca063c25ad32 100644
  	valleyview_set_rps(dev_priv->dev, dev_priv->rps.rpe_delay);
  
  	gen6_enable_rps_interrupts(dev);
-@@ -4635,8 +4635,6 @@ void intel_disable_gt_powersave(struct drm_device *dev)
+@@ -4635,8 +4635,6 @@ void intel_disable_gt_powersave(struct d
  	} else if (INTEL_INFO(dev)->gen >= 6) {
  		cancel_delayed_work_sync(&dev_priv->rps.delayed_resume_work);
  		cancel_work_sync(&dev_priv->rps.work);
@@ -566,6 +552,3 @@ index 9753bd9591eb..ca063c25ad32 100644
  		mutex_lock(&dev_priv->rps.hw_lock);
  		if (IS_VALLEYVIEW(dev))
  			valleyview_disable_rps(dev);
--- 
-1.8.5.rc3
-

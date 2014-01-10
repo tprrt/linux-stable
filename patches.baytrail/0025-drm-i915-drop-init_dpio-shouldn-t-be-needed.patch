@@ -12,14 +12,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 78c9b7e71d90f32ce19d4a575a1a206cfe7c6a00)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_display.c | 14 --------------
+ drivers/gpu/drm/i915/intel_display.c |   14 --------------
  1 file changed, 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 7b52c0f729d5..9a284ac81c34 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -467,17 +467,6 @@ void intel_dpio_write(struct drm_i915_private *dev_priv, int reg, u32 val)
+@@ -467,17 +467,6 @@ void intel_dpio_write(struct drm_i915_pr
  		DRM_ERROR("DPIO write wait timed out\n");
  }
  
@@ -37,7 +35,7 @@ index 7b52c0f729d5..9a284ac81c34 100644
  static const intel_limit_t *intel_ironlake_limit(struct drm_crtc *crtc,
  						int refclk)
  {
-@@ -9484,9 +9473,6 @@ void intel_modeset_cleanup(struct drm_device *dev)
+@@ -9486,9 +9475,6 @@ void intel_modeset_cleanup(struct drm_de
  
  	ironlake_teardown_rc6(dev);
  
@@ -47,6 +45,3 @@ index 7b52c0f729d5..9a284ac81c34 100644
  	mutex_unlock(&dev->struct_mutex);
  
  	/* Disable the irq before mode object teardown, for the irq might
--- 
-1.8.5.rc3
-
