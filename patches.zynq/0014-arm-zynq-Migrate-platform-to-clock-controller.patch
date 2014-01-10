@@ -179,7 +179,7 @@ Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 +obj-$(CONFIG_ARCH_ZYNQ)		+= zynq/
  obj-$(CONFIG_ARCH_TEGRA)	+= tegra/
  obj-$(CONFIG_PLAT_SAMSUNG)	+= samsung/
- 
+ obj-$(CONFIG_ARCH_SHMOBILE_MULTI)	+= shmobile/
 --- /dev/null
 +++ b/drivers/clk/zynq/Makefile
 @@ -0,0 +1,3 @@
