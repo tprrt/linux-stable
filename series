@@ -2542,6 +2542,20 @@ patches.zynq/i2c-si570-merge-support-for-si570-clock-generator.patch
 
 
 #############################################################################
+# MinnowBoard patches
+#
+patches.minnowboard/pch_uart-use-dmi-interface-for-board-detection.patch
+patches.minnowboard/serial-pch_uart-remove-__initdata-annotation-from-dmi_table.patch
+patches.minnowboard/serial-pch_uart-fix-signed-ness-and-casting-of-uartclk-related-fields.patch
+patches.minnowboard/serial-pch_uart-fix-compilation-warning.patch
+patches.minnowboard/pch_gbe-convert-pr_-to-netdev_.patch
+patches.minnowboard/pch_gbe-use-managed-functions-pcim_-and-devm_.patch
+patches.minnowboard/pch_gbe-use-pch_gbe_phy_regs_len-instead-of-32.patch
+patches.minnowboard/pci-add-circuitco-vendor-id-and-subsystem-id.patch
+patches.minnowboard/pch_gbe-add-minnowboard-support.patch
+
+
+#############################################################################
 # fixes that go after all of the above
 #
 
