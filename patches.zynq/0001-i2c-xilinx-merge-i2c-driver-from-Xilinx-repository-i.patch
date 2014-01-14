@@ -11,8 +11,9 @@ Signed-off-by: Daniel Sangorrin <daniel.sangorrin@toshiba.co.jp>
 Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 ---
  drivers/i2c/busses/Kconfig         |    9 
- drivers/i2c/busses/i2c-xilinx_ps.c |  966 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 975 insertions(+)
+ drivers/i2c/busses/Makefile        |    1 
+ drivers/i2c/busses/i2c-xilinx_ps.c |  963 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 973 insertions(+)
  create mode 100644 drivers/i2c/busses/i2c-xilinx_ps.c
 
 --- a/drivers/i2c/busses/Kconfig
@@ -33,9 +34,19 @@ Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
  config I2C_OCTEON
  	tristate "Cavium OCTEON I2C bus support"
  	depends on CPU_CAVIUM_OCTEON
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -72,6 +72,7 @@ obj-$(CONFIG_I2C_STU300)	+= i2c-stu300.o
+ obj-$(CONFIG_I2C_TEGRA)		+= i2c-tegra.o
+ obj-$(CONFIG_I2C_VERSATILE)	+= i2c-versatile.o
+ obj-$(CONFIG_I2C_WMT)		+= i2c-wmt.o
++obj-$(CONFIG_I2C_XILINX_PS)	+= i2c-xilinx_ps.o
+ obj-$(CONFIG_I2C_OCTEON)	+= i2c-octeon.o
+ obj-$(CONFIG_I2C_XILINX)	+= i2c-xiic.o
+ obj-$(CONFIG_I2C_XLR)		+= i2c-xlr.o
 --- /dev/null
 +++ b/drivers/i2c/busses/i2c-xilinx_ps.c
-@@ -0,0 +1,966 @@
+@@ -0,0 +1,963 @@
 +/*
 + * Xilinx I2C bus driver for the PS I2C Interfaces.
 + *
@@ -78,7 +89,6 @@ Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 +#include <linux/interrupt.h>
 +#include <linux/io.h>
 +#include <linux/module.h>
-+#include <linux/of_i2c.h>
 +#include <linux/platform_device.h>
 +#include <linux/slab.h>
 +
@@ -946,8 +956,6 @@ Signed-off-by: Yoshitake Kobayashi <yoshitake.kobayashi@toshiba.co.jp>
 +		dev_err(&pdev->dev, "reg adap failed: %d\n", ret);
 +		goto err_clk_dis;
 +	}
-+
-+	of_i2c_register_devices(&id->adap);
 +
 +	dev_info(&pdev->dev, "%d kHz mmio %08lx irq %d\n",
 +		 id->i2c_clk/1000, (unsigned long)r_mem->start, id->irq);
