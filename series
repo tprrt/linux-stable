@@ -60,12 +60,9 @@ patches.renesas/0009-drivers-ata-sata_rcar.c-simplify-use-of-devm_ioremap.patch
 patches.renesas/0010-drivers-irq-chip-irq-gic-introduce-gic_cpu_if_down.patch
 patches.renesas/0011-irqchip-renesas-intc-irqpin-DT-binding-for-sense-bit.patch
 patches.renesas/0012-ARM-shmobile-irqpin-add-a-DT-property-to-enable-mask.patch
-patches.renesas/0013-irqchip-renesas-irqc-Fix-irqc_probe-error-handling.patch
 patches.renesas/0015-clocksource-arch_timer-Make-register-accessors-less-.patch
 patches.renesas/0016-clocksource-arch_timer-Push-the-read-write-wrappers-.patch
 patches.renesas/0017-clocksource-em_sti-Convert-to-devm_-managed-helpers.patch
-patches.renesas/0018-clocksource-em_sti-Set-cpu_possible_mask-to-fix-SMP-.patch
-patches.renesas/0019-gpio-rcar-R-Car-GPIO-IRQ-share-interrupt.patch
 patches.renesas/0020-gpio-rcar-Make-the-platform-data-gpio_base-field-sig.patch
 patches.renesas/0021-gpio-rcar-Add-support-for-IRQ_TYPE_EDGE_BOTH.patch
 patches.renesas/0022-gpio-rcar-Add-RCAR_GP_PIN-macro.patch
