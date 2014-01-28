@@ -28,17 +28,15 @@ Conflicts:
 	drm-intel-next"))
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c     | 14 +++++++
- drivers/gpu/drm/i915/intel_display.c | 76 +++++++++++++++++++++++++++++++-----
- drivers/gpu/drm/i915/intel_dp.c      |  4 ++
- drivers/gpu/drm/i915/intel_drv.h     |  2 +
+ drivers/gpu/drm/i915/intel_ddi.c     |   14 ++++++
+ drivers/gpu/drm/i915/intel_display.c |   76 ++++++++++++++++++++++++++++++-----
+ drivers/gpu/drm/i915/intel_dp.c      |    4 +
+ drivers/gpu/drm/i915/intel_drv.h     |    2 
  4 files changed, 86 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 3bfdb8e5ed37..04f68804834d 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1285,6 +1285,20 @@ static void intel_ddi_get_config(struct intel_encoder *encoder,
+@@ -1291,6 +1291,20 @@ static void intel_ddi_get_config(struct
  	default:
  		break;
  	}
@@ -59,11 +57,9 @@ index 3bfdb8e5ed37..04f68804834d 100644
  }
  
  static void intel_ddi_destroy(struct drm_encoder *encoder)
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 086a06250006..49487fc5992f 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -5858,20 +5858,64 @@ static int ironlake_crtc_mode_set(struct drm_crtc *crtc,
+@@ -5858,20 +5858,64 @@ static int ironlake_crtc_mode_set(struct
  	return ret;
  }
  
@@ -138,7 +134,7 @@ index 086a06250006..49487fc5992f 100644
  }
  
  static void ironlake_get_pfit_config(struct intel_crtc *crtc,
-@@ -8244,6 +8288,11 @@ static void intel_dump_pipe_config(struct intel_crtc *crtc,
+@@ -8244,6 +8288,11 @@ static void intel_dump_pipe_config(struc
  		      pipe_config->fdi_m_n.gmch_m, pipe_config->fdi_m_n.gmch_n,
  		      pipe_config->fdi_m_n.link_m, pipe_config->fdi_m_n.link_n,
  		      pipe_config->fdi_m_n.tu);
@@ -150,7 +146,7 @@ index 086a06250006..49487fc5992f 100644
  	DRM_DEBUG_KMS("requested mode:\n");
  	drm_mode_debug_printmodeline(&pipe_config->requested_mode);
  	DRM_DEBUG_KMS("adjusted mode:\n");
-@@ -8614,6 +8663,13 @@ intel_pipe_config_compare(struct drm_device *dev,
+@@ -8614,6 +8663,13 @@ intel_pipe_config_compare(struct drm_dev
  	PIPE_CONF_CHECK_I(fdi_m_n.link_n);
  	PIPE_CONF_CHECK_I(fdi_m_n.tu);
  
@@ -164,11 +160,9 @@ index 086a06250006..49487fc5992f 100644
  	PIPE_CONF_CHECK_I(adjusted_mode.crtc_hdisplay);
  	PIPE_CONF_CHECK_I(adjusted_mode.crtc_htotal);
  	PIPE_CONF_CHECK_I(adjusted_mode.crtc_hblank_start);
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index 61e5c76c2376..afd055e21b90 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -1455,6 +1455,10 @@ static void intel_dp_get_config(struct intel_encoder *encoder,
+@@ -1455,6 +1455,10 @@ static void intel_dp_get_config(struct i
  
  	pipe_config->adjusted_mode.flags |= flags;
  
@@ -179,11 +173,9 @@ index 61e5c76c2376..afd055e21b90 100644
  	if (dp_to_dig_port(intel_dp)->port == PORT_A) {
  		if ((I915_READ(DP_A) & DP_PLL_FREQ_MASK) == DP_PLL_FREQ_160MHZ)
  			pipe_config->port_clock = 162000;
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index c8d334a3c352..09dea5834c1c 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -802,6 +802,8 @@ extern void hsw_pc8_disable_interrupts(struct drm_device *dev);
+@@ -802,6 +802,8 @@ extern void hsw_pc8_disable_interrupts(s
  extern void hsw_pc8_restore_interrupts(struct drm_device *dev);
  extern void intel_aux_display_runtime_get(struct drm_i915_private *dev_priv);
  extern void intel_aux_display_runtime_put(struct drm_i915_private *dev_priv);
@@ -192,6 +184,3 @@ index c8d334a3c352..09dea5834c1c 100644
  extern void i915_disable_vga_mem(struct drm_device *dev);
  
  #endif /* __INTEL_DRV_H__ */
--- 
-1.8.5.rc3
-

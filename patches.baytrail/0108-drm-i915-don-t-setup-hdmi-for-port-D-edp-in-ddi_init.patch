@@ -21,14 +21,12 @@ Conflicts:
 	drivers/gpu/drm/i915/intel_ddi.c
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 23 +++++++++++------------
+ drivers/gpu/drm/i915/intel_ddi.c |   23 +++++++++++------------
  1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 832401312630..6953a971a4ea 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1490,16 +1490,6 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1496,16 +1496,6 @@ void intel_ddi_init(struct drm_device *d
  		return;
  	}
  
@@ -45,7 +43,7 @@ index 832401312630..6953a971a4ea 100644
  	intel_encoder = &intel_dig_port->base;
  	encoder = &intel_encoder->base;
  
-@@ -1527,7 +1517,16 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1533,7 +1523,16 @@ void intel_ddi_init(struct drm_device *d
  	intel_encoder->cloneable = false;
  	intel_encoder->hot_plug = intel_ddi_hot_plug;
  
@@ -64,6 +62,3 @@ index 832401312630..6953a971a4ea 100644
 +		intel_hdmi_init_connector(intel_dig_port, hdmi_connector);
 +	}
  }
--- 
-1.8.5.rc3
-

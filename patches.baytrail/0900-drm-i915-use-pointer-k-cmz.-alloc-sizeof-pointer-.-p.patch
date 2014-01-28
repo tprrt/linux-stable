@@ -96,7 +96,7 @@ Signed-off-by: Darren Hart <dvhart@linux.intel.com>
  		return;
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1337,11 +1337,11 @@ void intel_ddi_init(struct drm_device *d
+@@ -1343,11 +1343,11 @@ void intel_ddi_init(struct drm_device *d
  	struct intel_connector *hdmi_connector = NULL;
  	struct intel_connector *dp_connector = NULL;
  
@@ -110,7 +110,7 @@ Signed-off-by: Darren Hart <dvhart@linux.intel.com>
  	if (!dp_connector) {
  		kfree(intel_dig_port);
  		return;
-@@ -1381,7 +1381,7 @@ void intel_ddi_init(struct drm_device *d
+@@ -1387,7 +1387,7 @@ void intel_ddi_init(struct drm_device *d
  	}
  
  	if (intel_encoder->type != INTEL_OUTPUT_EDP) {

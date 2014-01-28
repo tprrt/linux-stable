@@ -24,14 +24,12 @@ Conflicts:
 	drivers/gpu/drm/i915/intel_ddi.c
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 2 --
+ drivers/gpu/drm/i915/intel_ddi.c |    2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 0bf5be1bf5c9..b042ee5c4070 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1351,8 +1351,6 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1357,8 +1357,6 @@ void intel_ddi_init(struct drm_device *d
  	intel_dig_port->saved_port_bits = I915_READ(DDI_BUF_CTL(port)) &
  					  (DDI_BUF_PORT_REVERSAL |
  					   DDI_A_4_LANES);
@@ -40,6 +38,3 @@ index 0bf5be1bf5c9..b042ee5c4070 100644
  	intel_dig_port->dp.output_reg = DDI_BUF_CTL(port);
  
  	intel_encoder->type = INTEL_OUTPUT_UNKNOWN;
--- 
-1.8.5.rc3
-

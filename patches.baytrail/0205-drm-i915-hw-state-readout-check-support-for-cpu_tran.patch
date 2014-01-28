@@ -36,15 +36,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit eccb140bca6727f2ef849e8811d5fe4c9fbfd5dd)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c     |  4 ++
- drivers/gpu/drm/i915/intel_display.c | 90 +++++++++++++-----------------------
+ drivers/gpu/drm/i915/intel_ddi.c     |    4 +
+ drivers/gpu/drm/i915/intel_display.c |   90 ++++++++++++-----------------------
  2 files changed, 37 insertions(+), 57 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 418b91c28ed6..74b372dc14a4 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1292,9 +1292,13 @@ static bool intel_ddi_compute_config(struct intel_encoder *encoder,
+@@ -1298,9 +1298,13 @@ static bool intel_ddi_compute_config(str
  				     struct intel_crtc_config *pipe_config)
  {
  	int type = encoder->type;
@@ -58,11 +56,9 @@ index 418b91c28ed6..74b372dc14a4 100644
  	if (type == INTEL_OUTPUT_HDMI)
  		return intel_hdmi_compute_config(encoder, pipe_config);
  	else
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 0159fe522d0d..371cd327b6ea 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -3469,12 +3469,6 @@ static void ironlake_crtc_off(struct drm_crtc *crtc)
+@@ -3469,12 +3469,6 @@ static void ironlake_crtc_off(struct drm
  
  static void haswell_crtc_off(struct drm_crtc *crtc)
  {
@@ -75,7 +71,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	intel_ddi_put_crtc_pll(crtc);
  }
  
-@@ -4925,6 +4919,8 @@ static bool i9xx_get_pipe_config(struct intel_crtc *crtc,
+@@ -4925,6 +4919,8 @@ static bool i9xx_get_pipe_config(struct
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	uint32_t tmp;
  
@@ -84,7 +80,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	tmp = I915_READ(PIPECONF(crtc->pipe));
  	if (!(tmp & PIPECONF_ENABLE))
  		return false;
-@@ -5647,8 +5643,6 @@ static int ironlake_crtc_mode_set(struct drm_crtc *crtc,
+@@ -5647,8 +5643,6 @@ static int ironlake_crtc_mode_set(struct
  	WARN(!(HAS_PCH_IBX(dev) || HAS_PCH_CPT(dev)),
  	     "Unexpected PCH type %d\n", INTEL_PCH_TYPE(dev));
  
@@ -93,7 +89,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	ok = ironlake_compute_clocks(crtc, adjusted_mode, &clock,
  				     &has_reduced_clock, &reduced_clock);
  	if (!ok) {
-@@ -5784,6 +5778,8 @@ static bool ironlake_get_pipe_config(struct intel_crtc *crtc,
+@@ -5784,6 +5778,8 @@ static bool ironlake_get_pipe_config(str
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	uint32_t tmp;
  
@@ -102,7 +98,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	tmp = I915_READ(PIPECONF(crtc->pipe));
  	if (!(tmp & PIPECONF_ENABLE))
  		return false;
-@@ -5860,11 +5856,6 @@ static int haswell_crtc_mode_set(struct drm_crtc *crtc,
+@@ -5860,11 +5856,6 @@ static int haswell_crtc_mode_set(struct
  		num_connectors++;
  	}
  
@@ -114,7 +110,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	/* We are not sure yet this won't happen. */
  	WARN(!HAS_PCH_LPT(dev), "Unexpected PCH type %d\n",
  	     INTEL_PCH_TYPE(dev));
-@@ -5918,15 +5909,37 @@ static bool haswell_get_pipe_config(struct intel_crtc *crtc,
+@@ -5918,15 +5909,37 @@ static bool haswell_get_pipe_config(stru
  {
  	struct drm_device *dev = crtc->base.dev;
  	struct drm_i915_private *dev_priv = dev->dev_private;
@@ -155,7 +151,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	if (!(tmp & PIPECONF_ENABLE))
  		return false;
  
-@@ -5935,7 +5948,7 @@ static bool haswell_get_pipe_config(struct intel_crtc *crtc,
+@@ -5935,7 +5948,7 @@ static bool haswell_get_pipe_config(stru
  	 * DDI E. So just check whether this pipe is wired to DDI E and whether
  	 * the PCH transcoder is on.
  	 */
@@ -164,7 +160,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	if ((tmp & TRANS_DDI_PORT_MASK) == TRANS_DDI_SELECT_PORT(PORT_E) &&
  	    I915_READ(LPT_TRANSCONF) & TRANS_ENABLE) {
  		pipe_config->has_pch_encoder = true;
-@@ -7694,6 +7707,7 @@ intel_modeset_pipe_config(struct drm_crtc *crtc,
+@@ -7694,6 +7707,7 @@ intel_modeset_pipe_config(struct drm_crt
  
  	drm_mode_copy(&pipe_config->adjusted_mode, mode);
  	drm_mode_copy(&pipe_config->requested_mode, mode);
@@ -172,7 +168,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  
  	plane_bpp = pipe_config_set_bpp(crtc, fb, pipe_config);
  	if (plane_bpp < 0)
-@@ -7944,6 +7958,8 @@ intel_pipe_config_compare(struct drm_device *dev,
+@@ -7944,6 +7958,8 @@ intel_pipe_config_compare(struct drm_dev
  		return false; \
  	}
  
@@ -181,7 +177,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	PIPE_CONF_CHECK_I(has_pch_encoder);
  	PIPE_CONF_CHECK_I(fdi_lanes);
  	PIPE_CONF_CHECK_I(fdi_m_n.gmch_m);
-@@ -8095,7 +8111,6 @@ intel_modeset_check_state(struct drm_device *dev)
+@@ -8095,7 +8111,6 @@ intel_modeset_check_state(struct drm_dev
  		     "crtc's computed enabled state doesn't match tracked enabled state "
  		     "(expected %i, found %i)\n", enabled, crtc->base.enabled);
  
@@ -189,7 +185,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  		active = dev_priv->display.get_pipe_config(crtc,
  							   &pipe_config);
  
-@@ -8163,12 +8178,10 @@ static int __intel_set_mode(struct drm_crtc *crtc,
+@@ -8163,12 +8178,10 @@ static int __intel_set_mode(struct drm_c
  	 * to set it here already despite that we pass it down the callchain.
  	 */
  	if (modeset_pipes) {
@@ -202,7 +198,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	}
  
  	/* Only after disabling all output pipelines that will be changed can we
-@@ -8597,7 +8610,6 @@ static void intel_crtc_init(struct drm_device *dev, int pipe)
+@@ -8597,7 +8610,6 @@ static void intel_crtc_init(struct drm_d
  	/* Swap pipes & planes for FBC on pre-965 */
  	intel_crtc->pipe = pipe;
  	intel_crtc->plane = pipe;
@@ -210,7 +206,7 @@ index 0159fe522d0d..371cd327b6ea 100644
  	if (IS_MOBILE(dev) && IS_GEN3(dev)) {
  		DRM_DEBUG_KMS("swapping pipes & planes for FBC\n");
  		intel_crtc->plane = !pipe;
-@@ -9483,50 +9495,14 @@ void intel_modeset_setup_hw_state(struct drm_device *dev,
+@@ -9483,50 +9495,14 @@ void intel_modeset_setup_hw_state(struct
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	enum pipe pipe;
@@ -261,6 +257,3 @@ index 0159fe522d0d..371cd327b6ea 100644
  
  		crtc->active = dev_priv->display.get_pipe_config(crtc,
  								 &crtc->config);
--- 
-1.8.5.rc3
-

@@ -13,14 +13,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit a40066412cc2ace1c1299e7a4d7a81dc33395b6f)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 9 ++++++---
+ drivers/gpu/drm/i915/intel_ddi.c |    9 ++++++---
  1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index b8c096b4a1de..63aca49d11a8 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1139,10 +1139,13 @@ static void intel_disable_ddi(struct intel_encoder *intel_encoder)
+@@ -1145,10 +1145,13 @@ static void intel_disable_ddi(struct int
  
  int intel_ddi_get_cdclk_freq(struct drm_i915_private *dev_priv)
  {
@@ -37,6 +35,3 @@ index b8c096b4a1de..63aca49d11a8 100644
  		return 450000;
  	else if (IS_ULT(dev_priv->dev))
  		return 337500;
--- 
-1.8.5.rc3
-

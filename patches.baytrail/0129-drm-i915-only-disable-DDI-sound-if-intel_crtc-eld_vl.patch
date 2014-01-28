@@ -16,15 +16,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit c77bf5659deb9405ef61080c148e47d2c8ee31e5)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c     | 11 +++++++----
- drivers/gpu/drm/i915/intel_display.c |  2 +-
+ drivers/gpu/drm/i915/intel_ddi.c     |   11 +++++++----
+ drivers/gpu/drm/i915/intel_display.c |    2 +-
  2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 6953a971a4ea..46181000f6bd 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1306,7 +1306,7 @@ static void intel_enable_ddi(struct intel_encoder *intel_encoder)
+@@ -1312,7 +1312,7 @@ static void intel_enable_ddi(struct inte
  		ironlake_edp_backlight_on(intel_dp);
  	}
  
@@ -33,7 +31,7 @@ index 6953a971a4ea..46181000f6bd 100644
  		tmp = I915_READ(HSW_AUD_PIN_ELD_CP_VLD);
  		tmp |= ((AUDIO_OUTPUT_ENABLE_A | AUDIO_ELD_VALID_A) << (pipe * 4));
  		I915_WRITE(HSW_AUD_PIN_ELD_CP_VLD, tmp);
-@@ -1324,9 +1324,12 @@ static void intel_disable_ddi(struct intel_encoder *intel_encoder)
+@@ -1330,9 +1330,12 @@ static void intel_disable_ddi(struct int
  	struct drm_i915_private *dev_priv = dev->dev_private;
  	uint32_t tmp;
  
@@ -49,11 +47,9 @@ index 6953a971a4ea..46181000f6bd 100644
  
  	if (type == INTEL_OUTPUT_EDP) {
  		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
-diff --git a/drivers/gpu/drm/i915/intel_display.c b/drivers/gpu/drm/i915/intel_display.c
-index 7e3b4663e51d..f3d8e0915d7f 100644
 --- a/drivers/gpu/drm/i915/intel_display.c
 +++ b/drivers/gpu/drm/i915/intel_display.c
-@@ -3864,8 +3864,8 @@ static void intel_crtc_disable(struct drm_crtc *crtc)
+@@ -3864,8 +3864,8 @@ static void intel_crtc_disable(struct dr
  	/* crtc should still be enabled when we disable it. */
  	WARN_ON(!crtc->enabled);
  
@@ -63,6 +59,3 @@ index 7e3b4663e51d..f3d8e0915d7f 100644
  	intel_crtc_update_sarea(crtc, false);
  	dev_priv->display.off(crtc);
  
--- 
-1.8.5.rc3
-

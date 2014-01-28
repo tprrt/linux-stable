@@ -27,15 +27,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit b2f246a8998ccf9e00477c8829a62139804e9857)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 4 +++-
- drivers/gpu/drm/i915/intel_dp.c  | 9 ++++++---
+ drivers/gpu/drm/i915/intel_ddi.c |    4 +++-
+ drivers/gpu/drm/i915/intel_dp.c  |    9 ++++++---
  2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 73acdbae3301..c7cac2f9a053 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1360,8 +1360,10 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1366,8 +1366,10 @@ void intel_ddi_init(struct drm_device *d
  	intel_encoder->cloneable = false;
  	intel_encoder->hot_plug = intel_ddi_hot_plug;
  
@@ -47,11 +45,9 @@ index 73acdbae3301..c7cac2f9a053 100644
  
  	if (intel_encoder->type != INTEL_OUTPUT_EDP) {
  		hdmi_connector = kzalloc(sizeof(struct intel_connector),
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index cd7a28762333..7da84180d7ce 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -2998,7 +2998,6 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
+@@ -2998,7 +2998,6 @@ static bool intel_edp_init_connector(str
  		/* if this fails, presume the device is a ghost */
  		DRM_INFO("failed to retrieve link info, disabling eDP\n");
  		intel_dp_encoder_destroy(&intel_dig_port->base.base);
@@ -59,7 +55,7 @@ index cd7a28762333..7da84180d7ce 100644
  		return false;
  	}
  
-@@ -3157,8 +3156,11 @@ intel_dp_init_connector(struct intel_digital_port *intel_dig_port,
+@@ -3157,8 +3156,11 @@ intel_dp_init_connector(struct intel_dig
  
  	intel_dp_i2c_init(intel_dp, intel_connector, name);
  
@@ -72,7 +68,7 @@ index cd7a28762333..7da84180d7ce 100644
  
  	intel_dp_add_properties(intel_dp, connector);
  
-@@ -3217,5 +3219,6 @@ intel_dp_init(struct drm_device *dev, int output_reg, enum port port)
+@@ -3217,5 +3219,6 @@ intel_dp_init(struct drm_device *dev, in
  	intel_encoder->cloneable = false;
  	intel_encoder->hot_plug = intel_dp_hot_plug;
  
@@ -80,6 +76,3 @@ index cd7a28762333..7da84180d7ce 100644
 +	if (!intel_dp_init_connector(intel_dig_port, intel_connector))
 +		kfree(intel_connector);
  }
--- 
-1.8.5.rc3
-

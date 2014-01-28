@@ -23,16 +23,14 @@ Conflicts:
 	'airlied/drm-next' into drm-intel-next"))
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c |  5 +----
- drivers/gpu/drm/i915/intel_dp.c  | 34 ++++++++++++----------------------
- drivers/gpu/drm/i915/intel_drv.h |  3 ---
+ drivers/gpu/drm/i915/intel_ddi.c |    5 +----
+ drivers/gpu/drm/i915/intel_dp.c  |   34 ++++++++++++----------------------
+ drivers/gpu/drm/i915/intel_drv.h |    3 ---
  3 files changed, 13 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index a43ac3a17bdc..6d335f8ca343 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -316,9 +316,6 @@ static void intel_ddi_mode_set(struct intel_encoder *encoder)
+@@ -316,9 +316,6 @@ static void intel_ddi_mode_set(struct in
  			DRM_DEBUG_DRIVER("DP audio: write eld information\n");
  			intel_write_eld(&encoder->base, adjusted_mode);
  		}
@@ -42,7 +40,7 @@ index a43ac3a17bdc..6d335f8ca343 100644
  	} else if (type == INTEL_OUTPUT_HDMI) {
  		struct intel_hdmi *intel_hdmi = enc_to_intel_hdmi(&encoder->base);
  
-@@ -1222,7 +1219,7 @@ void intel_ddi_prepare_link_retrain(struct drm_encoder *encoder)
+@@ -1228,7 +1225,7 @@ void intel_ddi_prepare_link_retrain(stru
  
  	val = DP_TP_CTL_ENABLE | DP_TP_CTL_MODE_SST |
  	      DP_TP_CTL_LINK_TRAIN_PAT1 | DP_TP_CTL_SCRAMBLE_DISABLE;
@@ -51,8 +49,6 @@ index a43ac3a17bdc..6d335f8ca343 100644
  		val |= DP_TP_CTL_ENHANCED_FRAME_ENABLE;
  	I915_WRITE(DP_TP_CTL(port), val);
  	POSTING_READ(DP_TP_CTL(port));
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index 0c9f4764ed92..4f52ec75b39f 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
 @@ -884,21 +884,6 @@ found:
@@ -77,7 +73,7 @@ index 0c9f4764ed92..4f52ec75b39f 100644
  static void ironlake_set_pll_cpu_edp(struct intel_dp *intel_dp)
  {
  	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
-@@ -971,8 +956,6 @@ static void intel_dp_mode_set(struct intel_encoder *encoder)
+@@ -971,8 +956,6 @@ static void intel_dp_mode_set(struct int
  		intel_write_eld(&encoder->base, adjusted_mode);
  	}
  
@@ -86,7 +82,7 @@ index 0c9f4764ed92..4f52ec75b39f 100644
  	/* Split out the IBX/CPU vs CPT settings */
  
  	if (port == PORT_A && IS_GEN7(dev) && !IS_VALLEYVIEW(dev)) {
-@@ -982,7 +965,7 @@ static void intel_dp_mode_set(struct intel_encoder *encoder)
+@@ -982,7 +965,7 @@ static void intel_dp_mode_set(struct int
  			intel_dp->DP |= DP_SYNC_VS_HIGH;
  		intel_dp->DP |= DP_LINK_TRAIN_OFF_CPT;
  
@@ -95,7 +91,7 @@ index 0c9f4764ed92..4f52ec75b39f 100644
  			intel_dp->DP |= DP_ENHANCED_FRAMING;
  
  		intel_dp->DP |= crtc->pipe << 29;
-@@ -996,7 +979,7 @@ static void intel_dp_mode_set(struct intel_encoder *encoder)
+@@ -996,7 +979,7 @@ static void intel_dp_mode_set(struct int
  			intel_dp->DP |= DP_SYNC_VS_HIGH;
  		intel_dp->DP |= DP_LINK_TRAIN_OFF;
  
@@ -104,7 +100,7 @@ index 0c9f4764ed92..4f52ec75b39f 100644
  			intel_dp->DP |= DP_ENHANCED_FRAMING;
  
  		if (crtc->pipe == 1)
-@@ -2474,14 +2457,21 @@ intel_dp_start_link_train(struct intel_dp *intel_dp)
+@@ -2474,14 +2457,21 @@ intel_dp_start_link_train(struct intel_d
  	uint8_t voltage;
  	int voltage_tries, loop_tries;
  	uint32_t DP = intel_dp->DP;
@@ -129,8 +125,6 @@ index 0c9f4764ed92..4f52ec75b39f 100644
  
  	DP |= DP_PORT_EN;
  
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index 922c5d752cc3..eaf0003ddfd9 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
 @@ -436,13 +436,11 @@ struct intel_hdmi {
@@ -147,7 +141,7 @@ index 922c5d752cc3..eaf0003ddfd9 100644
  	bool has_audio;
  	enum hdmi_force_audio force_audio;
  	uint32_t color_range;
-@@ -685,7 +683,6 @@ void i915_disable_vga_mem(struct drm_device *dev);
+@@ -685,7 +683,6 @@ void i915_disable_vga_mem(struct drm_dev
  void intel_dp_init(struct drm_device *dev, int output_reg, enum port port);
  bool intel_dp_init_connector(struct intel_digital_port *intel_dig_port,
  			     struct intel_connector *intel_connector);
@@ -155,6 +149,3 @@ index 922c5d752cc3..eaf0003ddfd9 100644
  void intel_dp_start_link_train(struct intel_dp *intel_dp);
  void intel_dp_complete_link_train(struct intel_dp *intel_dp);
  void intel_dp_stop_link_train(struct intel_dp *intel_dp);
--- 
-1.8.5.rc3
-

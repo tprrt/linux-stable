@@ -46,15 +46,13 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit b2b877ffe37d699f77f45e993590b66010491c52)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 10 +++++-----
- drivers/gpu/drm/i915/intel_dp.c  |  3 ++-
+ drivers/gpu/drm/i915/intel_ddi.c |   10 +++++-----
+ drivers/gpu/drm/i915/intel_dp.c  |    3 ++-
  2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index af699def47f0..418b91c28ed6 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1154,14 +1154,14 @@ static void intel_disable_ddi(struct intel_encoder *intel_encoder)
+@@ -1160,14 +1160,14 @@ static void intel_disable_ddi(struct int
  int intel_ddi_get_cdclk_freq(struct drm_i915_private *dev_priv)
  {
  	if (I915_READ(HSW_FUSE_STRAP) & HSW_CDCLK_LIMIT)
@@ -73,7 +71,7 @@ index af699def47f0..418b91c28ed6 100644
  }
  
  void intel_ddi_pll_init(struct drm_device *dev)
-@@ -1174,7 +1174,7 @@ void intel_ddi_pll_init(struct drm_device *dev)
+@@ -1180,7 +1180,7 @@ void intel_ddi_pll_init(struct drm_devic
  	 * Don't even try to turn it on.
  	 */
  
@@ -82,11 +80,9 @@ index af699def47f0..418b91c28ed6 100644
  		      intel_ddi_get_cdclk_freq(dev_priv));
  
  	if (val & LCPLL_CD_SOURCE_FCLK)
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index 8c282c8af0ed..73b97a1b2143 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -319,7 +319,8 @@ intel_dp_aux_ch(struct intel_dp *intel_dp,
+@@ -319,7 +319,8 @@ intel_dp_aux_ch(struct intel_dp *intel_d
  	 */
  	if (is_cpu_edp(intel_dp)) {
  		if (HAS_DDI(dev))
@@ -96,6 +92,3 @@ index 8c282c8af0ed..73b97a1b2143 100644
  		else if (IS_VALLEYVIEW(dev))
  			aux_clock_divider = 100;
  		else if (IS_GEN6(dev) || IS_GEN7(dev))
--- 
-1.8.5.rc3
-

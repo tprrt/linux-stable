@@ -21,16 +21,14 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 6801c18c0a43386bb44712cbc028a7e05adb9f0d)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_crt.c | 34 ++++++++++++++++++++++++++++------
- drivers/gpu/drm/i915/intel_ddi.c |  4 ++--
- drivers/gpu/drm/i915/intel_drv.h |  2 ++
+ drivers/gpu/drm/i915/intel_crt.c |   34 ++++++++++++++++++++++++++++------
+ drivers/gpu/drm/i915/intel_ddi.c |    4 ++--
+ drivers/gpu/drm/i915/intel_drv.h |    2 ++
  3 files changed, 32 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_crt.c b/drivers/gpu/drm/i915/intel_crt.c
-index f9a5f3d1f0cd..019c4cea7bb0 100644
 --- a/drivers/gpu/drm/i915/intel_crt.c
 +++ b/drivers/gpu/drm/i915/intel_crt.c
-@@ -83,13 +83,11 @@ static bool intel_crt_get_hw_state(struct intel_encoder *encoder,
+@@ -83,13 +83,11 @@ static bool intel_crt_get_hw_state(struc
  	return true;
  }
  
@@ -45,7 +43,7 @@ index f9a5f3d1f0cd..019c4cea7bb0 100644
  
  	tmp = I915_READ(crt->adpa_reg);
  
-@@ -103,16 +101,37 @@ static void intel_crt_get_config(struct intel_encoder *encoder,
+@@ -103,16 +101,37 @@ static void intel_crt_get_config(struct
  	else
  		flags |= DRM_MODE_FLAG_NVSYNC;
  
@@ -85,7 +83,7 @@ index f9a5f3d1f0cd..019c4cea7bb0 100644
  /* Note: The caller is required to filter out dpms modes not supported by the
   * platform. */
  static void intel_crt_set_dpms(struct intel_encoder *encoder, int mode)
-@@ -804,7 +823,10 @@ void intel_crt_init(struct drm_device *dev)
+@@ -804,7 +823,10 @@ void intel_crt_init(struct drm_device *d
  	crt->base.mode_set = intel_crt_mode_set;
  	crt->base.disable = intel_disable_crt;
  	crt->base.enable = intel_enable_crt;
@@ -97,11 +95,9 @@ index f9a5f3d1f0cd..019c4cea7bb0 100644
  	if (I915_HAS_HOTPLUG(dev))
  		crt->base.hpd_pin = HPD_CRT;
  	if (HAS_DDI(dev))
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 7e9fa53a1477..a43ac3a17bdc 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1269,8 +1269,8 @@ static void intel_ddi_hot_plug(struct intel_encoder *intel_encoder)
+@@ -1275,8 +1275,8 @@ static void intel_ddi_hot_plug(struct in
  		intel_dp_check_link_status(intel_dp);
  }
  
@@ -112,11 +108,9 @@ index 7e9fa53a1477..a43ac3a17bdc 100644
  {
  	struct drm_i915_private *dev_priv = encoder->base.dev->dev_private;
  	struct intel_crtc *intel_crtc = to_intel_crtc(encoder->base.crtc);
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index fb38ef10ac5d..e7fe5f1f72df 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -828,5 +828,7 @@ extern void ironlake_check_encoder_dotclock(const struct intel_crtc_config *pipe
+@@ -828,5 +828,7 @@ extern void ironlake_check_encoder_dotcl
  
  extern bool intel_crtc_active(struct drm_crtc *crtc);
  extern void i915_disable_vga_mem(struct drm_device *dev);
@@ -124,6 +118,3 @@ index fb38ef10ac5d..e7fe5f1f72df 100644
 +				 struct intel_crtc_config *pipe_config);
  
  #endif /* __INTEL_DRV_H__ */
--- 
-1.8.5.rc3
-

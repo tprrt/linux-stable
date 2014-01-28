@@ -23,16 +23,14 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 16c255335b0ec39b4e5e976f4b260978aeed5a68)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 3 ++-
- drivers/gpu/drm/i915/intel_dp.c  | 6 ++++--
- drivers/gpu/drm/i915/intel_drv.h | 2 +-
+ drivers/gpu/drm/i915/intel_ddi.c |    3 ++-
+ drivers/gpu/drm/i915/intel_dp.c  |    6 ++++--
+ drivers/gpu/drm/i915/intel_drv.h |    2 +-
  3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 6df049fe7462..73acdbae3301 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1360,7 +1360,8 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1366,7 +1366,8 @@ void intel_ddi_init(struct drm_device *d
  	intel_encoder->cloneable = false;
  	intel_encoder->hot_plug = intel_ddi_hot_plug;
  
@@ -42,11 +40,9 @@ index 6df049fe7462..73acdbae3301 100644
  
  	if (intel_encoder->type != INTEL_OUTPUT_EDP) {
  		hdmi_connector = kzalloc(sizeof(struct intel_connector),
-diff --git a/drivers/gpu/drm/i915/intel_dp.c b/drivers/gpu/drm/i915/intel_dp.c
-index b307befdbdb0..cd7a28762333 100644
 --- a/drivers/gpu/drm/i915/intel_dp.c
 +++ b/drivers/gpu/drm/i915/intel_dp.c
-@@ -3046,7 +3046,7 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
+@@ -3046,7 +3046,7 @@ static bool intel_edp_init_connector(str
  	return true;
  }
  
@@ -55,7 +51,7 @@ index b307befdbdb0..cd7a28762333 100644
  intel_dp_init_connector(struct intel_digital_port *intel_dig_port,
  			struct intel_connector *intel_connector)
  {
-@@ -3158,7 +3158,7 @@ intel_dp_init_connector(struct intel_digital_port *intel_dig_port,
+@@ -3158,7 +3158,7 @@ intel_dp_init_connector(struct intel_dig
  	intel_dp_i2c_init(intel_dp, intel_connector, name);
  
  	if (!intel_edp_init_connector(intel_dp, intel_connector))
@@ -64,7 +60,7 @@ index b307befdbdb0..cd7a28762333 100644
  
  	intel_dp_add_properties(intel_dp, connector);
  
-@@ -3170,6 +3170,8 @@ intel_dp_init_connector(struct intel_digital_port *intel_dig_port,
+@@ -3170,6 +3170,8 @@ intel_dp_init_connector(struct intel_dig
  		u32 temp = I915_READ(PEG_BAND_GAP_DATA);
  		I915_WRITE(PEG_BAND_GAP_DATA, (temp & ~0xf) | 0xd);
  	}
@@ -73,11 +69,9 @@ index b307befdbdb0..cd7a28762333 100644
  }
  
  void
-diff --git a/drivers/gpu/drm/i915/intel_drv.h b/drivers/gpu/drm/i915/intel_drv.h
-index 20396d624819..c7b93c61e467 100644
 --- a/drivers/gpu/drm/i915/intel_drv.h
 +++ b/drivers/gpu/drm/i915/intel_drv.h
-@@ -586,7 +586,7 @@ extern void intel_lvds_init(struct drm_device *dev);
+@@ -586,7 +586,7 @@ extern void intel_lvds_init(struct drm_d
  extern bool intel_is_dual_link_lvds(struct drm_device *dev);
  extern void intel_dp_init(struct drm_device *dev, int output_reg,
  			  enum port port);
@@ -86,6 +80,3 @@ index 20396d624819..c7b93c61e467 100644
  				    struct intel_connector *intel_connector);
  extern void intel_dp_init_link_config(struct intel_dp *intel_dp);
  extern void intel_dp_start_link_train(struct intel_dp *intel_dp);
--- 
-1.8.5.rc3
-

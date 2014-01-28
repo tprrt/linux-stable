@@ -21,14 +21,12 @@ Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 (cherry picked from commit 4a28ae58c0abad2d45a45db21e86c7166b2b4462)
 Signed-off-by: Darren Hart <dvhart@linux.intel.com>
 ---
- drivers/gpu/drm/i915/intel_ddi.c | 62 +++++++++++++++++++++++++++-------------
+ drivers/gpu/drm/i915/intel_ddi.c |   62 ++++++++++++++++++++++++++-------------
  1 file changed, 42 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/intel_ddi.c b/drivers/gpu/drm/i915/intel_ddi.c
-index 6d335f8ca343..31f4fe271388 100644
 --- a/drivers/gpu/drm/i915/intel_ddi.c
 +++ b/drivers/gpu/drm/i915/intel_ddi.c
-@@ -1345,6 +1345,41 @@ static const struct drm_encoder_funcs intel_ddi_funcs = {
+@@ -1351,6 +1351,41 @@ static const struct drm_encoder_funcs in
  	.destroy = intel_ddi_destroy,
  };
  
@@ -70,7 +68,7 @@ index 6d335f8ca343..31f4fe271388 100644
  void intel_ddi_init(struct drm_device *dev, enum port port)
  {
  	struct drm_i915_private *dev_priv = dev->dev_private;
-@@ -1369,12 +1404,6 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1375,12 +1410,6 @@ void intel_ddi_init(struct drm_device *d
  	if (!intel_dig_port)
  		return;
  
@@ -83,7 +81,7 @@ index 6d335f8ca343..31f4fe271388 100644
  	intel_encoder = &intel_dig_port->base;
  	encoder = &intel_encoder->base;
  
-@@ -1394,29 +1423,22 @@ void intel_ddi_init(struct drm_device *dev, enum port port)
+@@ -1400,29 +1429,22 @@ void intel_ddi_init(struct drm_device *d
  	intel_dig_port->saved_port_bits = I915_READ(DDI_BUF_CTL(port)) &
  					  (DDI_BUF_PORT_REVERSAL |
  					   DDI_A_4_LANES);
@@ -120,6 +118,3 @@ index 6d335f8ca343..31f4fe271388 100644
 +		kfree(intel_dig_port);
  	}
  }
--- 
-1.8.5.rc3
-
