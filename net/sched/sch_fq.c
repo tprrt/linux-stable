@@ -580,9 +580,11 @@ static void fq_rehash(struct fq_sched_data *q,
 	q->stat_gc_flows += fcnt;
 }
 
-static int fq_resize(struct fq_sched_data *q, u32 log)
+static int fq_resize(struct Qdisc *sch, u32 log)
 {
+	struct fq_sched_data *q = qdisc_priv(sch);
 	struct rb_root *array;
+	void *old_fq_root;
 	u32 idx;
 
 	if (q->fq_root && log == q->fq_trees_log)
@@ -595,12 +597,18 @@ static int fq_resize(struct fq_sched_data *q, u32 log)
 	for (idx = 0; idx < (1U << log); idx++)
 		array[idx] = RB_ROOT;
 
-	if (q->fq_root) {
-		fq_rehash(q, q->fq_root, q->fq_trees_log, array, log);
-		kfree(q->fq_root);
-	}
+	sch_tree_lock(sch);
+
+	old_fq_root = q->fq_root;
+	if (old_fq_root)
+		fq_rehash(q, old_fq_root, q->fq_trees_log, array, log);
+
 	q->fq_root = array;
 	q->fq_trees_log = log;
+
+	sch_tree_unlock(sch);
+
+	kfree(old_fq_root);
 
 	return 0;
 }
@@ -669,9 +677,11 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt)
 			err = -EINVAL;
 	}
 
-	if (!err)
-		err = fq_resize(q, fq_log);
-
+	if (!err) {
+		sch_tree_unlock(sch);
+		err = fq_resize(sch, fq_log);
+		sch_tree_lock(sch);
+	}
 	while (sch->q.qlen > sch->limit) {
 		struct sk_buff *skb = fq_dequeue(sch);
 
@@ -717,7 +727,7 @@ static int fq_init(struct Qdisc *sch, struct nlattr *opt)
 	if (opt)
 		err = fq_change(sch, opt);
 	else
-		err = fq_resize(q, q->fq_trees_log);
+		err = fq_resize(sch, q->fq_trees_log);
 
 	return err;
 }
