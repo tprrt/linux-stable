@@ -17,10 +17,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +++ b/Makefile
 @@ -1,7 +1,7 @@
  VERSION = 3
- PATCHLEVEL = 10
- SUBLEVEL = 31
+ PATCHLEVEL = 14
+ SUBLEVEL = 4
 -EXTRAVERSION =
 +EXTRAVERSION = -ltsi
- NAME = TOSSUG Baby Fish
+ NAME = Shuffling Zombie Juror
  
  # *DOCUMENTATION*
