@@ -115,7 +115,7 @@ Conflicts:
 +};
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -349,6 +349,8 @@ config ARCH_AT91
+@@ -348,6 +348,8 @@ config ARCH_AT91
  	select CLKDEV_LOOKUP
  	select IRQ_DOMAIN
  	select NEED_MACH_IO_H if PCCARD

@@ -28,11 +28,9 @@ Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
  arch/arm/mm/dma-mapping.c |   10 ++++------
  2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c7a542c..5c0c50e 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -6,7 +6,6 @@ config ARM
+@@ -5,7 +5,6 @@ config ARM
  	select HAVE_IDE if PCI || ISA || PCMCIA
  	select HAVE_DMA_ATTRS
  	select HAVE_DMA_CONTIGUOUS if (CPU_V6 || CPU_V6K || CPU_V7)
@@ -40,8 +38,6 @@ index c7a542c..5c0c50e 100644
  	select HAVE_MEMBLOCK
  	select RTC_LIB
  	select SYS_SUPPORTS_APM_EMULATION
-diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
-index ea6b431..106c4c0 100644
 --- a/arch/arm/mm/dma-mapping.c
 +++ b/arch/arm/mm/dma-mapping.c
 @@ -268,10 +268,8 @@ static int __init consistent_init(void)
@@ -65,7 +61,7 @@ index ea6b431..106c4c0 100644
  		return 0;
  
  	ptr = __alloc_from_contiguous(NULL, size, prot, &page);
-@@ -704,7 +702,7 @@ static void *__dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+@@ -704,7 +702,7 @@ static void *__dma_alloc(struct device *
  
  	if (arch_is_coherent() || nommu())
  		addr = __alloc_simple_buffer(dev, size, gfp, &page);
@@ -74,7 +70,7 @@ index ea6b431..106c4c0 100644
  		addr = __alloc_remap_buffer(dev, size, gfp, prot, &page, caller);
  	else if (gfp & GFP_ATOMIC)
  		addr = __alloc_from_pool(dev, size, &page, caller);
-@@ -773,7 +771,7 @@ void arm_dma_free(struct device *dev, size_t size, void *cpu_addr,
+@@ -773,7 +771,7 @@ void arm_dma_free(struct device *dev, si
  
  	if (arch_is_coherent() || nommu()) {
  		__dma_free_buffer(page, size);
@@ -83,6 +79,3 @@ index ea6b431..106c4c0 100644
  		__dma_free_remap(cpu_addr, size);
  		__dma_free_buffer(page, size);
  	} else {
--- 
-1.7.5.4
-

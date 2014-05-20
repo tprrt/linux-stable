@@ -67,7 +67,7 @@ Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -48,6 +48,14 @@ config ARM
+@@ -47,6 +47,14 @@ config ARM
  config ARM_HAS_SG_CHAIN
  	bool
  

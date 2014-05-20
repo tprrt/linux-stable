@@ -66,8 +66,8 @@ Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
  			Range: 0 - 8192
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -4,6 +4,8 @@ config ARM
- 	select HAVE_AOUT
+@@ -3,6 +3,8 @@ config ARM
+ 	default y
  	select HAVE_DMA_API_DEBUG
  	select HAVE_IDE if PCI || ISA || PCMCIA
 +	select HAVE_DMA_CONTIGUOUS if (CPU_V6 || CPU_V6K || CPU_V7)

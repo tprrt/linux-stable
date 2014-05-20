@@ -33,8 +33,8 @@ Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -4,6 +4,7 @@ config ARM
- 	select HAVE_AOUT
+@@ -3,6 +3,7 @@ config ARM
+ 	default y
  	select HAVE_DMA_API_DEBUG
  	select HAVE_IDE if PCI || ISA || PCMCIA
 +	select HAVE_DMA_ATTRS

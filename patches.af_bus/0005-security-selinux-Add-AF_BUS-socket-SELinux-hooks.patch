@@ -20,7 +20,7 @@ Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
  #include <linux/parser.h>
  #include <linux/nfs_mount.h>
  #include <net/ipv6.h>
-@@ -4143,6 +4144,39 @@ static int selinux_socket_unix_may_send(
+@@ -4161,6 +4162,39 @@ static int selinux_socket_unix_may_send(
  			    &ad);
  }
  
@@ -60,7 +60,7 @@ Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
  static int selinux_inet_sys_rcv_skb(int ifindex, char *addrp, u16 family,
  				    u32 peer_sid,
  				    struct common_audit_data *ad)
-@@ -5762,6 +5796,7 @@ static struct security_operations selinu
+@@ -5780,6 +5814,7 @@ static struct security_operations selinu
  
  	.unix_stream_connect =		selinux_socket_unix_stream_connect,
  	.unix_may_send =		selinux_socket_unix_may_send,

@@ -12,7 +12,7 @@ Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -350,8 +350,8 @@ config ARCH_AT91
+@@ -349,8 +349,8 @@ config ARCH_AT91
  	select IRQ_DOMAIN
  	select NEED_MACH_IO_H if PCCARD
  	help
