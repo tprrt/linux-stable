@@ -181,7 +181,13 @@ static int acm_write_start(struct acm *acm, int wbn)
 
 	dev_vdbg(&acm->data->dev, "%s - susp_count %d\n", __func__,
 							acm->susp_count);
-	usb_autopm_get_interface_async(acm->control);
+	rc = usb_autopm_get_interface_async(acm->control);
+	if (rc) {
+		wb->use = 0;
+		spin_unlock_irqrestore(&acm->write_lock, flags);
+		return rc;
+	}
+
 	if (acm->susp_count) {
 		if (!acm->delayed_wb)
 			acm->delayed_wb = wb;
