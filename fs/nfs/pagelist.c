@@ -536,7 +536,8 @@ void nfs_pgio_data_release(struct nfs_pgio_data *data)
 	struct nfs_pgio_header *hdr = data->header;
 	struct nfs_rw_header *pageio_header = NFS_RW_HEADER(hdr);
 
-	put_nfs_open_context(data->args.context);
+	if (data->args.context)
+		put_nfs_open_context(data->args.context);
 	if (data->pages.pagevec != data->pages.page_array)
 		kfree(data->pages.pagevec);
 	if (data == &pageio_header->rpc_data) {
