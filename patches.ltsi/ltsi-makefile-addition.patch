@@ -18,9 +18,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 @@ -1,7 +1,7 @@
  VERSION = 3
  PATCHLEVEL = 14
- SUBLEVEL = 4
+ SUBLEVEL = 21
 -EXTRAVERSION =
 +EXTRAVERSION = -ltsi
- NAME = Shuffling Zombie Juror
+ NAME = Remembering Coco
  
  # *DOCUMENTATION*
