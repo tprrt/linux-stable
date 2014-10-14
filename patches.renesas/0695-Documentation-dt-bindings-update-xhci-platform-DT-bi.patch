@@ -15,9 +15,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 (cherry picked from commit c7c1ce8061c0dc5b848e5df0ba459dbbf78057d7)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- Documentation/devicetree/bindings/usb/usb-xhci.txt |    3 ++-
+ Documentation/devicetree/bindings/usb/usb-xhci.txt | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/usb/usb-xhci.txt b/Documentation/devicetree/bindings/usb/usb-xhci.txt
+index 999be5ca901c..5a79377c6a96 100644
 --- a/Documentation/devicetree/bindings/usb/usb-xhci.txt
 +++ b/Documentation/devicetree/bindings/usb/usb-xhci.txt
 @@ -2,7 +2,8 @@ USB xHCI controllers
@@ -30,3 +32,6 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
      "xhci-platform").
    - reg: should contain address and length of the standard XHCI
      register set for the device.
+-- 
+2.1.2
+
