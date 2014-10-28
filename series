@@ -1004,8 +1004,10 @@ patches.renesas/0970-usb-renesas_usbhs-protect-mod-irq_-bemp-brdy-sts-by-.patch
 patches.renesas/0971-usb-renesas_usbhs-fix-the-condition-of-is_done-in-us.patch
 patches.renesas/0972-usb-renesas_usbhs-fix-the-usb_pkt_pop.patch
 patches.renesas/0973-i2c-rcar-fix-RCAR_IRQ_ACK_-RECV-SEND.patch
-
+patches.renesas/0001-clk-add-clock-indices-support.patch
+patches.renesas/0002-of-fdt-update-of_get_flat_dt_prop-in-prep-for-libfdt.patch
 
 #############################################################################
 # fixes that go after all of the above
 #
+
