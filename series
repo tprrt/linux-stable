@@ -28,6 +28,14 @@ patches.ltsi/ltsi-makefile-addition.patch
 #
 patches.lttng/lttng-2.3.4.patch
 
+#############################################################################
+# ktap
+#
+# 0.4 version of ktap, taken from the upstream:
+#       https://github.com/ktap/ktap.git    
+# repo.
+#
+patches.ktap/ktap-0.4.patch
 
 #############################################################################
 # Renesas patches
