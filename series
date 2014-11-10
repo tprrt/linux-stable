@@ -1015,6 +1015,20 @@ patches.renesas/0973-i2c-rcar-fix-RCAR_IRQ_ACK_-RECV-SEND.patch
 patches.renesas/0001-clk-add-clock-indices-support.patch
 patches.renesas/0002-of-fdt-update-of_get_flat_dt_prop-in-prep-for-libfdt.patch
 
+
+#############################################################################
+# Intel patches
+#
+patches.intel/pwm-add-support-for-intel-low-power-subsystem-pwm.patch
+patches.intel/pwm-lpss-add-support-for-pci-devices.patch
+patches.intel/pwm-lpss-fix-const-qualifier-and-sparse-warnings.patch
+patches.intel/pwm-lpss-remove-dependency-on-clk-framework.patch
+patches.intel/pwm-lpss-add-acpi-and-pci-ids-for-intel-braswell.patch
+patches.intel/pwm-lpss-properly-split-driver-to-parts.patch
+patches.intel/pwm-lpss-fix-build-failure-on-powerpc.patch
+patches.intel/pwm-lpss-use-c99-initializers-in-structures.patch
+
+
 #############################################################################
 # fixes that go after all of the above
 #
