@@ -1027,6 +1027,10 @@ patches.intel/pwm-lpss-add-acpi-and-pci-ids-for-intel-braswell.patch
 patches.intel/pwm-lpss-properly-split-driver-to-parts.patch
 patches.intel/pwm-lpss-fix-build-failure-on-powerpc.patch
 patches.intel/pwm-lpss-use-c99-initializers-in-structures.patch
+patches.intel/i2c-remove-define_pci_device_table-macro.patch
+patches.intel/i2c-i801-fix-the-alignment-of-the-device-table.patch
+patches.intel/i2c-i801-add-device-id-for-intel-wildcat-point-pch.patch
+patches.intel/i2c-i801-add-pci-id-for-intel-braswell.patch
 
 
 #############################################################################
