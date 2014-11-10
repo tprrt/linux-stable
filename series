@@ -1040,6 +1040,13 @@ patches.intel/mfd-lpc_ich-remove-lpc_ich_cfg-struct-use.patch
 patches.intel/mfd-lpc_ich-add-support-for-itco-v3.patch
 patches.intel/mfd-lpc_ich-change-avoton-to-itco-v3.patch
 patches.intel/mfd-lpc_ich-add-support-for-nm10-gpio.patch
+patches.intel/mfd-lpc_ich-add-support-for-intel-bay-trail-soc.patch
+patches.intel/mfd-lpc_ich-enable-gpio-for-panther-point.patch
+patches.intel/mfd-lpc_ich-add-pci-id-for-intel-braswell.patch
+patches.intel/mfd-lpc_ich-add-device-ids-for-intel-9-series-pch.patch
+patches.intel/watchdog-itco_wdt-add-support-for-v3-silicon.patch
+patches.intel/watchdog-fix-checkpatch-warnings-and-error.patch
+patches.intel/watchdog-itco_wdt-fix-the-parent-device.patch
 
 
 #############################################################################
