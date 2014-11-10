@@ -1031,6 +1031,15 @@ patches.intel/i2c-remove-define_pci_device_table-macro.patch
 patches.intel/i2c-i801-fix-the-alignment-of-the-device-table.patch
 patches.intel/i2c-i801-add-device-id-for-intel-wildcat-point-pch.patch
 patches.intel/i2c-i801-add-pci-id-for-intel-braswell.patch
+patches.intel/mfd-delete-non-required-instances-of-include-linux-init.h.patch
+patches.intel/mfd-lpc_ich-convert-ich-gpios-ids-to-enum.patch
+patches.intel/mfd-lpc_ich-add-support-for-intel-avoton-gpios.patch
+patches.intel/mfd-lpc_ich-fix-acpi-enable-bitmask.patch
+patches.intel/mfd-lpc_ich-only-configure-watchdog-or-gpio-when-present.patch
+patches.intel/mfd-lpc_ich-remove-lpc_ich_cfg-struct-use.patch
+patches.intel/mfd-lpc_ich-add-support-for-itco-v3.patch
+patches.intel/mfd-lpc_ich-change-avoton-to-itco-v3.patch
+patches.intel/mfd-lpc_ich-add-support-for-nm10-gpio.patch
 
 
 #############################################################################
