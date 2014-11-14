@@ -25,23 +25,21 @@ Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
 (cherry picked from commit fd9fdb78a9bf85b94fb2190c82ff280c8f8375cc)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/media/i2c/adv7343.c                   |   4 +-
- drivers/media/i2c/mt9p031.c                   |   4 +-
- drivers/media/i2c/s5k5baf.c                   |   3 +-
- drivers/media/i2c/tvp514x.c                   |   3 +-
- drivers/media/i2c/tvp7002.c                   |   3 +-
- drivers/media/platform/exynos4-is/fimc-is.c   |   6 +-
- drivers/media/platform/exynos4-is/media-dev.c |   3 +-
- drivers/media/platform/exynos4-is/mipi-csis.c |   3 +-
- drivers/media/v4l2-core/v4l2-of.c             | 117 -------------------------
- drivers/of/base.c                             | 118 ++++++++++++++++++++++++++
- include/linux/of_graph.h                      |  46 ++++++++++
- include/media/v4l2-of.h                       |  25 +-----
+ drivers/media/i2c/adv7343.c                   |    4 
+ drivers/media/i2c/mt9p031.c                   |    4 
+ drivers/media/i2c/s5k5baf.c                   |    3 
+ drivers/media/i2c/tvp514x.c                   |    3 
+ drivers/media/i2c/tvp7002.c                   |    3 
+ drivers/media/platform/exynos4-is/fimc-is.c   |    6 -
+ drivers/media/platform/exynos4-is/media-dev.c |    3 
+ drivers/media/platform/exynos4-is/mipi-csis.c |    3 
+ drivers/media/v4l2-core/v4l2-of.c             |  117 -------------------------
+ drivers/of/base.c                             |  118 ++++++++++++++++++++++++++
+ include/linux/of_graph.h                      |   46 ++++++++++
+ include/media/v4l2-of.h                       |   25 -----
  12 files changed, 182 insertions(+), 153 deletions(-)
  create mode 100644 include/linux/of_graph.h
 
-diff --git a/drivers/media/i2c/adv7343.c b/drivers/media/i2c/adv7343.c
-index d4e15a617c3b..9d38f7b36cd1 100644
 --- a/drivers/media/i2c/adv7343.c
 +++ b/drivers/media/i2c/adv7343.c
 @@ -26,12 +26,12 @@
@@ -58,7 +56,7 @@ index d4e15a617c3b..9d38f7b36cd1 100644
  
  #include "adv7343_regs.h"
  
-@@ -410,7 +410,7 @@ adv7343_get_pdata(struct i2c_client *client)
+@@ -410,7 +410,7 @@ adv7343_get_pdata(struct i2c_client *cli
  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
  		return client->dev.platform_data;
  
@@ -67,8 +65,6 @@ index d4e15a617c3b..9d38f7b36cd1 100644
  	if (!np)
  		return NULL;
  
-diff --git a/drivers/media/i2c/mt9p031.c b/drivers/media/i2c/mt9p031.c
-index e5ddf47030fd..192c4aad05d6 100644
 --- a/drivers/media/i2c/mt9p031.c
 +++ b/drivers/media/i2c/mt9p031.c
 @@ -21,6 +21,7 @@
@@ -87,7 +83,7 @@ index e5ddf47030fd..192c4aad05d6 100644
  #include <media/v4l2-subdev.h>
  
  #include "aptina-pll.h"
-@@ -943,7 +943,7 @@ mt9p031_get_pdata(struct i2c_client *client)
+@@ -943,7 +943,7 @@ mt9p031_get_pdata(struct i2c_client *cli
  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
  		return client->dev.platform_data;
  
@@ -96,8 +92,6 @@ index e5ddf47030fd..192c4aad05d6 100644
  	if (!np)
  		return NULL;
  
-diff --git a/drivers/media/i2c/s5k5baf.c b/drivers/media/i2c/s5k5baf.c
-index 77e10e0fd8d6..2d768ef67cc5 100644
 --- a/drivers/media/i2c/s5k5baf.c
 +++ b/drivers/media/i2c/s5k5baf.c
 @@ -21,6 +21,7 @@
@@ -108,7 +102,7 @@ index 77e10e0fd8d6..2d768ef67cc5 100644
  #include <linux/regulator/consumer.h>
  #include <linux/slab.h>
  
-@@ -1855,7 +1856,7 @@ static int s5k5baf_parse_device_node(struct s5k5baf *state, struct device *dev)
+@@ -1855,7 +1856,7 @@ static int s5k5baf_parse_device_node(str
  	if (ret < 0)
  		return ret;
  
@@ -117,8 +111,6 @@ index 77e10e0fd8d6..2d768ef67cc5 100644
  	if (!node_ep) {
  		dev_err(dev, "no endpoint defined at node %s\n",
  			node->full_name);
-diff --git a/drivers/media/i2c/tvp514x.c b/drivers/media/i2c/tvp514x.c
-index 83d85df4853a..ca001178c5bf 100644
 --- a/drivers/media/i2c/tvp514x.c
 +++ b/drivers/media/i2c/tvp514x.c
 @@ -36,6 +36,7 @@
@@ -129,7 +121,7 @@ index 83d85df4853a..ca001178c5bf 100644
  
  #include <media/v4l2-async.h>
  #include <media/v4l2-device.h>
-@@ -1068,7 +1069,7 @@ tvp514x_get_pdata(struct i2c_client *client)
+@@ -1068,7 +1069,7 @@ tvp514x_get_pdata(struct i2c_client *cli
  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
  		return client->dev.platform_data;
  
@@ -138,8 +130,6 @@ index 83d85df4853a..ca001178c5bf 100644
  	if (!endpoint)
  		return NULL;
  
-diff --git a/drivers/media/i2c/tvp7002.c b/drivers/media/i2c/tvp7002.c
-index 912e1cccdd1c..c4e1e2cb3094 100644
 --- a/drivers/media/i2c/tvp7002.c
 +++ b/drivers/media/i2c/tvp7002.c
 @@ -30,6 +30,7 @@
@@ -150,7 +140,7 @@ index 912e1cccdd1c..c4e1e2cb3094 100644
  #include <linux/v4l2-dv-timings.h>
  #include <media/tvp7002.h>
  #include <media/v4l2-async.h>
-@@ -957,7 +958,7 @@ tvp7002_get_pdata(struct i2c_client *client)
+@@ -957,7 +958,7 @@ tvp7002_get_pdata(struct i2c_client *cli
  	if (!IS_ENABLED(CONFIG_OF) || !client->dev.of_node)
  		return client->dev.platform_data;
  
@@ -159,8 +149,6 @@ index 912e1cccdd1c..c4e1e2cb3094 100644
  	if (!endpoint)
  		return NULL;
  
-diff --git a/drivers/media/platform/exynos4-is/fimc-is.c b/drivers/media/platform/exynos4-is/fimc-is.c
-index 13a4228952e3..9bdfa4599bc3 100644
 --- a/drivers/media/platform/exynos4-is/fimc-is.c
 +++ b/drivers/media/platform/exynos4-is/fimc-is.c
 @@ -24,13 +24,13 @@
@@ -178,7 +166,7 @@ index 13a4228952e3..9bdfa4599bc3 100644
  #include <media/videobuf2-dma-contig.h>
  
  #include "media-dev.h"
-@@ -167,10 +167,10 @@ static int fimc_is_parse_sensor_config(struct fimc_is_sensor *sensor,
+@@ -167,10 +167,10 @@ static int fimc_is_parse_sensor_config(s
  	u32 tmp = 0;
  	int ret;
  
@@ -191,8 +179,6 @@ index 13a4228952e3..9bdfa4599bc3 100644
  	if (!np)
  		return -ENXIO;
  
-diff --git a/drivers/media/platform/exynos4-is/media-dev.c b/drivers/media/platform/exynos4-is/media-dev.c
-index c1bce170df6f..d0f82da59ac5 100644
 --- a/drivers/media/platform/exynos4-is/media-dev.c
 +++ b/drivers/media/platform/exynos4-is/media-dev.c
 @@ -20,6 +20,7 @@
@@ -203,7 +189,7 @@ index c1bce170df6f..d0f82da59ac5 100644
  #include <linux/platform_device.h>
  #include <linux/pm_runtime.h>
  #include <linux/types.h>
-@@ -473,7 +474,7 @@ static int fimc_md_parse_port_node(struct fimc_md *fmd,
+@@ -473,7 +474,7 @@ static int fimc_md_parse_port_node(struc
  
  	pd->mux_id = (endpoint.port - 1) & 0x1;
  
@@ -212,8 +198,6 @@ index c1bce170df6f..d0f82da59ac5 100644
  	of_node_put(ep);
  	if (rem == NULL) {
  		v4l2_info(&fmd->v4l2_dev, "Remote device at %s not found\n",
-diff --git a/drivers/media/platform/exynos4-is/mipi-csis.c b/drivers/media/platform/exynos4-is/mipi-csis.c
-index f3c3591fdc5d..fd1ae6549607 100644
 --- a/drivers/media/platform/exynos4-is/mipi-csis.c
 +++ b/drivers/media/platform/exynos4-is/mipi-csis.c
 @@ -20,6 +20,7 @@
@@ -224,7 +208,7 @@ index f3c3591fdc5d..fd1ae6549607 100644
  #include <linux/phy/phy.h>
  #include <linux/platform_data/mipi-csis.h>
  #include <linux/platform_device.h>
-@@ -762,7 +763,7 @@ static int s5pcsis_parse_dt(struct platform_device *pdev,
+@@ -762,7 +763,7 @@ static int s5pcsis_parse_dt(struct platf
  				 &state->max_num_lanes))
  		return -EINVAL;
  
@@ -233,11 +217,9 @@ index f3c3591fdc5d..fd1ae6549607 100644
  	if (!node) {
  		dev_err(&pdev->dev, "No port node at %s\n",
  				pdev->dev.of_node->full_name);
-diff --git a/drivers/media/v4l2-core/v4l2-of.c b/drivers/media/v4l2-core/v4l2-of.c
-index 42e3e8a5e361..f919db358bbe 100644
 --- a/drivers/media/v4l2-core/v4l2-of.c
 +++ b/drivers/media/v4l2-core/v4l2-of.c
-@@ -152,120 +152,3 @@ int v4l2_of_parse_endpoint(const struct device_node *node,
+@@ -152,120 +152,3 @@ int v4l2_of_parse_endpoint(const struct
  	return 0;
  }
  EXPORT_SYMBOL(v4l2_of_parse_endpoint);
@@ -358,8 +340,6 @@ index 42e3e8a5e361..f919db358bbe 100644
 -	return of_get_next_parent(np);
 -}
 -EXPORT_SYMBOL(v4l2_of_get_remote_port);
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1b95a405628f..2aad560cef84 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
 @@ -21,6 +21,7 @@
@@ -370,7 +350,7 @@ index 1b95a405628f..2aad560cef84 100644
  #include <linux/spinlock.h>
  #include <linux/slab.h>
  #include <linux/proc_fs.h>
-@@ -2014,3 +2015,120 @@ struct device_node *of_find_next_cache_node(const struct device_node *np)
+@@ -1970,3 +1971,120 @@ struct device_node *of_find_next_cache_n
  
  	return NULL;
  }
@@ -491,9 +471,6 @@ index 1b95a405628f..2aad560cef84 100644
 +	return of_get_next_parent(np);
 +}
 +EXPORT_SYMBOL(of_graph_get_remote_port);
-diff --git a/include/linux/of_graph.h b/include/linux/of_graph.h
-new file mode 100644
-index 000000000000..3bbeb609a360
 --- /dev/null
 +++ b/include/linux/of_graph.h
 @@ -0,0 +1,46 @@
@@ -543,8 +520,6 @@ index 000000000000..3bbeb609a360
 +#endif /* CONFIG_OF */
 +
 +#endif /* __LINUX_OF_GRAPH_H */
-diff --git a/include/media/v4l2-of.h b/include/media/v4l2-of.h
-index 541cea4122e9..3a49735c56a0 100644
 --- a/include/media/v4l2-of.h
 +++ b/include/media/v4l2-of.h
 @@ -17,6 +17,7 @@
@@ -567,7 +542,7 @@ index 541cea4122e9..3a49735c56a0 100644
  #else /* CONFIG_OF */
  
  static inline int v4l2_of_parse_endpoint(const struct device_node *node,
-@@ -85,25 +81,6 @@ static inline int v4l2_of_parse_endpoint(const struct device_node *node,
+@@ -85,25 +81,6 @@ static inline int v4l2_of_parse_endpoint
  	return -ENOSYS;
  }
  
@@ -593,6 +568,3 @@ index 541cea4122e9..3a49735c56a0 100644
  #endif /* CONFIG_OF */
  
  #endif /* _V4L2_OF_H */
--- 
-2.1.2
-

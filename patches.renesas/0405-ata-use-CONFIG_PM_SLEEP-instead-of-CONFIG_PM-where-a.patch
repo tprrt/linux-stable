@@ -880,8 +880,8 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  #endif
 --- a/drivers/ata/pata_serverworks.c
 +++ b/drivers/ata/pata_serverworks.c
-@@ -437,7 +437,7 @@ static int serverworks_init_one(struct p
- 	return ata_pci_bmdma_init_one(pdev, ppi, &serverworks_sht, NULL, 0);
+@@ -446,7 +446,7 @@ static int serverworks_init_one(struct p
+ 	return ata_pci_bmdma_init_one(pdev, ppi, sht, NULL, 0);
  }
  
 -#ifdef CONFIG_PM
@@ -889,7 +889,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  static int serverworks_reinit_one(struct pci_dev *pdev)
  {
  	struct ata_host *host = pci_get_drvdata(pdev);
-@@ -469,7 +469,7 @@ static struct pci_driver serverworks_pci
+@@ -478,7 +478,7 @@ static struct pci_driver serverworks_pci
  	.id_table	= serverworks,
  	.probe 		= serverworks_init_one,
  	.remove		= ata_pci_remove_one,

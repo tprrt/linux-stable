@@ -18,15 +18,13 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit ad54a0cfbeb4bd4033d09017557ccbc423f9d5ff)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/of/base.c  | 32 +++++++++++++++++++++++
- include/linux/of.h | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/of/base.c  |   32 ++++++++++++++++++++++
+ include/linux/of.h |   76 +++++++++++++++++++++++++++++++++++++++++++++++++++++
  2 files changed, 108 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 89e888a78899..1b95a405628f 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -904,6 +904,38 @@ struct device_node *of_find_node_by_phandle(phandle handle)
+@@ -904,6 +904,38 @@ struct device_node *of_find_node_by_phan
  EXPORT_SYMBOL(of_find_node_by_phandle);
  
  /**
@@ -65,11 +63,9 @@ index 89e888a78899..1b95a405628f 100644
   * of_find_property_value_of_size
   *
   * @np:		device node from which the property value is to be read.
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 435cb995904d..83d1ac80c91e 100644
 --- a/include/linux/of.h
 +++ b/include/linux/of.h
-@@ -198,6 +198,8 @@ extern struct device_node *of_find_node_with_property(
+@@ -198,6 +198,8 @@ extern struct device_node *of_find_node_
  extern struct property *of_find_property(const struct device_node *np,
  					 const char *name,
  					 int *lenp);
@@ -78,7 +74,7 @@ index 435cb995904d..83d1ac80c91e 100644
  extern int of_property_read_u32_index(const struct device_node *np,
  				       const char *propname,
  				       u32 index, u32 *out_value);
-@@ -390,6 +392,12 @@ static inline struct device_node *of_find_compatible_node(
+@@ -388,6 +390,12 @@ static inline struct device_node *of_fin
  	return NULL;
  }
  
@@ -91,7 +87,7 @@ index 435cb995904d..83d1ac80c91e 100644
  static inline int of_property_read_u32_index(const struct device_node *np,
  			const char *propname, u32 index, u32 *out_value)
  {
-@@ -536,6 +544,74 @@ static inline struct device_node *of_find_matching_node(
+@@ -592,6 +600,74 @@ static inline int of_property_read_strin
  }
  
  /**
@@ -166,6 +162,3 @@ index 435cb995904d..83d1ac80c91e 100644
   * of_property_read_bool - Findfrom a property
   * @np:		device node from which the property value is to be read.
   * @propname:	name of the property to be searched.
--- 
-2.1.2
-
