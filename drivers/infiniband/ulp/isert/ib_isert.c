@@ -55,6 +55,14 @@ isert_reg_rdma(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 static int
 isert_put_response(struct iscsi_conn *conn, struct iscsi_cmd *cmd);
 
+static inline bool
+isert_prot_cmd(struct isert_conn *conn, struct se_cmd *cmd)
+{
+	return (conn->conn_device->pi_capable &&
+		cmd->prot_op != TARGET_PROT_NORMAL);
+}
+
+
 static void
 isert_qp_event_callback(struct ib_event *e, void *context)
 {
@@ -2829,8 +2837,7 @@ isert_reg_rdma(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 	if (ret)
 		return ret;
 
-	if (wr->data.dma_nents != 1 ||
-	    se_cmd->prot_op != TARGET_PROT_NORMAL) {
+	if (wr->data.dma_nents != 1 || isert_prot_cmd(isert_conn, se_cmd)) {
 		spin_lock_irqsave(&isert_conn->conn_lock, flags);
 		fr_desc = list_first_entry(&isert_conn->conn_fr_pool,
 					   struct fast_reg_descriptor, list);
@@ -2844,7 +2851,7 @@ isert_reg_rdma(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 	if (ret)
 		goto unmap_cmd;
 
-	if (se_cmd->prot_op != TARGET_PROT_NORMAL) {
+	if (isert_prot_cmd(isert_conn, se_cmd)) {
 		ret = isert_handle_prot_cmd(isert_conn, isert_cmd, wr);
 		if (ret)
 			goto unmap_cmd;
@@ -2869,7 +2876,7 @@ isert_reg_rdma(struct iscsi_conn *conn, struct iscsi_cmd *cmd,
 		send_wr->opcode = IB_WR_RDMA_WRITE;
 		send_wr->wr.rdma.remote_addr = isert_cmd->read_va;
 		send_wr->wr.rdma.rkey = isert_cmd->read_stag;
-		send_wr->send_flags = se_cmd->prot_op == TARGET_PROT_NORMAL ?
+		send_wr->send_flags = !isert_prot_cmd(isert_conn, se_cmd) ?
 				      0 : IB_SEND_SIGNALED;
 	} else {
 		send_wr->opcode = IB_WR_RDMA_READ;
@@ -2911,7 +2918,7 @@ isert_put_datain(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
 		return rc;
 	}
 
-	if (se_cmd->prot_op == TARGET_PROT_NORMAL) {
+	if (!isert_prot_cmd(isert_conn, se_cmd)) {
 		/*
 		 * Build isert_conn->tx_desc for iSCSI response PDU and attach
 		 */
@@ -2934,7 +2941,7 @@ isert_put_datain(struct iscsi_conn *conn, struct iscsi_cmd *cmd)
 		atomic_sub(wr->send_wr_num, &isert_conn->post_send_buf_count);
 	}
 
-	if (se_cmd->prot_op == TARGET_PROT_NORMAL)
+	if (!isert_prot_cmd(isert_conn, se_cmd))
 		pr_debug("Cmd: %p posted RDMA_WRITE + Response for iSER Data "
 			 "READ\n", isert_cmd);
 	else
