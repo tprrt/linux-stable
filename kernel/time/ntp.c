@@ -648,6 +648,13 @@ int do_adjtimex(struct timex *txc)
 			hrtimer_cancel(&leap_timer);
 	}
 
+	if (txc->modes & ADJ_FREQUENCY) {
+		if (LONG_MIN / PPM_SCALE > txc->freq)
+			return -EINVAL;
+		if (LONG_MAX / PPM_SCALE < txc->freq)
+			return -EINVAL;
+	}
+
 	if (txc->modes & ADJ_SETOFFSET) {
 		struct timespec delta;
 		delta.tv_sec  = txc->time.tv_sec;
