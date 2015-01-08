@@ -13,15 +13,13 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit 7681f6ac6b6338932621f842d68e54f6267b785f)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- sound/soc/sh/rcar/core.c | 23 +++++++++++++++++++++++
- sound/soc/sh/rcar/rsnd.h |  6 ++++++
+ sound/soc/sh/rcar/core.c |   23 +++++++++++++++++++++++
+ sound/soc/sh/rcar/rsnd.h |    6 ++++++
  2 files changed, 29 insertions(+)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index 7316d10e4649..e8e585de7251 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
-@@ -842,6 +842,7 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -841,6 +841,7 @@ static int rsnd_probe(struct platform_de
  	struct rcar_snd_info *info;
  	struct rsnd_priv *priv;
  	struct device *dev = &pdev->dev;
@@ -29,7 +27,7 @@ index 7316d10e4649..e8e585de7251 100644
  	int (*probe_func[])(struct platform_device *pdev,
  			    struct rsnd_priv *priv) = {
  		rsnd_gen_probe,
-@@ -880,6 +881,16 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -879,6 +880,16 @@ static int rsnd_probe(struct platform_de
  			return ret;
  	}
  
@@ -46,7 +44,7 @@ index 7316d10e4649..e8e585de7251 100644
  	/*
  	 *	asoc register
  	 */
-@@ -912,9 +923,21 @@ exit_snd_soc:
+@@ -911,9 +922,21 @@ exit_snd_soc:
  static int rsnd_remove(struct platform_device *pdev)
  {
  	struct rsnd_priv *priv = dev_get_drvdata(&pdev->dev);
@@ -68,8 +66,6 @@ index 7316d10e4649..e8e585de7251 100644
  	/*
  	 *	remove each module
  	 */
-diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
-index 9205f96da2f4..db20b3721953 100644
 --- a/sound/soc/sh/rcar/rsnd.h
 +++ b/sound/soc/sh/rcar/rsnd.h
 @@ -167,6 +167,12 @@ enum rsnd_mod_type {
@@ -85,6 +81,3 @@ index 9205f96da2f4..db20b3721953 100644
  	int (*init)(struct rsnd_mod *mod,
  		    struct rsnd_dai *rdai,
  		    struct rsnd_dai_stream *io);
--- 
-2.1.2
-

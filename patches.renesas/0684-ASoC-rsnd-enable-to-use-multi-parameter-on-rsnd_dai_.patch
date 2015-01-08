@@ -12,11 +12,9 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit 68b6af3656a1f3303cca094a19e26653fad1853a)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- sound/soc/sh/rcar/core.c | 26 +++++++++++++-------------
+ sound/soc/sh/rcar/core.c |   26 +++++++++++++-------------
  1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index 798c7cc8d8be..1f34cd4e949d 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
 @@ -337,7 +337,7 @@ u32 rsnd_get_adinr(struct rsnd_mod *mod)
@@ -53,7 +51,7 @@ index 798c7cc8d8be..1f34cd4e949d 100644
  		if (ret < 0)					\
  			break;					\
  	}							\
-@@ -509,20 +509,20 @@ static int rsnd_soc_dai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -509,20 +509,20 @@ static int rsnd_soc_dai_trigger(struct s
  		if (ret < 0)
  			goto dai_trigger_end;
  
@@ -78,7 +76,7 @@ index 798c7cc8d8be..1f34cd4e949d 100644
  		if (ret < 0)
  			goto dai_trigger_end;
  
-@@ -950,11 +950,11 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -949,11 +949,11 @@ static int rsnd_probe(struct platform_de
  	}
  
  	for_each_rsnd_dai(rdai, priv, i) {
@@ -92,7 +90,7 @@ index 798c7cc8d8be..1f34cd4e949d 100644
  		if (ret)
  			return ret;
  	}
-@@ -997,11 +997,11 @@ static int rsnd_remove(struct platform_device *pdev)
+@@ -996,11 +996,11 @@ static int rsnd_remove(struct platform_d
  	pm_runtime_disable(&pdev->dev);
  
  	for_each_rsnd_dai(rdai, priv, i) {
@@ -106,6 +104,3 @@ index 798c7cc8d8be..1f34cd4e949d 100644
  		if (ret)
  			return ret;
  	}
--- 
-2.1.2
-

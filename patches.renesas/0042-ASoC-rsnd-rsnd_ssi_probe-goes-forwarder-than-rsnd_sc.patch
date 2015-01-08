@@ -11,14 +11,12 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit eb854f6dff24a59378acc8d8eda57a3543a25acc)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- sound/soc/sh/rcar/core.c | 6 +++---
+ sound/soc/sh/rcar/core.c |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index b5af6f5145ea..f316a663e4d3 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
-@@ -763,15 +763,15 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -762,15 +762,15 @@ static int rsnd_probe(struct platform_de
  	if (ret)
  		return ret;
  
@@ -37,6 +35,3 @@ index b5af6f5145ea..f316a663e4d3 100644
  	if (ret)
  		return ret;
  
--- 
-2.1.2
-

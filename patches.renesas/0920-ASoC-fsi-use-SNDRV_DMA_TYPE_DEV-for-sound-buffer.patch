@@ -16,18 +16,16 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit ffb83e8cb14cace1b08ceb56695b580c808d8a41)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- arch/arm/mach-shmobile/board-armadillo800eva.c |  4 +++
- arch/arm/mach-shmobile/board-kzm9g.c           |  2 ++
- arch/arm/mach-shmobile/board-mackerel.c        |  4 +++
- arch/sh/boards/mach-ecovec24/setup.c           |  2 ++
- sound/soc/sh/fsi.c                             | 42 +++-----------------------
+ arch/arm/mach-shmobile/board-armadillo800eva.c |    4 ++
+ arch/arm/mach-shmobile/board-kzm9g.c           |    2 +
+ arch/arm/mach-shmobile/board-mackerel.c        |    4 ++
+ arch/sh/boards/mach-ecovec24/setup.c           |    2 +
+ sound/soc/sh/fsi.c                             |   42 ++-----------------------
  5 files changed, 17 insertions(+), 37 deletions(-)
 
-diff --git a/arch/arm/mach-shmobile/board-armadillo800eva.c b/arch/arm/mach-shmobile/board-armadillo800eva.c
-index 4612a18c797f..922887b2492f 100644
 --- a/arch/arm/mach-shmobile/board-armadillo800eva.c
 +++ b/arch/arm/mach-shmobile/board-armadillo800eva.c
-@@ -1034,6 +1034,8 @@ static struct platform_device fsi_wm8978_device = {
+@@ -1034,6 +1034,8 @@ static struct platform_device fsi_wm8978
  	.id	= 0,
  	.dev	= {
  		.platform_data	= &fsi_wm8978_info,
@@ -36,7 +34,7 @@ index 4612a18c797f..922887b2492f 100644
  	},
  };
  
-@@ -1057,6 +1059,8 @@ static struct platform_device fsi_hdmi_device = {
+@@ -1057,6 +1059,8 @@ static struct platform_device fsi_hdmi_d
  	.id	= 1,
  	.dev	= {
  		.platform_data	= &fsi2_hdmi_info,
@@ -45,11 +43,9 @@ index 4612a18c797f..922887b2492f 100644
  	},
  };
  
-diff --git a/arch/arm/mach-shmobile/board-kzm9g.c b/arch/arm/mach-shmobile/board-kzm9g.c
-index dc529f9f58d7..c4336cc1d8ed 100644
 --- a/arch/arm/mach-shmobile/board-kzm9g.c
 +++ b/arch/arm/mach-shmobile/board-kzm9g.c
-@@ -605,6 +605,8 @@ static struct platform_device fsi_ak4648_device = {
+@@ -605,6 +605,8 @@ static struct platform_device fsi_ak4648
  	.name	= "asoc-simple-card",
  	.dev	= {
  		.platform_data	= &fsi2_ak4648_info,
@@ -58,11 +54,9 @@ index dc529f9f58d7..c4336cc1d8ed 100644
  	},
  };
  
-diff --git a/arch/arm/mach-shmobile/board-mackerel.c b/arch/arm/mach-shmobile/board-mackerel.c
-index 304b76f3bf4a..79f448e93abb 100644
 --- a/arch/arm/mach-shmobile/board-mackerel.c
 +++ b/arch/arm/mach-shmobile/board-mackerel.c
-@@ -523,6 +523,8 @@ static struct platform_device fsi_hdmi_device = {
+@@ -523,6 +523,8 @@ static struct platform_device fsi_hdmi_d
  	.id	= 1,
  	.dev	= {
  		.platform_data	= &fsi2_hdmi_info,
@@ -71,7 +65,7 @@ index 304b76f3bf4a..79f448e93abb 100644
  	},
  };
  
-@@ -919,6 +921,8 @@ static struct platform_device fsi_ak4643_device = {
+@@ -919,6 +921,8 @@ static struct platform_device fsi_ak4643
  	.name	= "asoc-simple-card",
  	.dev	= {
  		.platform_data	= &fsi2_ak4643_info,
@@ -80,11 +74,9 @@ index 304b76f3bf4a..79f448e93abb 100644
  	},
  };
  
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 85d5255d259f..0d3049244cd3 100644
 --- a/arch/sh/boards/mach-ecovec24/setup.c
 +++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -874,6 +874,8 @@ static struct platform_device fsi_da7210_device = {
+@@ -874,6 +874,8 @@ static struct platform_device fsi_da7210
  	.name	= "asoc-simple-card",
  	.dev	= {
  		.platform_data	= &fsi_da7210_info,
@@ -93,8 +85,6 @@ index 85d5255d259f..0d3049244cd3 100644
  	},
  };
  
-diff --git a/sound/soc/sh/fsi.c b/sound/soc/sh/fsi.c
-index 710a079a7377..7a6b632c3db8 100644
 --- a/sound/soc/sh/fsi.c
 +++ b/sound/soc/sh/fsi.c
 @@ -233,7 +233,6 @@ struct fsi_stream {
@@ -105,7 +95,7 @@ index 710a079a7377..7a6b632c3db8 100644
  	int			dma_id;
  	int			loop_cnt;
  	int			additional_pos;
-@@ -1279,11 +1278,6 @@ static irqreturn_t fsi_interrupt(int irq, void *data)
+@@ -1279,11 +1278,6 @@ static irqreturn_t fsi_interrupt(int irq
   */
  static int fsi_dma_init(struct fsi_priv *fsi, struct fsi_stream *io)
  {
@@ -117,7 +107,7 @@ index 710a079a7377..7a6b632c3db8 100644
  	/*
  	 * 24bit data : 24bit bus / package in back
  	 * 16bit data : 16bit bus / stream mode
-@@ -1293,19 +1287,7 @@ static int fsi_dma_init(struct fsi_priv *fsi, struct fsi_stream *io)
+@@ -1293,19 +1287,7 @@ static int fsi_dma_init(struct fsi_priv
  
  	io->loop_cnt = 2; /* push 1st, 2nd period first, then 3rd, 4th... */
  	io->additional_pos = 0;
@@ -137,7 +127,7 @@ index 710a079a7377..7a6b632c3db8 100644
  	return 0;
  }
  
-@@ -1317,7 +1299,8 @@ static dma_addr_t fsi_dma_get_area(struct fsi_stream *io, int additional)
+@@ -1317,7 +1299,8 @@ static dma_addr_t fsi_dma_get_area(struc
  	if (period >= runtime->periods)
  		period = 0;
  
@@ -160,7 +150,7 @@ index 710a079a7377..7a6b632c3db8 100644
  
  	io->buff_sample_pos += io->period_samples;
  	io->period_pos++;
-@@ -1369,8 +1346,6 @@ static void fsi_dma_do_work(struct work_struct *work)
+@@ -1369,8 +1346,6 @@ static void fsi_dma_do_work(struct work_
  	for (i = 0; i < io->loop_cnt; i++) {
  		buf	= fsi_dma_get_area(io, io->additional_pos);
  
@@ -169,7 +159,7 @@ index 710a079a7377..7a6b632c3db8 100644
  		desc = dmaengine_prep_slave_single(io->chan, buf, len, dir,
  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
  		if (!desc) {
-@@ -1495,7 +1470,6 @@ static int fsi_dma_remove(struct fsi_priv *fsi, struct fsi_stream *io)
+@@ -1495,7 +1470,6 @@ static int fsi_dma_remove(struct fsi_pri
  
  static struct fsi_stream_handler fsi_dma_push_handler = {
  	.init		= fsi_dma_init,
@@ -177,7 +167,7 @@ index 710a079a7377..7a6b632c3db8 100644
  	.probe		= fsi_dma_probe,
  	.transfer	= fsi_dma_transfer,
  	.remove		= fsi_dma_remove,
-@@ -1850,16 +1824,10 @@ static void fsi_pcm_free(struct snd_pcm *pcm)
+@@ -1849,16 +1823,10 @@ static void fsi_pcm_free(struct snd_pcm
  
  static int fsi_pcm_new(struct snd_soc_pcm_runtime *rtd)
  {
@@ -197,6 +187,3 @@ index 710a079a7377..7a6b632c3db8 100644
  		PREALLOC_BUFFER, PREALLOC_BUFFER_MAX);
  }
  
--- 
-2.1.2
-

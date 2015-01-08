@@ -14,14 +14,12 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit 7c63f3c02f5a998621758239abed43c5bd454b70)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- sound/soc/sh/rcar/core.c | 20 +++++++++-----------
+ sound/soc/sh/rcar/core.c |   20 +++++++++-----------
  1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index f07742f1eb11..d7c669790dd4 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
-@@ -944,19 +944,17 @@ static struct snd_pcm_ops rsnd_pcm_ops = {
+@@ -943,19 +943,17 @@ static struct snd_pcm_ops rsnd_pcm_ops =
  
  static int rsnd_pcm_new(struct snd_soc_pcm_runtime *rtd)
  {
@@ -50,6 +48,3 @@ index f07742f1eb11..d7c669790dd4 100644
  
  	return snd_pcm_lib_preallocate_pages_for_all(
  		rtd->pcm,
--- 
-2.1.2
-

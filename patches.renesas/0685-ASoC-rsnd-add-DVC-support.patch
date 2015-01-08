@@ -11,19 +11,17 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit bff58ea4f43d9b4a9fd6fb05fabc8f50f68131f5)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- include/sound/rcar_snd.h   |  10 ++
- sound/soc/sh/rcar/Makefile |   2 +-
- sound/soc/sh/rcar/adg.c    |  18 +++
- sound/soc/sh/rcar/core.c   |  20 ++++
- sound/soc/sh/rcar/dvc.c    | 273 +++++++++++++++++++++++++++++++++++++++++++++
- sound/soc/sh/rcar/gen.c    |  11 ++
- sound/soc/sh/rcar/rsnd.h   |  40 +++++++
- sound/soc/sh/rcar/src.c    |   4 +-
+ include/sound/rcar_snd.h   |   10 +
+ sound/soc/sh/rcar/Makefile |    2 
+ sound/soc/sh/rcar/adg.c    |   18 ++
+ sound/soc/sh/rcar/core.c   |   20 +++
+ sound/soc/sh/rcar/dvc.c    |  273 +++++++++++++++++++++++++++++++++++++++++++++
+ sound/soc/sh/rcar/gen.c    |   11 +
+ sound/soc/sh/rcar/rsnd.h   |   40 ++++++
+ sound/soc/sh/rcar/src.c    |    4 
  8 files changed, 376 insertions(+), 2 deletions(-)
  create mode 100644 sound/soc/sh/rcar/dvc.c
 
-diff --git a/include/sound/rcar_snd.h b/include/sound/rcar_snd.h
-index a03268ec59c3..f4a706f82cb7 100644
 --- a/include/sound/rcar_snd.h
 +++ b/include/sound/rcar_snd.h
 @@ -56,9 +56,17 @@ struct rsnd_src_platform_info {
@@ -53,8 +51,6 @@ index a03268ec59c3..f4a706f82cb7 100644
  	struct rsnd_dai_platform_info *dai_info;
  	int dai_info_nr;
  	int (*start)(int id);
-diff --git a/sound/soc/sh/rcar/Makefile b/sound/soc/sh/rcar/Makefile
-index 7d0051ced838..9ac536429800 100644
 --- a/sound/soc/sh/rcar/Makefile
 +++ b/sound/soc/sh/rcar/Makefile
 @@ -1,2 +1,2 @@
@@ -62,11 +58,9 @@ index 7d0051ced838..9ac536429800 100644
 +snd-soc-rcar-objs	:= core.o gen.o src.o adg.o ssi.o dvc.o
  obj-$(CONFIG_SND_SOC_RCAR)	+= snd-soc-rcar.o
 \ No newline at end of file
-diff --git a/sound/soc/sh/rcar/adg.c b/sound/soc/sh/rcar/adg.c
-index 41556b2ef21e..fc41a0e8b09f 100644
 --- a/sound/soc/sh/rcar/adg.c
 +++ b/sound/soc/sh/rcar/adg.c
-@@ -57,6 +57,24 @@ static u32 rsnd_adg_ssi_ws_timing_gen2(struct rsnd_dai_stream *io)
+@@ -57,6 +57,24 @@ static u32 rsnd_adg_ssi_ws_timing_gen2(s
  	return (0x6 + ws) << 8;
  }
  
@@ -91,11 +85,9 @@ index 41556b2ef21e..fc41a0e8b09f 100644
  static int rsnd_adg_set_src_timsel_gen2(struct rsnd_dai *rdai,
  					struct rsnd_mod *mod,
  					struct rsnd_dai_stream *io,
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index 1f34cd4e949d..964463dada87 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
-@@ -644,6 +644,11 @@ static int rsnd_path_init(struct rsnd_priv *priv,
+@@ -644,6 +644,11 @@ static int rsnd_path_init(struct rsnd_pr
  	if (ret < 0)
  		return ret;
  
@@ -107,7 +99,7 @@ index 1f34cd4e949d..964463dada87 100644
  	return ret;
  }
  
-@@ -868,6 +873,20 @@ static struct snd_pcm_ops rsnd_pcm_ops = {
+@@ -867,6 +872,20 @@ static struct snd_pcm_ops rsnd_pcm_ops =
  
  static int rsnd_pcm_new(struct snd_soc_pcm_runtime *rtd)
  {
@@ -128,7 +120,7 @@ index 1f34cd4e949d..964463dada87 100644
  	return snd_pcm_lib_preallocate_pages_for_all(
  		rtd->pcm,
  		SNDRV_DMA_TYPE_DEV,
-@@ -907,6 +926,7 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -906,6 +925,7 @@ static int rsnd_probe(struct platform_de
  		rsnd_gen_probe,
  		rsnd_ssi_probe,
  		rsnd_src_probe,
@@ -136,9 +128,6 @@ index 1f34cd4e949d..964463dada87 100644
  		rsnd_adg_probe,
  		rsnd_dai_probe,
  	};
-diff --git a/sound/soc/sh/rcar/dvc.c b/sound/soc/sh/rcar/dvc.c
-new file mode 100644
-index 000000000000..74769b1be005
 --- /dev/null
 +++ b/sound/soc/sh/rcar/dvc.c
 @@ -0,0 +1,273 @@
@@ -415,11 +404,9 @@ index 000000000000..74769b1be005
 +
 +	return 0;
 +}
-diff --git a/sound/soc/sh/rcar/gen.c b/sound/soc/sh/rcar/gen.c
-index 50a1ef3eb1c6..a135d4c9d080 100644
 --- a/sound/soc/sh/rcar/gen.c
 +++ b/sound/soc/sh/rcar/gen.c
-@@ -181,6 +181,8 @@ static int rsnd_gen2_regmap_init(struct rsnd_priv *priv, struct rsnd_gen *gen)
+@@ -181,6 +181,8 @@ static int rsnd_gen2_regmap_init(struct
  		RSND_GEN2_M_REG(gen, SCU,	SRC_BUSIF_MODE,	0x0,	0x20),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_ROUTE_MODE0,0xc,	0x20),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_CTRL,	0x10,	0x20),
@@ -428,7 +415,7 @@ index 50a1ef3eb1c6..a135d4c9d080 100644
  		RSND_GEN2_M_REG(gen, SCU,	SRC_SWRSR,	0x200,	0x40),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_SRCIR,	0x204,	0x40),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_ADINR,	0x214,	0x40),
-@@ -189,6 +191,14 @@ static int rsnd_gen2_regmap_init(struct rsnd_priv *priv, struct rsnd_gen *gen)
+@@ -189,6 +191,14 @@ static int rsnd_gen2_regmap_init(struct
  		RSND_GEN2_M_REG(gen, SCU,	SRC_SRCCR,	0x224,	0x40),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_BSDSR,	0x22c,	0x40),
  		RSND_GEN2_M_REG(gen, SCU,	SRC_BSISR,	0x238,	0x40),
@@ -443,7 +430,7 @@ index 50a1ef3eb1c6..a135d4c9d080 100644
  
  		RSND_GEN2_S_REG(gen, ADG,	BRRA,		0x00),
  		RSND_GEN2_S_REG(gen, ADG,	BRRB,		0x04),
-@@ -207,6 +217,7 @@ static int rsnd_gen2_regmap_init(struct rsnd_priv *priv, struct rsnd_gen *gen)
+@@ -207,6 +217,7 @@ static int rsnd_gen2_regmap_init(struct
  		RSND_GEN2_S_REG(gen, ADG,	SRCOUT_TIMSEL2,	0x50),
  		RSND_GEN2_S_REG(gen, ADG,	SRCOUT_TIMSEL3,	0x54),
  		RSND_GEN2_S_REG(gen, ADG,	SRCOUT_TIMSEL4,	0x58),
@@ -451,8 +438,6 @@ index 50a1ef3eb1c6..a135d4c9d080 100644
  
  		RSND_GEN2_M_REG(gen, SSI,	SSICR,		0x00,	0x40),
  		RSND_GEN2_M_REG(gen, SSI,	SSISR,		0x04,	0x40),
-diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
-index 6156ceebd58b..5aa790170b01 100644
 --- a/sound/soc/sh/rcar/rsnd.h
 +++ b/sound/soc/sh/rcar/rsnd.h
 @@ -44,6 +44,15 @@ enum rsnd_reg {
@@ -489,7 +474,7 @@ index 6156ceebd58b..5aa790170b01 100644
  
  struct rsnd_of_data;
  struct rsnd_priv;
-@@ -166,6 +179,7 @@ void  rsnd_dma_quit(struct rsnd_priv *priv,
+@@ -166,6 +179,7 @@ void  rsnd_dma_quit(struct rsnd_priv *pr
  enum rsnd_mod_type {
  	RSND_MOD_SRC = 0,
  	RSND_MOD_SSI,
@@ -515,7 +500,7 @@ index 6156ceebd58b..5aa790170b01 100644
  
  struct rsnd_dai {
  	char name[RSND_DAI_NAME_SIZE];
-@@ -286,6 +304,9 @@ int rsnd_adg_set_convert_clk_gen2(struct rsnd_mod *mod,
+@@ -286,6 +304,9 @@ int rsnd_adg_set_convert_clk_gen2(struct
  int rsnd_adg_set_convert_timing_gen2(struct rsnd_mod *mod,
  				     struct rsnd_dai *rdai,
  				     struct rsnd_dai_stream *io);
@@ -538,7 +523,7 @@ index 6156ceebd58b..5aa790170b01 100644
  	 * below value will be filled on rsnd_dai_probe()
  	 */
  	struct snd_soc_dai_driver *daidrv;
-@@ -374,4 +401,17 @@ int rsnd_ssi_probe(struct platform_device *pdev,
+@@ -374,4 +401,17 @@ int rsnd_ssi_probe(struct platform_devic
  struct rsnd_mod *rsnd_ssi_mod_get(struct rsnd_priv *priv, int id);
  int rsnd_ssi_is_pin_sharing(struct rsnd_mod *mod);
  
@@ -556,11 +541,9 @@ index 6156ceebd58b..5aa790170b01 100644
 +
 +
  #endif
-diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
-index 2a0f7e63ffc8..e3b078e7c3aa 100644
 --- a/sound/soc/sh/rcar/src.c
 +++ b/sound/soc/sh/rcar/src.c
-@@ -536,12 +536,14 @@ static int rsnd_src_init_gen2(struct rsnd_mod *mod,
+@@ -536,12 +536,14 @@ static int rsnd_src_init_gen2(struct rsn
  static int rsnd_src_start_gen2(struct rsnd_mod *mod,
  			       struct rsnd_dai *rdai)
  {
@@ -576,6 +559,3 @@ index 2a0f7e63ffc8..e3b078e7c3aa 100644
  
  	return rsnd_src_start(mod, rdai);
  }
--- 
-2.1.2
-

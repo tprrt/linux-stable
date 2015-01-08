@@ -10,19 +10,16 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit 90e8e50fce3585d6f9902701de08389b027dadc6)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- .../devicetree/bindings/sound/renesas,rsnd.txt     |  96 ++++++++++++++++
- sound/soc/sh/rcar/adg.c                            |   1 +
- sound/soc/sh/rcar/core.c                           | 122 ++++++++++++++++++++-
- sound/soc/sh/rcar/gen.c                            |  15 +++
- sound/soc/sh/rcar/rsnd.h                           |  11 ++
- sound/soc/sh/rcar/src.c                            |  36 ++++++
- sound/soc/sh/rcar/ssi.c                            |  56 ++++++++++
+ Documentation/devicetree/bindings/sound/renesas,rsnd.txt |   96 +++++++++++
+ sound/soc/sh/rcar/adg.c                                  |    1 
+ sound/soc/sh/rcar/core.c                                 |  122 ++++++++++++++-
+ sound/soc/sh/rcar/gen.c                                  |   15 +
+ sound/soc/sh/rcar/rsnd.h                                 |   11 +
+ sound/soc/sh/rcar/src.c                                  |   36 ++++
+ sound/soc/sh/rcar/ssi.c                                  |   56 ++++++
  7 files changed, 334 insertions(+), 3 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/sound/renesas,rsnd.txt
 
-diff --git a/Documentation/devicetree/bindings/sound/renesas,rsnd.txt b/Documentation/devicetree/bindings/sound/renesas,rsnd.txt
-new file mode 100644
-index 000000000000..7c6d33f29796
 --- /dev/null
 +++ b/Documentation/devicetree/bindings/sound/renesas,rsnd.txt
 @@ -0,0 +1,96 @@
@@ -122,11 +119,9 @@ index 000000000000..7c6d33f29796
 +		};
 +	};
 +};
-diff --git a/sound/soc/sh/rcar/adg.c b/sound/soc/sh/rcar/adg.c
-index 953f1cce982d..69c44269ebdb 100644
 --- a/sound/soc/sh/rcar/adg.c
 +++ b/sound/soc/sh/rcar/adg.c
-@@ -392,6 +392,7 @@ static void rsnd_adg_ssi_clk_init(struct rsnd_priv *priv, struct rsnd_adg *adg)
+@@ -392,6 +392,7 @@ static void rsnd_adg_ssi_clk_init(struct
  }
  
  int rsnd_adg_probe(struct platform_device *pdev,
@@ -134,8 +129,6 @@ index 953f1cce982d..69c44269ebdb 100644
  		   struct rsnd_priv *priv)
  {
  	struct rsnd_adg *adg;
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index d836e8a9fdce..215b668166be 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
 @@ -100,6 +100,21 @@
@@ -160,7 +153,7 @@ index d836e8a9fdce..215b668166be 100644
  /*
   *	rsnd_platform functions
   */
-@@ -620,7 +635,92 @@ static int rsnd_path_init(struct rsnd_priv *priv,
+@@ -620,7 +635,92 @@ static int rsnd_path_init(struct rsnd_pr
  	return ret;
  }
  
@@ -253,7 +246,7 @@ index d836e8a9fdce..215b668166be 100644
  			  struct rsnd_priv *priv)
  {
  	struct snd_soc_dai_driver *drv;
-@@ -628,13 +728,16 @@ static int rsnd_dai_probe(struct platform_device *pdev,
+@@ -628,13 +728,16 @@ static int rsnd_dai_probe(struct platfor
  	struct rsnd_dai *rdai;
  	struct rsnd_mod *pmod, *cmod;
  	struct device *dev = rsnd_priv_to_dev(priv);
@@ -271,7 +264,7 @@ index d836e8a9fdce..215b668166be 100644
  	if (!dai_nr) {
  		/* get max dai nr */
  		for (dai_nr = 0; dai_nr < 32; dai_nr++) {
-@@ -802,7 +905,10 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -801,7 +904,10 @@ static int rsnd_probe(struct platform_de
  	struct rsnd_priv *priv;
  	struct device *dev = &pdev->dev;
  	struct rsnd_dai *rdai;
@@ -282,7 +275,7 @@ index d836e8a9fdce..215b668166be 100644
  			    struct rsnd_priv *priv) = {
  		rsnd_gen_probe,
  		rsnd_ssi_probe,
-@@ -812,7 +918,16 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -811,7 +917,16 @@ static int rsnd_probe(struct platform_de
  	};
  	int ret, i;
  
@@ -300,7 +293,7 @@ index d836e8a9fdce..215b668166be 100644
  	if (!info) {
  		dev_err(dev, "driver needs R-Car sound information\n");
  		return -ENODEV;
-@@ -835,7 +950,7 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -834,7 +949,7 @@ static int rsnd_probe(struct platform_de
  	 *	init each module
  	 */
  	for (i = 0; i < ARRAY_SIZE(probe_func); i++) {
@@ -309,7 +302,7 @@ index d836e8a9fdce..215b668166be 100644
  		if (ret)
  			return ret;
  	}
-@@ -903,6 +1018,7 @@ static int rsnd_remove(struct platform_device *pdev)
+@@ -902,6 +1017,7 @@ static int rsnd_remove(struct platform_d
  static struct platform_driver rsnd_driver = {
  	.driver	= {
  		.name	= "rcar_sound",
@@ -317,11 +310,9 @@ index d836e8a9fdce..215b668166be 100644
  	},
  	.probe		= rsnd_probe,
  	.remove		= rsnd_remove,
-diff --git a/sound/soc/sh/rcar/gen.c b/sound/soc/sh/rcar/gen.c
-index 9094970dbdfb..50a1ef3eb1c6 100644
 --- a/sound/soc/sh/rcar/gen.c
 +++ b/sound/soc/sh/rcar/gen.c
-@@ -359,13 +359,28 @@ static int rsnd_gen1_probe(struct platform_device *pdev,
+@@ -359,13 +359,28 @@ static int rsnd_gen1_probe(struct platfo
  /*
   *		Gen
   */
@@ -350,8 +341,6 @@ index 9094970dbdfb..50a1ef3eb1c6 100644
  	gen = devm_kzalloc(dev, sizeof(*gen), GFP_KERNEL);
  	if (!gen) {
  		dev_err(dev, "GEN allocate failed\n");
-diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
-index c46e0afa54ae..619d198c7d2e 100644
 --- a/sound/soc/sh/rcar/rsnd.h
 +++ b/sound/soc/sh/rcar/rsnd.h
 @@ -17,6 +17,8 @@
@@ -371,7 +360,7 @@ index c46e0afa54ae..619d198c7d2e 100644
  struct rsnd_priv;
  struct rsnd_mod;
  struct rsnd_dai;
-@@ -260,6 +263,7 @@ int rsnd_dai_pointer_offset(struct rsnd_dai_stream *io, int additional);
+@@ -260,6 +263,7 @@ int rsnd_dai_pointer_offset(struct rsnd_
   *	R-Car Gen1/Gen2
   */
  int rsnd_gen_probe(struct platform_device *pdev,
@@ -379,7 +368,7 @@ index c46e0afa54ae..619d198c7d2e 100644
  		   struct rsnd_priv *priv);
  void __iomem *rsnd_gen_reg_get(struct rsnd_priv *priv,
  			       struct rsnd_mod *mod,
-@@ -273,6 +277,7 @@ void __iomem *rsnd_gen_reg_get(struct rsnd_priv *priv,
+@@ -273,6 +277,7 @@ void __iomem *rsnd_gen_reg_get(struct rs
  int rsnd_adg_ssi_clk_stop(struct rsnd_mod *mod);
  int rsnd_adg_ssi_clk_try_start(struct rsnd_mod *mod, unsigned int rate);
  int rsnd_adg_probe(struct platform_device *pdev,
@@ -387,7 +376,7 @@ index c46e0afa54ae..619d198c7d2e 100644
  		   struct rsnd_priv *priv);
  int rsnd_adg_set_convert_clk_gen1(struct rsnd_priv *priv,
  				  struct rsnd_mod *mod,
-@@ -290,6 +295,10 @@ int rsnd_adg_set_convert_timing_gen2(struct rsnd_mod *mod,
+@@ -290,6 +295,10 @@ int rsnd_adg_set_convert_timing_gen2(str
  /*
   *	R-Car sound priv
   */
@@ -406,7 +395,7 @@ index c46e0afa54ae..619d198c7d2e 100644
  		   struct rsnd_priv *priv);
  struct rsnd_mod *rsnd_src_mod_get(struct rsnd_priv *priv, int id);
  unsigned int rsnd_src_get_ssi_rate(struct rsnd_priv *priv,
-@@ -366,6 +376,7 @@ int rsnd_src_enable_ssi_irq(struct rsnd_mod *ssi_mod,
+@@ -366,6 +376,7 @@ int rsnd_src_enable_ssi_irq(struct rsnd_
   *	R-Car SSI
   */
  int rsnd_ssi_probe(struct platform_device *pdev,
@@ -414,11 +403,9 @@ index c46e0afa54ae..619d198c7d2e 100644
  		   struct rsnd_priv *priv);
  struct rsnd_mod *rsnd_ssi_mod_get(struct rsnd_priv *priv, int id);
  struct rsnd_mod *rsnd_ssi_mod_get_frm_dai(struct rsnd_priv *priv,
-diff --git a/sound/soc/sh/rcar/src.c b/sound/soc/sh/rcar/src.c
-index ea6a214985d0..eee75ebf961c 100644
 --- a/sound/soc/sh/rcar/src.c
 +++ b/sound/soc/sh/rcar/src.c
-@@ -628,7 +628,41 @@ struct rsnd_mod *rsnd_src_mod_get(struct rsnd_priv *priv, int id)
+@@ -628,7 +628,41 @@ struct rsnd_mod *rsnd_src_mod_get(struct
  	return &((struct rsnd_src *)(priv->src) + id)->mod;
  }
  
@@ -460,7 +447,7 @@ index ea6a214985d0..eee75ebf961c 100644
  		   struct rsnd_priv *priv)
  {
  	struct rcar_snd_info *info = rsnd_priv_to_info(priv);
-@@ -639,6 +673,8 @@ int rsnd_src_probe(struct platform_device *pdev,
+@@ -639,6 +673,8 @@ int rsnd_src_probe(struct platform_devic
  	char name[RSND_SRC_NAME_SIZE];
  	int i, nr;
  
@@ -469,11 +456,9 @@ index ea6a214985d0..eee75ebf961c 100644
  	/*
  	 * init SRC
  	 */
-diff --git a/sound/soc/sh/rcar/ssi.c b/sound/soc/sh/rcar/ssi.c
-index 633b23d209b9..4b7e20603dd7 100644
 --- a/sound/soc/sh/rcar/ssi.c
 +++ b/sound/soc/sh/rcar/ssi.c
-@@ -588,7 +588,61 @@ static void rsnd_ssi_parent_clk_setup(struct rsnd_priv *priv, struct rsnd_ssi *s
+@@ -588,7 +588,61 @@ static void rsnd_ssi_parent_clk_setup(st
  	}
  }
  
@@ -535,7 +520,7 @@ index 633b23d209b9..4b7e20603dd7 100644
  		   struct rsnd_priv *priv)
  {
  	struct rcar_snd_info *info = rsnd_priv_to_info(priv);
-@@ -600,6 +654,8 @@ int rsnd_ssi_probe(struct platform_device *pdev,
+@@ -600,6 +654,8 @@ int rsnd_ssi_probe(struct platform_devic
  	char name[RSND_SSI_NAME_SIZE];
  	int i, nr;
  
@@ -544,6 +529,3 @@ index 633b23d209b9..4b7e20603dd7 100644
  	/*
  	 *	init SSI
  	 */
--- 
-2.1.2
-

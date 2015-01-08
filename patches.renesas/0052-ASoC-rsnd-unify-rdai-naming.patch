@@ -12,15 +12,13 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit ecba9e724c5775aebd3a28e831643160c7146e83)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- sound/soc/sh/rcar/core.c | 8 ++++----
- sound/soc/sh/rcar/rsnd.h | 6 +++---
+ sound/soc/sh/rcar/core.c |    8 ++++----
+ sound/soc/sh/rcar/rsnd.h |    6 +++---
  2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
-index b2370f68e645..f0745af316be 100644
 --- a/sound/soc/sh/rcar/core.c
 +++ b/sound/soc/sh/rcar/core.c
-@@ -352,7 +352,7 @@ int rsnd_dai_id(struct rsnd_priv *priv, struct rsnd_dai *rdai)
+@@ -352,7 +352,7 @@ int rsnd_dai_id(struct rsnd_priv *priv,
  {
  	int id = rdai - priv->rdai;
  
@@ -29,7 +27,7 @@ index b2370f68e645..f0745af316be 100644
  		return -EINVAL;
  
  	return id;
-@@ -360,7 +360,7 @@ int rsnd_dai_id(struct rsnd_priv *priv, struct rsnd_dai *rdai)
+@@ -360,7 +360,7 @@ int rsnd_dai_id(struct rsnd_priv *priv,
  
  struct rsnd_dai *rsnd_dai_get(struct rsnd_priv *priv, int id)
  {
@@ -38,7 +36,7 @@ index b2370f68e645..f0745af316be 100644
  		return NULL;
  
  	return priv->rdai + id;
-@@ -607,7 +607,7 @@ static int rsnd_dai_probe(struct platform_device *pdev,
+@@ -607,7 +607,7 @@ static int rsnd_dai_probe(struct platfor
  		return -ENOMEM;
  	}
  
@@ -47,7 +45,7 @@ index b2370f68e645..f0745af316be 100644
  	priv->daidrv	= drv;
  	priv->rdai	= rdai;
  
-@@ -802,7 +802,7 @@ static int rsnd_probe(struct platform_device *pdev)
+@@ -801,7 +801,7 @@ static int rsnd_probe(struct platform_de
  	}
  
  	ret = snd_soc_register_component(dev, &rsnd_soc_component,
@@ -56,8 +54,6 @@ index b2370f68e645..f0745af316be 100644
  	if (ret < 0) {
  		dev_err(dev, "cannot snd dai register\n");
  		goto exit_snd_soc;
-diff --git a/sound/soc/sh/rcar/rsnd.h b/sound/soc/sh/rcar/rsnd.h
-index 8ac28acc7086..3962a50977e5 100644
 --- a/sound/soc/sh/rcar/rsnd.h
 +++ b/sound/soc/sh/rcar/rsnd.h
 @@ -202,10 +202,10 @@ struct rsnd_dai {
@@ -82,6 +78,3 @@ index 8ac28acc7086..3962a50977e5 100644
  };
  
  #define rsnd_priv_to_dev(priv)	((priv)->dev)
--- 
-2.1.2
-

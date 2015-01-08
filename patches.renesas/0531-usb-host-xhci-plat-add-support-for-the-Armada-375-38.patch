@@ -19,17 +19,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 (cherry picked from commit 973747928514bb636e3fe6a13b7ec6d6d73100f0)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/usb/host/Kconfig      |  8 +++++
- drivers/usb/host/Makefile     |  3 ++
- drivers/usb/host/xhci-mvebu.c | 72 +++++++++++++++++++++++++++++++++++++++++++
- drivers/usb/host/xhci-mvebu.h | 21 +++++++++++++
- drivers/usb/host/xhci-plat.c  | 12 ++++++++
+ drivers/usb/host/Kconfig      |    8 ++++
+ drivers/usb/host/Makefile     |    3 +
+ drivers/usb/host/xhci-mvebu.c |   72 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/host/xhci-mvebu.h |   21 ++++++++++++
+ drivers/usb/host/xhci-plat.c  |   12 +++++++
  5 files changed, 116 insertions(+)
  create mode 100644 drivers/usb/host/xhci-mvebu.c
  create mode 100644 drivers/usb/host/xhci-mvebu.h
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index a9707da7da0b..ed79c7abf226 100644
 --- a/drivers/usb/host/Kconfig
 +++ b/drivers/usb/host/Kconfig
 @@ -29,6 +29,14 @@ if USB_XHCI_HCD
@@ -47,8 +45,6 @@ index a9707da7da0b..ed79c7abf226 100644
  endif # USB_XHCI_HCD
  
  config USB_EHCI_HCD
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index 7530468c9a4f..7c0886a35182 100644
 --- a/drivers/usb/host/Makefile
 +++ b/drivers/usb/host/Makefile
 @@ -19,6 +19,9 @@ xhci-hcd-$(CONFIG_PCI)	+= xhci-pci.o
@@ -61,9 +57,6 @@ index 7530468c9a4f..7c0886a35182 100644
  endif
  
  obj-$(CONFIG_USB_WHCI_HCD)	+= whci/
-diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
-new file mode 100644
-index 000000000000..1eefc988192d
 --- /dev/null
 +++ b/drivers/usb/host/xhci-mvebu.c
 @@ -0,0 +1,72 @@
@@ -139,9 +132,6 @@ index 000000000000..1eefc988192d
 +
 +	return 0;
 +}
-diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
-new file mode 100644
-index 000000000000..7ede92aa41f6
 --- /dev/null
 +++ b/drivers/usb/host/xhci-mvebu.h
 @@ -0,0 +1,21 @@
@@ -166,8 +156,6 @@ index 000000000000..7ede92aa41f6
 +}
 +#endif
 +#endif /* __LINUX_XHCI_MVEBU_H */
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 17465cce6d0d..4010fc5bebaf 100644
 --- a/drivers/usb/host/xhci-plat.c
 +++ b/drivers/usb/host/xhci-plat.c
 @@ -19,6 +19,7 @@
@@ -178,7 +166,7 @@ index 17465cce6d0d..4010fc5bebaf 100644
  
  static void xhci_plat_quirks(struct device *dev, struct xhci_hcd *xhci)
  {
-@@ -109,6 +110,15 @@ static int xhci_plat_probe(struct platform_device *pdev)
+@@ -109,6 +110,15 @@ static int xhci_plat_probe(struct platfo
  	if (!res)
  		return -ENODEV;
  
@@ -194,7 +182,7 @@ index 17465cce6d0d..4010fc5bebaf 100644
  	/* Initialize dma_mask and coherent_dma_mask to 32-bits */
  	ret = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
  	if (ret)
-@@ -250,6 +260,8 @@ static const struct dev_pm_ops xhci_plat_pm_ops = {
+@@ -258,6 +268,8 @@ static const struct dev_pm_ops xhci_plat
  static const struct of_device_id usb_xhci_of_match[] = {
  	{ .compatible = "generic-xhci" },
  	{ .compatible = "xhci-platform" },
@@ -203,6 +191,3 @@ index 17465cce6d0d..4010fc5bebaf 100644
  	{ },
  };
  MODULE_DEVICE_TABLE(of, usb_xhci_of_match);
--- 
-2.1.2
-

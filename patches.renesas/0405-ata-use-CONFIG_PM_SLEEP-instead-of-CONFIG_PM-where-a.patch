@@ -1107,7 +1107,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  	struct ata_host *host = pci_get_drvdata(pdev);
 --- a/drivers/ata/sata_rcar.c
 +++ b/drivers/ata/sata_rcar.c
-@@ -937,7 +937,7 @@ static int sata_rcar_remove(struct platf
+@@ -947,7 +947,7 @@ static int sata_rcar_remove(struct platf
  	return 0;
  }
  
@@ -1116,7 +1116,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  static int sata_rcar_suspend(struct device *dev)
  {
  	struct ata_host *host = dev_get_drvdata(dev);
-@@ -991,7 +991,7 @@ static struct platform_driver sata_rcar_
+@@ -1001,7 +1001,7 @@ static struct platform_driver sata_rcar_
  		.name		= DRV_NAME,
  		.owner		= THIS_MODULE,
  		.of_match_table	= sata_rcar_match,
