@@ -17,17 +17,6 @@ patches.ltsi/ltsi-makefile-addition.patch
 #
 
 
-
-
-#############################################################################
-# LTTNG
-#
-# 2.3.4 version of LTTng, taken from the upstream:
-#	git://git.lttng.org/lttng-modules.git
-# repo.
-#
-patches.lttng/lttng-2.3.4.patch
-
 #############################################################################
 # ktap
 #

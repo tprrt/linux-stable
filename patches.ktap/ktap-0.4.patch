@@ -242,19 +242,19 @@ Subject: [PATCH] ktap-0.4
 
 --- a/drivers/staging/Kconfig
 +++ b/drivers/staging/Kconfig
-@@ -148,4 +148,6 @@ source "drivers/staging/dgap/Kconfig"
+@@ -146,4 +146,6 @@ source "drivers/staging/dgnc/Kconfig"
  
- source "drivers/staging/lttng/Kconfig"
+ source "drivers/staging/dgap/Kconfig"
  
 +source "drivers/staging/ktap/Kconfig"
 +
  endif # STAGING
 --- a/drivers/staging/Makefile
 +++ b/drivers/staging/Makefile
-@@ -66,3 +66,4 @@ obj-$(CONFIG_DGNC)			+= dgnc/
+@@ -65,3 +65,4 @@ obj-$(CONFIG_XILLYBUS)		+= xillybus/
+ obj-$(CONFIG_DGNC)			+= dgnc/
  obj-$(CONFIG_DGAP)			+= dgap/
  obj-$(CONFIG_MTD_SPINAND_MT29F)	+= mt29f_spinand/
- obj-$(CONFIG_LTTNG)		+= lttng/
 +obj-$(CONFIG_KTAP)              += ktap/
 --- /dev/null
 +++ b/drivers/staging/ktap/Kconfig
