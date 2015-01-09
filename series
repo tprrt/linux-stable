@@ -1003,6 +1003,8 @@ patches.renesas/0972-usb-renesas_usbhs-fix-the-usb_pkt_pop.patch
 patches.renesas/0973-i2c-rcar-fix-RCAR_IRQ_ACK_-RECV-SEND.patch
 patches.renesas/0001-clk-add-clock-indices-support.patch
 patches.renesas/0002-of-fdt-update-of_get_flat_dt_prop-in-prep-for-libfdt.patch
+patches.renesas/phy-micrel-add-of-configuration-for-led-mode.patch
+patches.renesas/micrel-fix-masking-off-led-bits.patch
 
 
 #############################################################################
