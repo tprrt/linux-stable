@@ -30,15 +30,13 @@ Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 (cherry picked from commit e5b3b2d9ed202697a937c282f9c4d93b1e3e0848)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/pinctrl/core.c   | 17 ++++++++++-------
- drivers/pinctrl/pinmux.c | 23 +++++++++++++----------
+ drivers/pinctrl/core.c   |   17 ++++++++++-------
+ drivers/pinctrl/pinmux.c |   23 +++++++++++++----------
  2 files changed, 23 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index c0fe6091566a..e09474ecde23 100644
 --- a/drivers/pinctrl/core.c
 +++ b/drivers/pinctrl/core.c
-@@ -468,6 +468,9 @@ int pinctrl_get_group_pins(struct pinctrl_dev *pctldev, const char *pin_group,
+@@ -468,6 +468,9 @@ int pinctrl_get_group_pins(struct pinctr
  	const struct pinctrl_ops *pctlops = pctldev->desc->pctlops;
  	int gs;
  
@@ -48,7 +46,7 @@ index c0fe6091566a..e09474ecde23 100644
  	gs = pinctrl_get_group_selector(pctldev, pin_group);
  	if (gs < 0)
  		return gs;
-@@ -1362,15 +1365,16 @@ static int pinctrl_groups_show(struct seq_file *s, void *what)
+@@ -1360,15 +1363,16 @@ static int pinctrl_groups_show(struct se
  
  	seq_puts(s, "registered pin groups:\n");
  	while (selector < ngroups) {
@@ -70,7 +68,7 @@ index c0fe6091566a..e09474ecde23 100644
  		if (ret)
  			seq_printf(s, "%s [ERROR GETTING PINS]\n",
  				   gname);
-@@ -1694,8 +1698,7 @@ static int pinctrl_check_ops(struct pinctrl_dev *pctldev)
+@@ -1692,8 +1696,7 @@ static int pinctrl_check_ops(struct pinc
  
  	if (!ops ||
  	    !ops->get_groups_count ||
@@ -80,11 +78,9 @@ index c0fe6091566a..e09474ecde23 100644
  		return -EINVAL;
  
  	if (ops->dt_node_to_map && !ops->dt_free_map)
-diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
-index 9248ce4efed4..051e8592990e 100644
 --- a/drivers/pinctrl/pinmux.c
 +++ b/drivers/pinctrl/pinmux.c
-@@ -391,14 +391,16 @@ int pinmux_enable_setting(struct pinctrl_setting const *setting)
+@@ -391,14 +391,16 @@ int pinmux_enable_setting(struct pinctrl
  	struct pinctrl_dev *pctldev = setting->pctldev;
  	const struct pinctrl_ops *pctlops = pctldev->desc->pctlops;
  	const struct pinmux_ops *ops = pctldev->desc->pmxops;
@@ -106,7 +102,7 @@ index 9248ce4efed4..051e8592990e 100644
  	if (ret) {
  		const char *gname;
  
-@@ -470,14 +472,15 @@ void pinmux_disable_setting(struct pinctrl_setting const *setting)
+@@ -470,14 +472,15 @@ void pinmux_disable_setting(struct pinct
  	struct pinctrl_dev *pctldev = setting->pctldev;
  	const struct pinctrl_ops *pctlops = pctldev->desc->pctlops;
  	const struct pinmux_ops *ops = pctldev->desc->pmxops;
@@ -127,6 +123,3 @@ index 9248ce4efed4..051e8592990e 100644
  	if (ret) {
  		const char *gname;
  
--- 
-2.1.2
-

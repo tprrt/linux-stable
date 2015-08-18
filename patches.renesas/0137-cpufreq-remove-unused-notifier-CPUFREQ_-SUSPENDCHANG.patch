@@ -14,21 +14,19 @@ Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 (cherry picked from commit 0b443ead714f0cba797a7f2476dd756f22b5421e)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- Documentation/cpu-freq/core.txt       | 4 ----
- arch/arm/kernel/smp.c                 | 3 +--
- arch/arm/kernel/smp_twd.c             | 2 +-
- arch/arm/mach-pxa/viper.c             | 3 ---
- arch/powerpc/oprofile/op_model_cell.c | 3 +--
- arch/sparc/kernel/time_64.c           | 3 +--
- arch/x86/kernel/tsc.c                 | 3 +--
- drivers/cpufreq/cpufreq.c             | 3 +--
- drivers/pcmcia/sa11xx_base.c          | 3 ---
- drivers/tty/serial/sh-sci.c           | 3 +--
- include/linux/cpufreq.h               | 2 --
+ Documentation/cpu-freq/core.txt       |    4 ----
+ arch/arm/kernel/smp.c                 |    3 +--
+ arch/arm/kernel/smp_twd.c             |    2 +-
+ arch/arm/mach-pxa/viper.c             |    3 ---
+ arch/powerpc/oprofile/op_model_cell.c |    3 +--
+ arch/sparc/kernel/time_64.c           |    3 +--
+ arch/x86/kernel/tsc.c                 |    3 +--
+ drivers/cpufreq/cpufreq.c             |    3 +--
+ drivers/pcmcia/sa11xx_base.c          |    3 ---
+ drivers/tty/serial/sh-sci.c           |    3 +--
+ include/linux/cpufreq.h               |    2 --
  11 files changed, 7 insertions(+), 25 deletions(-)
 
-diff --git a/Documentation/cpu-freq/core.txt b/Documentation/cpu-freq/core.txt
-index ce0666e51036..0060d76b445f 100644
 --- a/Documentation/cpu-freq/core.txt
 +++ b/Documentation/cpu-freq/core.txt
 @@ -92,7 +92,3 @@ values:
@@ -39,11 +37,9 @@ index ce0666e51036..0060d76b445f 100644
 -If the cpufreq core detects the frequency has changed while the system
 -was suspended, these notifiers are called with CPUFREQ_RESUMECHANGE as
 -second argument.
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index b7b4c86e338b..7c4fada440f0 100644
 --- a/arch/arm/kernel/smp.c
 +++ b/arch/arm/kernel/smp.c
-@@ -674,8 +674,7 @@ static int cpufreq_callback(struct notifier_block *nb,
+@@ -683,8 +683,7 @@ static int cpufreq_callback(struct notif
  	}
  
  	if ((val == CPUFREQ_PRECHANGE  && freq->old < freq->new) ||
@@ -53,11 +49,9 @@ index b7b4c86e338b..7c4fada440f0 100644
  		loops_per_jiffy = cpufreq_scale(global_l_p_j_ref,
  						global_l_p_j_ref_freq,
  						freq->new);
-diff --git a/arch/arm/kernel/smp_twd.c b/arch/arm/kernel/smp_twd.c
-index 6591e26fc13f..dfc32130bc44 100644
 --- a/arch/arm/kernel/smp_twd.c
 +++ b/arch/arm/kernel/smp_twd.c
-@@ -166,7 +166,7 @@ static int twd_cpufreq_transition(struct notifier_block *nb,
+@@ -166,7 +166,7 @@ static int twd_cpufreq_transition(struct
  	 * frequency.  The timer is local to a cpu, so cross-call to the
  	 * changing cpu.
  	 */
@@ -66,11 +60,9 @@ index 6591e26fc13f..dfc32130bc44 100644
  		smp_call_function_single(freqs->cpu, twd_update_frequency,
  			NULL, 1);
  
-diff --git a/arch/arm/mach-pxa/viper.c b/arch/arm/mach-pxa/viper.c
-index 29905b127ad9..41f27f667ca8 100644
 --- a/arch/arm/mach-pxa/viper.c
 +++ b/arch/arm/mach-pxa/viper.c
-@@ -885,9 +885,6 @@ static int viper_cpufreq_notifier(struct notifier_block *nb,
+@@ -885,9 +885,6 @@ static int viper_cpufreq_notifier(struct
  			viper_set_core_cpu_voltage(freq->new, 0);
  		}
  		break;
@@ -80,11 +72,9 @@ index 29905b127ad9..41f27f667ca8 100644
  	default:
  		/* ignore */
  		break;
-diff --git a/arch/powerpc/oprofile/op_model_cell.c b/arch/powerpc/oprofile/op_model_cell.c
-index 1f0ebdeea5f7..863d89386f60 100644
 --- a/arch/powerpc/oprofile/op_model_cell.c
 +++ b/arch/powerpc/oprofile/op_model_cell.c
-@@ -1121,8 +1121,7 @@ oprof_cpufreq_notify(struct notifier_block *nb, unsigned long val, void *data)
+@@ -1121,8 +1121,7 @@ oprof_cpufreq_notify(struct notifier_blo
  	int ret = 0;
  	struct cpufreq_freqs *frq = data;
  	if ((val == CPUFREQ_PRECHANGE && frq->old < frq->new) ||
@@ -94,11 +84,9 @@ index 1f0ebdeea5f7..863d89386f60 100644
  		set_spu_profiling_frequency(frq->new, spu_cycle_reset);
  	return ret;
  }
-diff --git a/arch/sparc/kernel/time_64.c b/arch/sparc/kernel/time_64.c
-index c3d82b5f54ca..b397e053b872 100644
 --- a/arch/sparc/kernel/time_64.c
 +++ b/arch/sparc/kernel/time_64.c
-@@ -659,8 +659,7 @@ static int sparc64_cpufreq_notifier(struct notifier_block *nb, unsigned long val
+@@ -659,8 +659,7 @@ static int sparc64_cpufreq_notifier(stru
  		ft->clock_tick_ref = cpu_data(cpu).clock_tick;
  	}
  	if ((val == CPUFREQ_PRECHANGE  && freq->old < freq->new) ||
@@ -108,11 +96,9 @@ index c3d82b5f54ca..b397e053b872 100644
  		cpu_data(cpu).clock_tick =
  			cpufreq_scale(ft->clock_tick_ref,
  				      ft->ref_freq,
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index e0d1d7a8354e..6b8d35b8cd62 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -914,8 +914,7 @@ static int time_cpufreq_notifier(struct notifier_block *nb, unsigned long val,
+@@ -914,8 +914,7 @@ static int time_cpufreq_notifier(struct
  		tsc_khz_ref = tsc_khz;
  	}
  	if ((val == CPUFREQ_PRECHANGE  && freq->old < freq->new) ||
@@ -122,11 +108,9 @@ index e0d1d7a8354e..6b8d35b8cd62 100644
  		*lpj = cpufreq_scale(loops_per_jiffy_ref, ref_freq, freq->new);
  
  		tsc_khz = cpufreq_scale(tsc_khz_ref, ref_freq, freq->new);
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 153f4b92cc05..dc1447dc173e 100644
 --- a/drivers/cpufreq/cpufreq.c
 +++ b/drivers/cpufreq/cpufreq.c
-@@ -257,8 +257,7 @@ static void adjust_jiffies(unsigned long val, struct cpufreq_freqs *ci)
+@@ -257,8 +257,7 @@ static void adjust_jiffies(unsigned long
  		pr_debug("saving %lu as reference value for loops_per_jiffy; "
  			"freq is %u kHz\n", l_p_j_ref, l_p_j_ref_freq);
  	}
@@ -136,11 +120,9 @@ index 153f4b92cc05..dc1447dc173e 100644
  		loops_per_jiffy = cpufreq_scale(l_p_j_ref, l_p_j_ref_freq,
  								ci->new);
  		pr_debug("scaling loops_per_jiffy to %lu "
-diff --git a/drivers/pcmcia/sa11xx_base.c b/drivers/pcmcia/sa11xx_base.c
-index 6eecd7cddf57..54d3089d157b 100644
 --- a/drivers/pcmcia/sa11xx_base.c
 +++ b/drivers/pcmcia/sa11xx_base.c
-@@ -125,9 +125,6 @@ sa1100_pcmcia_frequency_change(struct soc_pcmcia_socket *skt,
+@@ -125,9 +125,6 @@ sa1100_pcmcia_frequency_change(struct so
  		if (freqs->new < freqs->old)
  			sa1100_pcmcia_set_mecr(skt, freqs->new);
  		break;
@@ -150,11 +132,9 @@ index 6eecd7cddf57..54d3089d157b 100644
  	}
  
  	return 0;
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 7ee5a79222ff..88236da0ddf7 100644
 --- a/drivers/tty/serial/sh-sci.c
 +++ b/drivers/tty/serial/sh-sci.c
-@@ -1041,8 +1041,7 @@ static int sci_notifier(struct notifier_block *self,
+@@ -1041,8 +1041,7 @@ static int sci_notifier(struct notifier_
  
  	sci_port = container_of(self, struct sci_port, freq_transition);
  
@@ -164,11 +144,9 @@ index 7ee5a79222ff..88236da0ddf7 100644
  		struct uart_port *port = &sci_port->port;
  
  		spin_lock_irqsave(&port->lock, flags);
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index 4d89e0e6f9cc..945313ca4bbf 100644
 --- a/include/linux/cpufreq.h
 +++ b/include/linux/cpufreq.h
-@@ -306,8 +306,6 @@ cpufreq_verify_within_cpu_limits(struct cpufreq_policy *policy)
+@@ -306,8 +306,6 @@ cpufreq_verify_within_cpu_limits(struct
  /* Transition notifiers */
  #define CPUFREQ_PRECHANGE		(0)
  #define CPUFREQ_POSTCHANGE		(1)
@@ -177,6 +155,3 @@ index 4d89e0e6f9cc..945313ca4bbf 100644
  
  /* Policy Notifiers  */
  #define CPUFREQ_ADJUST			(0)
--- 
-2.1.2
-

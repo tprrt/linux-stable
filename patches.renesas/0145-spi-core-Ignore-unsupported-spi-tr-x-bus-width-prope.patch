@@ -12,14 +12,12 @@ Signed-off-by: Mark Brown <broonie@linaro.org>
 (cherry picked from commit 80874d8c9e9cbfa195572dfea46f2314098b3869)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/spi/spi.c | 18 ++++++++----------
+ drivers/spi/spi.c |   18 ++++++++----------
  1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index dbab6681a1a1..3f401021f104 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1190,11 +1190,10 @@ static void of_register_spi_devices(struct spi_master *master)
+@@ -1192,11 +1192,10 @@ static void of_register_spi_devices(stru
  				spi->mode |= SPI_TX_QUAD;
  				break;
  			default:
@@ -35,7 +33,7 @@ index dbab6681a1a1..3f401021f104 100644
  			}
  		}
  
-@@ -1209,11 +1208,10 @@ static void of_register_spi_devices(struct spi_master *master)
+@@ -1211,11 +1210,10 @@ static void of_register_spi_devices(stru
  				spi->mode |= SPI_RX_QUAD;
  				break;
  			default:
@@ -51,6 +49,3 @@ index dbab6681a1a1..3f401021f104 100644
  			}
  		}
  
--- 
-2.1.2
-

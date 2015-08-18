@@ -13,14 +13,12 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 (cherry picked from commit d5c3595331d512c6af6b636cef687421c2ba11e3)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- drivers/regulator/core.c | 14 ++++++++++++++
+ drivers/regulator/core.c |   14 ++++++++++++++
  1 file changed, 14 insertions(+)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index afca1bc24f26..bac485acc7f3 100644
 --- a/drivers/regulator/core.c
 +++ b/drivers/regulator/core.c
-@@ -2399,6 +2399,7 @@ int regulator_set_voltage(struct regulator *regulator, int min_uV, int max_uV)
+@@ -2405,6 +2405,7 @@ int regulator_set_voltage(struct regulat
  	struct regulator_dev *rdev = regulator->rdev;
  	int ret = 0;
  	int old_min_uV, old_max_uV;
@@ -28,7 +26,7 @@ index afca1bc24f26..bac485acc7f3 100644
  
  	mutex_lock(&rdev->mutex);
  
-@@ -2409,6 +2410,19 @@ int regulator_set_voltage(struct regulator *regulator, int min_uV, int max_uV)
+@@ -2415,6 +2416,19 @@ int regulator_set_voltage(struct regulat
  	if (regulator->min_uV == min_uV && regulator->max_uV == max_uV)
  		goto out;
  
@@ -48,6 +46,3 @@ index afca1bc24f26..bac485acc7f3 100644
  	/* sanity check */
  	if (!rdev->desc->ops->set_voltage &&
  	    !rdev->desc->ops->set_voltage_sel) {
--- 
-2.1.2
-

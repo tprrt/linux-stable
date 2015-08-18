@@ -10,12 +10,10 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 (cherry picked from commit 700ce7c2bb2a4963472d95eba1436d6b0945918e)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- arch/arm/boot/dts/sh73a0-kzm9g-reference.dts | 14 +++++++++++---
- arch/arm/mach-shmobile/setup-sh73a0.c        |  8 ++++----
+ arch/arm/boot/dts/sh73a0-kzm9g-reference.dts |   14 +++++++++++---
+ arch/arm/mach-shmobile/setup-sh73a0.c        |    8 ++++----
  2 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/sh73a0-kzm9g-reference.dts b/arch/arm/boot/dts/sh73a0-kzm9g-reference.dts
-index 838f93e44452..18662aec2ec4 100644
 --- a/arch/arm/boot/dts/sh73a0-kzm9g-reference.dts
 +++ b/arch/arm/boot/dts/sh73a0-kzm9g-reference.dts
 @@ -21,6 +21,10 @@
@@ -53,11 +51,9 @@ index 838f93e44452..18662aec2ec4 100644
  &sdhi0 {
  	pinctrl-0 = <&sdhi0_pins>;
  	pinctrl-names = "default";
-diff --git a/arch/arm/mach-shmobile/setup-sh73a0.c b/arch/arm/mach-shmobile/setup-sh73a0.c
-index 224882151667..2c802ae9b241 100644
 --- a/arch/arm/mach-shmobile/setup-sh73a0.c
 +++ b/arch/arm/mach-shmobile/setup-sh73a0.c
-@@ -697,6 +697,10 @@ static struct platform_device irqpin3_device = {
+@@ -700,6 +700,10 @@ static struct platform_device irqpin3_de
  };
  
  static struct platform_device *sh73a0_devices_dt[] __initdata = {
@@ -68,7 +64,7 @@ index 224882151667..2c802ae9b241 100644
  	&scif0_device,
  	&scif1_device,
  	&scif2_device,
-@@ -706,10 +710,6 @@ static struct platform_device *sh73a0_devices_dt[] __initdata = {
+@@ -709,10 +713,6 @@ static struct platform_device *sh73a0_de
  	&scif6_device,
  	&scif7_device,
  	&scif8_device,
@@ -79,6 +75,3 @@ index 224882151667..2c802ae9b241 100644
  	&tmu0_device,
  	&ipmmu_device,
  };
--- 
-2.1.2
-

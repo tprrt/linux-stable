@@ -12,12 +12,10 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 (cherry picked from commit 3df592bc335a6efe30c88c9e39d29ceb5c20bbfb)
 Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 ---
- arch/arm/mach-shmobile/clock-sh73a0.c |  3 +-
- arch/arm/mach-shmobile/setup-sh73a0.c | 56 ++++++++---------------------------
+ arch/arm/mach-shmobile/clock-sh73a0.c |    3 -
+ arch/arm/mach-shmobile/setup-sh73a0.c |   56 +++++++---------------------------
  2 files changed, 14 insertions(+), 45 deletions(-)
 
-diff --git a/arch/arm/mach-shmobile/clock-sh73a0.c b/arch/arm/mach-shmobile/clock-sh73a0.c
-index ca03989c0d78..0d9cd1fe0212 100644
 --- a/arch/arm/mach-shmobile/clock-sh73a0.c
 +++ b/arch/arm/mach-shmobile/clock-sh73a0.c
 @@ -633,8 +633,6 @@ static struct clk_lookup lookups[] = {
@@ -37,11 +35,9 @@ index ca03989c0d78..0d9cd1fe0212 100644
  };
  
  void __init sh73a0_clock_init(void)
-diff --git a/arch/arm/mach-shmobile/setup-sh73a0.c b/arch/arm/mach-shmobile/setup-sh73a0.c
-index 71d0e4460a10..ad00724a2269 100644
 --- a/arch/arm/mach-shmobile/setup-sh73a0.c
 +++ b/arch/arm/mach-shmobile/setup-sh73a0.c
-@@ -124,54 +124,25 @@ static struct platform_device cmt1_device = {
+@@ -124,54 +124,25 @@ static struct platform_device cmt1_devic
  };
  
  /* TMU */
@@ -108,7 +104,7 @@ index 71d0e4460a10..ad00724a2269 100644
  };
  
  static struct resource i2c0_resources[] = {
-@@ -738,8 +709,7 @@ static struct platform_device *sh73a0_devices_dt[] __initdata = {
+@@ -741,8 +712,7 @@ static struct platform_device *sh73a0_de
  };
  
  static struct platform_device *sh73a0_early_devices[] __initdata = {
@@ -118,6 +114,3 @@ index 71d0e4460a10..ad00724a2269 100644
  	&ipmmu_device,
  };
  
--- 
-2.1.2
-

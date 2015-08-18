@@ -87,7 +87,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  static inline int of_property_read_u32_index(const struct device_node *np,
  			const char *propname, u32 index, u32 *out_value)
  {
-@@ -592,6 +600,74 @@ static inline int of_property_read_strin
+@@ -595,6 +603,74 @@ static inline int of_property_read_strin
  }
  
  /**

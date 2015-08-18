@@ -44,7 +44,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  Required properties:
 --- a/drivers/clk/clk.c
 +++ b/drivers/clk/clk.c
-@@ -2501,8 +2501,12 @@ EXPORT_SYMBOL_GPL(of_clk_get_parent_coun
+@@ -2504,8 +2504,12 @@ EXPORT_SYMBOL_GPL(of_clk_get_parent_coun
  const char *of_clk_get_parent_name(struct device_node *np, int index)
  {
  	struct of_phandle_args clkspec;
@@ -57,7 +57,7 @@ Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
  
  	if (index < 0)
  		return NULL;
-@@ -2512,8 +2516,22 @@ const char *of_clk_get_parent_name(struc
+@@ -2515,8 +2519,22 @@ const char *of_clk_get_parent_name(struc
  	if (rc)
  		return NULL;
  
