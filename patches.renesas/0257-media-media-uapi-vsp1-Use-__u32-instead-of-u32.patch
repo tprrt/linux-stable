@@ -1,0 +1,32 @@
+From 98291c30a87ffe6aa4bd2ddff8455e7c276261bd Mon Sep 17 00:00:00 2001
+From: Joe Perches <joe@perches.com>
+Date: Sat, 16 May 2015 15:11:40 -0300
+Subject: [PATCH 257/326] [media] media: uapi: vsp1: Use __u32 instead of u32
+
+Don't use the kernel types in uapi headers.
+
+Signed-off-by: Joe Perches <joe@perches.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+(cherry picked from commit 9aee1ae3312daf0de4c9c614680d06d557133317)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ include/uapi/linux/vsp1.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/uapi/linux/vsp1.h b/include/uapi/linux/vsp1.h
+index e18858f6e865..9a823696d816 100644
+--- a/include/uapi/linux/vsp1.h
++++ b/include/uapi/linux/vsp1.h
+@@ -28,7 +28,7 @@
+ 	_IOWR('V', BASE_VIDIOC_PRIVATE + 1, struct vsp1_lut_config)
+ 
+ struct vsp1_lut_config {
+-	u32 lut[256];
++	__u32 lut[256];
+ };
+ 
+ #endif	/* __VSP1_USER_H__ */
+-- 
+2.6.2
+

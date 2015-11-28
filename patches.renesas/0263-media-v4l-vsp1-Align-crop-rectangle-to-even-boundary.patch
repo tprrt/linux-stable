@@ -1,0 +1,47 @@
+From 6e58b0ae1af6429948f60894db34d64f28f2c4ce Mon Sep 17 00:00:00 2001
+From: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Date: Thu, 28 May 2015 09:59:39 -0300
+Subject: [PATCH 263/326] [media] v4l: vsp1: Align crop rectangle to even
+ boundary for YUV formats
+
+Make sure that there are valid values in the crop rectangle to ensure
+that the color plane doesn't get shifted when cropping.
+Since there is no distinction between 12bit and 16bit YUV formats in
+at the subdev level, use the more restrictive 12bit limits for all YUV
+formats.
+
+Signed-off-by: Damian Hobson-Garcia <dhobsong@igel.co.jp>
+Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+(cherry picked from commit 85a0638b7855dfb00dc9b66bc2fdd4276d7dc87c)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/media/platform/vsp1/vsp1_rwpf.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/media/platform/vsp1/vsp1_rwpf.c b/drivers/media/platform/vsp1/vsp1_rwpf.c
+index fa71f4695e16..9688c219b30e 100644
+--- a/drivers/media/platform/vsp1/vsp1_rwpf.c
++++ b/drivers/media/platform/vsp1/vsp1_rwpf.c
+@@ -197,6 +197,17 @@ int vsp1_rwpf_set_selection(struct v4l2_subdev *subdev,
+ 	 */
+ 	format = vsp1_entity_get_pad_format(&rwpf->entity, cfg, RWPF_PAD_SINK,
+ 					    sel->which);
++
++	/* Restrict the crop rectangle coordinates to multiples of 2 to avoid
++	 * shifting the color plane.
++	 */
++	if (format->code == MEDIA_BUS_FMT_AYUV8_1X32) {
++		sel->r.left = ALIGN(sel->r.left, 2);
++		sel->r.top = ALIGN(sel->r.top, 2);
++		sel->r.width = round_down(sel->r.width, 2);
++		sel->r.height = round_down(sel->r.height, 2);
++	}
++
+ 	sel->r.left = min_t(unsigned int, sel->r.left, format->width - 2);
+ 	sel->r.top = min_t(unsigned int, sel->r.top, format->height - 2);
+ 	if (rwpf->entity.type == VSP1_ENTITY_WPF) {
+-- 
+2.6.2
+

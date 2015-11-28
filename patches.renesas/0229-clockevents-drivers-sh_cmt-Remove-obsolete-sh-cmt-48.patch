@@ -1,0 +1,36 @@
+From fe008d73112202c75ecd57076a5e9d395fde566a Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 23 Jun 2015 14:56:29 +0200
+Subject: [PATCH 229/326] clockevents/drivers/sh_cmt: Remove obsolete
+ sh-cmt-48-gen2 platform_device_id entry
+
+Since commit 914d7d148411997c ("ARM: shmobile: r8a73a4: Remove legacy
+code"), all former users of the "sh-cmt-48-gen2" platform device name
+are only supported in generic DT-only ARM multi-platform builds.  The
+driver doesn't need to match platform devices by name anymore, hence
+remove the corresponding platform_device_id entry.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 0fae62eafec3c033d49160344228a4fa7d6303bc)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/clocksource/sh_cmt.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
+index 0aa6293f6317..d56d4e0e3fb3 100644
+--- a/drivers/clocksource/sh_cmt.c
++++ b/drivers/clocksource/sh_cmt.c
+@@ -930,7 +930,6 @@ static const struct platform_device_id sh_cmt_id_table[] = {
+ 	{ "sh-cmt-16", (kernel_ulong_t)&sh_cmt_info[SH_CMT_16BIT] },
+ 	{ "sh-cmt-32", (kernel_ulong_t)&sh_cmt_info[SH_CMT_32BIT] },
+ 	{ "sh-cmt-48", (kernel_ulong_t)&sh_cmt_info[SH_CMT_48BIT] },
+-	{ "sh-cmt-48-gen2", (kernel_ulong_t)&sh_cmt_info[SH_CMT_48BIT_GEN2] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(platform, sh_cmt_id_table);
+-- 
+2.6.2
+

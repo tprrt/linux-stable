@@ -1,0 +1,33 @@
+From 417df6f5c589c0d3e8d770b30cf5dce7cff4fd8c Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 4 May 2015 16:40:46 +0200
+Subject: [PATCH 238/326] pinctrl: sh-pfc: r8a7740: Fix typo SCIFAB in comment
+
+The last serial port is called "SCIFB", not "SCIFAB".
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit 992161965f60c4f19176026045f82749f30dafa2)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/sh-pfc/pfc-r8a7740.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/sh-pfc/pfc-r8a7740.c b/drivers/pinctrl/sh-pfc/pfc-r8a7740.c
+index b486e9d20cc2..d0bb1459783a 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-r8a7740.c
++++ b/drivers/pinctrl/sh-pfc/pfc-r8a7740.c
+@@ -258,7 +258,7 @@ enum {
+ 	/* SCIFA7 */
+ 	SCIFA7_TXD_MARK,	SCIFA7_RXD_MARK,
+ 
+-	/* SCIFAB */
++	/* SCIFB */
+ 	SCIFB_SCK_PORT190_MARK, /* MSEL5CR_17_0 */
+ 	SCIFB_RXD_PORT191_MARK,
+ 	SCIFB_TXD_PORT192_MARK,
+-- 
+2.6.2
+

@@ -1,0 +1,37 @@
+From 0dedb39e95a50153ad5397183c8af479030adc46 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Wed, 15 Jul 2015 07:08:24 +0000
+Subject: [PATCH 278/326] ASoC: rsnd: remove unnecessary 'out of memory'
+ message from SSI
+
+Current checkpatch.pl indicates 'out of memory' message is unnecessary.
+Let's remove it
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Keita Kobayashi <keita.kobayashi.ym@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit afa700729646761f58cc068d86a37e09a70e4cf6)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/ssi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/sound/soc/sh/rcar/ssi.c b/sound/soc/sh/rcar/ssi.c
+index 2fbe59f7f9b5..d45b9a7e324e 100644
+--- a/sound/soc/sh/rcar/ssi.c
++++ b/sound/soc/sh/rcar/ssi.c
+@@ -770,10 +770,8 @@ int rsnd_ssi_probe(struct platform_device *pdev,
+ 	 */
+ 	nr	= info->ssi_info_nr;
+ 	ssi	= devm_kzalloc(dev, sizeof(*ssi) * nr, GFP_KERNEL);
+-	if (!ssi) {
+-		dev_err(dev, "SSI allocate failed\n");
++	if (!ssi)
+ 		return -ENOMEM;
+-	}
+ 
+ 	priv->ssi	= ssi;
+ 	priv->ssi_nr	= nr;
+-- 
+2.6.2
+

@@ -1,0 +1,35 @@
+From bac0249b3c86b4824c67186aff5daef5b41ab7b6 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 23 Jun 2015 14:56:28 +0200
+Subject: [PATCH 228/326] clockevents/drivers/sh_cmt: Remove obsolete
+ sh-cmt-32-fast platform_device_id entry
+
+Since commit 59b89af1d5551c12 ("ARM: shmobile: sh7372: Remove Legacy C
+SoC code"), there are no more users left of the "sh-cmt-32-fast"
+platform device name. Hence remove the corresponding platform_device_id
+entry from the driver.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 59252d187763ef3675fba1623be6996761fc2400)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/clocksource/sh_cmt.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/clocksource/sh_cmt.c b/drivers/clocksource/sh_cmt.c
+index b8ff3c64cc45..0aa6293f6317 100644
+--- a/drivers/clocksource/sh_cmt.c
++++ b/drivers/clocksource/sh_cmt.c
+@@ -929,7 +929,6 @@ static int sh_cmt_map_memory(struct sh_cmt_device *cmt)
+ static const struct platform_device_id sh_cmt_id_table[] = {
+ 	{ "sh-cmt-16", (kernel_ulong_t)&sh_cmt_info[SH_CMT_16BIT] },
+ 	{ "sh-cmt-32", (kernel_ulong_t)&sh_cmt_info[SH_CMT_32BIT] },
+-	{ "sh-cmt-32-fast", (kernel_ulong_t)&sh_cmt_info[SH_CMT_32BIT_FAST] },
+ 	{ "sh-cmt-48", (kernel_ulong_t)&sh_cmt_info[SH_CMT_48BIT] },
+ 	{ "sh-cmt-48-gen2", (kernel_ulong_t)&sh_cmt_info[SH_CMT_48BIT_GEN2] },
+ 	{ }
+-- 
+2.6.2
+

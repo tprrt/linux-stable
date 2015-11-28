@@ -1,0 +1,29 @@
+From 193be519143e7b5584250604c6c790d492e06303 Mon Sep 17 00:00:00 2001
+From: kbuild test robot <fengguang.wu@intel.com>
+Date: Fri, 17 Jul 2015 21:37:09 +0800
+Subject: [PATCH 218/326] pinctrl: pinconf: pinconf_show_config() can be static
+
+Signed-off-by: Fengguang Wu <fengguang.wu@intel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit 6de52c15132f6b86030bf3159020e3314ec14952)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/pinconf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/pinconf.c b/drivers/pinctrl/pinconf.c
+index cbf26a6992a0..078e58d74fc0 100644
+--- a/drivers/pinctrl/pinconf.c
++++ b/drivers/pinctrl/pinconf.c
+@@ -202,7 +202,7 @@ int pinconf_apply_setting(struct pinctrl_setting const *setting)
+ 
+ #ifdef CONFIG_DEBUG_FS
+ 
+-void pinconf_show_config(struct seq_file *s, struct pinctrl_dev *pctldev,
++static void pinconf_show_config(struct seq_file *s, struct pinctrl_dev *pctldev,
+ 		      unsigned long *configs, unsigned num_configs)
+ {
+ 	const struct pinconf_ops *confops;
+-- 
+2.6.2
+

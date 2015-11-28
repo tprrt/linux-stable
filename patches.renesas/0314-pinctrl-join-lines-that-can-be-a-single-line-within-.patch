@@ -1,0 +1,33 @@
+From cb9fdeee0ddeba1195c20a17679a1f4b30258d89 Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Sat, 1 Aug 2015 13:22:38 +0900
+Subject: [PATCH 314/326] pinctrl: join lines that can be a single line within
+ 80 columns
+
+There is no reason to break a line shorter than 80 columns.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit 163dc9f39a26b41fc49319fce4145b35f9705789)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/pinmux.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index 67e08cb315c4..29984b36926a 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -313,8 +313,7 @@ static int pinmux_func_name_to_selector(struct pinctrl_dev *pctldev,
+ 
+ 	/* See if this pctldev has this function */
+ 	while (selector < nfuncs) {
+-		const char *fname = ops->get_function_name(pctldev,
+-							   selector);
++		const char *fname = ops->get_function_name(pctldev, selector);
+ 
+ 		if (!strcmp(function, fname))
+ 			return selector;
+-- 
+2.6.2
+

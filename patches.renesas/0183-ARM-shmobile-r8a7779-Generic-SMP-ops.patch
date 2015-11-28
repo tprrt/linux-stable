@@ -1,0 +1,32 @@
+From 6171117b3c7f2b7d396194077c35405379a65ef8 Mon Sep 17 00:00:00 2001
+From: Magnus Damm <damm+renesas@opensource.se>
+Date: Mon, 13 Jul 2015 15:15:02 +0900
+Subject: [PATCH 183/326] ARM: shmobile: r8a7779: Generic SMP ops
+
+Add a r8a7779-specific SMP operation pointer to support
+all 4 CPU cores through SMP on r8a7779 without C board code.
+
+Signed-off-by: Magnus Damm <damm+renesas@opensource.se>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 44ade5edf90ccd38efa741240efb2586239c9751)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/setup-r8a7779.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-shmobile/setup-r8a7779.c b/arch/arm/mach-shmobile/setup-r8a7779.c
+index 5625fd1c89c0..2c3e433f84ca 100644
+--- a/arch/arm/mach-shmobile/setup-r8a7779.c
++++ b/arch/arm/mach-shmobile/setup-r8a7779.c
+@@ -772,6 +772,7 @@ static const char *r8a7779_compat_dt[] __initdata = {
+ };
+ 
+ DT_MACHINE_START(R8A7779_DT, "Generic R8A7779 (Flattened Device Tree)")
++	.smp		= smp_ops(r8a7779_smp_ops),
+ 	.map_io		= r8a7779_map_io,
+ 	.init_early	= shmobile_init_delay,
+ 	.init_time	= r8a7779_init_time,
+-- 
+2.6.2
+

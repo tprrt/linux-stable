@@ -1,0 +1,60 @@
+From 72f66f2497ba6fbfd4c0dd4522b5eab8da8f3a16 Mon Sep 17 00:00:00 2001
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Date: Tue, 16 Jun 2015 02:42:42 +0300
+Subject: [PATCH 162/326] ARM: shmobile: r8a7790: add EtherAVB clocks
+
+Add the EtherAVB clock to the R8A7790 device tree.
+
+Based on original patch by Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>.
+
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 63d2d750c902dec77439f12b2eac9709468298ce)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7790.dtsi            | 10 ++++++----
+ include/dt-bindings/clock/r8a7790-clock.h |  1 +
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index 51ab8865ea37..feb4652ed4b2 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -1249,16 +1249,18 @@
+ 			compatible = "renesas,r8a7790-mstp-clocks", "renesas,cpg-mstp-clocks";
+ 			reg = <0 0xe6150990 0 4>, <0 0xe61509a0 0 4>;
+ 			clocks = <&hp_clk>, <&zg_clk>, <&zg_clk>, <&zg_clk>,
+-			         <&zg_clk>, <&p_clk>, <&zs_clk>, <&zs_clk>;
++			         <&zg_clk>, <&hp_clk>, <&p_clk>, <&zs_clk>,
++				 <&zs_clk>;
+ 			#clock-cells = <1>;
+ 			clock-indices = <
+ 				R8A7790_CLK_MLB R8A7790_CLK_VIN3 R8A7790_CLK_VIN2
+-				R8A7790_CLK_VIN1 R8A7790_CLK_VIN0 R8A7790_CLK_ETHER
++				R8A7790_CLK_VIN1 R8A7790_CLK_VIN0
++				R8A7790_CLK_ETHERAVB R8A7790_CLK_ETHER
+ 				R8A7790_CLK_SATA1 R8A7790_CLK_SATA0
+ 			>;
+ 			clock-output-names =
+-				"mlb", "vin3", "vin2", "vin1", "vin0", "ether",
+-				"sata1", "sata0";
++				"mlb", "vin3", "vin2", "vin1", "vin0",
++				"etheravb", "ether", "sata1", "sata0";
+ 		};
+ 		mstp9_clks: mstp9_clks@e6150994 {
+ 			compatible = "renesas,r8a7790-mstp-clocks", "renesas,cpg-mstp-clocks";
+diff --git a/include/dt-bindings/clock/r8a7790-clock.h b/include/dt-bindings/clock/r8a7790-clock.h
+index ff7ca3584e16..e119ef372ba3 100644
+--- a/include/dt-bindings/clock/r8a7790-clock.h
++++ b/include/dt-bindings/clock/r8a7790-clock.h
+@@ -108,6 +108,7 @@
+ #define R8A7790_CLK_VIN2		9
+ #define R8A7790_CLK_VIN1		10
+ #define R8A7790_CLK_VIN0		11
++#define R8A7790_CLK_ETHERAVB		12
+ #define R8A7790_CLK_ETHER		13
+ #define R8A7790_CLK_SATA1		14
+ #define R8A7790_CLK_SATA0		15
+-- 
+2.6.2
+

@@ -1,0 +1,30 @@
+From 9032ceae4e9ccafcd76d62de563081913318c67d Mon Sep 17 00:00:00 2001
+From: Vinod Koul <vinod.koul@intel.com>
+Date: Mon, 24 Aug 2015 13:43:14 +0530
+Subject: [PATCH 254/326] dmaengine: sort the sh Makefile
+
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Vinod Koul <vinod.koul@intel.com>
+(cherry picked from commit 8a4ce226b9061fe3ab04f6db34d4b2ae645b9f65)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/dma/sh/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/dma/sh/Makefile b/drivers/dma/sh/Makefile
+index b8a598066ce2..0133e4658196 100644
+--- a/drivers/dma/sh/Makefile
++++ b/drivers/dma/sh/Makefile
+@@ -13,7 +13,7 @@ shdma-$(CONFIG_SH_DMAE_R8A73A4) += shdma-r8a73a4.o
+ shdma-objs := $(shdma-y)
+ obj-$(CONFIG_SH_DMAE) += shdma.o
+ 
+-obj-$(CONFIG_SUDMAC) += sudmac.o
+-obj-$(CONFIG_RCAR_HPB_DMAE) += rcar-hpbdma.o
+ obj-$(CONFIG_RCAR_DMAC) += rcar-dmac.o
++obj-$(CONFIG_RCAR_HPB_DMAE) += rcar-hpbdma.o
+ obj-$(CONFIG_RENESAS_USB_DMAC) += usb-dmac.o
++obj-$(CONFIG_SUDMAC) += sudmac.o
+-- 
+2.6.2
+

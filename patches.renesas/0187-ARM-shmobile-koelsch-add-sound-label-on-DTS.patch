@@ -1,0 +1,31 @@
+From a2f835f0dc52005a777830a38a1917c990166cb1 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 14 Jul 2015 04:57:05 +0000
+Subject: [PATCH 187/326] ARM: shmobile: koelsch: add sound label on DTS
+
+It is easy to modify settings for Test or other purpose if sound has label
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 18f88d22e4167a658091fe020beef723cefe86dd)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791-koelsch.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7791-koelsch.dts b/arch/arm/boot/dts/r8a7791-koelsch.dts
+index cffe33ff4d16..dc158845afdc 100644
+--- a/arch/arm/boot/dts/r8a7791-koelsch.dts
++++ b/arch/arm/boot/dts/r8a7791-koelsch.dts
+@@ -242,7 +242,7 @@
+ 			  1800000 0>;
+ 	};
+ 
+-	sound {
++	rsnd_ak4643: sound {
+ 		compatible = "simple-audio-card";
+ 
+ 		simple-audio-card,format = "left_j";
+-- 
+2.6.2
+

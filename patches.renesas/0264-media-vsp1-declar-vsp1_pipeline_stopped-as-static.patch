@@ -1,0 +1,33 @@
+From 7925353d63560e02f3947dd65a247e0ac315e133 Mon Sep 17 00:00:00 2001
+From: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+Date: Fri, 3 Jul 2015 08:35:51 -0300
+Subject: [PATCH 264/326] [media] vsp1: declar vsp1_pipeline_stopped() as
+ static
+
+drivers/media/platform/vsp1/vsp1_video.c:517:6: warning: no previous prototype for 'vsp1_pipeline_stopped' [-Wmissing-prototypes]
+ bool vsp1_pipeline_stopped(struct vsp1_pipeline *pipe)
+      ^
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+(cherry picked from commit 41bdc3cf81c4d0f0dfe09f06ff203dd59d422f37)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/media/platform/vsp1/vsp1_video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/vsp1/vsp1_video.c b/drivers/media/platform/vsp1/vsp1_video.c
+index c1b5a09b8331..770e08dc03f1 100644
+--- a/drivers/media/platform/vsp1/vsp1_video.c
++++ b/drivers/media/platform/vsp1/vsp1_video.c
+@@ -514,7 +514,7 @@ static void vsp1_pipeline_run(struct vsp1_pipeline *pipe)
+ 	pipe->buffers_ready = 0;
+ }
+ 
+-bool vsp1_pipeline_stopped(struct vsp1_pipeline *pipe)
++static bool vsp1_pipeline_stopped(struct vsp1_pipeline *pipe)
+ {
+ 	unsigned long flags;
+ 	bool stopped;
+-- 
+2.6.2
+

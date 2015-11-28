@@ -1,0 +1,60 @@
+From dcfa56131a12fc1e69870904b508e43a152011ad Mon Sep 17 00:00:00 2001
+From: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
+Date: Mon, 1 Jun 2015 16:22:57 +0200
+Subject: [PATCH 180/326] ARM: shmobile: gose: enable R-Car Gen2 regulator
+ quirk
+
+Regulator setup seems identical to Koelsch.
+
+Signed-off-by: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 765b50030c218f65ee4ffd2eeb07045aa79fd5ee)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/Kconfig                     | 1 +
+ arch/arm/mach-shmobile/Makefile                    | 1 +
+ arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-shmobile/Kconfig b/arch/arm/mach-shmobile/Kconfig
+index 4a93a6eade14..d57bbf1beb70 100644
+--- a/arch/arm/mach-shmobile/Kconfig
++++ b/arch/arm/mach-shmobile/Kconfig
+@@ -85,6 +85,7 @@ config ARCH_R8A7791
+ config ARCH_R8A7793
+ 	bool "R-Car M2-N (R8A7793)"
+ 	select ARCH_RCAR_GEN2
++	select I2C
+ 
+ config ARCH_R8A7794
+ 	bool "R-Car E2 (R8A77940)"
+diff --git a/arch/arm/mach-shmobile/Makefile b/arch/arm/mach-shmobile/Makefile
+index 3a85ca3a6cb1..6cb095107f90 100644
+--- a/arch/arm/mach-shmobile/Makefile
++++ b/arch/arm/mach-shmobile/Makefile
+@@ -33,6 +33,7 @@ obj-$(CONFIG_ARCH_RCAR_GEN2)	+= setup-rcar-gen2.o platsmp-apmu.o $(cpu-y)
+ CFLAGS_setup-rcar-gen2.o	+= -march=armv7-a
+ obj-$(CONFIG_ARCH_R8A7790)	+= regulator-quirk-rcar-gen2.o
+ obj-$(CONFIG_ARCH_R8A7791)	+= regulator-quirk-rcar-gen2.o
++obj-$(CONFIG_ARCH_R8A7793)	+= regulator-quirk-rcar-gen2.o
+ 
+ # SMP objects
+ smp-y				:= $(cpu-y)
+diff --git a/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c b/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+index 384e6e934b87..62437b57813e 100644
+--- a/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
++++ b/arch/arm/mach-shmobile/regulator-quirk-rcar-gen2.c
+@@ -123,7 +123,8 @@ static int __init rcar_gen2_regulator_quirk(void)
+ 	u32 mon;
+ 
+ 	if (!of_machine_is_compatible("renesas,koelsch") &&
+-	    !of_machine_is_compatible("renesas,lager"))
++	    !of_machine_is_compatible("renesas,lager") &&
++	    !of_machine_is_compatible("renesas,gose"))
+ 		return -ENODEV;
+ 
+ 	irqc = ioremap(IRQC_BASE, PAGE_SIZE);
+-- 
+2.6.2
+

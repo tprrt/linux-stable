@@ -1,0 +1,41 @@
+From 6ae35daadb510f5735c918fcbe1e474fb89b7c19 Mon Sep 17 00:00:00 2001
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Date: Tue, 16 Jun 2015 02:43:51 +0300
+Subject: [PATCH 163/326] ARM: shmobile: r8a7790: add EtherAVB DT support
+
+Define the generic R8A7790 part of the EtherAVB device node.
+
+Based on original patch by Mitsuhiro Kimura <mitsuhiro.kimura.kc@renesas.com>.
+
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit f25d6b977240117eb4b6e3111f4eb41f968d28fb)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7790.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index feb4652ed4b2..c9aae06319c0 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -671,6 +671,16 @@
+ 		status = "disabled";
+ 	};
+ 
++	avb: ethernet@e6800000 {
++		compatible = "renesas,etheravb-r8a7790";
++		reg = <0 0xe6800000 0 0x800>, <0 0xee0e8000 0 0x4000>;
++		interrupts = <0 163 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&mstp8_clks R8A7790_CLK_ETHERAVB>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
++
+ 	sata0: sata@ee300000 {
+ 		compatible = "renesas,sata-r8a7790";
+ 		reg = <0 0xee300000 0 0x2000>;
+-- 
+2.6.2
+

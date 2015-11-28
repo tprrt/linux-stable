@@ -1,0 +1,116 @@
+From 85a5c449cc90a0a04354bef7023097696ea9a909 Mon Sep 17 00:00:00 2001
+From: Jiang Liu <jiang.liu@linux.intel.com>
+Date: Mon, 13 Jul 2015 20:51:25 +0000
+Subject: [PATCH 231/326] sh/intc: Use irq_desc_get_xxx() to avoid redundant
+ lookup of irq_desc
+
+Use irq_desc_get_xxx() to avoid redundant lookup of irq_desc while we
+already have a pointer to corresponding irq_desc.
+
+Also replace generic_handle_irq with generic_handle_irq_desc() to avoid
+looking up irq_desc again.
+
+Signed-off-by: Jiang Liu <jiang.liu@linux.intel.com>
+Cc: Simon Horman <horms@verge.net.au>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Link: http://lkml.kernel.org/r/20150713151626.792845830@linutronix.de
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+(cherry picked from commit 8228a048961a93e871779c658eaa801f747e6c1d)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/sh/boards/mach-se/7343/irq.c  |  2 +-
+ arch/sh/boards/mach-se/7722/irq.c  |  2 +-
+ arch/sh/boards/mach-x3proto/gpio.c |  2 +-
+ drivers/sh/intc/core.c             |  2 +-
+ drivers/sh/intc/virq.c             | 14 ++++++++------
+ 5 files changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/arch/sh/boards/mach-se/7343/irq.c b/arch/sh/boards/mach-se/7343/irq.c
+index 1087dba9b015..6f97a8f0d0d6 100644
+--- a/arch/sh/boards/mach-se/7343/irq.c
++++ b/arch/sh/boards/mach-se/7343/irq.c
+@@ -31,7 +31,7 @@ struct irq_domain *se7343_irq_domain;
+ 
+ static void se7343_irq_demux(unsigned int irq, struct irq_desc *desc)
+ {
+-	struct irq_data *data = irq_get_irq_data(irq);
++	struct irq_data *data = irq_desc_get_irq_data(desc);
+ 	struct irq_chip *chip = irq_data_get_irq_chip(data);
+ 	unsigned long mask;
+ 	int bit;
+diff --git a/arch/sh/boards/mach-se/7722/irq.c b/arch/sh/boards/mach-se/7722/irq.c
+index 00e699232621..60aebd14ccf8 100644
+--- a/arch/sh/boards/mach-se/7722/irq.c
++++ b/arch/sh/boards/mach-se/7722/irq.c
+@@ -30,7 +30,7 @@ struct irq_domain *se7722_irq_domain;
+ 
+ static void se7722_irq_demux(unsigned int irq, struct irq_desc *desc)
+ {
+-	struct irq_data *data = irq_get_irq_data(irq);
++	struct irq_data *data = irq_desc_get_irq_data(desc);
+ 	struct irq_chip *chip = irq_data_get_irq_chip(data);
+ 	unsigned long mask;
+ 	int bit;
+diff --git a/arch/sh/boards/mach-x3proto/gpio.c b/arch/sh/boards/mach-x3proto/gpio.c
+index f035a7ac6456..24555c364d5b 100644
+--- a/arch/sh/boards/mach-x3proto/gpio.c
++++ b/arch/sh/boards/mach-x3proto/gpio.c
+@@ -62,7 +62,7 @@ static int x3proto_gpio_to_irq(struct gpio_chip *chip, unsigned gpio)
+ 
+ static void x3proto_gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
+ {
+-	struct irq_data *data = irq_get_irq_data(irq);
++	struct irq_data *data = irq_desc_get_irq_data(desc);
+ 	struct irq_chip *chip = irq_data_get_irq_chip(data);
+ 	unsigned long mask;
+ 	int pin;
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+index 81f22980b2de..6dc0361aeeeb 100644
+--- a/drivers/sh/intc/core.c
++++ b/drivers/sh/intc/core.c
+@@ -67,7 +67,7 @@ void intc_set_prio_level(unsigned int irq, unsigned int level)
+ 
+ static void intc_redirect_irq(unsigned int irq, struct irq_desc *desc)
+ {
+-	generic_handle_irq((unsigned int)irq_get_handler_data(irq));
++	generic_handle_irq((unsigned int)irq_desc_get_handler_data(desc));
+ }
+ 
+ static void __init intc_register_irq(struct intc_desc *desc,
+diff --git a/drivers/sh/intc/virq.c b/drivers/sh/intc/virq.c
+index bc0601cf0f8f..bb7e745d4266 100644
+--- a/drivers/sh/intc/virq.c
++++ b/drivers/sh/intc/virq.c
+@@ -111,7 +111,7 @@ static int add_virq_to_pirq(unsigned int irq, unsigned int virq)
+ 
+ static void intc_virq_handler(unsigned int irq, struct irq_desc *desc)
+ {
+-	struct irq_data *data = irq_get_irq_data(irq);
++	struct irq_data *data = irq_desc_get_irq_data(desc);
+ 	struct irq_chip *chip = irq_data_get_irq_chip(data);
+ 	struct intc_virq_list *entry, *vlist = irq_data_get_irq_handler_data(data);
+ 	struct intc_desc_int *d = get_intc_desc(irq);
+@@ -120,12 +120,14 @@ static void intc_virq_handler(unsigned int irq, struct irq_desc *desc)
+ 
+ 	for_each_virq(entry, vlist) {
+ 		unsigned long addr, handle;
++		struct irq_desc *vdesc = irq_to_desc(entry->irq);
+ 
+-		handle = (unsigned long)irq_get_handler_data(entry->irq);
+-		addr = INTC_REG(d, _INTC_ADDR_E(handle), 0);
+-
+-		if (intc_reg_fns[_INTC_FN(handle)](addr, handle, 0))
+-			generic_handle_irq(entry->irq);
++		if (vdesc) {
++			handle = (unsigned long)irq_desc_get_handler_data(vdesc);
++			addr = INTC_REG(d, _INTC_ADDR_E(handle), 0);
++			if (intc_reg_fns[_INTC_FN(handle)](addr, handle, 0))
++				generic_handle_irq_desc(entry->irq, vdesc);
++		}
+ 	}
+ 
+ 	chip->irq_unmask(data);
+-- 
+2.6.2
+

@@ -1,0 +1,45 @@
+From 7da7809999ed59bd003299ce718e1d98992713bf Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Tue, 29 Sep 2015 18:21:19 +0900
+Subject: [PATCH 325/326] usb: renesas_usbhs: Add support for R-Car H3
+
+This patch adds a compatible string to support for R-Car H3.
+
+Since the HS-USB controller of R-Car H3 is almost the same specification
+with R-Car Gen2 (these have 16 pipes and usb-dmac), this patch
+sets the "type" of renesas_usbhs_driver_param to USBHS_TYPE_RCAR_GEN2.
+
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Felipe Balbi <balbi@ti.com>
+(cherry picked from commit f5f6afa85aa82a8ee59072f2d09f2b381f24c871)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ Documentation/devicetree/bindings/usb/renesas_usbhs.txt |    1 +
+ drivers/usb/renesas_usbhs/common.c                      |    5 +++++
+ 2 files changed, 6 insertions(+)
+
+--- a/Documentation/devicetree/bindings/usb/renesas_usbhs.txt
++++ b/Documentation/devicetree/bindings/usb/renesas_usbhs.txt
+@@ -5,6 +5,7 @@ Required properties:
+ 	- "renesas,usbhs-r8a7790"
+ 	- "renesas,usbhs-r8a7791"
+ 	- "renesas,usbhs-r8a7794"
++	- "renesas,usbhs-r8a7795"
+   - reg: Base address and length of the register for the USBHS
+   - interrupts: Interrupt specifier for the USBHS
+   - clocks: A list of phandle + clock specifier pairs
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -476,6 +476,11 @@ static const struct of_device_id usbhs_o
+ 		.compatible = "renesas,usbhs-r8a7794",
+ 		.data = (void *)USBHS_TYPE_RCAR_GEN2,
+ 	},
++	{
++		/* Gen3 is compatible with Gen2 */
++		.compatible = "renesas,usbhs-r8a7795",
++		.data = (void *)USBHS_TYPE_RCAR_GEN2,
++	},
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, usbhs_of_match);

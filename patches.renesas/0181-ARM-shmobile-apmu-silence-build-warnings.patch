@@ -1,0 +1,45 @@
+From df157aae98efae424913b24fe0a291bff7480abd Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Fri, 10 Jul 2015 22:48:16 +0200
+Subject: [PATCH 181/326] ARM: shmobile: apmu: silence build warnings
+
+With shmobile_defconfig but SMP=n && SUSPEND=n, I get:
+
+arch/arm/mach-shmobile/platsmp-apmu.c:49:12: warning: 'apmu_power_off' defined but not used [-Wunused-function]
+arch/arm/mach-shmobile/platsmp-apmu.c:70:12: warning: 'apmu_wrap' defined but not used [-Wunused-function]
+
+Annotate those functions like the functions around it.
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 151dd346a2dadaa151d5110553e3fb08774c888e)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/platsmp-apmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/platsmp-apmu.c b/arch/arm/mach-shmobile/platsmp-apmu.c
+index b0790fc32282..4e54512bee30 100644
+--- a/arch/arm/mach-shmobile/platsmp-apmu.c
++++ b/arch/arm/mach-shmobile/platsmp-apmu.c
+@@ -46,7 +46,7 @@ static int __maybe_unused apmu_power_on(void __iomem *p, int bit)
+ 	return 0;
+ }
+ 
+-static int apmu_power_off(void __iomem *p, int bit)
++static int __maybe_unused apmu_power_off(void __iomem *p, int bit)
+ {
+ 	/* request Core Standby for next WFI */
+ 	writel_relaxed(3, p + CPUNCR_OFFS(bit));
+@@ -67,7 +67,7 @@ static int __maybe_unused apmu_power_off_poll(void __iomem *p, int bit)
+ 	return 0;
+ }
+ 
+-static int apmu_wrap(int cpu, int (*fn)(void __iomem *p, int cpu))
++static int __maybe_unused apmu_wrap(int cpu, int (*fn)(void __iomem *p, int cpu))
+ {
+ 	void __iomem *p = apmu_cpus[cpu].iomem;
+ 
+-- 
+2.6.2
+

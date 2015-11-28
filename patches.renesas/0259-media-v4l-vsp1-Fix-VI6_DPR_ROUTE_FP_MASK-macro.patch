@@ -1,0 +1,34 @@
+From 084b25c7b5d3bd1341277c03fc876c3fb387a13c Mon Sep 17 00:00:00 2001
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Date: Wed, 28 Jan 2015 22:53:54 -0200
+Subject: [PATCH 259/326] [media] v4l: vsp1: Fix VI6_DPR_ROUTE_FP_MASK macro
+
+FP bit of VI6_DPR_mod_ROUTE register is 6bit. But VI6_DPR_ROUTE_FP_MASK is set
+to 0xFF, this will mask until the reserve bit.
+This fixes size for VI6_DPR_ROUTE_FP_MASK.
+
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj@renesas.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@osg.samsung.com>
+(cherry picked from commit 1aa7890324b497f96f07c20673fae58f26fabfe7)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/media/platform/vsp1/vsp1_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/vsp1/vsp1_regs.h b/drivers/media/platform/vsp1/vsp1_regs.h
+index f61e1096f9fc..4177f98968d6 100644
+--- a/drivers/media/platform/vsp1/vsp1_regs.h
++++ b/drivers/media/platform/vsp1/vsp1_regs.h
+@@ -306,7 +306,7 @@
+ #define VI6_DPR_BRU_ROUTE		0x204c
+ #define VI6_DPR_ROUTE_FXA_MASK		(0xff << 8)
+ #define VI6_DPR_ROUTE_FXA_SHIFT		16
+-#define VI6_DPR_ROUTE_FP_MASK		(0xff << 8)
++#define VI6_DPR_ROUTE_FP_MASK		(0x3f << 8)
+ #define VI6_DPR_ROUTE_FP_SHIFT		8
+ #define VI6_DPR_ROUTE_RT_MASK		(0x3f << 0)
+ #define VI6_DPR_ROUTE_RT_SHIFT		0
+-- 
+2.6.2
+

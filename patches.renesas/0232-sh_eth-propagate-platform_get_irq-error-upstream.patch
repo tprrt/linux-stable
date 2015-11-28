@@ -1,0 +1,37 @@
+From 193b9d726959dff8c8cffcacf69ed0c6ad2b4f92 Mon Sep 17 00:00:00 2001
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Date: Fri, 28 Aug 2015 16:56:01 +0300
+Subject: [PATCH 232/326] sh_eth: propagate platform_get_irq() error upstream
+
+The driver overrides the error returned by platform_get_irq() with -ENODEV
+which e.g. precludes the deferred  probing from working. Propagate the real
+error code to the driver core instead.
+
+Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 7a468ac624c80bda76957d8cbc28024f4f68e316)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/net/ethernet/renesas/sh_eth.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 7fb244f565b2..257ea713b4c1 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -3089,10 +3089,8 @@ static int sh_eth_drv_probe(struct platform_device *pdev)
+ 
+ 	ndev->dma = -1;
+ 	ret = platform_get_irq(pdev, 0);
+-	if (ret < 0) {
+-		ret = -ENODEV;
++	if (ret < 0)
+ 		goto out_release;
+-	}
+ 	ndev->irq = ret;
+ 
+ 	SET_NETDEV_DEV(ndev, &pdev->dev);
+-- 
+2.6.2
+

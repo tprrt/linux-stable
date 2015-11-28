@@ -1,0 +1,39 @@
+From 6773cf21d5f71b270b5aeb53821d6d6f73655e31 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Thu, 4 Jun 2015 20:22:26 +0200
+Subject: [PATCH 144/326] ARM: shmobile: R-Mobile: Use BIT() macro instead of
+ open coding
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 23e95fc2964de5a38c1c76109188756420268858)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/pm-rmobile.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/pm-rmobile.c b/arch/arm/mach-shmobile/pm-rmobile.c
+index 94161c9b1878..b9b494f5ca99 100644
+--- a/arch/arm/mach-shmobile/pm-rmobile.c
++++ b/arch/arm/mach-shmobile/pm-rmobile.c
+@@ -48,7 +48,7 @@ static int rmobile_pd_power_down(struct generic_pm_domain *genpd)
+ 	if (rmobile_pd->bit_shift == ~0)
+ 		return -EBUSY;
+ 
+-	mask = 1 << rmobile_pd->bit_shift;
++	mask = BIT(rmobile_pd->bit_shift);
+ 	if (rmobile_pd->suspend) {
+ 		int ret = rmobile_pd->suspend();
+ 
+@@ -85,7 +85,7 @@ static int __rmobile_pd_power_up(struct rmobile_pm_domain *rmobile_pd,
+ 	if (rmobile_pd->bit_shift == ~0)
+ 		return 0;
+ 
+-	mask = 1 << rmobile_pd->bit_shift;
++	mask = BIT(rmobile_pd->bit_shift);
+ 	if (__raw_readl(rmobile_pd->base + PSTR) & mask)
+ 		goto out;
+ 
+-- 
+2.6.2
+

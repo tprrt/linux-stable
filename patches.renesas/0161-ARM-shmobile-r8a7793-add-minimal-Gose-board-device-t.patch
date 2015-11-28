@@ -1,0 +1,104 @@
+From 3c1f622d64c4dfee3bcc26f5f4a0b8ba594ca4a9 Mon Sep 17 00:00:00 2001
+From: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
+Date: Mon, 1 Jun 2015 16:22:56 +0200
+Subject: [PATCH 161/326] ARM: shmobile: r8a7793: add minimal Gose board device
+ tree
+
+Minimal DT description and Makefile entry for the Gose eval board.
+Support for console, timer, and Ethernet.
+
+Signed-off-by: Ulrich Hecht <ulrich.hecht+renesas@gmail.com>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit b8af4591db5bb0529b7f56d25b2e7db3eb71fdf6)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/Makefile         |  1 +
+ arch/arm/boot/dts/r8a7793-gose.dts | 63 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+)
+ create mode 100644 arch/arm/boot/dts/r8a7793-gose.dts
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index e13fff1bfa97..908fcbf656c1 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -490,6 +490,7 @@ dtb-$(CONFIG_ARCH_SHMOBILE_MULTI) += \
+ 	r8a7790-lager.dtb \
+ 	r8a7791-henninger.dtb \
+ 	r8a7791-koelsch.dtb \
++	r8a7793-gose.dtb \
+ 	r8a7794-alt.dtb \
+ 	sh73a0-kzm9g.dtb
+ dtb-$(CONFIG_ARCH_SOCFPGA) += \
+diff --git a/arch/arm/boot/dts/r8a7793-gose.dts b/arch/arm/boot/dts/r8a7793-gose.dts
+new file mode 100644
+index 000000000000..96443ec5f6ab
+--- /dev/null
++++ b/arch/arm/boot/dts/r8a7793-gose.dts
+@@ -0,0 +1,63 @@
++/*
++ * Device Tree Source for the Gose board
++ *
++ * Copyright (C) 2014-2015 Renesas Electronics Corporation
++ *
++ * This file is licensed under the terms of the GNU General Public License
++ * version 2.  This program is licensed "as is" without any warranty of any
++ * kind, whether express or implied.
++ */
++
++/dts-v1/;
++#include "r8a7793.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++
++/ {
++	model = "Gose";
++	compatible = "renesas,gose", "renesas,r8a7793";
++
++	aliases {
++		serial0 = &scif0;
++		serial1 = &scif1;
++	};
++
++	chosen {
++		bootargs = "ignore_loglevel rw root=/dev/nfs ip=dhcp";
++		stdout-path = &scif0;
++	};
++
++	memory@40000000 {
++		device_type = "memory";
++		reg = <0 0x40000000 0 0x40000000>;
++	};
++};
++
++&extal_clk {
++	clock-frequency = <20000000>;
++};
++
++&ether {
++	phy-handle = <&phy1>;
++	renesas,ether-link-active-low;
++	status = "okay";
++
++	phy1: ethernet-phy@1 {
++		reg = <1>;
++		interrupt-parent = <&irqc0>;
++		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++		micrel,led-mode = <1>;
++	};
++};
++
++&cmt0 {
++	status = "okay";
++};
++
++&scif0 {
++	status = "okay";
++};
++
++&scif1 {
++	status = "okay";
++};
+-- 
+2.6.2
+

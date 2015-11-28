@@ -1,0 +1,34 @@
+From ea4f9cecacff1adb8f3ee0c85f2cdcc6ef5579d6 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 28 Sep 2015 15:28:03 +0200
+Subject: [PATCH 321/326] spi: sh-msiof: Match renesas,rx-fifo-size in DT
+ bindings doc with driver
+
+Commit fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from
+256 word") changed the default RX FIFO size on R-Car Gen2 SoCs in the
+driver code, but forgot to update the DT bindings documentation.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit eb8d0ac4afd8b15ac88f8a50342b32774ff881ed)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index 8f771441be60..705075da2f10 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -51,7 +51,7 @@ Optional properties, deprecated for soctype-specific bindings:
+ - renesas,tx-fifo-size : Overrides the default tx fifo size given in words
+ 			 (default is 64)
+ - renesas,rx-fifo-size : Overrides the default rx fifo size given in words
+-			 (default is 64, or 256 on R-Car Gen2)
++			 (default is 64)
+ 
+ Pinctrl properties might be needed, too.  See
+ Documentation/devicetree/bindings/pinctrl/renesas,*.
+-- 
+2.6.2
+

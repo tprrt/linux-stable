@@ -1,0 +1,57 @@
+From 0a22f2d62bcbc5759d9e3a9faa2a0a4c31454a21 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 16 Jun 2015 08:52:55 +0000
+Subject: [PATCH 268/326] regmap: add regmap_fields_force_write()
+
+regmap_fields_force_write() is similar to regmap_fields_write(),
+but regmap_fields_force_write() write data to register even though
+it is same value.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit e874e6c7edc43436f73cf84157d9221f8b807c36)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/base/regmap/regmap.c | 12 ++++++++++++
+ include/linux/regmap.h       |  2 ++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 7ede8165485b..35b05c2efc16 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1624,6 +1624,18 @@ int regmap_fields_write(struct regmap_field *field, unsigned int id,
+ }
+ EXPORT_SYMBOL_GPL(regmap_fields_write);
+ 
++int regmap_fields_force_write(struct regmap_field *field, unsigned int id,
++			unsigned int val)
++{
++	if (id >= field->id_size)
++		return -EINVAL;
++
++	return regmap_write_bits(field->regmap,
++				  field->reg + (field->id_offset * id),
++				  field->mask, val << field->shift);
++}
++EXPORT_SYMBOL_GPL(regmap_fields_force_write);
++
+ /**
+  * regmap_fields_update_bits():	Perform a read/modify/write cycle
+  *                              on the register field
+diff --git a/include/linux/regmap.h b/include/linux/regmap.h
+index 116655d92269..a4b13b4405f1 100644
+--- a/include/linux/regmap.h
++++ b/include/linux/regmap.h
+@@ -501,6 +501,8 @@ int regmap_field_update_bits(struct regmap_field *field,
+ 
+ int regmap_fields_write(struct regmap_field *field, unsigned int id,
+ 			unsigned int val);
++int regmap_fields_force_write(struct regmap_field *field, unsigned int id,
++			unsigned int val);
+ int regmap_fields_read(struct regmap_field *field, unsigned int id,
+ 		       unsigned int *val);
+ int regmap_fields_update_bits(struct regmap_field *field,  unsigned int id,
+-- 
+2.6.2
+

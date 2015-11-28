@@ -1,0 +1,41 @@
+From 9727315afa9175a86fd0c338f42ff2eeca17e9e7 Mon Sep 17 00:00:00 2001
+From: Chanwoo Choi <cw00.choi@samsung.com>
+Date: Wed, 1 Jul 2015 13:11:33 +0900
+Subject: [PATCH 255/326] usb: renesas_usbhs: Replace deprecated API of extcon
+
+This patch removes the deprecated API of extcon and then use the new extcon API
+with the unique id to indicate the each external connector (USB-HOST).
+- extcon_get_cable_state(*edev, char *) -> extcon_get_cable_state_(*edev, id)
+
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Felipe Balbi <balbi@ti.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Peter Chen <peter.chen@freescale.com>
+Cc: Varka Bhadram <varkab@cdac.in>
+Cc: Takeshi Kihara <takeshi.kihara.df@renesas.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Felipe Balbi <balbi@ti.com>
+(cherry picked from commit 50297b79b8fd426f678431a8e9dcee59afd33ec8)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/usb/renesas_usbhs/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/renesas_usbhs/common.c b/drivers/usb/renesas_usbhs/common.c
+index 0f7e850fd4aa..da321f034e3c 100644
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -388,7 +388,7 @@ static void usbhsc_hotplug(struct usbhs_priv *priv)
+ 
+ 	if (enable && !mod) {
+ 		if (priv->edev) {
+-			cable = extcon_get_cable_state(priv->edev, "USB-HOST");
++			cable = extcon_get_cable_state_(priv->edev, EXTCON_USB_HOST);
+ 			if ((cable > 0 && id != USBHS_HOST) ||
+ 			    (!cable && id != USBHS_GADGET)) {
+ 				dev_info(&pdev->dev,
+-- 
+2.6.2
+

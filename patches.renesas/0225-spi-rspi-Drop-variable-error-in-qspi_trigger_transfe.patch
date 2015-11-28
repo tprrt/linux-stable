@@ -1,0 +1,54 @@
+From 7d89b40c489978bd2548c582a53b1f6cd47ce649 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 23 Jun 2015 15:04:28 +0200
+Subject: [PATCH 225/326] spi: rspi: Drop variable "error" in
+ qspi_trigger_transfer_out_in()
+
+Just use "ret" instead, for consistency with other similar functions.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 5d4db691ed978080435f4e5aad2ce707294a75b4)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/spi/spi-rspi.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index f6bac9e77d06..d780deb45c3d 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -728,24 +728,23 @@ static int qspi_trigger_transfer_out_int(struct rspi_data *rspi, const u8 *tx,
+ 					u8 *rx, unsigned int len)
+ {
+ 	int i, n, ret;
+-	int error;
+ 
+ 	while (len > 0) {
+ 		n = qspi_set_send_trigger(rspi, len);
+ 		qspi_set_receive_trigger(rspi, len);
+ 		if (n == QSPI_BUFFER_SIZE) {
+-			error = rspi_wait_for_tx_empty(rspi);
+-			if (error < 0) {
++			ret = rspi_wait_for_tx_empty(rspi);
++			if (ret < 0) {
+ 				dev_err(&rspi->master->dev, "transmit timeout\n");
+-				return error;
++				return ret;
+ 			}
+ 			for (i = 0; i < n; i++)
+ 				rspi_write_data(rspi, *tx++);
+ 
+-			error = rspi_wait_for_rx_full(rspi);
+-			if (error < 0) {
++			ret = rspi_wait_for_rx_full(rspi);
++			if (ret < 0) {
+ 				dev_err(&rspi->master->dev, "receive timeout\n");
+-				return error;
++				return ret;
+ 			}
+ 			for (i = 0; i < n; i++)
+ 				*rx++ = rspi_read_data(rspi);
+-- 
+2.6.2
+

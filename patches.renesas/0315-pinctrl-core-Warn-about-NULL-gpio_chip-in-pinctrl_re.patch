@@ -1,0 +1,36 @@
+From 47ff9e7421632c0dbcf57caecd96f81aa4d1de6e Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Thu, 3 Sep 2015 10:34:30 -0700
+Subject: [PATCH 315/326] pinctrl: core: Warn about NULL gpio_chip in
+ pinctrl_ready_for_gpio_range()
+
+If the gpio driver is confused about the numbers for gpio-ranges,
+pinctrl_ready_for_gpio_range() may get called with invalid GPIO
+causing a NULL pointer exception. Let's instead provide a warning
+that allows fixing the problem and return with error.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit 942cde724075f840ded89390b10dce1a47a4d712)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 69723e07036b..9638a00c67c2 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -349,6 +349,9 @@ static bool pinctrl_ready_for_gpio_range(unsigned gpio)
+ 	struct pinctrl_gpio_range *range = NULL;
+ 	struct gpio_chip *chip = gpio_to_chip(gpio);
+ 
++	if (WARN(!chip, "no gpio_chip for gpio%i?", gpio))
++		return false;
++
+ 	mutex_lock(&pinctrldev_list_mutex);
+ 
+ 	/* Loop over the pin controllers */
+-- 
+2.6.2
+

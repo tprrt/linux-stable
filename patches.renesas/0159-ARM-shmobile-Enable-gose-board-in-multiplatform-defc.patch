@@ -1,0 +1,30 @@
+From 4bf4188fa15a2cba131b42a836f0542fdc2fb233 Mon Sep 17 00:00:00 2001
+From: Simon Horman <horms+renesas@verge.net.au>
+Date: Tue, 2 Jun 2015 10:34:36 +0900
+Subject: [PATCH 159/326] ARM: shmobile: Enable gose board in multiplatform
+ defconfig
+
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit b059be7ecfa80550f635194f7c12578423177729)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/configs/shmobile_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
+index 9961fbd633f8..c8e9caeb1c02 100644
+--- a/arch/arm/configs/shmobile_defconfig
++++ b/arch/arm/configs/shmobile_defconfig
+@@ -18,6 +18,7 @@ CONFIG_ARCH_R8A7778=y
+ CONFIG_ARCH_R8A7779=y
+ CONFIG_ARCH_R8A7790=y
+ CONFIG_ARCH_R8A7791=y
++CONFIG_ARCH_R8A7793=y
+ CONFIG_ARCH_R8A7794=y
+ CONFIG_ARCH_SH73A0=y
+ CONFIG_MACH_MARZEN=y
+-- 
+2.6.2
+

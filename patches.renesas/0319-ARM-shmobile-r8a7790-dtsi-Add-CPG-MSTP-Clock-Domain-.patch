@@ -1,0 +1,36 @@
+From d9033ddef1ceec512f60c64e74044be59b9bb117 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Thu, 20 Aug 2015 01:24:44 +0000
+Subject: [PATCH 319/326] ARM: shmobile: r8a7790 dtsi: Add CPG/MSTP Clock
+ Domain for sound
+
+484adb005886 ("ARM: shmobile: r8a7790 dtsi: Add CPG/MSTP Clock Domain")
+added CPG/MSTP clock-cells domain support, but it was missing sound
+support. This patch adds it.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+[horms: Updated commit id referred to in changelog]
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+
+(cherry picked from commit 6507c4efd2ca4a3dccedbc5b4724f9faabf97fca)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7790.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index a0b2a79cbfbd..4624d0f2a754 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -1627,6 +1627,7 @@
+ 				"mix.0", "mix.1",
+ 				"dvc.0", "dvc.1",
+ 				"clk_a", "clk_b", "clk_c", "clk_i";
++		power-domains = <&cpg_clocks>;
+ 
+ 		status = "disabled";
+ 
+-- 
+2.6.2
+

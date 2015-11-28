@@ -1,0 +1,49 @@
+From 4355c6b82f1ecaf653080b0c656fe8976bdd508d Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Wed, 15 Jul 2015 07:15:47 +0000
+Subject: [PATCH 300/326] ASoC: rsnd: check the Gen1 at the beginning of DVC
+ probe
+
+DVC doesn't support Gen1, check it beginning of probe
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Keita Kobayashi <keita.kobayashi.ym@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 9469b8b6092d347ef8a5fa9d2d7dde4c857a0994)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/dvc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/sound/soc/sh/rcar/dvc.c b/sound/soc/sh/rcar/dvc.c
+index d06e4ee91f8d..57796387d482 100644
+--- a/sound/soc/sh/rcar/dvc.c
++++ b/sound/soc/sh/rcar/dvc.c
+@@ -332,18 +332,18 @@ int rsnd_dvc_probe(struct platform_device *pdev,
+ 	char name[RSND_DVC_NAME_SIZE];
+ 	int i, nr, ret;
+ 
+-	rsnd_of_parse_dvc(pdev, of_data, priv);
+-
+-	nr = info->dvc_info_nr;
+-	if (!nr)
+-		return 0;
+-
+ 	/* This driver doesn't support Gen1 at this point */
+ 	if (rsnd_is_gen1(priv)) {
+ 		dev_warn(dev, "CMD is not supported on Gen1\n");
+ 		return -EINVAL;
+ 	}
+ 
++	rsnd_of_parse_dvc(pdev, of_data, priv);
++
++	nr = info->dvc_info_nr;
++	if (!nr)
++		return 0;
++
+ 	dvc	= devm_kzalloc(dev, sizeof(*dvc) * nr, GFP_KERNEL);
+ 	if (!dvc)
+ 		return -ENOMEM;
+-- 
+2.6.2
+

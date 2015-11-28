@@ -1,0 +1,43 @@
+From 6aaa9e5b42a4b3685cb43b47fecc9deafe0def0e Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Sat, 11 Jul 2015 09:46:22 +0200
+Subject: [PATCH 131/326] clk: shmobile: emev2: deassert reset for IIC0/1
+
+We have a driver now for IIC, so disable reset for them.
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Stephen Boyd <sboyd@codeaurora.org>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+(cherry picked from commit e1069878b957c5f6d0eb2f441a8372db8d6198b2)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/clk/shmobile/clk-emev2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/clk/shmobile/clk-emev2.c b/drivers/clk/shmobile/clk-emev2.c
+index 5b60beb7d0eb..a91825471c79 100644
+--- a/drivers/clk/shmobile/clk-emev2.c
++++ b/drivers/clk/shmobile/clk-emev2.c
+@@ -28,6 +28,8 @@
+ #define USIBU1_RSTCTRL 0x0ac
+ #define USIBU2_RSTCTRL 0x0b0
+ #define USIBU3_RSTCTRL 0x0b4
++#define IIC0_RSTCTRL 0x0dc
++#define IIC1_RSTCTRL 0x0e0
+ #define STI_RSTCTRL 0x124
+ #define STI_CLKSEL 0x688
+ 
+@@ -66,6 +68,10 @@ static void __init emev2_smu_init(void)
+ 	emev2_smu_write(2, USIBU1_RSTCTRL);
+ 	emev2_smu_write(2, USIBU2_RSTCTRL);
+ 	emev2_smu_write(2, USIBU3_RSTCTRL);
++
++	/* deassert reset for IIC0->IIC1 */
++	emev2_smu_write(1, IIC0_RSTCTRL);
++	emev2_smu_write(1, IIC1_RSTCTRL);
+ }
+ 
+ static void __init emev2_smu_clkdiv_init(struct device_node *np)
+-- 
+2.6.2
+

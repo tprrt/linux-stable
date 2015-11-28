@@ -1,0 +1,39 @@
+From e00ef28265b261e0aa1aabd9a4dde82004268b76 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 28 Apr 2015 12:15:06 +0200
+Subject: [PATCH 242/326] pinctrl: sh-pfc: r8a73a4: Remove obsolete
+ multi-platform check
+
+As of commit 9d07d414d4c33d86 ("ARM: shmobile: r8a73a4: ape6evm: Remove
+legacy platform"), r8a73a4 is only supported in generic ARM
+multi-platform builds.  Hence CONFIG_ARCH_MULTIPLATFORM is always set,
+and the check can be removed.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit e8e36d2f1873218a2fdaf0b7cd335b84e8be6112)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/sh-pfc/pfc-r8a73a4.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/pinctrl/sh-pfc/pfc-r8a73a4.c b/drivers/pinctrl/sh-pfc/pfc-r8a73a4.c
+index 280a56f97786..ba18d2e65e67 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-r8a73a4.c
++++ b/drivers/pinctrl/sh-pfc/pfc-r8a73a4.c
+@@ -21,10 +21,6 @@
+ #include <linux/kernel.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ 
+-#ifndef CONFIG_ARCH_MULTIPLATFORM
+-#include <mach/irqs.h>
+-#endif
+-
+ #include "core.h"
+ #include "sh_pfc.h"
+ 
+-- 
+2.6.2
+

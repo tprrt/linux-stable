@@ -1,0 +1,33 @@
+From 32e9182e48324d08a7da5435c907d83009d77987 Mon Sep 17 00:00:00 2001
+From: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
+Date: Sun, 23 Aug 2015 21:58:08 +0900
+Subject: [PATCH 233/326] mmc: sh_mmcif: Fix suspend process
+
+The clock should be enable when SDHI registers are accessed.
+
+Signed-off-by: Koji Matsuoka <koji.matsuoka.xm@renesas.com>
+Signed-off-by: Yoshihiro Kaneko <ykaneko0929@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+(cherry picked from commit 5afc30fc666165c1c37c246e08b4282bc8c31d98)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/mmc/host/sh_mmcif.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mmc/host/sh_mmcif.c b/drivers/mmc/host/sh_mmcif.c
+index 7eff087cf515..f9f93bf5e8fe 100644
+--- a/drivers/mmc/host/sh_mmcif.c
++++ b/drivers/mmc/host/sh_mmcif.c
+@@ -1532,7 +1532,9 @@ static int sh_mmcif_suspend(struct device *dev)
+ {
+ 	struct sh_mmcif_host *host = dev_get_drvdata(dev);
+ 
++	pm_runtime_get_sync(dev);
+ 	sh_mmcif_writel(host->addr, MMCIF_CE_INT_MASK, MASK_ALL);
++	pm_runtime_put(dev);
+ 
+ 	return 0;
+ }
+-- 
+2.6.2
+

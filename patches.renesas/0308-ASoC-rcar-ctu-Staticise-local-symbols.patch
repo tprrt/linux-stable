@@ -1,0 +1,36 @@
+From 3e353550ddf056f120fba29e81953635a9c5c84f Mon Sep 17 00:00:00 2001
+From: Lars-Peter Clausen <lars@metafoo.de>
+Date: Mon, 27 Jul 2015 10:56:25 +0200
+Subject: [PATCH 308/326] ASoC: rcar ctu: Staticise local symbols
+
+rsnd_of_parse_ctu() is not used outside this file so it can be static.
+Fixes the following sparse warning:
+
+	sound/soc/sh/rcar/ctu.c:72:6: warning: symbol 'rsnd_of_parse_ctu' was
+		not declared. Should it be static?
+
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit e773c2f964640e103cc75a45aa4555c73ba55c29)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/ctu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/sh/rcar/ctu.c b/sound/soc/sh/rcar/ctu.c
+index 05edd2009b81..05498bba5874 100644
+--- a/sound/soc/sh/rcar/ctu.c
++++ b/sound/soc/sh/rcar/ctu.c
+@@ -69,7 +69,7 @@ struct rsnd_mod *rsnd_ctu_mod_get(struct rsnd_priv *priv, int id)
+ 	return &((struct rsnd_ctu *)(priv->ctu) + id)->mod;
+ }
+ 
+-void rsnd_of_parse_ctu(struct platform_device *pdev,
++static void rsnd_of_parse_ctu(struct platform_device *pdev,
+ 		       const struct rsnd_of_data *of_data,
+ 		       struct rsnd_priv *priv)
+ {
+-- 
+2.6.2
+
