@@ -10,8 +10,9 @@ Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
 ---
  drivers/input/touchscreen/Kconfig        |   11 
+ drivers/input/touchscreen/Makefile       |    1 
  drivers/input/touchscreen/rohm_bu21023.c | 1218 +++++++++++++++++++++++++++++++
- 2 files changed, 1229 insertions(+)
+ 3 files changed, 1230 insertions(+)
 
 --- a/drivers/input/touchscreen/Kconfig
 +++ b/drivers/input/touchscreen/Kconfig
@@ -31,6 +32,13 @@ Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 +	  module will be called bu21023_ts.
 +
  endif
+--- a/drivers/input/touchscreen/Makefile
++++ b/drivers/input/touchscreen/Makefile
+@@ -84,3 +84,4 @@ obj-$(CONFIG_TOUCHSCREEN_W90X900)	+= w90
+ obj-$(CONFIG_TOUCHSCREEN_SX8654)	+= sx8654.o
+ obj-$(CONFIG_TOUCHSCREEN_TPS6507X)	+= tps6507x-ts.o
+ obj-$(CONFIG_TOUCHSCREEN_ZFORCE)	+= zforce_ts.o
++obj-$(CONFIG_TOUCHSCREEN_ROHM_BU21023)	+= rohm_bu21023.o
 --- /dev/null
 +++ b/drivers/input/touchscreen/rohm_bu21023.c
 @@ -0,0 +1,1218 @@
