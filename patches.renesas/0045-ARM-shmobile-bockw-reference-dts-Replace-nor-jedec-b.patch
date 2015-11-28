@@ -1,0 +1,34 @@
+From 9ee0d44a3b7231451f5f7ef9616354553536e045 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 20 May 2015 20:16:50 +0200
+Subject: [PATCH 045/129] ARM: shmobile: bockw-reference dts: Replace
+ "nor-jedec" by "jedec,spi-nor"
+
+Cfr. commit 8947e396a8296c52 ('Documentation: dt: mtd: replace
+"nor-jedec" binding with "jedec, spi-nor"')
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 49633bbbebcd2e398799389542d621bd9b8c5c56)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7778-bockw-reference.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7778-bockw-reference.dts b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+index f9422d887b44..dffa6ff30360 100644
+--- a/arch/arm/boot/dts/r8a7778-bockw-reference.dts
++++ b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+@@ -119,7 +119,7 @@
+ 	flash: flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-		compatible = "spansion,s25fl008k", "nor-jedec";
++		compatible = "spansion,s25fl008k", "jedec,spi-nor";
+ 		reg = <0>;
+ 		spi-max-frequency = <104000000>;
+ 		m25p,fast-read;
+-- 
+2.6.2
+

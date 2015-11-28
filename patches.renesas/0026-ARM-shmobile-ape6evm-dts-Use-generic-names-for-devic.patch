@@ -1,0 +1,32 @@
+From 07cfd9bc103e4cac10a03d5e9c674c0c643181e7 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:55:31 +0200
+Subject: [PATCH 026/129] ARM: shmobile: ape6evm dts: Use generic names for
+ device nodes
+
+max8973 -> regulator
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit e8545be97479972346a1519412c5330b4223ca20)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a73a4-ape6evm.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a73a4-ape6evm.dts b/arch/arm/boot/dts/r8a73a4-ape6evm.dts
+index 81a38ceee098..a4c425923c05 100644
+--- a/arch/arm/boot/dts/r8a73a4-ape6evm.dts
++++ b/arch/arm/boot/dts/r8a73a4-ape6evm.dts
+@@ -147,7 +147,7 @@
+ 
+ &i2c5 {
+ 	status = "okay";
+-	vdd_dvfs: max8973@1b {
++	vdd_dvfs: regulator@1b {
+ 		compatible = "maxim,max8973";
+ 		reg = <0x1b>;
+ 
+-- 
+2.6.2
+

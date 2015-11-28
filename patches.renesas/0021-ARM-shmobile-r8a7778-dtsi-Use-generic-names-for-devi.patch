@@ -1,0 +1,32 @@
+From 892f198b9df52f8c9f4569c68250b58e7fc51909 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:55:26 +0200
+Subject: [PATCH 021/129] ARM: shmobile: r8a7778 dtsi: Use generic names for
+ device nodes
+
+irqpin -> interrupt-controller
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit b38150fae0164d363c852d6b782ab7083697c6d2)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7778.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7778.dtsi b/arch/arm/boot/dts/r8a7778.dtsi
+index 868f97309533..7ce9f5fd5865 100644
+--- a/arch/arm/boot/dts/r8a7778.dtsi
++++ b/arch/arm/boot/dts/r8a7778.dtsi
+@@ -68,7 +68,7 @@
+ 	};
+ 
+ 	/* irqpin: IRQ0 - IRQ3 */
+-	irqpin: irqpin@fe78001c {
++	irqpin: interrupt-controller@fe78001c {
+ 		compatible = "renesas,intc-irqpin-r8a7778", "renesas,intc-irqpin";
+ 		#interrupt-cells = <2>;
+ 		interrupt-controller;
+-- 
+2.6.2
+

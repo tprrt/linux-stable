@@ -1,0 +1,51 @@
+From 341ad1683fe8a5ff4c2cf2df48501dc9f3bb6e94 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 28 Apr 2015 14:08:03 +0200
+Subject: [PATCH 019/129] ARM: shmobile: defconfig: Replace USB_RCAR_GEN2_PHY
+ by PHY_RCAR_GEN2
+
+The legacy-only USB_RCAR_GEN2_PHY driver was replaced by the DT-only
+PHY_RCAR_GEN2 driver.
+
+Refresh the defconfig using "make savedefconfig" while we're at it.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 90037558d5ed25a63499c3973cc1af25da02f673)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/configs/shmobile_defconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
+index b58618e2d13c..9961fbd633f8 100644
+--- a/arch/arm/configs/shmobile_defconfig
++++ b/arch/arm/configs/shmobile_defconfig
+@@ -121,7 +121,6 @@ CONFIG_WATCHDOG=y
+ CONFIG_DA9063_WATCHDOG=y
+ CONFIG_MFD_AS3711=y
+ CONFIG_MFD_DA9063=y
+-CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_AS3711=y
+ CONFIG_REGULATOR_DA9210=y
+ CONFIG_REGULATOR_GPIO=y
+@@ -160,7 +159,6 @@ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_R8A66597_HCD=y
+ CONFIG_USB_RENESAS_USBHS=y
+ CONFIG_USB_RCAR_PHY=y
+-CONFIG_USB_RCAR_GEN2_PHY=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_RENESAS_USBHS_UDC=y
+ CONFIG_USB_ETH=y
+@@ -182,6 +180,8 @@ CONFIG_IIO=y
+ CONFIG_AK8975=y
+ CONFIG_PWM=y
+ CONFIG_PWM_RENESAS_TPU=y
++CONFIG_GENERIC_PHY=y
++CONFIG_PHY_RCAR_GEN2=y
+ # CONFIG_DNOTIFY is not set
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+-- 
+2.6.2
+

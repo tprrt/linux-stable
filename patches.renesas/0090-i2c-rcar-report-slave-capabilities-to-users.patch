@@ -1,0 +1,31 @@
+From 0fd4992443271d994525fcc6a143b6d404a181b9 Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Thu, 14 May 2015 14:40:03 +0200
+Subject: [PATCH 090/129] i2c: rcar: report slave capabilities to users
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+(cherry picked from commit 1fb2ad9565be7149cf50d663f47f489a9fcda42d)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/i2c/busses/i2c-rcar.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 06f34d1c5121..9eef46254369 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -604,7 +604,8 @@ static int rcar_unreg_slave(struct i2c_client *slave)
+ static u32 rcar_i2c_func(struct i2c_adapter *adap)
+ {
+ 	/* This HW can't do SMBUS_QUICK and NOSTART */
+-	return I2C_FUNC_I2C | (I2C_FUNC_SMBUS_EMUL & ~I2C_FUNC_SMBUS_QUICK);
++	return I2C_FUNC_I2C | I2C_FUNC_SLAVE |
++		(I2C_FUNC_SMBUS_EMUL & ~I2C_FUNC_SMBUS_QUICK);
+ }
+ 
+ static const struct i2c_algorithm rcar_i2c_algo = {
+-- 
+2.6.2
+

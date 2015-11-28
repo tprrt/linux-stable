@@ -1,0 +1,63 @@
+From c6fa94db3edf9e716a0898399b98ac9592bd0be2 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <k.kozlowski.k@gmail.com>
+Date: Sat, 2 May 2015 00:54:25 +0900
+Subject: [PATCH 089/129] i2c: constify platform_device_id
+
+The platform_device_id is not modified by these drivers and core uses it
+as const.
+
+Signed-off-by: Krzysztof Kozlowski <k.kozlowski.k@gmail.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+(cherry picked from commit e9a02a3d89b9d16eafc540d1dc78476a3bb5d4eb)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/i2c/busses/i2c-imx.c     |    2 +-
+ drivers/i2c/busses/i2c-mxs.c     |    2 +-
+ drivers/i2c/busses/i2c-rcar.c    |    2 +-
+ drivers/i2c/busses/i2c-s3c2410.c |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -241,7 +241,7 @@ static struct imx_i2c_hwdata vf610_i2c_h
+ 
+ };
+ 
+-static struct platform_device_id imx_i2c_devtype[] = {
++static const struct platform_device_id imx_i2c_devtype[] = {
+ 	{
+ 		.name = "imx1-i2c",
+ 		.driver_data = (kernel_ulong_t)&imx1_i2c_hwdata,
+--- a/drivers/i2c/busses/i2c-mxs.c
++++ b/drivers/i2c/busses/i2c-mxs.c
+@@ -784,7 +784,7 @@ static int mxs_i2c_get_ofdata(struct mxs
+ 	return 0;
+ }
+ 
+-static struct platform_device_id mxs_i2c_devtype[] = {
++static const struct platform_device_id mxs_i2c_devtype[] = {
+ 	{
+ 		.name = "imx23-i2c",
+ 		.driver_data = MXS_I2C_V1,
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -714,7 +714,7 @@ static int rcar_i2c_remove(struct platfo
+ 	return 0;
+ }
+ 
+-static struct platform_device_id rcar_i2c_id_table[] = {
++static const struct platform_device_id rcar_i2c_id_table[] = {
+ 	{ "i2c-rcar",		I2C_RCAR_GEN1 },
+ 	{ "i2c-rcar_gen1",	I2C_RCAR_GEN1 },
+ 	{ "i2c-rcar_gen2",	I2C_RCAR_GEN2 },
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -132,7 +132,7 @@ struct s3c24xx_i2c {
+ 	unsigned int		sys_i2c_cfg;
+ };
+ 
+-static struct platform_device_id s3c24xx_driver_ids[] = {
++static const struct platform_device_id s3c24xx_driver_ids[] = {
+ 	{
+ 		.name		= "s3c2410-i2c",
+ 		.driver_data	= 0,

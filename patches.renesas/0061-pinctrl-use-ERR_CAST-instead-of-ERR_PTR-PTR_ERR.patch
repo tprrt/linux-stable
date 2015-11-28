@@ -1,0 +1,31 @@
+From 1cf420ea0f8bde21be959898d7470561a8f0b73c Mon Sep 17 00:00:00 2001
+From: Fabian Frederick <fabf@skynet.be>
+Date: Mon, 27 Apr 2015 18:04:05 +0200
+Subject: [PATCH 061/129] pinctrl: use ERR_CAST instead of ERR_PTR/PTR_ERR
+
+Inspired by scripts/coccinelle/api/err_cast.cocci
+
+Signed-off-by: Fabian Frederick <fabf@skynet.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit 66eb3bd857f5311f72c7c371f78ddc9c472befba)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ include/linux/pinctrl/consumer.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/pinctrl/consumer.h b/include/linux/pinctrl/consumer.h
+index 18eccefea06e..d7e5d608faa7 100644
+--- a/include/linux/pinctrl/consumer.h
++++ b/include/linux/pinctrl/consumer.h
+@@ -142,7 +142,7 @@ static inline struct pinctrl * __must_check pinctrl_get_select(
+ 	s = pinctrl_lookup_state(p, name);
+ 	if (IS_ERR(s)) {
+ 		pinctrl_put(p);
+-		return ERR_PTR(PTR_ERR(s));
++		return ERR_CAST(s);
+ 	}
+ 
+ 	ret = pinctrl_select_state(p, s);
+-- 
+2.6.2
+

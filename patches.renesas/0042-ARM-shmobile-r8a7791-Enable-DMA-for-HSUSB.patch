@@ -1,0 +1,32 @@
+From 6dad4acc84563723ad2a12dfd6fcdb9699fab746 Mon Sep 17 00:00:00 2001
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Date: Fri, 8 May 2015 16:13:34 +0900
+Subject: [PATCH 042/129] ARM: shmobile: r8a7791: Enable DMA for HSUSB
+
+This patch adds DMA properties to the HSUSB node.
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 7706993e2deb75022dbcfc3043890aa1a0020189)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
+index 754c3f20f224..7613abea13d7 100644
+--- a/arch/arm/boot/dts/r8a7791.dtsi
++++ b/arch/arm/boot/dts/r8a7791.dtsi
+@@ -723,6 +723,9 @@
+ 		renesas,buswait = <4>;
+ 		phys = <&usb0 1>;
+ 		phy-names = "usb";
++		dmas = <&usb_dmac0 0>, <&usb_dmac0 1>,
++		       <&usb_dmac1 0>, <&usb_dmac1 1>;
++		dma-names = "ch0", "ch1", "ch2", "ch3";
+ 		status = "disabled";
+ 	};
+ 
+-- 
+2.6.2
+

@@ -1,0 +1,34 @@
+From 7a6d289a73c64caf9102dc92a01c6d371b67f8e7 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Mon, 15 Jun 2015 06:23:52 +0000
+Subject: [PATCH 116/129] ASoC: rsrc-card: tidyup return value of clock error
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Keita Kobayashi <keita.kobayashi.ym@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 061015f7bfe2e278243bcc9f04346cfc991a5342)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/rsrc-card.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/sound/soc/sh/rcar/rsrc-card.c b/sound/soc/sh/rcar/rsrc-card.c
+index d0d74b52eb1d..52123d6ceec5 100644
+--- a/sound/soc/sh/rcar/rsrc-card.c
++++ b/sound/soc/sh/rcar/rsrc-card.c
+@@ -283,10 +283,8 @@ rsrc_card_sub_parse_of(struct rsrc_card_priv *priv,
+ 	 */
+ 	if (of_property_read_bool(np, "clocks")) {
+ 		clk = of_clk_get(np, 0);
+-		if (IS_ERR(clk)) {
+-			ret = PTR_ERR(clk);
+-			return ret;
+-		}
++		if (IS_ERR(clk))
++			return PTR_ERR(clk);
+ 
+ 		dai->sysclk = clk_get_rate(clk);
+ 		dai->clk = clk;
+-- 
+2.6.2
+

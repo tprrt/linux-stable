@@ -1,0 +1,135 @@
+From 9cd02c86d8c78f512dc0f90d4fad25812da4695b Mon Sep 17 00:00:00 2001
+From: Sonic Zhang <sonic.zhang@analog.com>
+Date: Thu, 9 Apr 2015 11:13:07 +0800
+Subject: [PATCH 059/129] pinctrl: allow exlusive GPIO/mux pin allocation
+
+Disallow simultaneous use of the the GPIO and peripheral mux
+functions by setting a flag "strict" in struct pinctrl_desc.
+
+The blackfin pinmux and gpio controller doesn't allow user to
+set up a pin for both GPIO and peripheral function. So, add flag
+strict in struct pinctrl_desc to check both gpio_owner and
+mux_owner before approving the pin request.
+
+v2-changes:
+- if strict flag is set, check gpio_owner and mux_onwer in if and
+  else clause
+
+v3-changes:
+- add kerneldoc for this struct
+- augment Documentation/pinctrl.txt
+
+Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit fa76a3db7093a527333c380df82a0f158d9b8299)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ Documentation/pinctrl.txt       | 11 +++++++++++
+ drivers/pinctrl/pinctrl-adi2.c  |  1 +
+ drivers/pinctrl/pinmux.c        | 13 +++++++++++++
+ include/linux/pinctrl/pinctrl.h |  3 +++
+ 4 files changed, 28 insertions(+)
+
+diff --git a/Documentation/pinctrl.txt b/Documentation/pinctrl.txt
+index a9b47163bb5d..d6b2bed94c43 100644
+--- a/Documentation/pinctrl.txt
++++ b/Documentation/pinctrl.txt
+@@ -73,6 +73,7 @@ static struct pinctrl_desc foo_desc = {
+ 	.pins = foo_pins,
+ 	.npins = ARRAY_SIZE(foo_pins),
+ 	.owner = THIS_MODULE,
++	.strict = true,
+ };
+ 
+ int __init foo_probe(void)
+@@ -830,6 +831,11 @@ separate memory range only intended for GPIO driving, and the register
+ range dealing with pin config and pin multiplexing get placed into a
+ different memory range and a separate section of the data sheet.
+ 
++A flag "strict" in struct pinctrl_desc is available to check and deny
++simultaneous access to the same pin from GPIO and pin multiplexing
++consumers on hardware of this type. The pinctrl driver should set this flag
++accordingly.
++
+ (B)
+ 
+                        pin config
+@@ -850,6 +856,11 @@ possible that the GPIO, pin config and pin multiplex registers are placed into
+ the same memory range and the same section of the data sheet, although that
+ need not be the case.
+ 
++In some pin controllers, although the physical pins are designed in the same
++way as (B), the GPIO function still can't be enabled at the same time as the
++peripheral functions. So again the "strict" flag should be set, denying
++simultaneous activation by GPIO and other muxed in devices.
++
+ From a kernel point of view, however, these are different aspects of the
+ hardware and shall be put into different subsystems:
+ 
+diff --git a/drivers/pinctrl/pinctrl-adi2.c b/drivers/pinctrl/pinctrl-adi2.c
+index 8434439c5017..fbd492668da1 100644
+--- a/drivers/pinctrl/pinctrl-adi2.c
++++ b/drivers/pinctrl/pinctrl-adi2.c
+@@ -710,6 +710,7 @@ static struct pinctrl_desc adi_pinmux_desc = {
+ 	.name = DRIVER_NAME,
+ 	.pctlops = &adi_pctrl_ops,
+ 	.pmxops = &adi_pinmux_ops,
++	.strict = true,
+ 	.owner = THIS_MODULE,
+ };
+ 
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index b874458dcb88..2546fa783464 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -107,6 +107,13 @@ static int pin_request(struct pinctrl_dev *pctldev,
+ 				desc->name, desc->gpio_owner, owner);
+ 			goto out;
+ 		}
++		if (pctldev->desc->strict && desc->mux_usecount &&
++		    strcmp(desc->mux_owner, owner)) {
++			dev_err(pctldev->dev,
++				"pin %s already requested by %s; cannot claim for %s\n",
++				desc->name, desc->mux_owner, owner);
++			goto out;
++		}
+ 
+ 		desc->gpio_owner = owner;
+ 	} else {
+@@ -116,6 +123,12 @@ static int pin_request(struct pinctrl_dev *pctldev,
+ 				desc->name, desc->mux_owner, owner);
+ 			goto out;
+ 		}
++		if (pctldev->desc->strict && desc->gpio_owner) {
++			dev_err(pctldev->dev,
++				"pin %s already requested by %s; cannot claim for %s\n",
++				desc->name, desc->gpio_owner, owner);
++			goto out;
++		}
+ 
+ 		desc->mux_usecount++;
+ 		if (desc->mux_usecount > 1)
+diff --git a/include/linux/pinctrl/pinctrl.h b/include/linux/pinctrl/pinctrl.h
+index 66e4697516de..fc6b0348c375 100644
+--- a/include/linux/pinctrl/pinctrl.h
++++ b/include/linux/pinctrl/pinctrl.h
+@@ -114,6 +114,8 @@ struct pinctrl_ops {
+  *	of the pins field above
+  * @pctlops: pin control operation vtable, to support global concepts like
+  *	grouping of pins, this is optional.
++ * @strict: check both gpio_owner and mux_owner strictly before approving
++	the pin request
+  * @pmxops: pinmux operations vtable, if you support pinmuxing in your driver
+  * @confops: pin config operations vtable, if you support pin configuration in
+  *	your driver
+@@ -132,6 +134,7 @@ struct pinctrl_desc {
+ 	const struct pinctrl_ops *pctlops;
+ 	const struct pinmux_ops *pmxops;
+ 	const struct pinconf_ops *confops;
++	bool strict;
+ 	struct module *owner;
+ #ifdef CONFIG_GENERIC_PINCONF
+ 	unsigned int num_custom_params;
+-- 
+2.6.2
+

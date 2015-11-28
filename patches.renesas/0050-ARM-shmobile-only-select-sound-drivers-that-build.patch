@@ -1,0 +1,52 @@
+From cf4477018ef6d52f8ca4b34455667bfa70c6516b Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 19 May 2015 15:40:37 +0200
+Subject: [PATCH 050/129] ARM: shmobile: only select sound drivers that build
+
+A couple of codec drivers are selected by shmobile platform code,
+but depend on I2C, which results in a build error:
+
+sound/soc/codecs/ak4642.c:638:1: warning: data definition has no type or storage class
+ module_i2c_driver(ak4642_i2c_driver);
+ ^
+sound/soc/codecs/ak4642.c:638:1: error: type defaults to 'int' in declaration of 'module_i2c_driver' [-Werror=implicit-int]
+sound/soc/codecs/ak4642.c:638:1: warning: parameter names (without types) in function declaration
+sound/soc/codecs/ak4642.c:627:26: warning: 'ak4642_i2c_driver' defined but not used [-Wunused-variable]
+
+This ensures that we do not enable the respective drivers when I2C
+is disabled.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 66f72f0c8e0d37339b6be1373c61d2a133c8b422)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/mach-shmobile/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-shmobile/Kconfig b/arch/arm/mach-shmobile/Kconfig
+index 0fb484221c90..45006479d461 100644
+--- a/arch/arm/mach-shmobile/Kconfig
++++ b/arch/arm/mach-shmobile/Kconfig
+@@ -139,7 +139,7 @@ config MACH_ARMADILLO800EVA
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
+ 	select SMSC_PHY if SH_ETH
+-	select SND_SOC_WM8978 if SND_SIMPLE_CARD
++	select SND_SOC_WM8978 if SND_SIMPLE_CARD && I2C
+ 	select USE_OF
+ 
+ config MACH_BOCKW
+@@ -148,7 +148,7 @@ config MACH_BOCKW
+ 	select ARCH_REQUIRE_GPIOLIB
+ 	select REGULATOR_FIXED_VOLTAGE if REGULATOR
+ 	select SND_SOC_AK4554 if SND_SIMPLE_CARD
+-	select SND_SOC_AK4642 if SND_SIMPLE_CARD
++	select SND_SOC_AK4642 if SND_SIMPLE_CARD && I2C
+ 	select USE_OF
+ 
+ config MACH_BOCKW_REFERENCE
+-- 
+2.6.2
+

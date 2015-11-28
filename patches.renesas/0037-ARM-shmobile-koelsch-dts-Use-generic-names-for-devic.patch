@@ -1,0 +1,32 @@
+From adebc612aa01d519f4d64124ba93ca66c2c062d8 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 28 Apr 2015 12:29:23 +0200
+Subject: [PATCH 037/129] ARM: shmobile: koelsch dts: Use generic names for
+ device nodes
+
+sound-codec -> codec
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 95cfb59a27360bbfd337d011676893f2726bfb42)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791-koelsch.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7791-koelsch.dts b/arch/arm/boot/dts/r8a7791-koelsch.dts
+index 6163487289b3..e9c24036f000 100644
+--- a/arch/arm/boot/dts/r8a7791-koelsch.dts
++++ b/arch/arm/boot/dts/r8a7791-koelsch.dts
+@@ -522,7 +522,7 @@
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+ 
+-	ak4643: sound-codec@12 {
++	ak4643: codec@12 {
+ 		compatible = "asahi-kasei,ak4643";
+ 		#sound-dai-cells = <0>;
+ 		reg = <0x12>;
+-- 
+2.6.2
+

@@ -1,0 +1,34 @@
+From 5f9f8af0316c67e30eee3c41536d7cf95690ccf2 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 20 May 2015 20:16:53 +0200
+Subject: [PATCH 046/129] ARM: shmobile: henninger dts: Replace "nor-jedec" by
+ "jedec,spi-nor"
+
+Cfr. commit 8947e396a8296c52 ('Documentation: dt: mtd: replace
+"nor-jedec" binding with "jedec, spi-nor"')
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit aad8afc7ac3d9af6f7c43961fc6f41d401207b00)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791-henninger.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7791-henninger.dts b/arch/arm/boot/dts/r8a7791-henninger.dts
+index bb80122b4113..655d1804e5e9 100644
+--- a/arch/arm/boot/dts/r8a7791-henninger.dts
++++ b/arch/arm/boot/dts/r8a7791-henninger.dts
+@@ -226,7 +226,7 @@
+ 	flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-		compatible = "spansion,s25fl512s", "nor-jedec";
++		compatible = "spansion,s25fl512s", "jedec,spi-nor";
+ 		reg = <0>;
+ 		spi-max-frequency = <30000000>;
+ 		spi-tx-bus-width = <4>;
+-- 
+2.6.2
+

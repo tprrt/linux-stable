@@ -1,0 +1,32 @@
+From cd9a77bfb064a47348c700c4bb030701ca52994e Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 28 Apr 2015 12:29:22 +0200
+Subject: [PATCH 036/129] ARM: shmobile: lager dts: Use generic names for
+ device nodes
+
+sound-codec -> codec
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit d22b16876b62b4ffe2b4e31fb7a6e1af1a45fa25)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7790-lager.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7790-lager.dts b/arch/arm/boot/dts/r8a7790-lager.dts
+index a6c793de8d80..b6cffcedd116 100644
+--- a/arch/arm/boot/dts/r8a7790-lager.dts
++++ b/arch/arm/boot/dts/r8a7790-lager.dts
+@@ -525,7 +525,7 @@
+ 
+ 	clock-frequency = <100000>;
+ 
+-	ak4643: sound-codec@12 {
++	ak4643: codec@12 {
+ 		compatible = "asahi-kasei,ak4643";
+ 		#sound-dai-cells = <0>;
+ 		reg = <0x12>;
+-- 
+2.6.2
+

@@ -1,0 +1,34 @@
+From 91446decf89f8432214fed23dcbe912e978b3cc5 Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Sat, 20 Jun 2015 21:03:21 +0200
+Subject: [PATCH 010/129] i2c: sh_mobile: use adapter default for timeout
+
+5 seconds is a very large timeout, and it is hardcoded. Use the default
+timeout from 'struct adapter' which is 1 second. It can also be modified
+from userspace for specific workloads via i2c-dev.
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+(cherry picked from commit 41bdbd2887591a3fa586e71cd2b462c3525845a3)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/i2c/busses/i2c-sh_mobile.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-sh_mobile.c b/drivers/i2c/busses/i2c-sh_mobile.c
+index 7193bcfdd940..5490bfb58f3e 100644
+--- a/drivers/i2c/busses/i2c-sh_mobile.c
++++ b/drivers/i2c/busses/i2c-sh_mobile.c
+@@ -751,7 +751,7 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
+ 		/* The interrupt handler takes care of the rest... */
+ 		k = wait_event_timeout(pd->wait,
+ 				       pd->sr & (ICSR_TACK | SW_DONE),
+-				       5 * HZ);
++				       adapter->timeout);
+ 		if (!k) {
+ 			dev_err(pd->dev, "Transfer request timed out\n");
+ 			if (pd->dma_direction != DMA_NONE)
+-- 
+2.6.2
+

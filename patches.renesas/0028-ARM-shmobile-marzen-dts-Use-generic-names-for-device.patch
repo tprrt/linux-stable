@@ -1,0 +1,45 @@
+From 5400a5cd96d0f7e15f3532ba61fd36c95cb6a925 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:55:34 +0200
+Subject: [PATCH 028/129] ARM: shmobile: marzen dts: Use generic names for
+ device nodes
+
+lan0 -> ethernet
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit f92d9dc7e6cd15dcd096dc5a4d3e1fe0a034f659)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7779-marzen.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/r8a7779-marzen.dts b/arch/arm/boot/dts/r8a7779-marzen.dts
+index 540756cdf391..20afea6f06ef 100644
+--- a/arch/arm/boot/dts/r8a7779-marzen.dts
++++ b/arch/arm/boot/dts/r8a7779-marzen.dts
+@@ -42,10 +42,10 @@
+ 		regulator-always-on;
+ 	};
+ 
+-	lan0@18000000 {
++	ethernet@18000000 {
+ 		compatible = "smsc,lan9220", "smsc,lan9115";
+ 		reg = <0x18000000 0x100>;
+-		pinctrl-0 = <&lan0_pins>;
++		pinctrl-0 = <&ethernet_pins>;
+ 		pinctrl-names = "default";
+ 
+ 		phy-mode = "mii";
+@@ -176,7 +176,7 @@
+ 		};
+ 	};
+ 
+-	lan0_pins: lan0 {
++	ethernet_pins: ethernet {
+ 		intc {
+ 			renesas,groups = "intc_irq1_b";
+ 			renesas,function = "intc";
+-- 
+2.6.2
+

@@ -1,0 +1,35 @@
+From ed17bedc06c92c4346cbd27d658c8da8ebdce8fc Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue, 28 Apr 2015 12:12:57 +0200
+Subject: [PATCH 031/129] ARM: shmobile: bockw-reference dts: Add "nor-jedec"
+ compatible value
+
+Spansion s25fl008k is compatible with "nor-jedec". Hence add the
+"nor-jedec" compatible value, so the driver can bind against the generic
+name, cfr. commit 8ff16cf77ce314c2 ("Documentation: devicetree: m25p80:
+add "nor-jedec" binding").
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 97c5afdffaca5d549e5680a2e1264d74821c287c)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7778-bockw-reference.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7778-bockw-reference.dts b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+index 04c0c37bb784..f9422d887b44 100644
+--- a/arch/arm/boot/dts/r8a7778-bockw-reference.dts
++++ b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+@@ -119,7 +119,7 @@
+ 	flash: flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-		compatible = "spansion,s25fl008k";
++		compatible = "spansion,s25fl008k", "nor-jedec";
+ 		reg = <0>;
+ 		spi-max-frequency = <104000000>;
+ 		m25p,fast-read;
+-- 
+2.6.2
+

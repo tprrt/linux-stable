@@ -1,0 +1,33 @@
+From f0a3d14646566fece58c9aa912b8f690303d84ff Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Wed, 17 Jun 2015 00:36:48 +0000
+Subject: [PATCH 129/129] ASoC: rsrc-card: remove unused ret
+
+'047000278da3a17f8("ASoC: rsrc-card: cleanup for DPCM")'
+cleanuped rsrc-card driver, but then, unused ret was left.
+Below warning happen without this patch
+
+${LINUX}/sound/soc/sh/rcar/rsrc-card.c: In function 'rsrc_card_startup':
+${LINUX}/sound/soc/sh/rcar/rsrc-card.c:78:6: warning: unused variable \
+	'ret' [-Wunused-variable]
+
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 329d0c0cf1be0ad711bc2f9853fdacc33c1f72b4)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/rsrc-card.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/sound/soc/sh/rcar/rsrc-card.c
++++ b/sound/soc/sh/rcar/rsrc-card.c
+@@ -75,8 +75,6 @@ static int rsrc_card_startup(struct snd_
+ 	struct rsrc_card_priv *priv =	snd_soc_card_get_drvdata(rtd->card);
+ 	struct rsrc_card_dai *dai_props =
+ 		rsrc_priv_to_props(priv, rtd - rtd->card->rtd);
+-	int ret;
+-
+ 
+ 	return clk_prepare_enable(dai_props->clk);
+ }

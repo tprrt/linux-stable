@@ -1,0 +1,61 @@
+From e4631c4d13aa7401241dade0f94fbc2ebb2eb8f8 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 18 Mar 2015 19:56:00 +0100
+Subject: [PATCH 003/129] ARM: shmobile: r8a7791: Add IRQC clock to device tree
+
+Link the external IRQ controller irqc0 to the IRQC module clock, so it
+can be power managed using that clock.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 62d386c04b1cb9df430c955b309406175d26b6b3)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791.dtsi            | 9 +++++++++
+ include/dt-bindings/clock/r8a7791-clock.h | 3 +++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
+index 4696062f6dde..20ab76680884 100644
+--- a/arch/arm/boot/dts/r8a7791.dtsi
++++ b/arch/arm/boot/dts/r8a7791.dtsi
+@@ -239,6 +239,7 @@
+ 			     <0 15 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <0 16 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <0 17 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&mstp4_clks R8A7791_CLK_IRQC>;
+ 	};
+ 
+ 	dmac0: dma-controller@e6700000 {
+@@ -1160,6 +1161,14 @@
+ 				"mmcif0", "i2c7", "pciec", "i2c8", "ssusb", "cmt1",
+ 				"usbdmac0", "usbdmac1";
+ 		};
++		mstp4_clks: mstp4_clks@e6150140 {
++			compatible = "renesas,r8a7791-mstp-clocks", "renesas,cpg-mstp-clocks";
++			reg = <0 0xe6150140 0 4>, <0 0xe615004c 0 4>;
++			clocks = <&cp_clk>;
++			#clock-cells = <1>;
++			clock-indices = <R8A7791_CLK_IRQC>;
++			clock-output-names = "irqc";
++		};
+ 		mstp5_clks: mstp5_clks@e6150144 {
+ 			compatible = "renesas,r8a7791-mstp-clocks", "renesas,cpg-mstp-clocks";
+ 			reg = <0 0xe6150144 0 4>, <0 0xe615003c 0 4>;
+diff --git a/include/dt-bindings/clock/r8a7791-clock.h b/include/dt-bindings/clock/r8a7791-clock.h
+index 8fc5dc8faeea..402268384b99 100644
+--- a/include/dt-bindings/clock/r8a7791-clock.h
++++ b/include/dt-bindings/clock/r8a7791-clock.h
+@@ -70,6 +70,9 @@
+ #define R8A7791_CLK_USBDMAC0		30
+ #define R8A7791_CLK_USBDMAC1		31
+ 
++/* MSTP4 */
++#define R8A7791_CLK_IRQC		7
++
+ /* MSTP5 */
+ #define R8A7791_CLK_AUDIO_DMAC1		1
+ #define R8A7791_CLK_AUDIO_DMAC0		2
+-- 
+2.6.2
+

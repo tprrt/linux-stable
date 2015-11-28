@@ -1,0 +1,33 @@
+From 0bc42645d914210c386a55724bc59d3be4453ad1 Mon Sep 17 00:00:00 2001
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Date: Sat, 20 Jun 2015 21:03:20 +0200
+Subject: [PATCH 092/129] i2c: rcar: use proper type for timeout
+
+wait_event_timeout returns long, not int.
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+(cherry picked from commit b6763d0da5c16ea8770252c36ba2afca76aaedbd)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/i2c/busses/i2c-rcar.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index e57e520b4756..d8361dada584 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -490,7 +490,8 @@ static int rcar_i2c_master_xfer(struct i2c_adapter *adap,
+ 	struct rcar_i2c_priv *priv = i2c_get_adapdata(adap);
+ 	struct device *dev = rcar_i2c_priv_to_dev(priv);
+ 	unsigned long flags;
+-	int i, ret, timeout;
++	int i, ret;
++	long timeout;
+ 
+ 	pm_runtime_get_sync(dev);
+ 
+-- 
+2.6.2
+

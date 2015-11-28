@@ -1,0 +1,36 @@
+From 2704f56af18f223f8314c7d08758f78baf18732e Mon Sep 17 00:00:00 2001
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Fri, 22 May 2015 15:25:50 +0900
+Subject: [PATCH 065/129] pinctrl: use "const struct ..." rather than "struct
+ ... const"
+
+Only this member, pins, is defined as "struct ... const *", but the
+others in this struct, pinlops, pmxops, confops, etc. are defined as
+"const struct ... *".
+
+Swap the "struct pinctrl_pin_desc" and "const" for consistency.
+
+Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit b3da97ee581387cd42dafd76eb2ac23f2335cd92)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ include/linux/pinctrl/pinctrl.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/pinctrl/pinctrl.h b/include/linux/pinctrl/pinctrl.h
+index 66e4697516de..9ba59fcba549 100644
+--- a/include/linux/pinctrl/pinctrl.h
++++ b/include/linux/pinctrl/pinctrl.h
+@@ -127,7 +127,7 @@ struct pinctrl_ops {
+  */
+ struct pinctrl_desc {
+ 	const char *name;
+-	struct pinctrl_pin_desc const *pins;
++	const struct pinctrl_pin_desc *pins;
+ 	unsigned int npins;
+ 	const struct pinctrl_ops *pctlops;
+ 	const struct pinmux_ops *pmxops;
+-- 
+2.6.2
+

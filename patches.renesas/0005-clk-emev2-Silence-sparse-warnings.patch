@@ -1,0 +1,33 @@
+From 99622ef7ea52673b884fad6223471817d0037483 Mon Sep 17 00:00:00 2001
+From: Stephen Boyd <sboyd@codeaurora.org>
+Date: Fri, 1 May 2015 12:33:49 -0700
+Subject: [PATCH 005/129] clk: emev2: Silence sparse warnings
+
+drivers/clk/shmobile/clk-emev2.c:37:14: warning: symbol 'smu_base' was not declared. Should it be static?
+
+Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+Cc: Magnus Damm <damm@opensource.se>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+(cherry picked from commit 43f535702bb2c7b96091c0267fc105d44c18348c)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/clk/shmobile/clk-emev2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/shmobile/clk-emev2.c b/drivers/clk/shmobile/clk-emev2.c
+index 6c7c929c7765..5b60beb7d0eb 100644
+--- a/drivers/clk/shmobile/clk-emev2.c
++++ b/drivers/clk/shmobile/clk-emev2.c
+@@ -34,7 +34,7 @@
+ static DEFINE_SPINLOCK(lock);
+ 
+ /* not pretty, but hey */
+-void __iomem *smu_base;
++static void __iomem *smu_base;
+ 
+ static void __init emev2_smu_write(unsigned long value, int offs)
+ {
+-- 
+2.6.2
+

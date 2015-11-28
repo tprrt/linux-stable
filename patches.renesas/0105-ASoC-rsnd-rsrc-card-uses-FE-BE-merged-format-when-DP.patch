@@ -1,0 +1,30 @@
+From 242092d5a8355e446ec47e0bc80586d666e3d676 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Tue, 12 May 2015 02:03:51 +0000
+Subject: [PATCH 105/129] ASoC: rsnd: rsrc-card uses FE/BE merged format when
+ DPCM
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Keita Kobayashi <keita.kobayashi.ym@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit b723550d7e84b6b59d427d560be49d8ab177ea89)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/rsrc-card.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/soc/sh/rcar/rsrc-card.c b/sound/soc/sh/rcar/rsrc-card.c
+index a68517afe615..050b0dbcee65 100644
+--- a/sound/soc/sh/rcar/rsrc-card.c
++++ b/sound/soc/sh/rcar/rsrc-card.c
+@@ -232,6 +232,7 @@ rsrc_card_sub_parse_of(struct rsrc_card_priv *priv,
+ 	if (args_count) {
+ 		*args_count = args.args_count;
+ 		dai_link->dynamic = 1;
++		dai_link->dpcm_merged_format = 1;
+ 	} else {
+ 		dai_link->no_pcm = 1;
+ 		priv->codec_conf.of_node = (*p_node);
+-- 
+2.6.2
+

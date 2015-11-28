@@ -1,0 +1,42 @@
+From 28f203d7b86bf690814fa93fff09cb426fd37e27 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:55:33 +0200
+Subject: [PATCH 027/129] ARM: shmobile: kzm9d dts: Use generic names for
+ device nodes
+
+lan9220 -> ethernet
+uart -> serial
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit 69478b2093796860e3991db102ede97131b8d67a)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/emev2-kzm9d.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/emev2-kzm9d.dts b/arch/arm/boot/dts/emev2-kzm9d.dts
+index 19446273e4a7..1dee0aa4f40c 100644
+--- a/arch/arm/boot/dts/emev2-kzm9d.dts
++++ b/arch/arm/boot/dts/emev2-kzm9d.dts
+@@ -81,7 +81,7 @@
+ 		regulator-boot-on;
+ 	};
+ 
+-	lan9220@20000000 {
++	ethernet@20000000 {
+ 		compatible = "smsc,lan9220", "smsc,lan9115";
+ 		reg = <0x20000000 0x10000>;
+ 		phy-mode = "mii";
+@@ -96,7 +96,7 @@
+ };
+ 
+ &pfc {
+-	uart1_pins: uart@e1030000 {
++	uart1_pins: serial@e1030000 {
+ 		renesas,groups = "uart1_ctrl", "uart1_data";
+ 		renesas,function = "uart1";
+ 	};
+-- 
+2.6.2
+

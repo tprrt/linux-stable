@@ -1,0 +1,29 @@
+From 84acb093618d83bf76268221e3b1ac5d5cfefc74 Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Mon, 15 Jun 2015 06:22:47 +0000
+Subject: [PATCH 113/129] ASoC: rsrc-card: remove unused name
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Tested-by: Keita Kobayashi <keita.kobayashi.ym@renesas.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 1683e1a4135862c9837b768b1e2ab27623f2161a)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ sound/soc/sh/rcar/rsrc-card.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/sound/soc/sh/rcar/rsrc-card.c b/sound/soc/sh/rcar/rsrc-card.c
+index ae99b3612039..8c74b089eb3c 100644
+--- a/sound/soc/sh/rcar/rsrc-card.c
++++ b/sound/soc/sh/rcar/rsrc-card.c
+@@ -46,7 +46,6 @@ static const struct of_device_id rsrc_card_of_match[] = {
+ MODULE_DEVICE_TABLE(of, rsrc_card_of_match);
+ 
+ struct rsrc_card_dai {
+-	const char *name;
+ 	unsigned int fmt;
+ 	unsigned int sysclk;
+ 	struct clk *clk;
+-- 
+2.6.2
+

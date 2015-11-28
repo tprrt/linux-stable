@@ -1,0 +1,32 @@
+From 9681e7afe7774e4d64fc7712d212bedc96bd0a0f Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:49:09 +0200
+Subject: [PATCH 101/129] ASoC: rsnd: Use generic names for device nodes
+
+rcar_sound -> sound
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+(cherry picked from commit 596f74ec275b0ec608e9450c937c6a29ba91b352)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ Documentation/devicetree/bindings/sound/renesas,rsnd.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/sound/renesas,rsnd.txt b/Documentation/devicetree/bindings/sound/renesas,rsnd.txt
+index f316ce1f214a..62ece4c59da7 100644
+--- a/Documentation/devicetree/bindings/sound/renesas,rsnd.txt
++++ b/Documentation/devicetree/bindings/sound/renesas,rsnd.txt
+@@ -47,7 +47,7 @@ DAI subnode properties:
+ 
+ Example:
+ 
+-rcar_sound: rcar_sound@ec500000 {
++rcar_sound: sound@ec500000 {
+ 	#sound-dai-cells = <1>;
+ 	compatible = "renesas,rcar_sound-r8a7791", "renesas,rcar_sound-gen2";
+ 	reg =	<0 0xec500000 0 0x1000>, /* SCU */
+-- 
+2.6.2
+

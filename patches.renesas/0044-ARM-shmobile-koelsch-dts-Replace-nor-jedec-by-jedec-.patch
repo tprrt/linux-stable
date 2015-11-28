@@ -1,0 +1,34 @@
+From ebe0743a9b2be4f643c76852158c6fbb81022882 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 20 May 2015 20:16:54 +0200
+Subject: [PATCH 044/129] ARM: shmobile: koelsch dts: Replace "nor-jedec" by
+ "jedec,spi-nor"
+
+Cfr. commit 8947e396a8296c52 ('Documentation: dt: mtd: replace
+"nor-jedec" binding with "jedec, spi-nor"')
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Brian Norris <computersforpeace@gmail.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit cc3db02c9c7cb0c322263b3a6983023b04e3944f)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791-koelsch.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7791-koelsch.dts b/arch/arm/boot/dts/r8a7791-koelsch.dts
+index e9c24036f000..cffe33ff4d16 100644
+--- a/arch/arm/boot/dts/r8a7791-koelsch.dts
++++ b/arch/arm/boot/dts/r8a7791-koelsch.dts
+@@ -474,7 +474,7 @@
+ 	flash: flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+-		compatible = "spansion,s25fl512s", "nor-jedec";
++		compatible = "spansion,s25fl512s", "jedec,spi-nor";
+ 		reg = <0>;
+ 		spi-max-frequency = <30000000>;
+ 		spi-tx-bus-width = <4>;
+-- 
+2.6.2
+

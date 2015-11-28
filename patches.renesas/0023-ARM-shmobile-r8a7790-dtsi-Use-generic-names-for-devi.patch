@@ -1,0 +1,32 @@
+From 706ff2b4e5f302387f26f828b2f8e476263f67a6 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 27 Apr 2015 14:55:28 +0200
+Subject: [PATCH 023/129] ARM: shmobile: r8a7790 dtsi: Use generic names for
+ device nodes
+
+rcar_sound -> sound
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit b694e3807b5b12273ba057e8cfcf82c2331606e0)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7790.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index 22e73906ec88..c9055e39b8bb 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -1451,7 +1451,7 @@
+ 		status = "disabled";
+ 	};
+ 
+-	rcar_sound: rcar_sound@ec500000 {
++	rcar_sound: sound@ec500000 {
+ 		/*
+ 		 * #sound-dai-cells is required
+ 		 *
+-- 
+2.6.2
+

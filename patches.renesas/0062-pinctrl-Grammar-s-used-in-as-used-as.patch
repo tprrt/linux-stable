@@ -1,0 +1,29 @@
+From ea6f7a13fb03cca4b5168e8ad5fbb5358f8fb1ce Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Mon, 4 May 2015 19:46:57 +0200
+Subject: [PATCH 062/129] pinctrl: Grammar s/used in as/used as/
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+(cherry picked from commit b217e4385d7ae59d1628b0ecb4cffa10f16d5864)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/pinctrl/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 18ee2089df4a..5b4e6897af22 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -558,7 +558,7 @@ int pinctrl_get_group_selector(struct pinctrl_dev *pctldev,
+ }
+ 
+ /**
+- * pinctrl_request_gpio() - request a single pin to be used in as GPIO
++ * pinctrl_request_gpio() - request a single pin to be used as GPIO
+  * @gpio: the GPIO pin number from the GPIO subsystem number space
+  *
+  * This function should *ONLY* be used from gpiolib-based GPIO drivers,
+-- 
+2.6.2
+

@@ -1,0 +1,28 @@
+From 497508657af7ae9b4d8246307e5fb2b25c7b300b Mon Sep 17 00:00:00 2001
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Date: Thu, 14 May 2015 07:23:20 +0000
+Subject: [PATCH 049/129] ARM: shmobile: r8a7791: add MMCIF max-frequency
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+(cherry picked from commit d957ab8dbd79ccd32f6f7c42651b956bb892858d)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ arch/arm/boot/dts/r8a7791.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
+index 7613abea13d7..bbef666596e5 100644
+--- a/arch/arm/boot/dts/r8a7791.dtsi
++++ b/arch/arm/boot/dts/r8a7791.dtsi
+@@ -494,6 +494,7 @@
+ 		dma-names = "tx", "rx";
+ 		reg-io-width = <4>;
+ 		status = "disabled";
++		max-frequency = <97500000>;
+ 	};
+ 
+ 	sdhi0: sd@ee100000 {
+-- 
+2.6.2
+
