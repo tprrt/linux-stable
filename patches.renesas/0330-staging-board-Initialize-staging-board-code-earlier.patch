@@ -1,0 +1,36 @@
+From ab6532189bffe6d6f4d419bc061f88dd3c4fd588 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 17 Jun 2015 10:38:51 +0200
+Subject: [PATCH 330/337] staging: board: Initialize staging board code earlier
+
+Currently the staging board code is initialized from a late_initcall().
+However, unused PM domains are also disabled from a late_initcall(),
+which happens before due to link order.
+
+Change the initialization of staging board code from using
+late_initcall() to device_initcall() to fix this.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit b0c750f74e10fd30a363bfa3467639f12954effa)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/staging/board/board.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/board/board.h b/drivers/staging/board/board.h
+index 2390ed6c31a4..e9c914985d4a 100644
+--- a/drivers/staging/board/board.h
++++ b/drivers/staging/board/board.h
+@@ -15,6 +15,6 @@ static int __init runtime_board_check(void)	\
+ 	return 0;				\
+ }						\
+ 						\
+-late_initcall(runtime_board_check)
++device_initcall(runtime_board_check)
+ 
+ #endif /* __BOARD_H__ */
+-- 
+2.6.2
+

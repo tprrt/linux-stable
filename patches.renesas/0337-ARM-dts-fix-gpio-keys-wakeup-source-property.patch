@@ -1,0 +1,115 @@
+From 8155a2adb0f00e3cead8fbb2ca00f91e7bbdc63d Mon Sep 17 00:00:00 2001
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Fri, 16 Oct 2015 17:01:36 +0100
+Subject: [PATCH 337/337] ARM: dts: fix gpio-keys wakeup-source property
+
+The keyboard driver for GPIO buttons(gpio-keys) checks for one of the
+two boolean properties to enable gpio buttons as wakeup source:
+1. "wakeup-source" or
+2. the legacy "gpio-key,wakeup"
+
+However juno, ste-snowball and emev2-kzm9d dts file have a undetected
+"wakeup" property to indictate the wakeup source.
+
+This patch fixes it by making use of "wakeup-source" property.
+
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Acked-by: Simon Horman <horms@verge.net.au>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Olof Johansson <olof@lixom.net>
+(cherry picked from commit 4db7062c9a8bff92137bb2f381d81dd1bb5b7872)
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+
+Conflicts:
+	arch/arm64/boot/dts/arm/juno-motherboard.dtsi
+---
+ arch/arm/boot/dts/emev2-kzm9d.dts  |  8 ++++----
+ arch/arm/boot/dts/ste-snowball.dts | 10 +++++-----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/boot/dts/emev2-kzm9d.dts b/arch/arm/boot/dts/emev2-kzm9d.dts
+index 955c24ee4a8c..8c24975e8f9d 100644
+--- a/arch/arm/boot/dts/emev2-kzm9d.dts
++++ b/arch/arm/boot/dts/emev2-kzm9d.dts
+@@ -35,28 +35,28 @@
+ 
+ 		button@1 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			label = "DSW2-1";
+ 			linux,code = <KEY_1>;
+ 			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
+ 		};
+ 		button@2 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			label = "DSW2-2";
+ 			linux,code = <KEY_2>;
+ 			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+ 		};
+ 		button@3 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			label = "DSW2-3";
+ 			linux,code = <KEY_3>;
+ 			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
+ 		};
+ 		button@4 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			label = "DSW2-4";
+ 			linux,code = <KEY_4>;
+ 			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+diff --git a/arch/arm/boot/dts/ste-snowball.dts b/arch/arm/boot/dts/ste-snowball.dts
+index 1bc84ebdccaa..66ec8bc48891 100644
+--- a/arch/arm/boot/dts/ste-snowball.dts
++++ b/arch/arm/boot/dts/ste-snowball.dts
+@@ -40,35 +40,35 @@
+ 
+ 		button@1 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			linux,code = <2>;
+ 			label = "userpb";
+ 			gpios = <&gpio1 0 0x4>;
+ 		};
+ 		button@2 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			linux,code = <3>;
+ 			label = "extkb1";
+ 			gpios = <&gpio4 23 0x4>;
+ 		};
+ 		button@3 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			linux,code = <4>;
+ 			label = "extkb2";
+ 			gpios = <&gpio4 24 0x4>;
+ 		};
+ 		button@4 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			linux,code = <5>;
+ 			label = "extkb3";
+ 			gpios = <&gpio5 1 0x4>;
+ 		};
+ 		button@5 {
+ 			debounce_interval = <50>;
+-			wakeup = <1>;
++			wakeup-source;
+ 			linux,code = <6>;
+ 			label = "extkb4";
+ 			gpios = <&gpio5 2 0x4>;
+-- 
+2.6.2
+
