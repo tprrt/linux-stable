@@ -1,0 +1,29 @@
+From 503c5aa3817e2c566ecc6fd6dae4e20d7d4da259 Mon Sep 17 00:00:00 2001
+From: Bernd Weiberg <bernd.weiberg@siemens.com>
+Date: Fri, 4 Sep 2015 17:03:03 +0800
+Subject: [PATCH 4/9] nios2: fixed variable imm16 to s16
+
+Fxid variable imm16 to s16 instead of u16, offset might be negative.
+
+Signed-off-by: Bernd Weiberg <bernd.weiberg@siemens.com>
+Signed-off-by: Ley Foon Tan <lftan@altera.com>
+---
+ arch/nios2/kernel/misaligned.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/nios2/kernel/misaligned.c b/arch/nios2/kernel/misaligned.c
+index 4e5907a0cabe..89fe0b6ee339 100644
+--- a/arch/nios2/kernel/misaligned.c
++++ b/arch/nios2/kernel/misaligned.c
+@@ -71,7 +71,7 @@ asmlinkage void handle_unaligned_c(struct pt_regs *fp, int cause)
+ 	u32 isn, addr, val;
+ 	int in_kernel;
+ 	u8 a, b, d0, d1, d2, d3;
+-	u16 imm16;
++	s16 imm16;
+ 	unsigned int fault;
+ 
+ 	/* back up one instruction */
+-- 
+2.6.2
+

@@ -18,15 +18,6 @@ patches.ltsi/ltsi-makefile-addition.patch
 
 
 #############################################################################
-# ktap
-#
-# 0.4 version of ktap, taken from the upstream:
-#       https://github.com/ktap/ktap.git    
-# repo.
-#
-#patches.ktap/ktap-0.4.patch
-
-#############################################################################
 # Renesas patches
 #
 patches.renesas/0001-ARM-shmobile-r8a73a4-Add-IRQC-clock-to-device-tree.patch
@@ -413,13 +404,22 @@ patches.altera/0004-fpga-manager-add-driver-for-socfpga-fpga-manager.patch
 patches.altera/0005-MAINTAINERS-add-fpga-manager-framework.patch
 patches.altera/0006-ARM-socfpga_defconfig-enable-fpga-manager.patch
 patches.altera/0007-ARM-socfpga-dts-add-fpga-manager.patch
-
+patches.altera/0001-nios2-Export-get_cycles.patch
+patches.altera/0002-nios2-check-number-of-timer-instances.patch
+patches.altera/0003-nios2-time-Migrate-to-new-set-state-interface.patch
+patches.altera/0004-nios2-fixed-variable-imm16-to-s16.patch
+patches.altera/0005-nios2-remove-unused-statistic-counters.patch
+patches.altera/0006-nios2-Add-Max10-device-tree.patch
+patches.altera/0007-nios2-add-Max10-defconfig.patch
+patches.altera/0008-nios2-Fix-unused-variable-warning.patch
+patches.altera/0009-nios2-Switch-to-generic-__xchg.patch
 
 #############################################################################
+# Misc patches
+patches.misc/input-add-support-for-rohm-bu21023-24-touchscreen.patch
+
+
+##############################################################################
 # fixes that go after all of the above
 #
-
-
-
-
 

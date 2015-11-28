@@ -1,0 +1,38 @@
+From b0d9b942747467745e6035caa5272a6c919141c2 Mon Sep 17 00:00:00 2001
+From: Herbert Xu <herbert@gondor.apana.org.au>
+Date: Tue, 9 Jun 2015 12:46:46 +0800
+Subject: [PATCH 1/9] nios2: Export get_cycles
+
+nios2 is the only architecture that does not inline get_cycles
+and does not export it.  This breaks crypto as it uses get_cycles
+in a number of modules.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---
+ arch/nios2/kernel/time.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/nios2/kernel/time.c b/arch/nios2/kernel/time.c
+index 7f4547418ee1..be186a75f622 100644
+--- a/arch/nios2/kernel/time.c
++++ b/arch/nios2/kernel/time.c
+@@ -8,6 +8,7 @@
+  * for more details.
+  */
+ 
++#include <linux/export.h>
+ #include <linux/interrupt.h>
+ #include <linux/clockchips.h>
+ #include <linux/clocksource.h>
+@@ -106,6 +107,7 @@ cycles_t get_cycles(void)
+ {
+ 	return nios2_timer_read(&nios2_cs.cs);
+ }
++EXPORT_SYMBOL(get_cycles);
+ 
+ static void nios2_timer_start(struct nios2_timer *timer)
+ {
+-- 
+2.6.2
+
