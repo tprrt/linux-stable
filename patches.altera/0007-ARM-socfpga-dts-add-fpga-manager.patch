@@ -1,0 +1,32 @@
+From 12269e99151ad7a9157ac8defd76444b01e7d634 Mon Sep 17 00:00:00 2001
+From: Alan Tull <atull@opensource.altera.com>
+Date: Tue, 13 Oct 2015 19:38:59 +0000
+Subject: [PATCH 7/7] ARM: socfpga: dts: add fpga manager
+
+Add FPGA manager to device tree for SoCFPGA.
+
+Signed-off-by: Alan Tull <atull@opensource.altera.com>
+Reviewed-by: Moritz Fischer <moritz.fischer@ettus.com>
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit ebb251030bf25b27b05f0e4204e27b85c5664364)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -484,6 +484,13 @@
+ 				};
+ 			};
+ 
++		fpgamgr0: fpgamgr@ff706000 {
++			compatible = "altr,socfpga-fpga-mgr";
++			reg = <0xff706000 0x1000
++			       0xffb90000 0x1000>;
++			interrupts = <0 175 4>;
++		};
++
+ 		gmac0: ethernet@ff700000 {
+ 			compatible = "altr,socfpga-stmmac", "snps,dwmac-3.70a", "snps,dwmac";
+ 			altr,sysmgr-syscon = <&sysmgr 0x60 0>;

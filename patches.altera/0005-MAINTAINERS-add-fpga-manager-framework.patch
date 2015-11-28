@@ -1,0 +1,32 @@
+From da7344379a9be3e4bd910bc210f5e93051206a0a Mon Sep 17 00:00:00 2001
+From: Alan Tull <atull@opensource.altera.com>
+Date: Wed, 7 Oct 2015 20:49:23 +0100
+Subject: [PATCH 5/7] MAINTAINERS: add fpga manager framework
+
+Add fpga manager framework to MAINTAINERS and add myself as
+maintainer.
+
+Signed-off-by: Alan Tull <atull@opensource.altera.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 3c0ed7d56d77b61f2177e8b72855ea32073c2091)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ MAINTAINERS |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4089,6 +4089,13 @@ F:	include/linux/fmc*.h
+ F:	include/linux/ipmi-fru.h
+ K:	fmc_d.*register
+ 
++FPGA MANAGER FRAMEWORK
++M:	Alan Tull <atull@opensource.altera.com>
++S:	Maintained
++F:	drivers/fpga/
++F:	include/linux/fpga/fpga-mgr.h
++W:	http://www.rocketboards.org
++
+ FPU EMULATOR
+ M:	Bill Metzenthen <billm@melbpc.org.au>
+ W:	http://floatingpoint.sourceforge.net/emulator/index.html

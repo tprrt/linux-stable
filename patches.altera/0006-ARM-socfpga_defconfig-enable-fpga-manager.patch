@@ -1,0 +1,33 @@
+From d221d48b7a18798ea489ece65eb1cbad2980e6c7 Mon Sep 17 00:00:00 2001
+From: Alan Tull <atull@opensource.altera.com>
+Date: Tue, 13 Oct 2015 18:30:02 +0000
+Subject: [PATCH 6/7] ARM: socfpga_defconfig: enable fpga manager
+
+Enable fpga manager framework and low level driver for
+socfpga in socfpga_defconfig
+
+Signed-off-by: Alan Tull <atull@opensource.altera.com>
+Reviewed-by: Moritz Fischer <moritz.fischer@ettus.com>
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit b97cecc7a61df121f2c1e350e09fc784a1706ef0)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/configs/socfpga_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index a2956c3112f1..8128b93ed72c 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -86,6 +86,8 @@ CONFIG_USB_DWC2=y
+ CONFIG_USB_DWC2_HOST=y
+ CONFIG_MMC=y
+ CONFIG_MMC_DW=y
++CONFIG_FPGA=y
++CONFIG_FPGA_MGR_SOCFPGA=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT2_FS_XATTR=y
+ CONFIG_EXT2_FS_POSIX_ACL=y
+-- 
+2.6.2
+

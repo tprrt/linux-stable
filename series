@@ -406,10 +406,19 @@ patches.altera/0036-EDAC-altera-Add-Arria10-EDAC-support.patch
 patches.altera/0037-arm-socfpga-dts-Add-Arria10-SDRAM-EDAC-DTS-support.patch
 patches.altera/0038-EDAC-altera-Do-not-allow-suspend-when-EDAC-is-enable.patch
 patches.altera/0039-ARM-dts-socfpga-Add-support-of-Terasic-DE0-Atlas-boa.patch
+patches.altera/0001-usage-documentation-for-FPGA-manager-core.patch
+patches.altera/0002-fpga-manager-add-sysfs-interface-document.patch
+patches.altera/0003-add-FPGA-manager-core.patch
+patches.altera/0004-fpga-manager-add-driver-for-socfpga-fpga-manager.patch
+patches.altera/0005-MAINTAINERS-add-fpga-manager-framework.patch
+patches.altera/0006-ARM-socfpga_defconfig-enable-fpga-manager.patch
+patches.altera/0007-ARM-socfpga-dts-add-fpga-manager.patch
+
 
 #############################################################################
 # fixes that go after all of the above
 #
+
 
 
 
