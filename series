@@ -417,7 +417,7 @@ patches.altera/0009-nios2-Switch-to-generic-__xchg.patch
 #############################################################################
 # Misc patches
 patches.misc/input-add-support-for-rohm-bu21023-24-touchscreen.patch
-
+patches.misc/mtd-nand-support-for-toshiba-benand-built-in-ecc-nand.patch
 
 ##############################################################################
 # fixes that go after all of the above
