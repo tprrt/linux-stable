@@ -1,0 +1,45 @@
+From a121e113b664c4eb6e11dd0fc5d562b5e892930f Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Mon, 9 Mar 2015 22:10:02 -0500
+Subject: [PATCH 10/39] ARM: socfpga: remove the need to map uart_io_desc
+
+All the necessary debug uart mapping is already being done in
+debug_ll_io_init, there's no need for it here.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 65ce7a37ec23c9e7878bd77e2f75b1eb9d8926e3)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/mach-socfpga/socfpga.c | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/arch/arm/mach-socfpga/socfpga.c b/arch/arm/mach-socfpga/socfpga.c
+index f5e597c207b9..358f2c712979 100644
+--- a/arch/arm/mach-socfpga/socfpga.c
++++ b/arch/arm/mach-socfpga/socfpga.c
+@@ -39,13 +39,6 @@ static struct map_desc scu_io_desc __initdata = {
+ 	.type		= MT_DEVICE,
+ };
+ 
+-static struct map_desc uart_io_desc __initdata = {
+-	.virtual	= 0xfec02000,
+-	.pfn		= __phys_to_pfn(0xffc02000),
+-	.length		= SZ_8K,
+-	.type		= MT_DEVICE,
+-};
+-
+ static void __init socfpga_scu_map_io(void)
+ {
+ 	unsigned long base;
+@@ -60,8 +53,6 @@ static void __init socfpga_scu_map_io(void)
+ static void __init socfpga_map_io(void)
+ {
+ 	socfpga_scu_map_io();
+-	iotable_init(&uart_io_desc, 1);
+-	early_printk("Early printk initialized\n");
+ }
+ 
+ void __init socfpga_sysmgr_init(void)
+-- 
+2.6.2
+

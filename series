@@ -365,8 +365,52 @@ patches.renesas/0336-staging-board-Migrate-away-from-__pm_genpd_name_add_.patch
 patches.renesas/0337-ARM-dts-fix-gpio-keys-wakeup-source-property.patch
 
 #############################################################################
+# Altera patches
+#
+patches.altera/0001-ARM-socfpga-dts-add-cpu1-start-addr-for-Arria-10.patch
+patches.altera/0002-ARM-socfpga-dts-disable-the-sdmmc-and-uart-nodes-in-.patch
+patches.altera/0003-ARM-socfpga-dts-enable-UART1-for-the-debug-uart.patch
+patches.altera/0004-ARM-socfpga-dts-rename-socdk-board-file-to-socdk_sdm.patch
+patches.altera/0005-ARM-socfpga-dts-Add-a-clock-node-for-sdmmc-CIU.patch
+patches.altera/0006-ARM-socfpga-dts-Add-multicast-bins-and-unicast-filte.patch
+patches.altera/0007-ARM-socfpga-dts-Add-tx-fifo-depth-and-rx-fifo-depth-.patch
+patches.altera/0008-ARM-socfpga-dts-add-clocks-to-the-Arria10-platform.patch
+patches.altera/0009-ARM-socfpga-Add-support-for-UART1-debug-uart-for-ear.patch
+patches.altera/0010-ARM-socfpga-remove-the-need-to-map-uart_io_desc.patch
+patches.altera/0011-ARM-socfpga-dts-add-the-a9-scu-node.patch
+patches.altera/0012-ARM-socfpga-use-of_iomap-to-map-the-SCU.patch
+patches.altera/0013-clk-socfpga-update-clk.h-so-for-Arria10-platform-to-.patch
+patches.altera/0014-clk-socfpga-add-a-clock-driver-for-the-Arria-10-plat.patch
+patches.altera/0015-ARM-socfpga-dts-add-the-a9-scu-node-for-arria10.patch
+patches.altera/0016-ARM-socfpga-dts-add-enable-method-property-for-cpu-n.patch
+patches.altera/0017-clk-of-helper-for-filling-parent-clock-array-and-ret.patch
+patches.altera/0018-clk-socfpga-make-use-of-of_clk_parent_fill-helper-fu.patch
+patches.altera/0019-ARM-socfpga-use-CPU_METHOD_OF_DECLARE-for-socfpga_cy.patch
+patches.altera/0020-ARM-socfpga-add-CPU_METHOD_OF_DECLARE-for-Arria-10.patch
+patches.altera/0021-ARM-socfpga-dts-enable-ethernet-for-Arria10-devkit.patch
+patches.altera/0022-ARM-socfpga-support-suspend-to-ram.patch
+patches.altera/0023-ARM-dts-socfpga-enable-the-data-and-instruction-pref.patch
+patches.altera/0024-ARM-dts-socfpga-use-stdout-path-for-chosen-node.patch
+patches.altera/0025-ARM-socfpga-add-reset-for-the-Arria-10-platform.patch
+patches.altera/0026-ARM-socfpga-dts-Correct-the-parent-clock-for-l3_sp_c.patch
+patches.altera/0027-ARM-socfpga-dts-Fix-gpio-dts-entry-for-the-correct-c.patch
+patches.altera/0028-ARM-socfpga-dts-add-osc1-as-a-possible-parent-for-db.patch
+patches.altera/0029-reset-socfpga-Update-reset-socfpga-to-read-the-altr-.patch
+patches.altera/0030-dt-bindings-Add-reset-manager-offsets-for-Arria10.patch
+patches.altera/0031-ARM-socfpga-dts-add-altr-modrst-offset-property.patch
+patches.altera/0032-ARM-socfpga-dts-Add-resets-for-EMACs-on-Arria10.patch
+patches.altera/0033-clk-socfpga-Add-a-second-parent-option-for-the-dbg_b.patch
+patches.altera/0034-EDAC-altera-Generalize-driver-to-use-DT-Memory-size.patch
+patches.altera/0035-EDAC-altera-Refactor-for-Altera-CycloneV-SoC.patch
+patches.altera/0036-EDAC-altera-Add-Arria10-EDAC-support.patch
+patches.altera/0037-arm-socfpga-dts-Add-Arria10-SDRAM-EDAC-DTS-support.patch
+patches.altera/0038-EDAC-altera-Do-not-allow-suspend-when-EDAC-is-enable.patch
+patches.altera/0039-ARM-dts-socfpga-Add-support-of-Terasic-DE0-Atlas-boa.patch
+
+#############################################################################
 # fixes that go after all of the above
 #
+
 
 
 

@@ -1,0 +1,32 @@
+From b1f0088dc002a07672fb6c862cc7c81a179abb1b Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Thu, 16 Jul 2015 15:48:50 -0500
+Subject: [PATCH 23/39] ARM: dts: socfpga: enable the data and instruction
+ prefetch for the l2 cache
+
+Just in case the firmware did not enable data and instruction prefetch in
+the L2 cache controller, we enable it in the kernel.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 2211a658620a35f3b3eabdfa2587f46b7abf3ee7)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 80f924deed37..1e3c833dfbd2 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -639,6 +639,8 @@
+ 			cache-level = <2>;
+ 			arm,tag-latency = <1 1 1>;
+ 			arm,data-latency = <2 1 1>;
++			prefetch-data = <1>;
++			prefetch-instr = <1>;
+ 		};
+ 
+ 		mmc: dwmmc0@ff704000 {
+-- 
+2.6.2
+

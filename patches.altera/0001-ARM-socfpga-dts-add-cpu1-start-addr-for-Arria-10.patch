@@ -1,0 +1,27 @@
+From f456a6f437ae935f3849ee21f4c522745cfb53f2 Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Mon, 9 Mar 2015 22:41:17 -0500
+Subject: [PATCH 01/39] ARM: socfpga: dts: add cpu1-start-addr for Arria 10
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 6770a255b7650d574c5050c11f08cfeab5dfc498)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index 8a05c47fd57f..69d616a05b14 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -284,6 +284,7 @@
+ 		sysmgr: sysmgr@ffd06000 {
+ 			compatible = "altr,sys-mgr", "syscon";
+ 			reg = <0xffd06000 0x300>;
++			cpu1-start-addr = <0xffd06230>;
+ 		};
+ 
+ 		/* Local timer */
+-- 
+2.6.2
+

@@ -1,0 +1,31 @@
+From 4de95d60860e167d40be1a68245075cc16a62ef7 Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Fri, 24 Jul 2015 22:10:59 -0500
+Subject: [PATCH 28/39] ARM: socfpga: dts: add osc1 as a possible parent for
+ dbg_base_clk
+
+The dbg_base_clk can also have osc1 has a parent.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 2e4c7588f6c1d24ae991a85140e05139e953c9b5)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index b0acaec3b81a..9bb3b8ac0cb2 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -164,7 +164,7 @@
+ 						dbg_base_clk: dbg_base_clk {
+ 							#clock-cells = <0>;
+ 							compatible = "altr,socfpga-perip-clk";
+-							clocks = <&main_pll>;
++							clocks = <&main_pll>, <&osc1>;
+ 							div-reg = <0xe8 0 9>;
+ 							reg = <0x50>;
+ 						};
+-- 
+2.6.2
+

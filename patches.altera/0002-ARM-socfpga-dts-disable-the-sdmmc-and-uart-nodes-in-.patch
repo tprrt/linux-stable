@@ -1,0 +1,47 @@
+From 3f654bb5a6966029388184f489f5c531c5949971 Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Mon, 9 Mar 2015 23:05:21 -0500
+Subject: [PATCH 02/39] ARM: socfpga: dts: disable the sdmmc, and uart nodes in
+ the base arria10
+
+Add status = "disabled" in the base DTSI for Arria10.  The SDMMC and uart
+nodes should be enabled in the appropriate board file.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry-picked from commit 1dfb7d2fd6a8f9c69f0b434473637d88917c9ec7)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index 69d616a05b14..d8436095b1dd 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -268,6 +268,7 @@
+ 			reg = <0xff808000 0x1000>;
+ 			interrupts = <0 98 IRQ_TYPE_LEVEL_HIGH>;
+ 			fifo-depth = <0x400>;
++			status = "disabled";
+ 		};
+ 
+ 		ocram: sram@ffe00000 {
+@@ -324,6 +325,7 @@
+ 			interrupts = <0 110 IRQ_TYPE_LEVEL_HIGH>;
+ 			reg-shift = <2>;
+ 			reg-io-width = <4>;
++			status = "disabled";
+ 		};
+ 
+ 		uart1: serial1@ffc02100 {
+@@ -332,6 +334,7 @@
+ 			interrupts = <0 111 IRQ_TYPE_LEVEL_HIGH>;
+ 			reg-shift = <2>;
+ 			reg-io-width = <4>;
++			status = "disabled";
+ 		};
+ 
+ 		usbphy0: usbphy@0 {
+-- 
+2.6.2
+

@@ -1,0 +1,45 @@
+From e4d54548768143ed7840e75dbf3dc51883d3d89c Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Fri, 22 May 2015 23:00:10 -0500
+Subject: [PATCH 16/39] ARM: socfpga: dts: add enable-method property for cpu
+ nodes
+
+Add the enable-method property for the cpu node on socfpga.dtsi and
+socfpga_arria10.dtsi. This is for CPU_METHOD_OF_DECLARE to use to enable
+the secondary core.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit ebbce1bbc4f25c0ca68f66df54ea5e8eefa90da5)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi         | 1 +
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 9b653edd003f..80f924deed37 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -36,6 +36,7 @@
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
++		enable-method = "altr,socfpga-smp";
+ 
+ 		cpu@0 {
+ 			compatible = "arm,cortex-a9";
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index d025f77b11f2..6ceb26e542ec 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -24,6 +24,7 @@
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
++		enable-method = "altr,socfpga-a10-smp";
+ 
+ 		cpu@0 {
+ 			compatible = "arm,cortex-a9";
+-- 
+2.6.2
+

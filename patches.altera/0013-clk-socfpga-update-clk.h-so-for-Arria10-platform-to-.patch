@@ -1,0 +1,60 @@
+From 802a04ce9dfe11e78a5aa6fb5389d7c5f935a33f Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Tue, 19 May 2015 22:22:41 -0500
+Subject: [PATCH 13/39] clk: socfpga: update clk.h so for Arria10 platform to
+ use
+
+There are 5 possible parent clocks for the SoCFPGA Arria10. Move the define
+SYSMGR_SDMMC_CTRL_SET and streq() to clk.h so that the Arria clock driver
+can use.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+(cherry picked from commit 5611a5ba8e5435740df99235b262b553f687b13b)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ drivers/clk/socfpga/clk-gate.c | 4 ----
+ drivers/clk/socfpga/clk.h      | 6 +++++-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/clk/socfpga/clk-gate.c b/drivers/clk/socfpga/clk-gate.c
+index dd3a78c64795..607ab352f73c 100644
+--- a/drivers/clk/socfpga/clk-gate.c
++++ b/drivers/clk/socfpga/clk-gate.c
+@@ -32,14 +32,10 @@
+ #define SOCFPGA_MMC_CLK			"sdmmc_clk"
+ #define SOCFPGA_GPIO_DB_CLK_OFFSET	0xA8
+ 
+-#define streq(a, b) (strcmp((a), (b)) == 0)
+-
+ #define to_socfpga_gate_clk(p) container_of(p, struct socfpga_gate_clk, hw.hw)
+ 
+ /* SDMMC Group for System Manager defines */
+ #define SYSMGR_SDMMCGRP_CTRL_OFFSET    0x108
+-#define SYSMGR_SDMMC_CTRL_SET(smplsel, drvsel) \
+-	((((smplsel) & 0x7) << 3) | (((drvsel) & 0x7) << 0))
+ 
+ static u8 socfpga_clk_get_parent(struct clk_hw *hwclk)
+ {
+diff --git a/drivers/clk/socfpga/clk.h b/drivers/clk/socfpga/clk.h
+index d291f60c46e1..b09a5d50547e 100644
+--- a/drivers/clk/socfpga/clk.h
++++ b/drivers/clk/socfpga/clk.h
+@@ -26,9 +26,13 @@
+ #define CLKMGR_L4SRC		0x70
+ #define CLKMGR_PERPLL_SRC	0xAC
+ 
+-#define SOCFPGA_MAX_PARENTS		3
++#define SOCFPGA_MAX_PARENTS		5
+ #define div_mask(width) ((1 << (width)) - 1)
+ 
++#define streq(a, b) (strcmp((a), (b)) == 0)
++#define SYSMGR_SDMMC_CTRL_SET(smplsel, drvsel) \
++	((((smplsel) & 0x7) << 3) | (((drvsel) & 0x7) << 0))
++
+ extern void __iomem *clk_mgr_base_addr;
+ 
+ void __init socfpga_pll_init(struct device_node *node);
+-- 
+2.6.2
+

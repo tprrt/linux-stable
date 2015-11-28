@@ -1,0 +1,33 @@
+From 88e0b84faef41aaa768e9b2266b8b556b08343fa Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Thu, 14 May 2015 09:49:14 -0500
+Subject: [PATCH 15/39] ARM: socfpga: dts: add the a9-scu node for arria10
+
+Add a dts node for the A9 SCU on the Arria10 platform.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 479f8df04c4b7b1dd53b8c2e5b157b678c8a319c)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index abf97630c592..d025f77b11f2 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -567,6 +567,11 @@
+ 			reg = <0xffd05000 0x100>;
+ 		};
+ 
++		scu: snoop-control-unit@ffffc000 {
++			compatible = "arm,cortex-a9-scu";
++			reg = <0xffffc000 0x100>;
++		};
++
+ 		sysmgr: sysmgr@ffd06000 {
+ 			compatible = "altr,sys-mgr", "syscon";
+ 			reg = <0xffd06000 0x300>;
+-- 
+2.6.2
+

@@ -1,0 +1,66 @@
+From 0e850b693fdfd03b4dde6dcc229ca4fb42abd402 Mon Sep 17 00:00:00 2001
+From: Vince Bridgers <vbridger@opensource.altera.com>
+Date: Tue, 21 Apr 2015 14:19:24 -0500
+Subject: [PATCH 07/39] ARM: socfpga: dts: Add tx-fifo-depth and rx-fifo-depth
+ properties
+
+Add tx-fifo-depth and rx-fifo-depth devicetree properties for socfpga
+stmmac. These devicetree properties will be used to configure certain
+features of the stmmac on the socfpga.
+
+Signed-off-by: Vince Bridgers <vbridger@opensource.altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit c01e8cdb7bf52681530d1a6ac3474c070468983b)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi         | 4 ++++
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index be4beda11d3d..2e9ed36df12e 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -496,6 +496,8 @@
+ 			reset-names = "stmmaceth";
+ 			snps,multicast-filter-bins = <256>;
+ 			snps,perfect-filter-entries = <128>;
++			tx-fifo-depth = <4096>;
++			rx-fifo-depth = <4096>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -512,6 +514,8 @@
+ 			reset-names = "stmmaceth";
+ 			snps,multicast-filter-bins = <256>;
+ 			snps,perfect-filter-entries = <128>;
++			tx-fifo-depth = <4096>;
++			rx-fifo-depth = <4096>;
+ 			status = "disabled";
+ 		};
+ 
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index 38c643d620c4..ab0af2afdcf7 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -130,6 +130,8 @@
+ 			mac-address = [00 00 00 00 00 00];
+ 			snps,multicast-filter-bins = <256>;
+ 			snps,perfect-filter-entries = <128>;
++			tx-fifo-depth = <4096>;
++			rx-fifo-depth = <16384>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -142,6 +144,8 @@
+ 			mac-address = [00 00 00 00 00 00];
+ 			snps,multicast-filter-bins = <256>;
+ 			snps,perfect-filter-entries = <128>;
++			tx-fifo-depth = <4096>;
++			rx-fifo-depth = <16384>;
+ 			status = "disabled";
+ 		};
+ 
+-- 
+2.6.2
+

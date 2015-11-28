@@ -1,0 +1,51 @@
+From deed2b628a9784142de80611c0bd8bbee09eb845 Mon Sep 17 00:00:00 2001
+From: Vince Bridgers <vbridger@opensource.altera.com>
+Date: Tue, 21 Apr 2015 14:15:40 -0500
+Subject: [PATCH 06/39] ARM: socfpga: dts: Add multicast bins and unicast
+ filter entries
+
+Add multicast-filter-bins and perfect-filter-entries configuration properties
+to the socfpga devicetree for the Arria 10 socfpga.
+
+Signed-off-by: Vince Bridgers <vbridger@opensource.altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit be9863cac24b53e826ded959ae4747a6f388885f)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index 6c3ad9220845..38c643d620c4 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -116,6 +116,8 @@
+ 			interrupt-names = "macirq";
+ 			/* Filled in by bootloader */
+ 			mac-address = [00 00 00 00 00 00];
++			snps,multicast-filter-bins = <256>;
++			snps,perfect-filter-entries = <128>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -126,6 +128,8 @@
+ 			interrupt-names = "macirq";
+ 			/* Filled in by bootloader */
+ 			mac-address = [00 00 00 00 00 00];
++			snps,multicast-filter-bins = <256>;
++			snps,perfect-filter-entries = <128>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -136,6 +140,8 @@
+ 			interrupt-names = "macirq";
+ 			/* Filled in by bootloader */
+ 			mac-address = [00 00 00 00 00 00];
++			snps,multicast-filter-bins = <256>;
++			snps,perfect-filter-entries = <128>;
+ 			status = "disabled";
+ 		};
+ 
+-- 
+2.6.2
+

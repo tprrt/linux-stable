@@ -1,0 +1,49 @@
+From 9b0cd899425c09a4b737c25a04c2ea6f63ec8e2c Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Wed, 28 May 2014 22:40:13 -0500
+Subject: [PATCH 27/39] ARM: socfpga: dts: Fix gpio dts entry for the correct
+ clock
+
+The correct clock for the HPS gpio(s) should be the l4_mp_clk.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit e9f9fe35f8940c9a4c5deba091d532e3a02bf78b)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 7860935ae3a2..b0acaec3b81a 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -565,7 +565,7 @@
+ 			#size-cells = <0>;
+ 			compatible = "snps,dw-apb-gpio";
+ 			reg = <0xff708000 0x1000>;
+-			clocks = <&per_base_clk>;
++			clocks = <&l4_mp_clk>;
+ 			status = "disabled";
+ 
+ 			porta: gpio-controller@0 {
+@@ -585,7 +585,7 @@
+ 			#size-cells = <0>;
+ 			compatible = "snps,dw-apb-gpio";
+ 			reg = <0xff709000 0x1000>;
+-			clocks = <&per_base_clk>;
++			clocks = <&l4_mp_clk>;
+ 			status = "disabled";
+ 
+ 			portb: gpio-controller@0 {
+@@ -605,7 +605,7 @@
+ 			#size-cells = <0>;
+ 			compatible = "snps,dw-apb-gpio";
+ 			reg = <0xff70a000 0x1000>;
+-			clocks = <&per_base_clk>;
++			clocks = <&l4_mp_clk>;
+ 			status = "disabled";
+ 
+ 			portc: gpio-controller@0 {
+-- 
+2.6.2
+

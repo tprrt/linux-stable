@@ -1,0 +1,82 @@
+From 1551fee162675433aecccb9f26d03daa2760e42b Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Fri, 24 Jul 2015 22:30:18 -0500
+Subject: [PATCH 33/39] clk: socfpga: Add a second parent option for the
+ dbg_base_clk
+
+The debug base clock can be bypassed from the main PLL to the OSC1 clock.
+The bypass register is the staysoc1(0x10) register that is in the clock
+manager.
+
+This patch adds the option to get the correct parent for the debug base
+clock.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
+(cherry picked from commit 34d5003bfba44a73fe9fbcf75e1d41d130d59bd1)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ drivers/clk/socfpga/clk-periph.c | 18 ++++++++++++++----
+ drivers/clk/socfpga/clk.h        |  1 +
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/clk/socfpga/clk-periph.c b/drivers/clk/socfpga/clk-periph.c
+index 46531c34ec9b..8a4932fb83a8 100644
+--- a/drivers/clk/socfpga/clk-periph.c
++++ b/drivers/clk/socfpga/clk-periph.c
+@@ -45,8 +45,17 @@ static unsigned long clk_periclk_recalc_rate(struct clk_hw *hwclk,
+ 	return parent_rate / div;
+ }
+ 
++static u8 clk_periclk_get_parent(struct clk_hw *hwclk)
++{
++	u32 clk_src;
++
++	clk_src = readl(clk_mgr_base_addr + CLKMGR_DBCTRL);
++	return clk_src & 0x1;
++}
++
+ static const struct clk_ops periclk_ops = {
+ 	.recalc_rate = clk_periclk_recalc_rate,
++	.get_parent = clk_periclk_get_parent,
+ };
+ 
+ static __init void __socfpga_periph_init(struct device_node *node,
+@@ -56,7 +65,7 @@ static __init void __socfpga_periph_init(struct device_node *node,
+ 	struct clk *clk;
+ 	struct socfpga_periph_clk *periph_clk;
+ 	const char *clk_name = node->name;
+-	const char *parent_name;
++	const char *parent_name[SOCFPGA_MAX_PARENTS];
+ 	struct clk_init_data init;
+ 	int rc;
+ 	u32 fixed_div;
+@@ -90,9 +99,10 @@ static __init void __socfpga_periph_init(struct device_node *node,
+ 	init.name = clk_name;
+ 	init.ops = ops;
+ 	init.flags = 0;
+-	parent_name = of_clk_get_parent_name(node, 0);
+-	init.parent_names = &parent_name;
+-	init.num_parents = 1;
++
++	init.num_parents = of_clk_parent_fill(node, parent_name,
++					      SOCFPGA_MAX_PARENTS);
++	init.parent_names = parent_name;
+ 
+ 	periph_clk->hw.hw.init = &init;
+ 
+diff --git a/drivers/clk/socfpga/clk.h b/drivers/clk/socfpga/clk.h
+index 603973ab7e29..a75f0801a8bb 100644
+--- a/drivers/clk/socfpga/clk.h
++++ b/drivers/clk/socfpga/clk.h
+@@ -23,6 +23,7 @@
+ /* Clock Manager offsets */
+ #define CLKMGR_CTRL		0x0
+ #define CLKMGR_BYPASS		0x4
++#define CLKMGR_DBCTRL		0x10
+ #define CLKMGR_L4SRC		0x70
+ #define CLKMGR_PERPLL_SRC	0xAC
+ 
+-- 
+2.6.2
+

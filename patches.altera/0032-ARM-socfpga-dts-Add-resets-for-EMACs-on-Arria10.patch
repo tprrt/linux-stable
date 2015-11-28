@@ -1,0 +1,47 @@
+From 455d260b81cd4dd8d3c55da978ecea6c37695565 Mon Sep 17 00:00:00 2001
+From: Dinh Nguyen <dinguyen@opensource.altera.com>
+Date: Fri, 24 Jul 2015 15:13:17 -0500
+Subject: [PATCH 32/39] ARM: socfpga: dts: Add resets for EMACs on Arria10
+
+Add the reset property for the EMAC controllers on Arria10.
+
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+(cherry picked from commit 6855e5b7090330add9521d8947017875d5f4f88e)
+Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
+---
+ arch/arm/boot/dts/socfpga_arria10.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_arria10.dtsi b/arch/arm/boot/dts/socfpga_arria10.dtsi
+index d80ca7a0cc7c..bcf3b781a9fc 100644
+--- a/arch/arm/boot/dts/socfpga_arria10.dtsi
++++ b/arch/arm/boot/dts/socfpga_arria10.dtsi
+@@ -16,6 +16,7 @@
+ 
+ #include "skeleton.dtsi"
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
++#include <dt-bindings/reset/altr,rst-mgr-a10.h>
+ 
+ / {
+ 	#address-cells = <1>;
+@@ -414,6 +415,8 @@
+ 			rx-fifo-depth = <16384>;
+ 			clocks = <&l4_mp_clk>;
+ 			clock-names = "stmmaceth";
++			resets = <&rst EMAC0_RESET>;
++			reset-names = "stmmaceth";
+ 			status = "disabled";
+ 		};
+ 
+@@ -431,6 +434,8 @@
+ 			rx-fifo-depth = <16384>;
+ 			clocks = <&l4_mp_clk>;
+ 			clock-names = "stmmaceth";
++			resets = <&rst EMAC1_RESET>;
++			reset-names = "stmmaceth";
+ 			status = "disabled";
+ 		};
+ 
+-- 
+2.6.2
+
