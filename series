@@ -413,6 +413,13 @@ patches.altera/0006-nios2-Add-Max10-device-tree.patch
 patches.altera/0007-nios2-add-Max10-defconfig.patch
 patches.altera/0008-nios2-Fix-unused-variable-warning.patch
 patches.altera/0009-nios2-Switch-to-generic-__xchg.patch
+patches.altera/0001-ARM-Add-msi.h-to-Kbuild.patch
+patches.altera/0002-PCI-altera-Add-Altera-PCIe-host-controller-driver.patch
+patches.altera/0003-PCI-altera-Add-Altera-PCIe-MSI-driver.patch
+patches.altera/0004-PCI-altera-Fix-loop-in-tlp_read_packet.patch
+patches.altera/0005-PCI-altera-Fix-Requester-ID-for-config-accesses.patch
+patches.altera/0006-PCI-altera-Check-TLP-completion-status.patch
+patches.altera/0007-PCI-altera-Fix-error-when-INTx-is-4.patch
 
 #############################################################################
 # Misc patches

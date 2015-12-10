@@ -1,0 +1,31 @@
+From 12648d2bb2f4fec718948e9758aafa251ade27d0 Mon Sep 17 00:00:00 2001
+From: Ley Foon Tan <lftan@altera.com>
+Date: Wed, 9 Dec 2015 21:07:22 +0800
+Subject: [PATCH 1/7] ARM: Add msi.h to Kbuild
+
+Include asm-generic/msi.h to support CONFIG_GENERIC_MSI_IRQ_DOMAIN.
+This fixes a compilation error:
+
+  include/linux/msi.h:123:21: fatal error: asm/msi.h: No such file or directory
+
+Signed-off-by: Ley Foon Tan <lftan@altera.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ arch/arm/include/asm/Kbuild | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+index 3c4596d0ce6c..01806f52768c 100644
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -14,6 +14,7 @@ generic-y += local.h
+ generic-y += local64.h
+ generic-y += mcs_spinlock.h
+ generic-y += msgbuf.h
++generic-y += msi.h
+ generic-y += param.h
+ generic-y += parport.h
+ generic-y += poll.h
+-- 
+2.6.3
+
