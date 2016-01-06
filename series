@@ -354,6 +354,11 @@ patches.renesas/0334-staging-board-armadillo800eva-Board-staging-for-sh_m.patch
 patches.renesas/0335-staging-make-board-support-depend-on-OF_IRQ-and-CLKD.patch
 patches.renesas/0336-staging-board-Migrate-away-from-__pm_genpd_name_add_.patch
 patches.renesas/0337-ARM-dts-fix-gpio-keys-wakeup-source-property.patch
+patches.renesas/clockevents-drivers-sh_cmt-only-perform-clocksource-suspend-resume-if-enabled.patch
+patches.renesas/clkdev-use-clk_hw-internally.patch
+patches.renesas/clkdev-const-ify-connection-id-to-clk_add_alias.patch
+patches.renesas/clkdev-get-rid-of-redundant-clk_add_alias-prototype-in-linux-clk.h.patch
+patches.renesas/pm-domains-skip-timings-during-syscore-suspend-resume.patch
 
 #############################################################################
 # Altera patches

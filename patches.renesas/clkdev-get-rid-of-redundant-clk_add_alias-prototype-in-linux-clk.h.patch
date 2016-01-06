@@ -1,0 +1,111 @@
+From geert@linux-m68k.org Tue Dec  8 09:38:05 2015
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Tue,  8 Dec 2015 18:37:40 +0100
+Subject: [PATCH 4/5] clkdev: get rid of redundant clk_add_alias() prototype in linux/clk.h
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Simon Horman <horms@verge.net.au>, Magnus Damm <magnus.damm@gmail.com>, ltsi-dev@lists.linuxfoundation.org, Russell King <rmk+kernel@arm.linux.org.uk>, Geert Uytterhoeven <geert+renesas@glider.be>
+Message-ID: <1449596261-31005-5-git-send-email-geert+renesas@glider.be>
+
+
+From: Russell King <rmk+kernel@arm.linux.org.uk>
+
+clk_add_alias() is provided by clkdev, and is not part of the clk API.
+Howver, it is prototyped in two locations: linux/clkdev.h and
+linux/clk.h.  This is a mess.  Get rid of the redundant and unnecessary
+version in linux/clk.h.
+
+Acked-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Robert Jarzmik <robert.jarzmik@free.fr>
+Acked-by: Sekhar Nori <nsekhar@ti.com>
+Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+(cherry picked from commit 2d34e507293102f29ee94d9a9c5b890696d42452)
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/arm/mach-davinci/da850.c        |    1 +
+ arch/arm/mach-omap1/board-nokia770.c |    2 +-
+ arch/arm/mach-pxa/eseries.c          |    1 +
+ arch/arm/mach-pxa/lubbock.c          |    1 +
+ arch/arm/mach-pxa/tosa.c             |    1 +
+ include/linux/clk.h                  |   13 -------------
+ 6 files changed, 5 insertions(+), 14 deletions(-)
+
+--- a/arch/arm/mach-davinci/da850.c
++++ b/arch/arm/mach-davinci/da850.c
+@@ -11,6 +11,7 @@
+  * is licensed "as is" without any warranty of any kind, whether express
+  * or implied.
+  */
++#include <linux/clkdev.h>
+ #include <linux/gpio.h>
+ #include <linux/init.h>
+ #include <linux/clk.h>
+--- a/arch/arm/mach-omap1/board-nokia770.c
++++ b/arch/arm/mach-omap1/board-nokia770.c
+@@ -7,6 +7,7 @@
+  * it under the terms of the GNU General Public License version 2 as
+  * published by the Free Software Foundation.
+  */
++#include <linux/clkdev.h>
+ #include <linux/irq.h>
+ #include <linux/gpio.h>
+ #include <linux/kernel.h>
+@@ -14,7 +15,6 @@
+ #include <linux/mutex.h>
+ #include <linux/platform_device.h>
+ #include <linux/input.h>
+-#include <linux/clk.h>
+ #include <linux/omapfb.h>
+ 
+ #include <linux/spi/spi.h>
+--- a/arch/arm/mach-pxa/eseries.c
++++ b/arch/arm/mach-pxa/eseries.c
+@@ -10,6 +10,7 @@
+  *
+  */
+ 
++#include <linux/clkdev.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/gpio.h>
+--- a/arch/arm/mach-pxa/lubbock.c
++++ b/arch/arm/mach-pxa/lubbock.c
+@@ -11,6 +11,7 @@
+  *  it under the terms of the GNU General Public License version 2 as
+  *  published by the Free Software Foundation.
+  */
++#include <linux/clkdev.h>
+ #include <linux/gpio.h>
+ #include <linux/gpio/machine.h>
+ #include <linux/module.h>
+--- a/arch/arm/mach-pxa/tosa.c
++++ b/arch/arm/mach-pxa/tosa.c
+@@ -12,6 +12,7 @@
+  *
+  */
+ 
++#include <linux/clkdev.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -471,19 +471,6 @@ static inline void clk_disable_unprepare
+ 	clk_unprepare(clk);
+ }
+ 
+-/**
+- * clk_add_alias - add a new clock alias
+- * @alias: name for clock alias
+- * @alias_dev_name: device name
+- * @id: platform specific clock name
+- * @dev: device
+- *
+- * Allows using generic clock names for drivers by adding a new alias.
+- * Assumes clkdev, see clkdev.h for more info.
+- */
+-int clk_add_alias(const char *alias, const char *alias_dev_name, char *id,
+-			struct device *dev);
+-
+ struct device_node;
+ struct of_phandle_args;
+ 
