@@ -183,7 +183,7 @@ async_xor(struct page *dest, struct page **src_list, unsigned int offset,
 	BUG_ON(src_cnt <= 1);
 
 	if (device)
-		unmap = dmaengine_get_unmap_data(device->dev, src_cnt+1, GFP_NOIO);
+		unmap = dmaengine_get_unmap_data(device->dev, src_cnt+1, GFP_NOWAIT);
 
 	if (unmap && is_dma_xor_aligned(device, offset, 0, len)) {
 		struct dma_async_tx_descriptor *tx;
@@ -279,7 +279,7 @@ async_xor_val(struct page *dest, struct page **src_list, unsigned int offset,
 	BUG_ON(src_cnt <= 1);
 
 	if (device)
-		unmap = dmaengine_get_unmap_data(device->dev, src_cnt, GFP_NOIO);
+		unmap = dmaengine_get_unmap_data(device->dev, src_cnt, GFP_NOWAIT);
 
 	if (unmap && src_cnt <= device->max_xor &&
 	    is_dma_xor_aligned(device, offset, 0, len)) {
