@@ -425,6 +425,7 @@ patches.altera/0004-PCI-altera-Fix-loop-in-tlp_read_packet.patch
 patches.altera/0005-PCI-altera-Fix-Requester-ID-for-config-accesses.patch
 patches.altera/0006-PCI-altera-Check-TLP-completion-status.patch
 patches.altera/0007-PCI-altera-Fix-error-when-INTx-is-4.patch
+patches.altera/arm-socfpga-fix-build-error-due-to-secondary_startup.patch
 
 #############################################################################
 # Misc patches
