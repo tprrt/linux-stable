@@ -18,7 +18,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 @@ -1,7 +1,7 @@
  VERSION = 4
  PATCHLEVEL = 1
- SUBLEVEL = 15
+ SUBLEVEL = 17
 -EXTRAVERSION =
 +EXTRAVERSION = -ltsi
  NAME = Series 4800
