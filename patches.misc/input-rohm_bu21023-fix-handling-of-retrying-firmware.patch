@@ -1,0 +1,26 @@
+From 415a249f88fd263bed0f7cca86ecde8c57aba9dc Mon Sep 17 00:00:00 2001
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Date: Wed, 6 Jan 2016 14:44:02 -0800
+Subject: [PATCH] Input: rohm_bu21023 - fix handling of retrying firmware
+ update
+
+Because of the wrong condition we'd never retry firmware update.
+
+Acked-by: Yoichi Yuasa <yuasa@linux-mips.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+---
+ drivers/input/touchscreen/rohm_bu21023.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/input/touchscreen/rohm_bu21023.c
++++ b/drivers/input/touchscreen/rohm_bu21023.c
+@@ -725,7 +725,7 @@ static int rohm_ts_load_firmware(struct
+ 			break;
+ 
+ 		error = -EIO;
+-	} while (++retry >= FIRMWARE_RETRY_MAX);
++	} while (++retry <= FIRMWARE_RETRY_MAX);
+ 
+ out:
+ 	error2 = i2c_smbus_write_byte_data(client, INT_MASK, INT_ALL);

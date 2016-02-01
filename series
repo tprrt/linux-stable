@@ -430,6 +430,7 @@ patches.altera/arm-socfpga-fix-build-error-due-to-secondary_startup.patch
 #############################################################################
 # Misc patches
 patches.misc/input-add-support-for-rohm-bu21023-24-touchscreen.patch
+patches.misc/input-rohm_bu21023-fix-handling-of-retrying-firmware.patch
 patches.misc/mtd-nand-support-for-toshiba-benand-built-in-ecc-nand.patch
 
 ##############################################################################
