@@ -166,7 +166,6 @@ void core_tmr_abort_task(
 
 		if (!__target_check_io_state(se_cmd)) {
 			spin_unlock_irqrestore(&se_sess->sess_cmd_lock, flags);
-			target_put_sess_cmd(se_cmd);
 			goto out;
 		}
 
