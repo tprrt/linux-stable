@@ -142,9 +142,6 @@ void core_tmr_abort_task(
 			       " skipping\n", ref_tag);
 			spin_unlock(&se_cmd->t_state_lock);
 			spin_unlock_irqrestore(&se_sess->sess_cmd_lock, flags);
-
-			target_put_sess_cmd(se_cmd);
-
 			goto out;
 		}
 		se_cmd->transport_state |= CMD_T_ABORTED;
