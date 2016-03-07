@@ -1081,10 +1081,10 @@ static const struct amdgpu_ip_block_version topaz_ip_blocks[] =
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_GMC,
-		.major = 8,
-		.minor = 0,
+		.major = 7,
+		.minor = 4,
 		.rev = 0,
-		.funcs = &gmc_v8_0_ip_funcs,
+		.funcs = &gmc_v7_0_ip_funcs,
 	},
 	{
 		.type = AMD_IP_BLOCK_TYPE_IH,
