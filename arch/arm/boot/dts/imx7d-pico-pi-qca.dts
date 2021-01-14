@@ -18,3 +18,11 @@
 	model = "TechNexion PICO-IMX7D with QCA WLAN module and PI baseboard";
 	compatible = "fsl,pico-imx7d", "fsl,imx7d";
 };
+
+&ftm2 {
+	status = "okay";
+};
+
+&usdhc1 {
+	status = "disabled";
+};

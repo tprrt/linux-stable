@@ -487,6 +487,13 @@
 			>;
 		};
 
+		pinctrl_ftm_2: ftm-2 {
+			fsl,pins = <
+				MX7D_PAD_SD1_CMD__FLEXTIMER2_CH0	0x59
+				MX7D_PAD_EPDC_PWR_COM__FLEXTIMER2_PHA	0x59
+			>;
+		};
+
 		pinctrl_pwm1: pwm1 {
 			fsl,pins = <
 				MX7D_PAD_GPIO1_IO08__PWM1_OUT   0x7f
@@ -839,6 +846,12 @@
 	cs-gpios = <&gpio4 11 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi3 &pinctrl_ecspi3_cs>;
+	status = "okay";
+};
+
+&ftm2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_ftm_2>;
 	status = "okay";
 };
 
