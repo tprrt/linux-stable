@@ -657,6 +657,7 @@
 				compatible = "fsl,vf610-ftm-pwm";
 				reg = <0x30650000 0x10000>;
 				#pwm-cells = <3>;
+				interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
 				clock-names = "ftm_sys", "ftm_ext",
 				"ftm_fix", "ftm_cnt_clk_en";
 				clocks = <&clks IMX7D_FLEXTIMER2_ROOT_CLK>,

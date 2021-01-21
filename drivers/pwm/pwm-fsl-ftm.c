@@ -11,6 +11,7 @@
 
 #include <linux/clk.h>
 #include <linux/err.h>
+#include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -32,6 +33,7 @@
 #define FTM_MOD		0x08
 
 #define FTM_CSC_BASE	0x0C
+#define FTM_CSC_CHIE	BIT(6)
 #define FTM_CSC_MSB	BIT(5)
 #define FTM_CSC_MSA	BIT(4)
 #define FTM_CSC_ELSB	BIT(3)
@@ -75,6 +77,13 @@ enum fsl_pwm_clk {
 	FSL_PWM_CLK_MAX
 };
 
+struct fsl_cpt_ddata {
+	u32 snapshot[3];
+	unsigned int index;
+	struct mutex lock;
+	wait_queue_head_t wait;
+};
+
 struct fsl_pwm_chip {
 	struct pwm_chip chip;
 
@@ -87,6 +96,7 @@ struct fsl_pwm_chip {
 
 	int period_ns;
 	bool has_pwmen;
+	struct pwm_device *cpt_dev;
 
 	struct clk *ipg_clk;
 	struct clk *clk[FSL_PWM_CLK_MAX];
@@ -284,7 +294,6 @@ static int fsl_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
 		regmap_update_bits(fpc->regmap, FTM_SC, FTM_SC_PS_MASK,
 				   fpc->clk_ps);
 		regmap_write(fpc->regmap, FTM_MOD, period - 1);
-
 		fpc->period_ns = period_ns;
 	}
 
@@ -379,7 +388,111 @@ static void fsl_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
 	mutex_unlock(&fpc->lock);
 }
 
+static int fsl_pwm_capture(struct pwm_chip *chip, struct pwm_device *pwm,
+			   struct pwm_capture *result, unsigned long timeout)
+{
+	struct fsl_pwm_chip *fpc = to_fsl_chip(chip);
+	struct fsl_cpt_ddata *ddata = pwm_get_chip_data(pwm);
+	unsigned int effective_ticks;
+	unsigned long long high, low;
+	int ret;
+	u32 val;
+
+	fpc->cpt_dev = pwm;
+
+	mutex_lock(&ddata->lock);
+	ddata->index = 0;
+
+	/* Initialize the counter */
+	mutex_lock(&fpc->lock);
+	regmap_update_bits(fpc->regmap, FTM_SC, FTM_SC_PS_MASK, 1);
+	regmap_write(fpc->regmap, FTM_MOD, 0xFFFF);
+	regmap_write(fpc->regmap, FTM_CNTIN, 0x0000);
+	mutex_unlock(&fpc->lock);
+
+	/* Select input capture mode */
+	regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+	val &= ~(FTM_CSC_MSB | FTM_CSC_MSA);
+	regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+
+	/* Enable interrupt on rising edge only */
+	regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+	val &= ~(FTM_CSC_ELSB);
+	val |= FTM_CSC_ELSA;
+	val |= FTM_CSC_CHIE;
+	regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+
+	//regmap_write(fpc->regmap, FTM_CV(pwm->hwpwm), 0);
+
+	mutex_lock(&fpc->lock);
+	/* Select counter clock source */
+	regmap_update_bits(fpc->regmap, FTM_SC, FTM_SC_CLK_MASK,
+			   FTM_SC_CLK(FSL_PWM_CLK_SYS));
+	/* Enable capture */
+	clk_prepare_enable(fpc->clk[FSL_PWM_CLK_SYS]);
+	clk_prepare_enable(fpc->clk[FSL_PWM_CLK_CNTEN]);
+
+	mutex_unlock(&fpc->lock);
+
+	/* Wait */
+	ret = wait_event_interruptible_timeout(ddata->wait, ddata->index > 1,
+					       msecs_to_jiffies(timeout));
+
+	/* Disable interrupt */
+	regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+	val &= ~(FTM_CSC_ELSB | FTM_CSC_ELSA | FTM_CSC_CHIE);
+	regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+
+	if (ret == -ERESTARTSYS)
+		goto out;
+
+	/* Compute the result */
+	switch (ddata->index) {
+	case 0:
+	case 1:
+		/*
+		 * Getting here could mean:
+		 *  - input signal is constant of less than 1 Hz
+		 *  - there is no input signal at all
+		 *
+		 * In such case the frequency is rounded down to 0
+		 */
+		result->period = 0;
+		result->duty_cycle = 0;
+		break;
+
+	case 2:
+		/* We have everying we need */
+		high = ddata->snapshot[1] - ddata->snapshot[0];
+		low = ddata->snapshot[2] - ddata->snapshot[1];
+
+		effective_ticks = clk_get_rate(fpc->clk[fpc->cnt_select]);
+
+		result->period = (high + low) * NSEC_PER_SEC;
+		result->period /= effective_ticks;
+
+		result->duty_cycle = high * NSEC_PER_SEC;
+		result->duty_cycle /= effective_ticks;
+		break;
+
+	default:
+		dev_err(fpc->chip.dev, "internal error\n");
+		break;
+	}
+
+out:
+	/* Disable capture */
+	mutex_lock(&fpc->lock);
+	clk_disable_unprepare(fpc->clk[FSL_PWM_CLK_CNTEN]);
+	clk_disable_unprepare(fpc->clk[FSL_PWM_CLK_SYS]);
+	mutex_unlock(&fpc->lock);
+
+	mutex_unlock(&ddata->lock);
+	return ret;
+}
+
 static const struct pwm_ops fsl_pwm_ops = {
+	.capture = fsl_pwm_capture,
 	.request = fsl_pwm_request,
 	.free = fsl_pwm_free,
 	.config = fsl_pwm_config,
@@ -400,6 +513,7 @@ static int fsl_pwm_init(struct fsl_pwm_chip *fpc)
 	regmap_write(fpc->regmap, FTM_CNTIN, 0x00);
 	regmap_write(fpc->regmap, FTM_OUTINIT, 0x00);
 	regmap_write(fpc->regmap, FTM_OUTMASK, 0xFF);
+	regmap_write(fpc->regmap, FTM_FILTER, 0x0000);
 
 	fsl_pwm_mode_disable(fpc);
 
@@ -425,12 +539,76 @@ static const struct regmap_config fsl_pwm_regmap_config = {
 	.cache_type = REGCACHE_FLAT,
 };
 
+static irqreturn_t fsl_pwm_interrupt(int irq, void *data)
+{
+	struct fsl_pwm_chip *fpc = data;
+	u32 val;
+
+	struct pwm_device *pwm = fpc->cpt_dev;
+	struct fsl_cpt_ddata *ddata = pwm_get_chip_data(pwm);
+
+	/*
+	 * Capture input:
+	 *    _______                   _______
+	 *   |       |                 |       |
+	 * __|       |_________________|       |________
+	 *   ^0      ^1                ^2
+	 *
+	 * Capture start by the first available rising edge. When a
+	 * capture event occurs, capture value (FTMx_CnV) is stored,
+	 * index incremented, capture edge changed.
+	 *
+	 * After the capture, if the index > 1, we have collected the
+	 * necessary data so we signal the thread waiting for it and
+	 * disable the capture by setting capture edge to none
+	 */
+
+	/* Read the counter value */
+	regmap_read(fpc->regmap, FTM_CV(pwm->hwpwm), &ddata->snapshot[ddata->index]);
+	regmap_read(fpc->regmap, FTM_CNT, &val);
+	regmap_write(fpc->regmap, FTM_STATUS, 0x00);
+
+	switch (ddata->index) {
+	case 0:
+		ddata->index++;
+		/* Enable interrupt on failling edge only */
+		regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+		val &= ~(FTM_CSC_ELSA);
+		val |= FTM_CSC_ELSB;
+		regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+		break;
+
+	case 1:
+		ddata->index++;
+		/* Enable interrupt on rising edge only */
+		regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+		val &= ~(FTM_CSC_ELSB);
+		val |= FTM_CSC_ELSA;
+		regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+		break;
+
+	case 2:
+		/* Disable interrupt */
+		regmap_read(fpc->regmap, FTM_CSC(pwm->hwpwm), &val);
+		val &= ~(FTM_CSC_ELSB | FTM_CSC_ELSA | FTM_CSC_CHIE);
+		regmap_write(fpc->regmap, FTM_CSC(pwm->hwpwm), val);
+		/* Wake up threads blocked */
+		wake_up(&ddata->wait);
+		break;
+
+	default:
+		dev_err(fpc->chip.dev, "internal error\n");
+	}
+
+	return IRQ_HANDLED;
+}
+
 static int fsl_pwm_probe(struct platform_device *pdev)
 {
 	struct fsl_pwm_chip *fpc;
 	struct resource *res;
 	void __iomem *base;
-	int ret;
+	int i, irq, ret;
 
 	fpc = devm_kzalloc(&pdev->dev, sizeof(*fpc), GFP_KERNEL);
 	if (!fpc)
@@ -450,6 +628,19 @@ static int fsl_pwm_probe(struct platform_device *pdev)
 	if (IS_ERR(fpc->regmap)) {
 		dev_err(&pdev->dev, "regmap init failed\n");
 		return PTR_ERR(fpc->regmap);
+	}
+
+	irq = platform_get_irq(pdev, 0);
+	if (irq < 0) {
+		dev_err(&pdev->dev, "failed to obtain IRQ\n");
+		return irq;
+	}
+
+	ret = devm_request_irq(&pdev->dev, irq, fsl_pwm_interrupt, 0,
+			       pdev->name, fpc);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "failed to request IRQ\n");
+		return ret;
 	}
 
 	fpc->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
@@ -488,6 +679,19 @@ static int fsl_pwm_probe(struct platform_device *pdev)
 	if (ret < 0) {
 		dev_err(&pdev->dev, "failed to add PWM chip: %d\n", ret);
 		return ret;
+	}
+
+	for (i = 0; i < fpc->chip.npwm; i++) {
+		struct fsl_cpt_ddata *ddata;
+
+		ddata = devm_kzalloc(&pdev->dev, sizeof(*ddata), GFP_KERNEL);
+		if (!ddata)
+			return -ENOMEM;
+
+		init_waitqueue_head(&ddata->wait);
+		mutex_init(&ddata->lock);
+
+		pwm_set_chip_data(&fpc->chip.pwms[i], ddata);
 	}
 
 	platform_set_drvdata(pdev, fpc);

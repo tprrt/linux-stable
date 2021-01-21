@@ -33,6 +33,7 @@ Required properties:
   See pinctrl/pinctrl-bindings.txt for details of the property values.
 - big-endian: Boolean property, required if the FTM PWM registers use a big-
   endian rather than little-endian layout.
+- interrupts: IRQ for the Capture device
 
 Example:
 
