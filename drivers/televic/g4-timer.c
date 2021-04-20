@@ -61,19 +61,12 @@ struct g4_timer_dev {
 	/* interrupts */
 	int irq;
 
-	/* tasklets */
-	struct tasklet_struct tasklet;
-
 	/* locks */
 	spinlock_t gpio_spin_lock;
 
 	/* irq_gpio */
 	struct gpio_desc *irq_gpio_pin;
 	unsigned int irq_gpio_on;  /* is the output enabled? */
-
-	/* tasklet_gpio */
-	struct gpio_desc *tasklet_gpio_pin;
-	unsigned int tasklet_gpio_on;  /* is the output enabled? */
 };
 
 static inline void tcs_g4_timer_set_irq(struct g4_timer_dev *pdata)
@@ -104,23 +97,7 @@ static irqreturn_t g4_timer_isr(int irq, void *data)
 	}
 	spin_unlock_irqrestore(&pdata->gpio_spin_lock, flags);
 
-	tasklet_hi_schedule(&pdata->tasklet);
-
 	return IRQ_HANDLED;
-}
-
-static void g4_timer_tasklet(unsigned long data)
-{
-	unsigned long flags;
-	struct g4_timer_dev* pdata = (struct g4_timer_dev *)data;
-
-	/* Toggle GPIO */
-	spin_lock_irqsave(&pdata->gpio_spin_lock, flags);
-	if (pdata->tasklet_gpio_pin) {
-		pdata->tasklet_gpio_on = !pdata->tasklet_gpio_on;
-		gpiod_set_value(pdata->tasklet_gpio_pin, pdata->tasklet_gpio_on);
-	}
-	spin_unlock_irqrestore(&pdata->gpio_spin_lock, flags);
 }
 
 static const struct of_device_id g4_timer_ids[] = {
@@ -191,17 +168,9 @@ static int g4_timer_probe(struct platform_device *pdev)
 
 	spin_lock_init(&pdata->gpio_spin_lock);
 
-	tasklet_init(&pdata->tasklet, g4_timer_tasklet, (unsigned long)pdata);
-
 	pdata->irq_gpio_pin = devm_gpiod_get_optional(&pdev->dev, "irq", GPIOD_OUT_HIGH);
 	if (IS_ERR(pdata->irq_gpio_pin)) {
 		dev_err(&pdev->dev, "Failed to request irq gpio\n");
-		goto ERROR_PROBE;
-	}
-
-	pdata->tasklet_gpio_pin = devm_gpiod_get_optional(&pdev->dev, "tasklet", GPIOD_OUT_HIGH);
-	if (IS_ERR(pdata->tasklet_gpio_pin)) {
-		dev_err(&pdev->dev, "Failed to request tasklet gpio\n");
 		goto ERROR_PROBE;
 	}
 
@@ -248,8 +217,6 @@ static int g4_timer_probe(struct platform_device *pdev)
 static int g4_timer_remove(struct platform_device *pdev)
 {
 	struct g4_timer_dev *pdata = platform_get_drvdata(pdev);
-
-	tasklet_kill(&pdata->tasklet);
 
 	/* reset & disable the device */
 	writel_relaxed(MXC_TCTL_SWR, pdata->base + MXC_TCTL);
