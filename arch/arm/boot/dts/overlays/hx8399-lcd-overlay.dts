@@ -1,0 +1,99 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	compatible = "brcm,bcm2835";
+
+	fragment@0 {
+		target = <&dsi1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			port {
+				dsi_out: endpoint {
+					remote-endpoint = <&panel_in>;
+				};
+			};
+
+			dsi_panel: dsi_panel@0 {
+				compatible = "youritech,et055wu01-tt";
+				reg = <0>;
+				vcc-supply = <&vdd_5v0_reg>;
+				reset-gpios = <&gpio 17 GPIO_ACTIVE_LOW>; // LCD_RST
+				backlight = <&dsi_backlight>;
+
+				port {
+					panel_in: endpoint {
+						remote-endpoint = <&dsi_out>;
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target = <&gpio>;
+		__overlay__ {
+			pwm0_pins: pwm0_pins {
+				brcm,pins = <12>;
+				brcm,function = <4>; /* Alt0 */
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&pwm>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm0_pins>;
+			assigned-clock-rates = <50000>;
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+		__overlay__ {
+			dsi_backlight: dsi_backlight {
+				compatible = "pwm-backlight";
+				brightness-levels = <0 6 8 12 16 24 32 40 48 64 96 128 160 192 224 255>;
+				default-brightness-level = <15>;
+				pwms = <&pwm 0 50000 0>;
+				power-supply = <&vdd_5v0_reg>;
+				status = "okay";
+			};
+		 };
+	};
+
+	fragment@5 {
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-0 = <&i2c0_gpio44>;
+		 };
+	};
+
+	fragment@6 {
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
+			status = "okay";
+
+			gt928@14 {
+				compatible = "goodix,gt911";
+				reg = <0x14>;
+				AVDD28-supply  = <&vdd_3v3_reg>;
+				VDDIO-supply  = <&vdd_5v0_reg>;
+				irq-gpios = <&gpio 26 GPIO_ACTIVE_LOW>; // INT0
+				status = "okay";
+				touchscreen-size-x = <1080>;
+				touchscreen-size-y = <1980>;
+				touchscreen-x-mm = <68>;
+				touchscreen-y-mm = <120>;
+			};
+		 };
+	};
+};
